@@ -1,6 +1,0 @@
-User-agent: *
-Disallow: /wp-admin/
-Allow: /wp-admin/admin-ajax.php
-
-Sitemap: https://bitmixlist.com/sitemap.xml
-Sitemap: https://bitmixlist.com/sitemap.rss
