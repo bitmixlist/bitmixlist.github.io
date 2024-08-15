@@ -172,6 +172,7 @@ const mixerDetails = {
     'mixy.money': { type: 'pgp', keyIndex: 0 },
     'mixtura.money': { type: 'pgp', keyIndex: 0 },
     'bitmixer.online': { type: 'pgp', keyIndex: 0 },
+    'swamplizard.io': { type: 'pgp', keyIndex: 0 },
     'coinomize.biz': {
         type: 'bitcoin',
         keyIndex: 1,
