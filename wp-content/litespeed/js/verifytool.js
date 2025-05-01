@@ -148,6 +148,7 @@ const keys = [
     TuA=
     =hrrW
     -----END PGP PUBLIC KEY BLOCK-----`),
+    "1GmixhLcQhApAAJS8WmLrCpbJaHSz4d62L"
     // Add other keys or addresses as necessary
 ];
 
@@ -211,6 +212,16 @@ const mixerDetails = {
             return { body, signature, address };
         }
     },
+    'genesismix.cx': {
+        type: 'bitcoin',
+        keyIndex: 6,
+        customHandler: function(message) {
+            const signature = message.match(/-----START SIGNATURE-----(.*?)-----END SIGNATURE-----/s)[1].trim();
+            const body = message.match(/-----START LETTER OF GUARANTEE-----(.*?)-----END LETTER OF GUARANTEE-----/s)[1].trim();
+            const address = message.match(/-----START SIGNING ADDRESS-----(.*?)-----END SIGNING ADDRESS-----/s)[1].trim();
+            return { body, signature, address };
+        }
+    }
 };
 
 function vrVerify(vrMsg) {
