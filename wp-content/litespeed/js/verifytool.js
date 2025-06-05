@@ -286,7 +286,11 @@ document.getElementById('verifyButton').addEventListener('click', function() {
         const mixerInfo = mixerDetails[selectedMixer];
         let message = document.getElementById('messageTextArea').value;
 
-        if (!mixerInfo || mixerInfo.type === 'none') {
+        if (!mixerInfo) {
+            alert('Please select a mixer.');
+            return;
+        }
+        else if (mixerInfo.type === 'none') {
             alert('No verification method available for this mixer.');
             return;
         }
