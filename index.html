@@ -166,7 +166,8 @@
             <li class="menu-item"><a href="#exchanges" class="nav-link">Exchanges</a></li>
             <li class="menu-item"><a href="#p2pmarket" class="nav-link">P2P Marketplaces</a></li>
             <li class="menu-item"><a href="#coordinators" class="nav-link">Coordinators</a></li>
-            <li class="menu-item"><a href="#letter-verify" class="nav-link">Verify Letter of Guarrantee</a></li>
+            <li class="menu-item"><a href="#scamwhammer" class="nav-link">Scam Lookup</a></li>
+            <li class="menu-item"><a href="#letter-verify" class="nav-link">Verify Guarrantee</a></li>
           </ul>
       </div>
       </div>
@@ -420,40 +421,44 @@
         </figure>
         <p>Mixers are sorted by creation year. Be very careful to save any letters of guarantee you receive and to verify them here, so that you can get a refund in case of a problem. Note that <strong>a mixer can shut down and run away with your coins even if you have a letter of guarantee.</strong> If you do not trust any of these mixers enough, consider using a coordinator instead.</p>
         <p>Some of these mixers are powered by <a href="https://jambler.io">Jambler</a> (<a href="http://jamblery7zgxknhjtmj3mhfdajmyddqxbufrf6voa32h5w4otux3crqd.onion/">Tor mirror</a>). It makes creating a mixer easy.</p>
-        <div id="letter-verify" class="vg-verify">
-          <h2>Mixer Legit Or Scam Lookup</h2>
-          <p>Introducing my brand-new tool for checking the veracity of a mixer link, powered by the <a href="https://gist.github.com/ZenulAbidin/511d531980c44051cfafd11b2e3c9dda" rel="nofollow noreferrer" target="_blank">ScamWhammer</a> database.</p>
-          <p>ScamWhammer is a database of scam websites that I created in mid-2020. It is aggregated from many current and defunct lists. This database is <strong>completely free to use, with no attribution required.</strong></strong></p>
-          <p>Now you can check whether any mixer is a legit or scam using this tool. Simply type the domain name of the mixer without https prefix. ScamWhammer requires Javascript to work.</p>
-          <form id="urlForm" onsubmit="checkUrl(event)">
-            <input type="text" id="urlInput" placeholder="Enter mixer URL (e.g., anonymixer.com)" required>
-            <br>
-            <button type="submit" id="ScamWhammerButton">Check URL</button>
-          </form>
-          <h2>Verify Letter of Guarantee</h2>
-          <p>This brand-new tool allows you to verify the letter of guarantee that you receive from any mixer, without installing special software. It requires Javascript to work.</p>
-          <p>It is <strong>very important</strong> that you authenticate your letter of guarrantee to avoid getting scammed, as the letter acts as a legally-binding contract between you and mixer, and insures you from potential loss.</strong> It is the only way you can get customer support or a refund if something goes wrong during a mix.</p>
-          <p>This verification tool runs locally on your browser and does not use browser APIs or fetch data or scripts from other servers. You can even run it offline.</p>
-          <select id="mixerSelect">
-              <option value="">Select a mixer</option>
-              <option value="mixer.money">Mixer.money</option>
-              <option value="mixtum.io">MixTum</option>
-              <option value="coinomize.biz">Coinomize</option>
-              <option value="anonymizer.com">Anonymizer</option>
-              <option value="webmixer.io">Webmixer</option>
-              <option value="mixtura.money">Mixtura.money</option>
-              <option value="mixero.io">Mixero</option>
-              <option value="bitmixer.online">Bitmixer.online</option>
-              <option value="mixy.money">Mixy.money</option>
-              <option value="mixerdream.com">Mixerdream</option>
-              <option value="thormixer.io">Thormixer</option>
-              <option value="jokermix.to">JokerMix</option>
-              <option value="swamplizard.io">Swamplizard</option>
-              <option value="genesismix.cx">GenesisMix</option>
-              <option value="okmix.io">Okmix</option>
-          </select>
-          <textarea id="messageTextArea" rows="10" placeholder="Paste the letter of guarantee here..."></textarea>
-          <button id="verifyButton">Verify</button>
+        <div class="vg-verify">
+          <div id="scamwhammer">
+            <h2>Mixer Legit Or Scam Lookup</h2>
+            <p>Introducing my brand-new tool for checking the veracity of a mixer link, powered by the <a href="https://gist.github.com/ZenulAbidin/511d531980c44051cfafd11b2e3c9dda" rel="nofollow noreferrer" target="_blank">ScamWhammer</a> database.</p>
+            <p>ScamWhammer is a database of scam websites that I created in mid-2020. It is aggregated from many current and defunct lists. This database is <strong>completely free to use, with no attribution required.</strong></strong></p>
+            <p>Now you can check whether any mixer is a legit or scam using this tool. Simply type the domain name of the mixer without https prefix. ScamWhammer requires Javascript to work.</p>
+            <form id="urlForm" onsubmit="checkUrl(event)">
+              <input type="text" id="urlInput" placeholder="Enter mixer URL (e.g., anonymixer.com)" required>
+              <br>
+              <button type="submit" id="ScamWhammerButton">Check URL</button>
+            </form>
+          </div>
+          <div id="letter-verify">
+            <h2>Verify Letter of Guarantee</h2>
+            <p>This brand-new tool allows you to verify the letter of guarantee that you receive from any mixer, without installing special software. It requires Javascript to work.</p>
+            <p>It is <strong>very important</strong> that you authenticate your letter of guarrantee to avoid getting scammed, as the letter acts as a legally-binding contract between you and mixer, and insures you from potential loss.</strong> It is the only way you can get customer support or a refund if something goes wrong during a mix.</p>
+            <p>This verification tool runs locally on your browser and does not use browser APIs or fetch data or scripts from other servers. You can even run it offline.</p>
+            <select id="mixerSelect">
+                <option value="">Select a mixer</option>
+                <option value="mixer.money">Mixer.money</option>
+                <option value="mixtum.io">MixTum</option>
+                <option value="coinomize.biz">Coinomize</option>
+                <option value="anonymizer.com">Anonymizer</option>
+                <option value="webmixer.io">Webmixer</option>
+                <option value="mixtura.money">Mixtura.money</option>
+                <option value="mixero.io">Mixero</option>
+                <option value="bitmixer.online">Bitmixer.online</option>
+                <option value="mixy.money">Mixy.money</option>
+                <option value="mixerdream.com">Mixerdream</option>
+                <option value="thormixer.io">Thormixer</option>
+                <option value="jokermix.to">JokerMix</option>
+                <option value="swamplizard.io">Swamplizard</option>
+                <option value="genesismix.cx">GenesisMix</option>
+                <option value="okmix.io">Okmix</option>
+            </select>
+            <textarea id="messageTextArea" rows="10" placeholder="Paste the letter of guarantee here..."></textarea>
+            <button id="verifyButton">Verify</button>
+          </div>
       </div>
         <h2 id="exchanges" class="wp-block-heading">The List Of Private Exchanges</h2>
         <figure class="wp-block-table">
