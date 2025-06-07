@@ -1,5 +1,5 @@
-const scamMixersUrl = 'https://gist.githubusercontent.com/ZenulAbidin/511d531980c44051cfafd11b2e3c9dda/raw/75c3d8a34ed0b9c6ee1cb129110a83edafd4951e/scamwhammer-mixers.txt';
-const legitMixersUrl = 'https://gist.githubusercontent.com/ZenulAbidin/afb490c0441f29eec0fdc8ceb695a13f/raw/a2ba930bac38b6290f6b36b78e593e5146ab790a/scamwhammer-mixers-good.txt';
+const scamMixersUrl = 'https://gist.githubusercontent.com/ZenulAbidin/511d531980c44051cfafd11b2e3c9dda/raw/scamwhammer-mixers.txt';
+const legitMixersUrl = 'https://gist.githubusercontent.com/ZenulAbidin/afb490c0441f29eec0fdc8ceb695a13f/raw/scamwhammer-mixers-good.txt';
 
 let scamMixers = [];
 let legitMixers = [];
