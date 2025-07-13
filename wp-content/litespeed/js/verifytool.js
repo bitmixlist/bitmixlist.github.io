@@ -148,7 +148,58 @@ const keys = [
     TuA=
     =hrrW
     -----END PGP PUBLIC KEY BLOCK-----`),
-    "1GmixhLcQhApAAJS8WmLrCpbJaHSz4d62L"
+    "1GmixhLcQhApAAJS8WmLrCpbJaHSz4d62L",
+    cleanPGPKey(`
+        -----BEGIN PGP PUBLIC KEY BLOCK-----
+        mQINBGhZqOABEACxMytEE05XrgnTL0RClvySeZVkUZgdWF/rlqa1YqCz8kPi73hD
+        FYCRmmGaIi6exDbu1jJ4ZjFzkLPoi2u6d/YT7/9m0CbF3F0W9PiKlaqIv5rpPjZ6
+        WCJdtaaMRgUWOgJx05Hk2yH1WEidk/bp62tW8jnqmPdHynQnm5/KZIjG5vuqTyo8
+        8dACPZmSsJo/+FX2xt6IoEyF1s+C5io8+fTzwMB26Innmr3NMpANfDh084Z56jD9
+        27uce81GjtWTOmO2+jH1Ydd3/TxCB8ypiGVHKRqooUYI6y3gDEmJGOPuPoWYWooh
+        MP4jYLX7tKb0RMOJzzlXqAnwyPXxolG7WhVHIUOmJFUjPc/+iP6uuIsVT7isqYtb
+        /NtxQIPQMoMUyT+cth0FKv0hSTinUHDvCGuzE3ugyyJH9OIXUnDtbMGgP8wweMST
+        Tq/eV2qMFHlbUBhkSA7caMUo1964/7dhJdn8Q/G4sdIhxutUMvJdp6fGkwBIi+qP
+        BVbBQEN4h66NmsALCFtQD9iAlvdhSCzVwXnT/i/FCRZAp2OGLludN+3puKePdqVW
+        GePj4AsSRfYul+nk2reXSxwd11TMIuPXSYHeJfJyjI+eoGjM0svmqIqfJQ99f3mU
+        zf7t9uuv21nRiS8n1b3EbEKvw6WupYjts5U6NmQK6YIitBdOIyEYPWRQewARAQAB
+        tB5sb3Nob2sgKGxvbCkgPHNvc29rQGdtYWlsLmNvbT6JAk4EEwEKADgWIQSa765i
+        glU5WW9ioyewKQL4+kWLGAUCaFmo4AIbAwULCQgHAgYVCgkICwIEFgIDAQIeAQIX
+        gAAKCRCwKQL4+kWLGDV0D/9p2kccT7nTcyXbBnR3wNh20wzXoF+JO13j7uWNQrAT
+        GAwOAjpl1eq5rvvA2UIxHZUodcshrDo6k7C9/oh0hK3tkJ0xZ/7D9+TN9NQ3SDYo
+        wEOjJmFMGfsA96qLjxw8gSyRuyZtYeLZ+F2elFIJTV4qvPjkMAkvmxrkLv+vp4R4
+        tw05QNO4IkRwGiAGCP+p+kJr7qN3/W9e0hiNWJusNWcNjhcYPs2FLm7I3YwLfCV9
+        TX14emul/UBLcznwI9/FR6h7LlsMGmoAnXz9tDh9IE/ki5f8b5qz7q9mTIM12fQy
+        VTTXPn1oyQuDn4prCx4Egb56xdSO6EAyZk+ZpMLNWrSBcEZZVvd95kxkI4XHB3OE
+        UqMk22ecfUrPSw8X2MrRReQyifc7RIUQgNdw/YeX9PgeO86wwQKfYZZPYLCS7Ahv
+        W8+e6h5js4b6Tn62lkuldfyDymFTrRl5fq0AtrtfwICzmlfPu+9b88Jtybx1rd6d
+        J+zOXTBrkOpVGeoL1W0L3TpDaThsctpOmB+xzRmSVg4JfqMwU/I0J0Qc+PoNncNm
+        xSFTXGeGWjDouxq8KpUSyyVxFF5NyTPwDuboxG3Ql1wg33sMEVkUTA2sICT//C7U
+        sB99Ag6a71MvR2KvGTpE7FhyOmmA1nuf2V69eT+MRtGCkJCq9b4hqtbMs3GsUOfE
+        97kCDQRoWajgARAAxzEXIcOin1K3dmOr+1gQo9JLAr9uzNWhcN2o9EOpBMgx48tZ
+        e96/eURlKArSpo87H2gux4RUPLtK24S8T434mZejn0tS7dPWPDOKRIGVhYftYLTx
+        8zXI2Bc/uGGK7Px/dmij+BgF7xhvlJdSy/pR5tlUDRYsNIFlRiFQJjei0b2NTS0K
+        AIF1zcu3Dw0lZAFTP4+lXD8pnBp4o1/bx55k6mpKtr50jMKLk2Z4JHg3PSgfiNQo
+        vRTzxv+EgYk4+fzrxWDfVZuo4xCU+igee5Sa7RZ+2JTcQ2PsICFslOuXooU8fUNE
+        HYexHUQO1WFevuJKolRg9fnVN4B6mjUDYY+cXktDtfjwkj2O8+Q2L9A7kczLjZY/
+        16mkAbU5vxkaYOBM2eG8cd3UaqZR8LOlmJ1XTBhWlNDh0sNNtIDiSCSygW+JhGtk
+        hPCcNHfMDNRK27TWJWn7odesBPZX0j1KxbwIo81zgn03Atf/YUvg418V4mRMOwbc
+        oI5KbtrXCTidd5Xsx7Tnbx+K6FFbY5g40dk7rxXkSOkYTyvJi28CidMq0Z6w4skU
+        eJF+kntXELb6cOm98s0alsLBGZBi62D3E6tFNUbP0WYHAYdrHkJWDNyCTEoAKRqx
+        yEu7y+uWemmguWdk/YOcD3wTal+ZrpTzrEgRK4AraR5XyFi1fPgPcwdTyW8AEQEA
+        AYkCNgQYAQoAIBYhBJrvrmKCVTlZb2KjJ7ApAvj6RYsYBQJoWajgAhsMAAoJELAp
+        Avj6RYsYUZwQAJCIHOzEidBmEwUQE8muV7VnXK8j3urIxRJfSJQu3JttKcuWp4zo
+        fO3cWcEQqF2/a5LzFrDiV+ZWP+WKkO+0Xql9ZIT45xz8xTG0ezQ6GyMj4iY5yeII
+        GPqlZonGEF8x/LI0wD8g6sxO1c9atUI0GBHi++BZ5ajtYRLBag7YKNFTtEApAujW
+        3qx+W56qtz2OByHY1P1b+DETfQnCuCY8Vl86bZrwMjM3iK+MRz09U8OokHGwLrlN
+        nMrqQfUGctXkWQ986tmdytLBcib93UNohUKn/ffwK+ntDd6RWT29uxSJg0ahIUzP
+        9coDznQszn8IRpHgyXocF72jidAnltuzOxE+CuBkzgkEGCSHOCu9R4K56ypfeb9v
+        ZcHHyKA/ntGQEgw6QbbINoskUr/XiJmxRDk3urARgEvt7N0bvARA+qpFrowGFVpI
+        K7GG72Aj9y4gKaTkBs8tbFxorQ8KxzVyF+OcdghifhqLHeHAdmwmCokaGRk5QVxr
+        9B8jiMT5S94z921ScjMNbuheIzpS3uKye/+rdAT45o1U4oWe18/yz+nCDRM5kHcM
+        4BWMTdul6NfzpJ6XOQjfKD9++ubJyxt+ithK+RTOz/PBYJpEny+uIbiiDLVEI1HN
+        mnIRZhQoqfKe0kViRodjgUUHd3qkjMRXha9IkPKx4o8iNhaoeUz5RaRq
+        =QlMo
+        -----END PGP PUBLIC KEY BLOCK-----`),
     // Add other keys or addresses as necessary
 ];
 
@@ -186,6 +237,7 @@ const mixerDetails = {
     'bitmixer.online': { type: 'pgp', keyIndex: 0 },
     'swamplizard.io': { type: 'pgp', keyIndex: 0 },
     'okmix.io': { type: 'pgp', keyIndex: 0 },
+    'cointor.org': { type: 'pgp', keyIndex: 7 },
     'coinomize.biz': {
         type: 'bitcoin',
         keyIndex: 1,
