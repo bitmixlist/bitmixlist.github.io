@@ -98,6 +98,7 @@
     <link rel="icon" href="wp-content/uploads/2023/12/cropped-favicon-2-192x192.png" sizes="192x192" />
     <link rel="apple-touch-icon" href="wp-content/uploads/2023/12/cropped-favicon-2-180x180.png" />
     <meta name="msapplication-TileImage" content="wp-content/uploads/2023/12/cropped-favicon-2-270x270.png" />
+    <link rel="stylesheet" href="wp-content/litespeed/css/styles.css">
     <script>
       const endpoint = window.innerWidth < 768 ? 'https://tweety.bitmixlist.org/tweet/mobile' : 'https://tweety.bitmixlist.org/tweet/desktop';
       fetch(endpoint).then(response => response.json()).then(data => {
@@ -118,35 +119,55 @@
         const mobileAdSlot = document.querySelector('.sylvester-top-mobile');
         mobileAdSlot.appendChild(linkElementMobile);
       }).catch(error => console.error('Error fetching ads:', error));
-    </script>
-        <!-- Dark Mode CSS -->
-        <style>
-          body {
-              background-color: #121212; /* Dark background */
-              color: #e0e0e0; /* Light text */
-          }
-          a {
-              color: #bb86fc; /* Light purple for links for better visibility */
-          }
-          .header, .footer {
-              background-color: #2c2c2c; /* Slightly lighter bg for header/footer */
-          }
-          .page-content, .entry-title {
-              border-color: #333; /* Dark borders for elements */
-          }
-          /* Additional styles for other elements like tables, headers, etc. */
-          table {
-              background-color: #333;
-              color: #fff;
-          }
-          th, td {
-              border: 1px solid #444; /* Darker border for table cells */
-          }
-          .site-header {
-            display: flex;
-            justify-content: center;
-          }
 
+      // Mobile menu functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.querySelector('.mobile-menu-toggle');
+        const sidebar = document.querySelector('.sidebar');
+        
+        if (menuToggle && sidebar) {
+          menuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+          });
+        }
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function(event) {
+          if (sidebar.classList.contains('active') && 
+              !sidebar.contains(event.target) && 
+              !menuToggle.contains(event.target)) {
+            sidebar.classList.remove('active');
+          }
+        });
+
+        // Highlight active section in sidebar
+        const navLinks = document.querySelectorAll('.nav-menu .nav-link');
+        const sections = document.querySelectorAll('section[id]');
+
+        function highlightCurrentSection() {
+          const scrollY = window.scrollY;
+
+          sections.forEach(section => {
+            const sectionTop = section.offsetTop - 100;
+            const sectionBottom = sectionTop + section.offsetHeight;
+
+            if (scrollY >= sectionTop && scrollY < sectionBottom) {
+              navLinks.forEach(link => {
+                if (link.getAttribute('href') === '#' + section.id) {
+                  link.classList.add('active');
+                } else {
+                  link.classList.remove('active');
+                }
+              });
+            }
+          });
+        }
+
+        window.addEventListener('scroll', highlightCurrentSection);
+      });
+    </script>
+        <!-- Verification Tool Styles -->
+        <style>
           .vg-verify .alert { padding: 20px; margin-top: 20px; }
           .vg-verify .success { background-color: #4CAF50; color: white; }
           .vg-verify .error { background-color: #f44336; color: white; }
@@ -154,28 +175,43 @@
           .vg-verify button { padding: 10px 20px; margin-top: 20px; }
           .vg-verify button { color: #bb86fc; border-color: #8a2be2; margin-bottom: 10px;}
           .vg-verify button:hover, .vg-verify button:focus { background-color: #3d005c; }
-      </style>
+        </style>
   </head>
-  <body class="home page-template-default page page-id-34 wp-custom-logo"><a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+  <body class="home page-template-default page page-id-34 wp-custom-logo">
+    <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
 
-    <header id="site-header" class="site-header" role="banner">
-      <div class="header-inner">
-        <div class="site-navigation">
-          <ul class="menu">
-            <li class="menu-item"><a href="#mixers" class="nav-link">Mixers</a></li>
-            <li class="menu-item"><a href="#exchanges" class="nav-link">Exchanges</a></li>
-            <li class="menu-item"><a href="#p2pmarket" class="nav-link">P2P Marketplaces</a></li>
-            <li class="menu-item"><a href="#coordinators" class="nav-link">Coordinators</a></li>
-            <li class="menu-item"><a href="#scamwhammer" class="nav-link">Scam Lookup</a></li>
-            <li class="menu-item"><a href="#letter-verify" class="nav-link">Verify Guarrantee</a></li>
-          </ul>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="logo-container">
+        <a href="index.html" class="custom-logo-link" rel="home" aria-current="page">
+          <img width="200" src="wp-content/uploads/2023/12/logo-2-e1702276596201.png" class="custom-logo has-transparency" alt="BitMixList" decoding="async" fetchpriority="high" data-has-transparency="true" data-dominant-color="955ff5" alt="BitMixList - Bitcoin Mixer List"/>
+        </a>
       </div>
+      <ul class="nav-menu">
+        <li class="menu-item"><a href="#mixers" class="nav-link">Mixers</a></li>
+        <li class="menu-item"><a href="#exchanges" class="nav-link">Exchanges</a></li>
+        <li class="menu-item"><a href="#p2pmarket" class="nav-link">P2P Marketplaces</a></li>
+        <li class="menu-item"><a href="#coordinators" class="nav-link">Coordinators</a></li>
+        <li class="menu-item"><a href="#scamwhammer" class="nav-link">Scam Lookup</a></li>
+        <li class="menu-item"><a href="#letter-verify" class="nav-link">Verify Guarrantee</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-content-wrapper">
+      <header id="site-header" class="site-header" role="banner">
+        <div class="header-inner">
+          <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">☰</button>
+            <h3>Best Crypto Mixers & Exchanges</h3>
+        </div>
+      </header>
+
+      <div class="sylvester-top"><noscript><a href="https://r7promotions.com/go/bh8697"><img src="https://r7promotions.com/r7-asset/site-banners/post-top-728x90.gif"></a></noscript></div>
+      <div class="sylvester-top-mobile"><noscript><a href="https://r7promotions.com/go/bh8697"><img src="https://r7promotions.com/r7-asset/site-banners/home-350x50-mobile.gif"></a></noscript></div>
+
+      <main id="content" class="site-main post-34 page type-page status-publish hentry">
+        <div style="display: flex; justify-content: center;">
+          <img width="800" height="400" src="wp-content/uploads/2023/12/logo-2-e1702276596201-2.png" class="custom-logo has-transparency" alt="BitMixList" decoding="async" fetchpriority="high" data-has-transparency="true" data-dominant-color="955ff5" />
       </div>
-      <div class="site-branding"><a href="index.html" class="custom-logo-link" rel="home" aria-current="page"><img width="525" height="158" src="wp-content/uploads/2023/12/logo-2-e1702276596201-2.png" class="custom-logo has-transparency" alt="BitMixList" decoding="async" fetchpriority="high" data-has-transparency="true" data-dominant-color="955ff5" style="--dominant-color: #955ff5;" /></a></div>
-    </header>
-    <div class="sylvester-top"><noscript><a href="https://r7promotions.com/go/bh8697"><img src="https://r7promotions.com/r7-asset/site-banners/post-top-728x90.gif"></a></noscript></div>
-    <div class="sylvester-top-mobile"><noscript><a href="https://r7promotions.com/go/bh8697"><img src="https://r7promotions.com/r7-asset/site-banners/home-350x50-mobile.gif"></a></noscript></div>
-    <main id="content" class="site-main post-34 page type-page status-publish hentry">
       <header class="page-header">
         <h1 class="entry-title">Bitcoin Mixers List &#8211; Best Reliable, Private Sites</h1>
       </header>
