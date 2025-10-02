@@ -1,9 +1,11 @@
 /* Base styles */
-body {
+html, body {
     background-color: #121212;
     color: #e0e0e0;
     margin: 0;
     padding: 0;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 a {
@@ -74,7 +76,7 @@ th, td {
     padding-top: 80px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
     transition: transform 0.3s ease;
-    z-index: 999;
+    z-index: 1001;
 }
 
 .sidebar .logo-container {
@@ -221,4 +223,48 @@ th, td {
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     border: 0;
+}
+
+.submenu-item {
+padding-left: 1.5rem !important;
+}
+
+
+/* Fix header styles */
+.site-header {
+    position: fixed;
+    top: 0;
+    width: 100% !important;
+    max-width: 100vw !important;
+    background-color: #121212;
+    border-bottom: 1px solid #2d2d2d;
+    overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+    .site-header {
+        width: 100% !important;
+    }
+}
+
+
+.header-inner {
+width: 100%;
+max-width: none;
+padding: 0 2rem;
+}
+
+/* Add scroll margin for anchor links */
+:target {
+scroll-margin-top: 50px; /* Adjust this value based on your header height */
+}
+
+html {
+scroll-padding-top: 50px; /* Alternative approach for browsers that don't support scroll-margin */
+}
+
+/* Ensure main content doesn't overflow */
+.site-content-wrapper {
+width: 100%;
+overflow-x: hidden;
 }
