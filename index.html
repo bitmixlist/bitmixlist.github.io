@@ -124,10 +124,45 @@
       document.addEventListener('DOMContentLoaded', function() {
         const menuToggle = document.querySelector('.mobile-menu-toggle');
         const sidebar = document.querySelector('.sidebar');
+        const mobileNavLinks = document.querySelectorAll('.nav-menu .nav-link');
+        let touchStartX = 0;
+        let touchEndX = 0;
         
         if (menuToggle && sidebar) {
-          menuToggle.addEventListener('click', function() {
+          menuToggle.addEventListener('click', function(event) {
+            event.stopPropagation();
             sidebar.classList.toggle('active');
+          });
+        }
+
+        // Handle touch events for swipe
+        if (sidebar) {
+          sidebar.addEventListener('touchstart', function(event) {
+            touchStartX = event.touches[0].clientX;
+          }, { passive: true });
+
+          sidebar.addEventListener('touchmove', function(event) {
+            touchEndX = event.touches[0].clientX;
+          }, { passive: true });
+
+          sidebar.addEventListener('touchend', function() {
+            const swipeDistance = touchStartX - touchEndX;
+            // If swipe left more than 50px, close the sidebar
+            if (swipeDistance > 50 && window.innerWidth <= 768) {
+              sidebar.classList.remove('active');
+            }
+          });
+
+          // Handle navigation link clicks on mobile
+          mobileNavLinks.forEach(link => {
+            link.addEventListener('click', function() {
+              if (window.innerWidth <= 768) {
+                // Small delay to allow navigation to start before closing
+                setTimeout(() => {
+                  sidebar.classList.remove('active');
+                }, 150);
+              }
+            });
           });
         }
 
@@ -188,12 +223,59 @@
         </a>
       </div>
       <ul class="nav-menu">
-        <li class="menu-item"><a href="#mixers" class="nav-link">Mixers</a></li>
-        <li class="menu-item"><a href="#exchanges" class="nav-link">Exchanges</a></li>
-        <li class="menu-item"><a href="#p2pmarket" class="nav-link">P2P Marketplaces</a></li>
-        <li class="menu-item"><a href="#coordinators" class="nav-link">Coordinators</a></li>
-        <li class="menu-item"><a href="#scamwhammer" class="nav-link">Scam Lookup</a></li>
-        <li class="menu-item"><a href="#letter-verify" class="nav-link">Verify Guarrantee</a></li>
+        <li class="menu-item"><a href="index.html#mixers" class="nav-link">Mixers</a></li>
+        <li class="menu-item"><a href="index.html#exchanges" class="nav-link">Exchanges</a></li>
+        <li class="menu-item"><a href="index.html#p2pmarket" class="nav-link">P2P Marketplaces</a></li>
+        <li class="menu-item"><a href="index.html#coordinators" class="nav-link">Coordinators</a></li>
+        <li class="menu-item"><a href="index.html#scamwhammer" class="nav-link">Scam Lookup</a></li>
+        <li class="menu-item"><a href="index.html#letter-verify" class="nav-link">Verify Guarrantee</a></li>
+        <li class="menu-item"><a href="introduction.html" class="nav -link">Introduction</a></li>
+        <li class="menu-item submenu-item"><a href="introduction.html#disclaimer" class="nav-link">Disclaimer</a></li>
+        <li class="menu-item"><a href="early-history.html" class="nav-link">Early History</a></li>
+        <li class="menu-item submenu-item"><a href="early-history.html#coinjoins" class="nav-link">Coinjoins</a></li>
+        <li class="menu-item submenu-item"><a href="early-history.html#fragility" class="nav-link">Fragility</a></li>
+        <li class="menu-item submenu-item"><a href="early-history.html#localbitcoins" class="nav-link">LocalBitcoins</a></li>
+        <li class="menu-item submenu-item"><a href="early-history.html#early-blacklisting" class="nav-link">Early Blacklisting</a></li>
+        <li class="menu-item"><a href="mixer-privacy.html" class="nav-link">Mixer Privacy</a></li>
+        <li class="menu-item submenu-item"><a href="mixer-privacy.html#implications" class="nav-link">Implications</a></li>
+        <li class="menu-item submenu-item"><a href="mixer-privacy.html#ransomware" class="nav-link">Ransomware</a></li>
+        <li class="menu-item submenu-item"><a href="mixer-privacy.html#mixer-obsolescence" class="nav-link">Mixer Obsolescence</a></li>
+        <li class="menu-item submenu-item"><a href="mixer-privacy.html#monero" class="nav-link">Monero</a></li>
+        <li class="menu-item submenu-item"><a href="mixer-privacy.html#joinmarket" class="nav-link">JoinMarket</a></li>
+        <li class="menu-item"><a href="evolving-regulation.html" class="nav-link">Evolving Regulation</a></li>
+        <li class="menu-item submenu-item"><a href="evolving-regulation.html#atomic-swaps" class="nav-link">Atomic Swaps</a></li>
+        <li class="menu-item submenu-item"><a href="evolving-regulation.html#mixer-advertisements" class="nav-link">Mixer Ads</a></li>
+        <li class="menu-item submenu-item"><a href="evolving-regulation.html#extortion" class="nav-link">Extortion</a></li>
+        <li class="menu-item submenu-item"><a href="evolving-regulation.html#jambler" class="nav-link">Jambler</a></li>
+        <li class="menu-item submenu-item"><a href="evolving-regulation.html#early-exchanges" class="nav-link">Early Exchanges</a></li>
+        <li class="menu-item submenu-item"><a href="evolving-regulation.html#enhanced-coinjoins" class="nav-link">Enhanced Coinjoins</a></li>
+        <li class="menu-item subsubmenu-item"><a href="evolving-regulation.html#samourai" class="nav-link">Samourai</a></li>
+        <li class="menu-item subsubmenu-item"><a href="evolving-regulation.html#wasabi" class="nav-link">Wasabi</a></li>
+        <li class="menu-item subsubmenu-item"><a href="evolving-regulation.html#disadvantages" class="nav-link">Disadvantages</a></li>
+        <li class="menu-item"><a href="crime.html" class="nav-link">Crime</a></li>
+        <li class="menu-item submenu-item"><a href="crime.html#exchange-delisting" class="nav-link">Exchange Delisting</a></li>
+        <li class="menu-item submenu-item"><a href="crime.html#enhanced-exchanges" class="nav-link">Enhanced Exchanges</a></li>
+        <li class="menu-item submenu-item"><a href="crime.html#sanctions" class="nav-link">Sanctions</a></li>
+        <li class="menu-item submenu-item"><a href="crime.html#tornado-cash" class="nav-link">Tornado Cash</a></li>
+        <li class="menu-item submenu-item"><a href="crime.html#dprks-mixers" class="nav-link">DPRK&#8217;s Mixers</a></li>
+        <li class="menu-item submenu-item"><a href="crime.html#bitcointalk-bans-mixers" class="nav-link">Bitcointalk Mixer Ban</a></li>
+        <li class="menu-item"><a href="crackdown.html" class="nav-link">Crackdown</a></li>
+        <li class="menu-item submenu-item"><a href="crackdown.html#eu-outlaw-attempt" class="nav-link">EU Outlaw Attempt</a></li>
+        <li class="menu-item submenu-item"><a href="crackdown.html#fbi-seizes-samourai" class="nav-link">FBI Seizes Samourai</a></li>
+        <li class="menu-item submenu-item"><a href="crackdown.html#us-government-advisory" class="nav-link">US Advisory</a></li>
+        <li class="menu-item submenu-item"><a href="crackdown.html#wallets-block-us-users" class="nav-link">Wallets Block USA</a></li>
+        <li class="menu-item submenu-item"><a href="crackdown.html#wasabi-shuts-down" class="nav-link">Wasabi Shuts Down</a></li>
+        <li class="menu-item submenu-item"><a href="crackdown.html#edward-snowden-warning" class="nav-link">Snowden Warning</a></li>
+        <li class="menu-item submenu-item"><a href="crackdown.html#roman-storm" class="nav-link">Roman Storm</a></li>
+        <li class="menu-item submenu-item"><a href="crackdown.html#other-doj-actions" class="nav-link">Other DoJ Actions</a></li>
+        <li class="menu-item"><a href="aftermath.html" class="nav-link">Aftermath</a></li>
+        <li class="menu-item submenu-item"><a href="aftermath.html#samourai-guilty" class="nav-link">Samourai Guilty</a></li>
+        <li class="menu-item submenu-item"><a href="aftermath.html#exch" class="nav-link">eXch</a></li>
+        <li class="menu-item submenu-item"><a href="aftermath.html#tradeogre" class="nav-link">TradeOgre</a></li>
+        <li class="menu-item submenu-item"><a href="aftermath.html#altcoinstalks" class="nav-link">Altcoinstalks</a></li>
+        <li class="menu-item"><a href="mixers-necessity.html" class="nav-link">Why We Need Mixers</a></li>
+        <li class="menu-item"><a href="faq.html" class="nav-link">FAQ</a></li>
+        <li class="menu-item"><a href="privacy-tools.html" class="nav-link">Privacy Tools</a></li>
       </ul>
     </nav>
 
@@ -201,16 +283,17 @@
       <header id="site-header" class="site-header" role="banner">
         <div class="header-inner">
           <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">☰</button>
-            <h3>Best Crypto Mixers & Exchanges</h3>
+            <h3>Best Mixers &amp; Exchanges</h3>
         </div>
       </header>
 
       <div class="sylvester-top"><noscript><a href="https://r7promotions.com/go/bh8697"><img src="https://r7promotions.com/r7-asset/site-banners/post-top-728x90.gif"></a></noscript></div>
       <div class="sylvester-top-mobile"><noscript><a href="https://r7promotions.com/go/bh8697"><img src="https://r7promotions.com/r7-asset/site-banners/home-350x50-mobile.gif"></a></noscript></div>
+      <div class="centered"><p>This is an ad. Ads are not endorsed by BitMixList.</p></div>
 
       <main id="content" class="site-main post-34 page type-page status-publish hentry">
         <div style="display: flex; justify-content: center;">
-          <img width="800" height="400" src="wp-content/uploads/2023/12/logo-2-e1702276596201-2.png" class="custom-logo has-transparency" alt="BitMixList" decoding="async" fetchpriority="high" data-has-transparency="true" data-dominant-color="955ff5" />
+          <img width="800" height="400" src="wp-content/uploads/2023/12/logo-2-e1702276596201-2.png" class="custom-logo-notreally has-transparency" alt="BitMixList" decoding="async" fetchpriority="high" data-has-transparency="true" data-dominant-color="955ff5" />
       </div>
       <header class="page-header">
         <h1 class="entry-title">Bitcoin Mixers List &#8211; Best Reliable, Private Sites</h1>
@@ -219,27 +302,23 @@
         <p>Bitcoin mixers play a crucial role in enhancing transaction privacy. They allow users to mix their coins with others, making it difficult to trace the origins of the funds. Below you can find a bitcoin mixer list that has links to the current safe and private mixer websites. If you care about your privacy, then you should be prioritizing the confidentiality of your transactions over mindless airdrops and giveaways, so this page will definitely be useful to you. In case you are going to use a mixer that is not on this list, then you should thoroughly research it for your own financial safety. You should bookmark this page so that you can always see the list of current, reputable bitcoin mixers.</p>
         <p>While I have done my best to vouch all websites listed here with the wider Bitcoin community, <strong><mark style="background-color:rgba(0, 0, 0, 0)" class="has-inline-color has-vivid-red-color">I will not be responsible for damages if you get scammed by any website from this list.</mark></strong></p>
         <p>As a mitigation against the constant attempts of Distributed Denial-of-Service (DDoS) on this website, below you can find a list of mirrors of this page.</mark></p>
-        <p><em>Looking for an alternative to eXch? I&apos;ve got you covered. <a href="#exchanges">Find the best private exchangers here.</a></em></p>
-        <p>This page was last updated on August 2025.</p>
+        <p>This page was last updated on October 2025.</p>
         <h2 class="wp-block-heading">Mirrors</h2>
         <p>If any of these sites don't work, just click on another one. Mirrors are not sorted in any particular order. Any of these sites could go down at any moment.</p>
         <ul>
           <li><a href="http://bitmixlist.com">bitmixlist.com</a></li>
           <li><a href="http://bitmixlist.org">bitmixlist.org</a></li>
-          <li><a href="http://bitmixlist.ihostfull.com">bitmixlist.ihostfull.com</a></li>
           <li><a href="http://bitmixlist-lao7a.kinsta.page">bitmixlist-lao7a.kinsta.page</a></li>
           <li><a href="http://kmzvdt7443fqisu27xw3saxv7rn2pmgx33zd2cy54ev2mbba2xjoziqd.onion">onion link</a></li>
           <li><a href="http://bitmixlistorg.bitbucket.io">bitmixlistorg.bitbucket.io</a></li>
           <li><a href="http://bitmixlist.github.io">bitmixlist.github.io</a></li>
           <li><a href="http://bitmixlist.vercel.app">bitmixlist.vercel.app</a></li>
           <li><a href="http://bitmixlist.netlify.app">bitmixlist.netlify.app</a></li>
-          <li><a href="http://bitmixlist.byethost22.com">bitmixlist.byethost22.com</a></li>
           <li><a href="https://bitmixlist.onrender.com/">bitmixlist.onrender.com</a></li>
           <li><a href="http://bitmixlist.surge.sh">bitmixlist.surge.sh</a></li>
         </ul>
         <h2 id="mixers" class="wp-block-heading">The List Of Bitcoin Mixers</h2>
-        <p>A mixer will never ask you for KYC. If you see a mixer that does, it&apos;s a scam.</p>
-        <p>If you want to mix Ethereum, consider using a <a href="https://www.railgun.org/" rel="nofollow noreferrer">Railgun</a> dApp.</a></p>
+        <p>Now Including altcoin mixers. A mixer will never ask you for KYC. If you see a mixer that does, it&apos;s a scam.</p>
         <figure class="wp-block-table">
           <table>
             <thead>
@@ -248,12 +327,14 @@
                 <th>Website</th>
                 <th>Tor Site</th>
                 <th>Founded</th>
+                <th>Coins</th>
                 <th>Resells</th>
                 <th>Mixing Fee</th>
                 <th>Withdraw Fee</th>
                 <th>Minimum</th>
                 <th>Maximum</th>
                 <th>Telegram Bot</th>
+                <th>Support</th>
                 <th>Mirrors</th>
               </tr>
             </thead>
@@ -263,6 +344,7 @@
                 <td><a href="https://mixer.money" rel="nofollow noreferrer" title="mixer.money">mixer.money</a></td>
                 <td><a href="http://mixermo4pgkgep3k3qr4fz7dhijavxnh6lwgu7gf5qeltpy4unjed2yd.onion" title="Yes">Yes</a></td>
                 <td>2016</td>
+                <td>BTC</td>
                 <td>Jambler</td>
                 <td>4-5%</td>
                 <td>0.0007₿</td>
@@ -270,12 +352,14 @@
                 <td>50₿</td>
                 <td><a href="https://t.me/mm5btc_bot" rel="nofollow noreferrer" title="Yes">Yes</a></td>
                 <td></td>
+                <td></td>
               </tr>
               <tr>
                 <td>Mixtum</td>
                 <td><a href="https://mixtum.io" rel="nofollow noreferrer" title="mixtum.io">mixtum.io</a></td>
                 <td><a href="http://mixtumjzn2tsiusfkdhutntamspsg43kgt764qbdaxjebce4h6fcfiad.onion" title="Yes">Yes</a></td>
                 <td>2018</td>
+                <td>BTC</td>
                 <td>Jambler</td>
                 <td>4-5%</td>
                 <td>0.0007₿</td>
@@ -283,18 +367,21 @@
                 <td>50₿</td>
                 <td><a href="https://t.me/mixtum_bot" rel="nofollow noreferrer" title="Yes">Yes</a></td>
                 <td></td>
+                <td></td>
               </tr>
               <tr>
                 <td>Coinomize</td>
                 <td><a href="https://coinomize.biz/ref/716869674" rel="nofollow noreferrer" title="coinomize.biz">coinomize.biz</a></td>
                 <td><a href="http://coino2q64k4fg3lkjsnhjeydzwykw22a56u5nf2rdfzkjuy3jbwvypqd.onion/ref/716869674" title="Yes">Yes</a></td>
                 <td>2019</td>
+                <td>BTC</td>
                 <td></td>
                 <td>1-5%</td>
                 <td><strong>0.0003₿</strong></td>
                 <td>0.003₿</td>
                 <td></td>
                 <td>No</td>
+                <td></td>
                 <td><p class="mr-1">coinomize.is</p> <p class="mr-1">coinomize.co</p></td>
               </tr>
               <tr>
@@ -302,6 +389,7 @@
                 <td><a href="https://anonymixer.com" rel="nofollow noreferrer" title="anonymixer.com">anonymixer.com</a></td>
                 <td><a href="http://btcmixer2e3pkn64eb5m65un5nypat4mje27er4ymltzshkmujmxlmyd.onion" title="Yes">Yes</a></td>
                 <td>2020</td>
+                <td>BTC</td>
                 <td></td>
                 <td>1-2%</td>
                 <td>Variable</td>
@@ -309,12 +397,14 @@
                 <td>1.5₿</td>
                 <td>No</td>
                 <td></td>
+                <td></td>
               </tr>
               <tr>
                 <td>Webmixer</td>
                 <td><a href="https://webmixer.io" rel="nofollow noreferrer" title="webmixer.io">webmixer.io</a></td>
                 <td><a href="http://webmix2nwd6qpq6tjkqshfivt3qqjoutl535xk2z32tgapqfn52z62yd.onion" title="Yes">Yes</a></td>
                 <td>2020</td>
+                <td>BTC</td>
                 <td>Jambler</td>
                 <td>1-5%</td>
                 <td>Variable</td>
@@ -322,12 +412,14 @@
                 <td>50₿</td>
                 <td><a href="https://t.me/webm1xer_bot" rel="nofollow noreferrer" title="Yes">Yes</a></td>
                 <td></td>
+                <td></td>
               </tr>
               <tr>
                 <td>Mixtura.money</td>
                 <td><a href="https://mixtura.money" rel="nofollow noreferrer" title="mixtura.money">mixtura.money</a></td>
                 <td><a href="http://3lqpiyzlqudwxiizx6uecc6z5zr6vvxidyi6inuducc7lilsdem2mlqd.onion/" title="Yes">Yes</a></td>
                 <td>2021</td>
+                <td>BTC</td>
                 <td>Jambler</td>
                 <td>up to 5%</td>
                 <td>0.0007₿</td>
@@ -335,12 +427,14 @@
                 <td>50₿</td>
                 <td>No</td>
                 <td></td>
+                <td></td>
               </tr>
               <tr>
                 <td>Mixero</td>
                 <td><a href="https://mixero.io/" rel="nofollow noreferrer" title="mixero.io">mixero.io</a></td>
                 <td><a href="http://mixeroyubx5g5yxaucsxcd767vn2lnujuuz2dh53quwabukhrok2ekid.onion" title="Yes">Yes</a></td>
                 <td>2022</td>
+                <td>BTC</td>
                 <td></td>
                 <td>0.7%-4.7%</td>
                 <td><strong>0.0003₿</strong></td>
@@ -348,12 +442,14 @@
                 <td>2₿</td>
                 <td>No</td>
                 <td></td>
+                <td></td>
               </tr>
               <tr>
                 <td>BitMixer.online</td>
                 <td><a href="https://bitmixer.online/" rel="nofollow noreferrer" title="bitmixer.online">bitmixer.online</a></td>
                 <td><a href="http://bitmixhft4cpncluhwffussk23ltvowswbe4tlrdree74oxjmz2vyqqd.onion" title="Yes">Yes</a></td>
                 <td>2022</td>
+                <td>BTC</td>
                 <td>Jambler</td>
                 <td>1-5%</td>
                 <td>0.0007₿</td>
@@ -361,12 +457,14 @@
                 <td>50₿</td>
                 <td>No</td>
                 <td></td>
+                <td></td>
               </tr>
               <tr>
                 <td>Mixy.money</td>
                 <td><a href="https://mixy.money" rel="nofollow noreferrer" title="mixy.money">mixy.money</a></td>
                 <td><a href="http://nlljgev5y27bajfoq7os2t6qv27y24hzpnvkmfjevhz4eg5ddbrciyid.onion" title="Yes">Yes</a></td>
                 <td>2022</td>
+                <td>BTC</td>
                 <td>Jambler</td>
                 <td>3-5%</td>
                 <td>0.0007₿</td>
@@ -374,18 +472,21 @@
                 <td>50₿</td>
                 <td>No</td>
                 <td></td>
+                <td></td>
               </tr>
               <tr>
                 <td>DreamMixer</td>
                 <td><a href="https://mixerdream.com" rel="nofollow noreferrer" title="mixerdream.com">mixerdream.com</a></td>
                 <td><a href="http://ipyg3uxi25nxq3qvo7we26o5s6irencdkndv7orbxibzgbuhjmgnafad.onion" title="Yes">Yes</a></td>
                 <td>2022</td>
+                <td>BTC</td>
                 <td>Jambler</td>
                 <td>3.5%</td>
                 <td>0.0007₿</td>
                 <td>0.005₿</td>
                 <td>50₿</td>
                 <td>No</td>
+                <td></td>
                 <td></td>
               </tr>
               <tr>
@@ -393,6 +494,7 @@
                 <td><a href="https://thormixer.io/" rel="nofollow noreferrer" title="www.thormixer.io">thormixer.io</a></td>
                 <td><a href="http://63tcvr7j5gju24emo3ygbxmezqmg7z2zyby27n647jmu4uzcosiduzid.onion" title="Yes">Yes</a></td>
                 <td>2023</td>
+                <td>BTC</td>
                 <td>Jambler</td>
                 <td>4%</td>
                 <td>0.0007₿</td>
@@ -400,12 +502,14 @@
                 <td>50₿</td>
                 <td>No</td>
                 <td></td>
+                <td></td>
               </tr>
               <tr>
                 <td>JokerMix</td>
                 <td><a href="https://jokermix.to/" rel="nofollow noreferrer" title="jokermix.to">jokermix.to</a></td>
                 <td><a href="http://ssw25okonfrvgv423u5n54khg2ojjeuzl65lta5bjkbjeh2ju7nu7zid.onion/" title="Yes">Yes</a></td>
                 <td>2024</td>
+                <td>BTC</td>
                 <td></td>
                 <td>1.8%</td>
                 <td>None</td>
@@ -413,44 +517,51 @@
                 <td>3₿</td>
                 <td>No</td>
                 <td></td>
+                <td></td>
               </tr>
               <tr>
                 <td>SwampLizard</td>
                 <td><a href="https://www.swamplizard.io/" rel="nofollow noreferrer" title="swamplizard.io">swamplizard.io</a></td>
                 <td><a href="http://6ufjzcw5tbw6zbeek3qooooh7jteehtf4i36nz43rqyks3pcazaithqd.onion" title="Yes">Yes</a></td>
                 <td>2024</td>
+                <td>BTC</td>
                 <td>Jambler</td>
                 <td>4-5%</td>
                 <td>0.0007₿</td>
                 <td>0.003₿</td>
                 <td>50₿</td>
                 <td><a href="https://t.me/swamplizard_bot" rel="nofollow noreferrer" title="Yes">Yes</a></td>
-                <td>0.005₿</td>
+                <td></td>
+                <td></td>
               </tr>
               <tr>
                 <td>GenesisMix</td>
                 <td><a href="https://genesismix.cx/" rel="nofollow noreferrer" title="genesismix.cx">genesismix.cx</a></td>
                 <td><a href="http://genesislakkmzosj47snwmjbz2ugsuoyfznfbswgpy543exhwrd2rjyd.onion/" title="Yes">Yes</a></td>
                 <td>2025</td>
+                <td>BTC</td>
                 <td></td>
                 <td>0.7-4.7%</td>
                 <td>None</td>
                 <td>0.0015₿</td>
                 <td>250₿</td>
                 <td>No</td>
-                <td>0.005₿</td>
+                <td></td>
+                <td></td>
               </tr>
               <tr>
                 <td>Okmix</td>
                 <td><a href="https://okmix.io" rel="nofollow noreferrer" title="okmix.io">okmix.io</a></td>
                 <td><a href="http://wqa7jejlascugfwyrbb3shvwgaczxlkconthjyuqdb52sdn6kx57tpqd.onion/" title="Yes">Yes</a></td>
                 <td>2025</td>
+                <td>BTC</td>
                 <td>Jambler</td>
                 <td>3.5%</td>
                 <td>0.0007₿</td>
                 <td>0.001₿</td>
                 <td>50₿</td>
                 <td><a href="https://t.me/Okmixer_bot" rel="nofollow noreferrer" title="Yes">Yes</a></td>
+                <td></td>
                 <td><p class="mr-1">okmix.me</p> <p class="mr-1">okmix.cc</p> <p class="mr-1">okmix.co</p> <p class="mr-1">okmix.pw</p> <p class="mr-1">okmix.vip</p> <p class="mr-1">okmix.biz</p>  <p class="mr-1">okmix.top</p> <p class="mr-1">okmix.org</p></td>
               </tr>
               <tr>
@@ -458,6 +569,7 @@
                 <td><a href="https://cointor.org/" rel="nofollow noreferrer" title="cointor.org">cointor.org</a></td>
                 <td><a href="http://5rpkcghq3jitipehzlivgfatmholoz2ordv73zyh4fwvdcynaa5yeyad.onion/" title="Yes">Yes</a></td>
                 <td>2025</td>
+                <td>BTC</td>
                 <td></td>
                 <td>2-8%</td>
                 <td>None</td>
@@ -465,52 +577,43 @@
                 <td>50₿</td>
                 <td>No</td>
                 <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Reumix</td>
+                <td><a href="https://reumix.io/" rel="nofollow noreferrer" title="reumix.io">reumix.io</a></td>
+                <td><a href="http://7lzjhytb7tekaddjdz2cvrsv623v2cjy3xdigm6zqp3vp7vo46cqp5id.onion/" title="Yes">Yes</a></td>
+                <td>2025</td>
+                <td>ETH</td>
+                <td></td>
+                <td>2.5-10%</td>
+                <td>None</td>
+                <td>0.1ETH</td>
+                <td>500ETH</td>
+                <td>No</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Zeusmix</td>
+                <td><a href="https://zeusmix.to/" rel="nofollow noreferrer" title="zeusmix.to">zeusmix.to</a></td>
+                <td><a href="http://zeus2bl7i7ojs2qpkmi2razhkqnnw6zjztezazke2vijky2xbppotqid.onion/" title="Yes">Yes</a></td>
+                <td>2025</td>
+                <td>ETH, LTC, TRX, SOL, USDT</td>
+                <td></td>
+                <td>2-6%</td>
+                <td>None</td>
+                <td></td>
+                <td></td>
+                <td>No</td>
+                <td><a href="https://t.me/zeusmixto" target="_blank" rel="nofollow noreferrer">zeusmixto</a></td>
+                <td></td>
               </tr>
             </tbody>
           </table>
         </figure>
         <p>Mixers are sorted by creation year. Be very careful to save any letters of guarantee you receive and to verify them here, so that you can get a refund in case of a problem. Note that <strong>a mixer can shut down and run away with your coins even if you have a letter of guarantee.</strong> If you do not trust any of these mixers enough, consider using a coordinator instead.</p>
         <p>Some of these mixers are powered by <a href="https://jambler.io">Jambler</a> (<a href="http://jamblery7zgxknhjtmj3mhfdajmyddqxbufrf6voa32h5w4otux3crqd.onion/">Tor mirror</a>). It makes creating a mixer easy.</p>
-        <div class="vg-verify">
-          <div id="scamwhammer">
-            <h2>Mixer Legit Or Scam Lookup</h2>
-            <p>Introducing my brand-new tool for checking the veracity of a mixer link, powered by the <a href="https://gist.githubusercontent.com/ZenulAbidin/511d531980c44051cfafd11b2e3c9dda/raw/scamwhammer-mixers.txt" rel="nofollow noreferrer" target="_blank">ScamWhammer</a> database.</p>
-            <p>ScamWhammer is a database of scam websites that I created in mid-2020. It is aggregated from many current and defunct lists. It is a watered-down version of the original list containing only links to mixers. This database is <strong>completely free to use, with no attribution required.</strong></strong></p>
-            <p>Now you can check whether any mixer is a legit or scam using this tool. Simply type the domain name of the mixer without https prefix. It even works for Tor onion links. ScamWhammer requires Javascript to work.</p>
-            <form id="urlForm" onsubmit="checkUrl(event)">
-              <input type="text" id="urlInput" placeholder="Enter mixer URL (e.g., anonymixer.com)" required>
-              <br>
-              <button type="submit" id="ScamWhammerButton">Check URL</button>
-            </form>
-          </div>
-          <div id="letter-verify">
-            <h2>Verify Letter of Guarantee</h2>
-            <p>This brand-new tool allows you to verify the letter of guarantee that you receive from any mixer, without installing special software. It requires Javascript to work.</p>
-            <p>It is <strong>very important</strong> that you authenticate your letter of guarrantee to avoid getting scammed, as the letter acts as a legally-binding contract between you and mixer, and insures you from potential loss.</strong> It is the only way you can get customer support or a refund if something goes wrong during a mix.</p>
-            <p>This verification tool runs locally on your browser and does not use browser APIs or fetch data or scripts from other servers. You can even run it offline.</p>
-            <select id="mixerSelect">
-                <option value="">Select a mixer</option>
-                <option value="mixer.money">Mixer.money</option>
-                <option value="mixtum.io">MixTum</option>
-                <option value="coinomize.biz">Coinomize</option>
-                <option value="anonymizer.com">Anonymizer</option>
-                <option value="webmixer.io">Webmixer</option>
-                <option value="mixtura.money">Mixtura.money</option>
-                <option value="mixero.io">Mixero</option>
-                <option value="bitmixer.online">Bitmixer.online</option>
-                <option value="mixy.money">Mixy.money</option>
-                <option value="mixerdream.com">Mixerdream</option>
-                <option value="thormixer.io">Thormixer</option>
-                <option value="jokermix.to">JokerMix</option>
-                <option value="swamplizard.io">Swamplizard</option>
-                <option value="genesismix.cx">GenesisMix</option>
-                <option value="okmix.io">Okmix</option>
-                <option value="cointor.org">CoinTor</option>
-            </select>
-            <textarea id="messageTextArea" rows="10" placeholder="Paste the letter of guarantee here..."></textarea>
-            <button id="verifyButton">Verify</button>
-          </div>
-      </div>
         <h2 id="exchanges" class="wp-block-heading">The List Of Private Exchanges</h2>
         <p>Please do not use these services to exchange hacked or stolen coins. Check your address with an AML checker before sending funds.</p>
         <figure class="wp-block-table">
@@ -594,13 +697,6 @@
                 <td>Many</td>
                 <td>2022</td>
                 <td>4%</td>
-              </tr>
-              <tr>
-                <td>AltQuick</td>
-                <td><a href="https://altquick.com/?aKey=72470881de66c2ee9eae13a4dcca5d791de4fd14" rel="nofollow noreferrer" title="altquick.com">altquick.com</a></td>
-                <td>No</td>
-                <td>2019</td>
-                <td>0.5-1%</td>
               </tr>
               <tr>
                 <td>Crypton</td>
@@ -785,384 +881,65 @@
             </tbody>
           </table>
         </figure>
-        <p>Special thanks to <a href="https://wabisator.com/">Wabisator</a> for compiling the coordinators. You can go to their website to download their config and JSON. Note that coordinators can go down and back up, rapidly, so this list may not be up-to-date.</p>
-        <p>For more lists like this, you may consult <a href="https://bitlist.co">BitList</a>.</p>
-        <p>You&#8217;re probably thinking, <em>&#8220;this is a bitcoin mixer list, but this page is so long!&#8221;</em> Well, this may be a list, but it&#8217;s also a history of bitcoin mixers. And yeah, technically, all this is important info. But some of the best stories start with important info. And that&#8217;s exactly what this is, a story. And to tell it right, I gotta take you back to long before bitcoin mixers set foot on the internet.</p>
-        <div class="wp-block-aioseo-table-of-contents aioseo-toc">
-          <ul>
-            <li><a href="#aioseo-what-is-a-bitcoin-mixer">A Short Introduction</a></li>
-            <li><a href="#aioseo-bitcoin-mixer-list-service-policy">Bitcoin Mixer List Disclaimer</a></li>
-            <li><a href="#aioseo-timeline-of-the-bitcoin-mixer-list">Comprehensive History Of Mixers At The Bitcoin Mixer List</a>
-              <ul>
-                <li><a href="#aioseo-early-history-of-the-bitcoin-mixer-list-tbd">Early History Of Bitcoin Mixers</a></li>
-                <li><a href="#aioseo-increasing-sophistication-of-mising-techniques">The Use Of CoinJoin By Bitcoin Mixers</a></li>
-                <li><a href="#aioseo-the-wild-west-of-th">The Wild West Of A Bitcoin Mixer List</a></li>
-              </ul>
-            </li>
-            <li><a href="#aioseo-localbitcoins-and-the-beginning-of-private-exchanges">LocalBitcoins And The Beginning Of Private Exchanges</a>
-              <ul>
-                <li><a href="#aioseo-regulatory-pressure-on-bitcoin-mixers">Bitcoin Mixers: Privacy Or Money Laundering?</a>
-                  <ul>
-                    <li><a href="#aioseo-implications">Implications</a></li>
-                  </ul>
-                </li>
-                <li><a href="#aioseo-ransomware-and-how-it-relates-to-bitcoin-mixers">Ransomware And How it Relates to Bitcoin Mixers</a></li>
-                <li><a href="#aioseo-proposals-to-make-a-bitcoin-mixer-list-obsolete">Proposals To Make A Bitcoin Mixer List Obsolete</a></li>
-                <li><a href="#aioseo-the-rise-of-monero-as-a-bitcoin-mixer-alternative">The Rise Of Monero As A Bitcoin Mixer Alternative</a></li>
-                <li><a href="#aioseo-joinmarket-and-practical-coinjoin-software">JoinMarket and Practical CoinJoin Software</a></li>
-                <li><a href="#aioseo-companies-start-refusing-to-accept-certain-bitcoins">Companies Start Refusing To Accept Certain Bitcoins</a></li>
-                <li><a href="#aioseo-calls-for-bitcoin-regulation-ramp-up">Calls For Bitcoin Regulation Ramp Up</a></li>
-                <li><a href="#aioseo-atomic-swaps">Atomic Swaps Are Invented</a></li>
-                <li><a href="#aioseo-bitcoin-mixer-advertisements">Bitcoin Mixer List Advertisements</a></li>
-                <li><a href="#aioseo-bitcoin-mixers-and-crime">Bitcoin Mixers and Crime</a></li>
-                <li><a href="#aioseo-jambler-mixer-meets-customer">Jambler &#8211; Mixer Meets Minter</a></li>
-                <li><a href="#aioseo-the-first-wave-of-private-exchanges-dexs">The First Wave Of Private Exchanges</a></li>
-                <li><a href="#aioseo-enhanced-coinjoin-wallets-wasabi-and-samourai">Enhanced CoinJoin Wallets</a>
-                  <ul>
-                    <li><a href="#aioseo-samourai-wallet">Samourai Wallet</a></li>
-                    <li><a href="#aioseo-wasabi-wallet">Wasabi Wallet</a></li>
-                    <li><a href="#aioseo-disadvantages-of">Disadvantages Of Enhanced CoinJoin Wallets</a></li>
-                  </ul>
-                </li>
-                <li><a href="#aioseo-regulators-close-in-on-bitcoin-mixers">Regulators Close In On Bitcoin Mixers</a></li>
-                <li><a href="#aioseo-exchanges-start-delisting-privacy-coins">Exchanges Start Delisting Privacy Coins</a></li>
-                <li><a href="#aioseo-the">The Second Wave Of Private Exchanges</a></li>
-                <li><a href="#aioseo-the-use-of-sanctions-to-curtail-mixer-money-laundering">The Use Of Sanctions To Curtail Mixer Money Laundering</a></li>
-                <li><a href="#aioseo-tornado-cash">Tornado Cash</a></li>
-                <li><a href="#aioseo-blender-io-and-sinbad">Blender.io and Sinbad</a></li>
-                <li><a href="#aioseo-bitcointalk-bans-bitcoin-mixers">Bitcointalk Bans Bitcoin Mixers</a></li>
-                <li><a href="#aioseo-worldwide-crackdown-on-privacy">Worldwide Crackdown on Privacy</a></li>
-                <ul>
-                  <li><a href="#aioseo-eu-failed-attemot-to-outlaw-crypto-transactions">EU&#8217;s Failed Attempt To Outlaw Crypto Transactions</a></li>
-                  <li><a href="#aioseo-fbi-seizes-samourai-wallet">FBI Seizes Samourai Wallet</a></li>
-                  <li><a href="#aioseo-us-governments-advisory-on-non-custodial-walelts">US Government&#8217;s Advisory On Non-Custodial Wallets</a></li>
-                  <li><a href="#aioseo-wallets-block-us-users">Wallets Block US Users</a></li>
-                  <li><a href="#aioseo-wasabi-coinjoin-shuts-down">Wasabi CoinJoin Shuts Down</a></li>
-                  <li><a href="#aioseo-edward-snowden-final-warning-for-bitcoin">Edward Snowden: Final Warning for Bitcoin</a></li>
-                </ul>
-                <li><a href="#aioseo-other-justice-department-actions">Other Justice Department Actions</a></li>
-              </ul>
-            </li>
-            <li><a href="#aioseo-why-bitcoin-mixers-are-necessary">Why Bitcoin Mixers are Necessary</a>
-              <ul>
-                <li><a href="#aioseo-its-much-easier-to-create-a-website-than-a-wallet">It&#8217;s Much Easier To Create A Website Than A Wallet</a></li>
-                <li><a href="#aioseo-coordinator-deposits-might-be-blocked-by-exchanges">Exchanges Might Block Coordinator Deposits</a></li>
-                <li><a href="#aioseo-coordinators-could-be-censored">Countries Could Censor Coordinators</a></li>
-                <li><a href="#aioseo-ease-of-use">Ease Of Use</a></li>
-                <li><a href="#aioseo-other-reasons-why-you-might-use-a-mixer">Other Reasons Why You Might Use A Bitcoin Mixer</a></li>
-              </ul>
-            </li>
-            <li><a href="#aioseo-what-is-a-bitcoin-mixer">Why Does Law Enforcement Hate Bitcoin Mixers?</a></li>
-            <li><a href="#aioseo-which-privacy-method-is-best">Which Is Most Private: Mixers, exchanges, or CoinJoins?</a></li>
-            <li><a href="#aioseo-how-a-bitcoin-mixer-works">How A Bitcoin Mixer Works</a>
-              <ul>
-                <li><a href="#aioseo-mixers-and-aml-scores">Mixers and AML Scores</a></li>
-                <li><a href="#aioseo-withdrawing-coins-from-a-mixer">Withdrawing Coins From A Mixer</a></li>
-              </ul>
-            </li>
-            <li><a href="#aioseo-bitcoin-mixer-list-faq">Bitcoin Mixer List FAQ</a>
-              <ul>
-                <li><a href="#aioseo-why-is-it-called-a-bitcoin-mixer">Why Is It Called A Bitcoin Mixer?</a></li>
-                <li><a href="#aioseo-are-bitcoin-mixers-legal">Are Bitcoin Mixers Legal?</a></li>
-                <li><a href="#aioseo-do-bitcoin-mixers-make-me-anonymous">Do Bitcoin Mixers Make Me Anonymous?</a></li>
-                <li><a href="#aioseo-can-bitcoin-mixers-be-traced-by-authorities">Can Bitcoin Mixers Be Traced By Authorities?</a></li>
-                <li><a href="#aioseo-how-can-i-choose-a-reliable-bitcoin-mixer">How Can I Choose A Reliable Bitcoin Mixer?</a></li>
-                <li><a href="#aioseo-why-did-you-make-this-bitcoin-mixer-list">Why Did You Make This Bitcoin Mixer List?</a></li>
-                <li><a href="#aioseo-why-so-many-mirrors">Why So Many Mirrors?</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-        <h2 class="wp-block-heading" id="aioseo-what-is-a-bitcoin-mixer">A Short Introduction</h2>
-        <p>It might be worth asking: How did we get to this point?</p>
-        <p>Bitcoin mixers have experienced one of the most remarkable rises in the industry, and that is not exaggerating. From their humble origins in the first half of the 2010&#8217;s to a libertarian powerhouse, they have literally seen all the highs and lows along with Bitcoin itself. As a result, people have tried to copy them for other cryptocurrencies, but it only really works well when the blockchain includes it by design.</p>
-        <p>It is also important to note that Bitcoin by itself is not anonymous, only private. If you need full anonymitsy, use Monero, or Grin, or ZCash, or any of the other networks that do have anonymity built-in. A bitcoin mixer can only provide anonymity if it is not compromised &#8211; and if you are not compromised.</p>
-        <p>Also, have you noticed that nearly all of these mixers are closed source? Maybe that is not desirable for you. In that case, there are some open-source ones too.</p>
-        <h2 class="wp-block-heading" id="aioseo-bitcoin-mixer-list-service-policy">Bitcoin Mixer List Disclaimer</h2>
-        <p><mark style="background-color:rgba(0, 0, 0, 0)" class="has-inline-color has-vivid-red-color"><strong>TD;DR: We (being people who've worked with me on BitMixList) are not promoting money laundering or crimes, and we are not directly affiliated with any of the websites on this page. Do not use mixers for fraud purposes, and we are not responsible for what you use the information on this site for.</strong></mark></p>
-        <p>It should be said right now that mixers are an attractive service for criminals who want to launder dirty money. However, I will prefix this by saying <em>some</em> mixers because chain analysis firms like Elliptic have already identified most of the entry and exit points of a lot of mixers. <strong>The vast majority of bitcoin mixers do not allow cybercrime and never supported it in the first place.</strong> Unfortunately, a small number do, but you won&#8217;t find any of them on this bitcoin mixer list. I will never list any illegal mixers here, and the ones that do exist to help Lazarus and Co. can go where they belong: prison.</p>
-        <p>Even though in the past, I myself have advertised mixers elsewhere, I have never advertised a <em>sanctioned</em> mixer, and they will never be promoted here. Hence, I kindly ask you, the reader, that if you find any illegal service on this bitcoin mixer list, for you to report it to me by the email or Telegram channel linked below. Your vigilance is much appreciated.</p>
-        <p>In particular, I will not be responsible for what you use the content on this site for. The action of using a bitcoin mixer is supposed to be to help protect your funds, not to help you commit crimes. You are encouraged to make a mirror of this website if you can. But be careful where you host it because some hosts like Hostinger, BitMixList's old host, will ban you if your website is about mixers or <em>any</em> sort of privacy-enhancing tecnhnology.</p>
-        <p>This website uses referral links in some places, but we are not otherwise affiliated with any services here.</p>
-        <h2 class="wp-block-heading" id="aioseo-timeline-of-the-bitcoin-mixer-list">Comprehensive History Of Mixers At The Bitcoin Mixer List</h2>
-        <h3 class="wp-block-heading" id="aioseo-early-history-of-the-bitcoin-mixer-list-tbd">Early History Of Bitcoin Mixers</h3>
-        <p>The concept of mixing bitcoins dates back to at least 2010 when <a href="https://bitcointalk.org/index.php?topic=5979.0" title="Bitcointalk">Bitcointalk</a> and various online communities started <a href="https://bitcointalk.org/index.php?topic=10755.msg156039#msg156039" title="discussing">discussing</a> the <a href="https://bitcointalk.org/index.php?topic=12456.msg179363#msg179363" title="need">need</a> for <a href="https://bitcointalk.org/index.php?topic=17473.msg224662#msg224662" title="improved">improved</a><a href="https://bitcointalk.org/index.php?topic=31539.0" title="privacy">privacy</a><a href="https://bitcointalk.org/index.php?topic=34585.0" rel="nofollow noreferrer" title="features">features</a>. The first Bitcoin mixer, known as <a href="https://bitcointalk.org/index.php?topic=2053.msg26421#msg26421" title="Bitcoin Laundry">Bitcoin Laundry</a> (also called <a href="https://bitcointalk.org/index.php?topic=18684.0" title="BitLaundry">BitLaundry</a>), is believed to have been launched around this time. Bitcoin Laundry allowed users to hide their funds by sending bitcoins to the service and receiving other bitcoins forwarded from the service.</p>
-        <p>The first bitcoin mixer to make use of <a href="https://en.wikipedia.org/wiki/Blind_signature" target="_blank" rel="noopener" title="blind signatures">blind signatures</a> was called <a href="https://bitcointalk.org/index.php?topic=12751.0" title="Blindbitcoin">Blindbitcoin</a>, announced on June 2011. Blind Signatures are a cryptographic process created by David Chaum which hide the contents of a message before it is signed with a digital signature such as DSA, or ECDSA in the case of Bitcoin. The idea for mixers to use variable fees was <a href="https://bitcointalk.org/index.php?topic=93442.0" target="_blank" rel="noopener" title="proposed">proposed</a> on June 2012, around the same time the first mixer <a href="https://bitcointalk.org/index.php?topic=81045.0" title="hack">hack</a> occurred (and the <a href="https://bitcointalk.org/index.php?topic=93074.0" title="second">second</a>).</p>
-        <p>Ironically, that mixer started a <a href="https://bitcointalk.org/index.php?topic=81045.msg897900#msg897900" title="claims page,">claims page,</a> which directed users to perform identity verification to receive their funds back. Don&#8217;t ask me how it got to that. Such a thing would be unspeakable in the present day. Even Blockchain dot com was <a href="https://bitcointalk.org/index.php?topic=105985.msg1162291#msg1162291" title="running a mixer">running a mixer</a> at the time (surprise!).</p>
-        <p>Also it should be noted that the bitcoin mixer list does not have any of these mixers listed because they appear to have been taken offline a long time ago, but by their owners at least, not any government.</p>
-        <h3 class="wp-block-heading" id="aioseo-increasing-sophistication-of-mising-techniques">The Use Of CoinJoin By Bitcoin Mixers</h3>
-        <figure class="wp-block-image size-full"><img data-dominant-color="ababab" data-has-transparency="true" decoding="async" width="719" height="249" src="wp-content/uploads/2023/12/tx.flow_.png" alt="Anatomy of a CoinJoin transaction." class="has-transparency wp-image-856" style="--dominant-color: #ababab; object-fit:cover" srcset="wp-content/uploads/2023/12/tx.flow_.png 719w, wp-content/uploads/2023/12/tx.flow_-300x104.png 300w" sizes="(max-width: 719px) 100vw, 719px" /></figure>
-        <p>Over time, as the demand for privacy solutions increased, more Bitcoin mixers entered the scene. They offered different algorithms and methodologies to break the link between the sender and the receiver of bitcoins. Some mixers focused on implementing <a href="https://bitcointalk.org/index.php?topic=279249.0" title="CoinJoin">CoinJoin</a> (a technique created by former Bitcoin Core developer Greg Maxwell), which combines multiple transactions into a single transaction, while others adopted different techniques to achieve the same goal.</p>
-        <p>To give you an idea of the theory that makes CoinJoin work, here is a description from Greg Maxwell himself.</p>
-        <figure class="wp-block-pullquote">
-          <blockquote>
-            <p>&#8220;The signatures, one per input, inside a transaction are <strong>completely</strong> independent of each other. This means that it&#8217;s possible for Bitcoin users to agree on a set of inputs to spend, and a set of outputs to pay to, and then to individually and separately sign a transaction and later merge their signatures. The transaction is not valid and won&#8217;t be accepted by the network until all signatures are provided, and no one will sign a transaction which is not to their liking.&#8221;</p><cite>Greg Maxwell</cite>
-          </blockquote>
-        </figure>
-        <p>The independence of the transaction inputs from each other is what allows CoinJoin to work in the first place. Users already send bitcoin as an transaction input to a recipient. So by including the bitcoins of several users as transaction inputs, and the recipients&#8217; addresses as transaction outputs, we have just created a CoinJoin transaction. They can even create this in a private matter by creating and sign the transaction with your inputs, then send the <a href="https://bitcoinops.org/en/topics/psbt/" title="Partially Signed Bitcoin Transaction">Partially Signed Bitcoin Transaction</a> to the next user for signing, then to the next user, and so on.</p>
-        <h3 class="wp-block-heading" id="aioseo-the-wild-west-of-th">The Wild West Of A Bitcoin Mixer List</h3>
-        <p>If I told you that even back in 2012, there were bitcoin mixers that were running as <a href="https://bitcointalk.org/index.php?topic=87387.0" title="scams">scams</a>, you wouldn&#8217;t be surprised, I hope. Especially on Bitcointalk, moderators would proactively label a service as a possible scam at that time. (Nowadays the forum is so rampant with scammers and bounty spammers that I think they gave up.) <a href="https://bitcointalk.org/index.php?topic=165309.msg1726591#msg1726591" title="Even Tor hidden sites were in on the act.">Even Tor hidden sites were in on the act.</a></p>
-        <p>If you opened some of the links above, you might have noticed that service operators stored the bitcoin mixer&#8217;s coins on an exchange like Mt Gox. Granted, this predated CoinJoin, and nowadays you can&#8217;t run a mixer from an exchange since there are heightened AML regulations. It&#8217;s worth noting that the bitcoin mixer list has actually become <em>safer</em> than it was during bitcoin&#8217;s early days.</p>
-        <h2 class="wp-block-heading" id="aioseo-localbitcoins-and-the-beginning-of-private-exchanges">LocalBitcoins And The Beginning Of Private Exchanges</h2>
-        <p>When <a href="https://en.wikipedia.org/wiki/LocalBitcoins" title="LocalBitcoins">LocalBitcoins</a> opened in June 2012, it was the first peer-to-peer marketplace of its kind. In a way, it was a precursor of the private exchanges as we know them today. Why is this important, you ask? Because in a private exchange, the buyer and seller directly trade cryptocurrencies with each other. Also fiat currencies could be traded, but that is beyond the scope of this website.</p>
-        <p>Way back then, people trusted each other enough to do direct trades with each other on various parts of the internet. This was before scammers overran cryptocurrency circles. When PayPal eventually banned bitcoin transactions on its platform (for nearly 10 years), people flocked there instead. LocalBitcoins is <a href="https://localbitcoins.com/service_closure/" title="no more">no more</a> now, but it has left a legacy of a model exchange.</p>
-        <h3 class="wp-block-heading" id="aioseo-regulatory-pressure-on-bitcoin-mixers">Bitcoin Mixers: Privacy Or Money Laundering?</h3>
-        <p>Did you know that back in 2013, The Bitcoin Foundation (yeah, the one that spectacularly imploded) had a <a href="https://bitcointalk.org/index.php?topic=210130.msg2227405#msg2227405" title="proposal">proposal</a> to set up a gigantic mixer service to mint anonymous bitcoins for the public? They never made one, because they didn&#8217;t want governments to accuse them of money laundering. A full quote from a now-deleted post should show the full situation:</p>
-        <figure class="wp-block-pullquote has-text-align-center">
-          <blockquote>
-            <p><em>&#8220;[…] </em>A<em>t one point Gavin suggested someone submit a grant for a trust-free mixer service to help people make the coins in their wallet more anonymous by mixing them with a large pool of other users. I asked Gavin about that later, and he said the foundation lawyers nixed the idea because efforts to make Bitcoin users more anonymous could be seen to be aiding money laundering, especially if the foundation itself was paying for development and to run the servers.<br><br>We can work with regulators to make sure Bitcoin is acceptable to them. For instance we can ensure that it remains possible to track the flow of money through Bitcoin. We can also ensure that there are options if certain funds need to be frozen and blacklisted, due to fraud, theft, or because they encode illegal data.&#8221;</em></p><cite>From Bitcointalk Forum</cite>
-          </blockquote>
-        </figure>
-        <h4 class="wp-block-heading" id="aioseo-implications">Implications</h4>
-        <p>It goes on to show that even back in 2013, there was already a debate of bitcoin mixers being used for privacy versus money laundering. Although I must say, the degree of regulation they wanted back then was pretty extreme, even for today&#8217;s standards. For instance, the Bitcoin SV blockchain has a feature similar to this that <a href="https://www.bsvblockchain.org/digital-asset-recovery" title="seize coins when shown a warrant">seizes coins when shown a warrant</a>. The Bitcoin community views this kind of thing as a heretical practice, as well as <a href="https://bitcointalk.org/index.php?topic=258246.0" title="address blacklisting">address blacklisting</a>.</p>
-        <h3 class="wp-block-heading" id="aioseo-ransomware-and-how-it-relates-to-bitcoin-mixers">Ransomware And How it Relates to Bitcoin Mixers</h3>
-        <p>A related topic to seizing people&#8217;s bitcoins is ransom. In 2013, someone <a href="https://bitcointalk.org/index.php?topic=210491.msg2204642#msg2204642" title="predicted">predicted</a> the apocalyptic future where kidnappers would force their victims to pay ransom in Bitcoin. Unsurprisingly (and tragically), this is now a stark reality in the cryptocurrency world.</p>
-        <p>While this kind of ransom is of the physical kind, virtual heists are just as common. One of the first instances of hackers laundering their illegal profits was the <a href="https://bitcointalk.org/index.php?topic=334520.msg3591242#msg3591242" title="CryptoLocker malware">CryptoLocker malware</a>. No doubt that they used some bitcoin mixer list on Bitcointalk to find one. The hackers largely evaded blacklisting mechanisms by using a bitcoin mixer. Authorities have actually cracked down on this practice hard, as I will explain later.</p>
-        <h3 class="wp-block-heading" id="aioseo-proposals-to-make-a-bitcoin-mixer-list-obsolete">Proposals To Make A Bitcoin Mixer List Obsolete</h3>
-        <p>There were also many proposals that were brought up by community members to add a mixing feature directly inside the Bitcoin Core reference client. One of them, by the legendary <a href="https://bitcointalk.org/index.php?topic=94155.0" title="Casascius">Casascius</a>, describes a simple relay where wallet-enabled Bitcoin nodes ask peers to send their list of transaction outputs. This is so they can make a CoinJoin transaction that both parties sign and broadcast.</p>
-        <p>If Bitcoin developers had implemented this idea, nobody would need a bitcoin mixer list because all of the mixing could be done directly on the bitcoin network. This never gained steam though, despite the many people bringing up the topic several times over the years. Now that we have SPV wallets, hardware wallets, and custodial exchanges, this might never come into fruition. Although, that is not really a bad thing, because some altcoins jumped at the chance to integrate it.</p>
-        <h3 class="wp-block-heading" id="aioseo-the-rise-of-monero-as-a-bitcoin-mixer-alternative">The Rise Of Monero As A Bitcoin Mixer Alternative</h3>
-        <p>Monero was launched on April 18, 2014, and among its other features such as its CPU-friendly mining algorithm, it has built-in support for <a href="https://en.wikipedia.org/wiki/Ring_signature" title="ring signatures">ring signatures</a>. You can find details of it in the <a href="https://web.archive.org/web/20180714233346/https://cryptonote.org/whitepaper.pdf" title="CryptoNote whitepaper">CryptoNote whitepaper</a>. A ring signature is when a group of people sign something, but it is impossible for someone on the outside to know who in particular signed it.</p>
-        <p>Ring signatures provide far more anonymity than any bitcoin mixer could provide. In fact, although the IRS awarded a $625,000 contract to blockchain analysis companies to <a href="https://www.reddit.com/r/Monero/comments/z9j62d/the_irs_bounty_the_full_story/" title="break Monero">break Monero</a>, but they failed at breaking it. In fact, these properties lave lead to Monero becoming the underground currency of the darknet. So next time someone tells you that &#8220;Bitcoin is only for criminals&#8221;, take them to this section.</p>
-        <p>It is worth noting that there have been <a href="https://en.wikipedia.org/wiki/James_Zhong" title="several">several</a><a href="https://www.wired.com/story/bitcoin-fog-dark-web-cryptocurrency-arrest/" title="high-profile">high-profile</a><a href="https://www.wired.com/story/tracers-in-the-dark-welcome-to-video-crypto-anonymity-myth/" title="unmasking">unmasking</a> of bitcoin darknet users, and I&#8217;m sure many of them thought mixers would make them safe. That is not the case if you do not secure your digital life, whether you use Bitcoin or Monero or another cryptocurrency.</p>
-        <h3 class="wp-block-heading" id="aioseo-joinmarket-and-practical-coinjoin-software">JoinMarket and Practical CoinJoin Software</h3>
-        <p><a href="https://bitcointalk.org/index.php?topic=919116.0" title="JoinMarket">JoinMarket</a> was announced on January 2015 as a wallet software with client and server parts. It uses a bitcoin network software called <a href="https://libbitcoin.info/" title="libbitcoin">libbitcoin</a> to connect to a Bitcoin Core node, while the JoinMarket server waits for wallets to connect so that coinjoins can be performed. There is a command-line and graphical user interface and is one of the most practical ways to use CoinJoin today. It is <a href="https://github.com/JoinMarket-Org/joinmarket-clientserver">open-source</a> and can also do a <a href="https://en.bitcoin.it/wiki/PayJoin" title="PayJoin">PayJoin</a> which is basically a special case of a CoinJoin with two inputs and two outputs. In other words, two people paying each other.</p>
-        <p>The JoinMarket client looks like any other wallet except that it automatically CoinJoins your funds with the other users connected to this server. It is actively-developed open-source software and is very popular with the community because it preserves bitcoin&#8217;s fungability. This is important, because fungability would soon become a talking point during the bitcoin mixer regulations. So if you can, contribute to it. It represents the future of mainstream bitcoin privacy.</p>
-        <h3 class="wp-block-heading" id="aioseo-companies-start-refusing-to-accept-certain-bitcoins">Companies Start Refusing To Accept Certain Bitcoins</h3>
-        <p>Bitcoin is a <strong>fungible</strong> currency. That means that you can give someone one bitcoin, it it will be equivalent to another person giving that person one bitcoin. So if people do not want to accept someone&#8217;s bitcoin, that damages its fungability.</p>
-        <p>In 2015, it was <a href="https://www.reddit.com/r/Bitcoin/comments/3mea6b/bitpay_is_blacklisting_certain_bitcoins_rejecting/" title="discovered">discovered</a> that crypto payment processing provider Bitpay was one of many companies rejecting certain bitcoins from being sent to their service. People went as far as claiming that fungability would become a <a href="https://bitcointalk.org/index.php?topic=1190707.0" title="major talking point ">major talking point</a> (in hindsight, they were right). The coins being declined likely came from services posted on bitcoin mixer lists across the internet, and BitPay and other companies flagged them as &#8220;possible suspicious activity on the blockchain&#8221;.</p>
-        <p>It&#8217;s very clear that the narrative, even in 2015, had gone from bitcoin mixers being used as tools to protect your safety to services used for &#8220;suspicious activity&#8221;. So it came as a surprise to nobody when media claimed that bitcoin was used to <a href="https://bitcointalk.org/index.php?topic=1252770.0" title="finance a terrorist attack">finance a terrorist attack</a> in Paris. This claim was never verified.</p>
-        <h3 class="wp-block-heading" id="aioseo-calls-for-bitcoin-regulation-ramp-up">Calls For Bitcoin Regulation Ramp Up</h3>
-        <p>Regulation <em>really</em> stepped up in 2016 when the European Union started one of many <a href="https://bitcointalk.org/index.php?topic=1351150.0" title="motions">motions</a> to get bitcoin transactions to be regulated. In other words, to require your identification to do <strong>any</strong> bitcoin transaction. And of course bitcoin mixers, and bitcoin mixer lists, would get outlawed in the process. <a href="https://bitcointalk.org/index.php?topic=1368280.0" title="Congress was in on it, too.">Congress was in on it, too.</a></p>
-        <p>See, I don&#8217;t really have a problem for regulation for buying and selling bitcoins. You gotta prevent money laundering you know.</p>
-        <p>The problem comes when said regulation requires you to provide identification for performing any kind of bitcoin transaction, whether with a bitcoin mixer or not. This benefits nobody, because inevitably, the regulation is implemented by 3rd party KYC providers who require not just your ID and bank statement, but any or all of the following:</p>
-        <ul>
-          <li>Employment records as a proof of funds</li>
-          <li>A mugshot of you holding your ID</li>
-          <li>A picture of you holding your username and current date on a piece of paper</li>
-          <li>A live picture of your ID taken from a phone running iOS newestVersion or later</li>
-          <li>A live picture of your ID taken from a phone running Android almostNewestVersion or later</li>
-          <li>Ditto but a selfie of you choreographically moving your head</li>
-          <li>A video call</li>
-        </ul>
-        <p>And even then your application can be denied for no public reason, leaving you stranded with no money, which is <strong>exactly what Bitcoin was created to solve.</strong> You see, nowadays you need one of the latest smartphones to perform any kind of verification, which is very silly &#8211; even banks don&#8217;t require that sort of thing!</p>
-        <p>As someone said <a href="https://bitcointalk.org/index.php?topic=1351150.msg13762683#msg13762683" title="over here">over here</a> when the news broke out: &#8220;How are they going to end the pseudo-anonymity of something that they don&#8217;t even understand?&#8221;</p>
-        <h3 class="wp-block-heading" id="aioseo-atomic-swaps">Atomic Swaps Are Invented</h3>
-        <p>When you hear the phrase Atomic Swap, your first thought might be &#8220;smart contracts&#8221; or maybe &#8220;Uniswap&#8221;. Actually, you are close, but there can be atomic swaps across blockchains besides Ethereum.</p>
-        <p>Basically, an atomic swap is when two cryptocurrencies are exchanged with each other, without involving a fiat reserve currency. This is a very important pillar of private exchanges because it is very hard to secure millions of dollars in liquidity to operate a successful private exchange. Also, having dollar funds implies that the exchange has access to the banking institutions. But this was in 2017, during the ICO boom and crash, so banks weren&#8217;t exactly keen on working with random, unknown exchanges.</p>
-        <p>According to <a href="https://www.fool.com/terms/a/atomic-swap/" title="this site">this site</a>, 2017 saw the first ever atomic swap executed, between Decred and Litecoin. Although the idea existed since around 2012.</p>
-        <p>Now let me mention that you need the two cryptos to be on the same blockchain in order to make a successful swap. The reason why is because the smart contract feature of the blockchain has to understand what is being traded. So you can&#8217;t swap Bitcoin and Monero, for example.</p>
-        <p>However, what you can do, is write additional software to automatically send Monero, in the correct amount, when someone sends you Bitcoin. Just like how the dollar has an exchange rate with other currencies, you can actually make an exchange rate based on Bitcoin, Ethereum, and so on. The combination of smart contacts and external software would be the force behind the first rise of exchanges.</p>
-        <h3 class="wp-block-heading" id="aioseo-bitcoin-mixer-advertisements">Bitcoin Mixer List Advertisements</h3>
-        <p>It was around this time that lists of bitcoin mixers were advertised on Bitcointalk, especially BitMixer. It happens to be one of the last major mixers that <a href="https://bitcointalk.org/index.php?topic=2042470.0" title="shut down on its own will">shut down on its own will</a>. Nowadays it seems that bitcoin mixers would rather <a href="https://bitcointalk.org/index.php?topic=5445014.0" title="operate until they get seized">operate until they get seized</a> than take their profits and run. For historical reasons</p>
-        <p>This is only relevant to this page because Bitcointalk has advertisements for all sorts of things, in the past you would usually see banner ads below the first post on the page, usually for some casino since they have tons of money. But if you&#8217;re wondering why you don&#8217;t see them anymore, you should read <a href="https://bitcointalk.org/index.php?topic=5407725.msg60976136#msg60976136" title="this post">this post</a>.</p>
-        <p>In particular, bitcoin mixers never bought banner ads (at least as far as I was a member), but they did rent signature areas on some &#8220;legendary&#8221; user accounts. And they bought a lot of them. These signatures could be rented out for a hundred or so dollars per week, and it was common to see a lot of bitcoin mixer ads when you browsed Bitcointalk. In fact they started off with a rate in BTC, but after the 2021 bull run, the rate became so extraordinary in some campaigns that they had to switch to dollar rates.</p>
-        <p>It is also around this time that more bitcoin mixers popped up and started to gain traction. Besides BitMixer, there were in this time period CoinMixer, ChipMixer, and the now-infamous Bitcoin Fog and Helix. The latter two were seized around this time.</p>
-        <h3 class="wp-block-heading" id="aioseo-bitcoin-mixers-and-crime">Bitcoin Mixers and Crime</h3>
-        <p>In addition to cybercrime, which hackers were already savvy enough to pull off, in 2017 we saw a surge in <a href="https://bitcointalk.org/index.php?topic=2253440.0" title="physical robberies and extortion">physical robberies and extortion</a>. While everyone was distracted by the block size debate, thugs heard about bitcoin&#8217;s meteoric rise in price. They started finding ways to intimidate wealthy OGs to fess up their fortunes. The ones who didn&#8217;t get caught either lived in a jurisdiction with an incompetent police force, or used a bitcoin mixer to cover up their tracks. This basically dominated the news all year.</p>
-        <p>Also as a result of this, more countries started to ban Bitcoin, in addition to Russia and China. Some of these countries have revised their bans in the wake of central bank digital currencies, probably because they want to catch the train before it leaves the station.</p>
-        <p>More bitcoin mixers keep popping up throughout 2017 and 2018, and this is when the rise of blockchain analysis truly takes center stage. For instance, Binance started a <a href="https://bitcointalk.org/index.php?topic=5080123.0" title="partnership">partnership</a> with Chainalysis to detect coins coming from a mixer. To the casual onlooker of Bitcointalk&#8217;s archives, it looks as if the crime rate is getting out of control. And yet, the world governments were not too bothered to do anything about mixers, yet.</p>
-        <h3 class="wp-block-heading" id="aioseo-jambler-mixer-meets-customer">Jambler &#8211; Mixer Meets Minter</h3>
-        <p><a href="https://jambler.io" title="Jambler">Jambler</a> was launched in 2018, as a platform to bring mixers and coin suppliers such as miners and exchanges together. Its not a mixer itself, but it makes it easy for anyone to start their own mixer.</p>
-        <p>Recall that the purpose of a mixer is to obfuscate bitcoins. So how do you do that? Well, first you have to get your own coins, and you have to make sure that they are not flagged by any blockchain analysis. In other words, making sure they are &#8220;clean&#8221; and not &#8220;dirty&#8221;. Now that you know that, where do you get those coins from? The answer: Exchange withdrawals and miners.</p>
-        <p>When a bitcoin miner mines a block, it contains a coinbase transaction with some BTC inside it. This is what they call &#8220;clean&#8221; bitcoins, with no transaction history. Jambler sources coins from bitcoin miners and resells them to mixers. This allows the mixers to give their customers coins that are not flagged, and the next customer&#8217;s bitcoins are taken from the pool of previous customers&#8217; coins, and so on.</p>
-        <p>Exchange withdrawals are perhaps sought even more than mined blocks, because they are easier to find than blocks. After all, miners mine a block every 10 minutes on average. The exchanges process hundreds of withdrawals during that time period. These coins go through a scoring system to make sure that they aren&#8217;t dirty. And if they are good, Jambler sends them to the mixers.</p>
-        <p>Remarkably, Jambler is still standing today, when almost all mixers from that time period have failed. A lot of mixers would piggyback on Jambler in the coming years.</p>
-        <h3 class="wp-block-heading" id="aioseo-the-first-wave-of-private-exchanges-dexs">The First Wave Of Private Exchanges</h3>
-        <p>There are a lot of exchanges on many blockchains that are bloated and have useless features such as staking, and so on. I&#8217;m not talking about that stuff. Those platforms are very fragile and keep getting hacked (usually by the guys in the last section). Instead, I am referring to the simple ones that use atomic swaps and custom software to swap common coins like Bitcoin and Monero.</p>
-        <p>Private exchanges which let you privately buy and sell privacy coins without KYC emerged, such as <a href="https://bisq.network/" title="Bisq">Bisq</a>, <a href="http://localmonero.co" title="LocalMonero">LocalMonero</a>, and <a href="https://tradeogre.com/" title="TradeOgre">TradeOgre</a>. These exchanges do not collect KYC and let you exchange different cryptocurrencies. As a corollary, none of these sites let you trade in fiat.</p>
-        <p>Exchanges are useful because privacy coins like Monero have an obfuscated blockchain which makes blockchain analysis impossible. So if you sell your bitcoins for Monero, send them to another exchange, and then buy someone else&#8217;s bitcoins with your Monero, you completely detach your transaction history.</p>
-        <p>However, it is important to note that in this regard, a exchange is like a bitcoin mixer. If someone looks at the Bitcoin transaction flow, it could de-anonymize you. In that sense, using more than one exchange is recommended as I described above, because the intermediate withdrawal and deposit of Monero cannot be traced. The same cannot be said about mixers. If all of the mixers used in a sequence are compromised, you might be de-anonymized.</p>
-        <h3 class="wp-block-heading" id="aioseo-enhanced-coinjoin-wallets-wasabi-and-samourai">Enhanced CoinJoin Wallets</h3>
-        <p>It is around this time that the Wasabi and Samourai wallets were created. These two wallets are not like ordinary wallets &#8211; they have a service which automatically performs CoinJoins of bitcoins that you receive from your wallet. This provides a major advantage for users in that they don&#8217;t need to look at a bitcoin mixer list to pick a mixer. These services are generally called coordinators, and can be either private or centralized.</p>
-        <p>These wallets are different from JoinMarket by having many user-friendly features that a normal wallet would have, and they are very similar to mixers in that they obfuscate the source and destination of funds. But a key difference they have from bitcoin mixers is that it is impossible for the coordinators to identify you or steal your coins.</p>
-        <h4 class="wp-block-heading" id="aioseo-samourai-wallet">Samourai Wallet</h4>
-        <p>Let&#8217;s start with the older of the two. Although Samourai Wallet itself was <a href="https://samouraiwallet.com/" title="created">created</a> in 2015, its <a href="https://code.samourai.io/whirlpool/Whirlpool" title="Whirlpool">Whirlpool</a> Coinjoin implementation was not made until 2018. Whirlpool integrates post-mix tools within the Samourai Wallet, providing users with features like <a href="https://thebitcoinmanual.com/articles/bitcoin-paynyms/" title="PayNym">PayNym</a> (payment codes that use unique addresses). It supports multiple rounds of mixing, allowing users to achieve higher levels of privacy by participating in subsequent mixing cycles.</p>
-        <p>Besides Paynym, it also uses additional techniques to help bounce blockchain analysis away such as <a href="https://samouraiwallet.com/stonewall" title="Stonewall">Stonewall</a> and <a href="https://samouraiwallet.com/ricochet" title="Ricochet">Ricochet</a>. Users have the flexibility to choose between different fee structures for mixing, including &#8220;Fast,&#8221; &#8220;Standard,&#8221; and &#8220;Slow&#8221; options, depending on their preferences and urgency.</p>
-        <p>Already, this array of tools is much more than what traditional mixers provide. So by participating in Whirlpool mixing, Samourai Wallet users can significantly enhance the privacy and fungibility of their Bitcoin holdings. Whirlpool coinjoins are run by a central coordinator. Efforts were made in early 2024 to create decentralized Whirpool coordinators, but those were disrupted by the legal action taken against Samourai wallet.</p>
-        <h4 class="wp-block-heading" id="aioseo-wasabi-wallet">Wasabi Wallet</h4>
-        <p>Wasabi Wallet (not to be confused with the cloud storage service) is a newer wallet software that was <a href="https://nopara73.medium.com/wasabi-privacy-focused-bitcoin-wallet-for-desktop-3962d567045a" title="created and announced">created and announced</a> on 2018. As explained in the post, Wasabi was a re-branding of another wallet called HiddenWallet, which used the <a href="https://github.com/nopara73/ZeroLink" title="ZeroLink">ZeroLink</a> coinjoin protocol, and they made their own CoinJoin protocol called <a href="https://github.com/zkSNACKs/WabiSabi" title="WabiSabi">WabiSabi</a>. It is a BIP-157 light client.</p>
-        <p>WabiSabi is designed to be a non-interactive Chaumian CoinJoin protocol, meaning that users do not need to actively coordinate with each other during the mixing process. Just like Whirlpool. It uses Schnorr signatures introduced in Taproot, and unlike some previous CoinJoin implementations that used fixed denominations, WabiSabi allows for variable denominations, providing more flexibility in transaction amounts.</p>
-        <p>The WabiSabi coordinator is ran by a company called zkSNACKs, who also employ the Wasabi Wallet developers. Sometime around March 2022, a few months after the release of a brand new version 2.0, they <a href="https://blog.wasabiwallet.io/zksnacks-blacklisting-update/" title="announced">announced</a> that they would start developing an address blacklist to prevent mixing of laundered money. Remember what I wrote about address blacklisting? Yeah, <a href="https://bitcointalk.org/index.php?topic=5405325.0" title="the community didn't take that well">the community didn&#8217;t take that well</a>.</p>
-        <p>Ever since then, there has been endless <a href="https://bitcointalk.org/index.php?topic=5286821.20" title="arguing">arguing</a> about the yet-to-be-developed blacklist on the old Wasabi Wallet ANN thread. If you ask me, I&#8217;m not a fan of blacklisting, but as long as it never pulls a <a href="https://beincrypto.com/binance-singapore-blocks-withdrawals-to-privacy-focused-bitcoin-wallet/" title="Binance">Binance</a> and prevents people from using their coins, I&#8217;m good. <em>Edit May 2024:</em> Ironically it did just that &#8211; scroll down to the Wasabi sections for more details.</p>
-        <p>There do exist alternative Wasabi coordinators, but they are as scarce as mixers. Anybody is able to run a Wasabi coordinator (as well as a Whirlpool coordinator) if they want to.</p>
-        <h4 class="wp-block-heading" id="aioseo-disadvantages-of">Disadvantages Of Enhanced CoinJoin Wallets</h4>
-        <p>Well, there is only one <em>important</em> disadvantage: They are easy targets for law enforcement. Neither of the two coordinators I just mentioned exist anymore. There isn&#8217;t so much of a technological disadvantage as much as a legal disadvantage.</p>
-        <p>It is important to note that running a coordinator is completely legal. It&#8217;s only when money launderers use your service when the problem comes, as you don&#8217;t have the funds or resources to detect that. Besides, that would defeat the entire purpose of CoinJoin which is to make all bitcoins equal. Non-fungible in other words.</p>
-        <p>A few trivial disadvantages for using an enhanced coinjoin wallet:</p>
-        <ul>
-          <li>Bitcoin mixers make less money off of you</li>
-          <li>There are less bitcoins for the feds to seize if they ever shut down a mixer</li>
-          <li><a href="https://crypto.news/samourai-wallet-claims-wasabi-wallet-is-on-psyop/" title="Endless drama between competing wallet developers">Endless drama between competing wallet developers</a></li>
-          <li>You won&#8217;t need to look at a bitcoin mixer list like this one (just kidding)</li>
-        </ul>
-        <p>Hopefully none of these disadvantages put you off of these powerful wallets. Except maybe the last one, but you can always come back to <em>my</em> bitcoin mixer list at any time to see new updates about CoinJoin technology.</p>
-        <p>Meanwhile, bitcoin mixers became ever more popular thanks to them spending even more money on advertisement, especially on Bitcointalk. This would be the subject of a lot of <a href="https://bitcointalk.org/index.php?topic=5247288.0" title="infighting">infighting</a> and <a href="https://bitcointalk.org/index.php?topic=5220060.0" title="disagreement">disagreement</a>.</p>
-        <h3 class="wp-block-heading" id="aioseo-regulators-close-in-on-bitcoin-mixers">Regulators Close In On Bitcoin Mixers</h3>
-        <p>As I wrote earlier, criminals have already learned about bitcoin mixers, but would be only a matter of time before law enforcement caught up. And once they set up departments and offices for investigating mixers, they were ready to strike. One of the first mixers to get seized was a site called BestMixer. <a href="https://bitcointalk.org/index.php?topic=5146123.0" title="It only lasted for over a year">It only lasted for over a year</a> and was apparently used in a lot of money laundering cases.</p>
-        <p>Throughout the rest of the decade and the start of the new one, authorities worked diligently to identify which ones were the &#8220;bad mixers&#8221;. Then they&#8217;d get their mixer IP addresses and server locations, so that they could launch a raid of the servers. Some people claimed that bitcoin mixers in general were no longer <a href="https://bitcointalk.org/index.php?topic=5143267.0" title="safe">safe</a>, although evidence only points to previous heists and government actions. <a href="https://bitcointalk.org/index.php?topic=5185211.0" title="Frequent kidnapping activity">Frequent kidnapping activity</a> involving bitcoin (and possibly mixers) caused Nigeria to <a href="https://www.theguardian.com/technology/2021/jul/31/out-of-control-and-rising-why-bitcoin-has-nigerias-government-in-a-panic" title="banned">ban</a> it entirely, for example.</p>
-        <p>North Korea got in the act too. Its <a href="https://en.wikipedia.org/wiki/Lazarus_Group" title="414 Liaison Office">414 Liaison Office</a> started abusing bitcoin mixers by laundering stolen gains from cryptocurrency services. And that&#8217;s when the US <em>really</em> got ticked. The United States and other countries started to arrest many people who operated bitcoin mixers. And even people who wrote mixer software, whose purpose was to launder money. And they were <a href="https://bitcointalk.org/index.php?topic=5227233.0" title="ruthless">ruthless</a>. Seizures and sanctions had already been high through 2020. But two years later, they would accelerate.</p>
-        <p>I can&#8217;t really say this increased scrutiny was just on bitcoin mixers, because regulators started giving other services such as exchanges last warnings. A lot of exchanges closed shop in different parts of the world during that time. Also hardware wallet inspections <a href="https://bitcointalk.org/index.php?topic=5260116.0" title="started happening">started happening</a>.</p>
-        <h3 class="wp-block-heading" id="aioseo-exchanges-start-delisting-privacy-coins">Exchanges Start Delisting Privacy Coins</h3>
-        <p>The exchanges that chose to comply were forced to stop supporting privacy coins. Misinformed lawmakers believed that by stopping the purchase and sale of Monero, the crimes would stop. However, it is rarely as simple as that. Remember the bitcoin mixers I listed? None of them use Monero.</p>
-        <p>Binance, Coinbase, and FTX were among the large exchanges to drop privacy coins. Naturally this angered the communities of those cryptocurrencies, but they were holding on to exchanges. They continued to provide free access to buying and selling Monero. In that regard, we can say that the blockade failed.</p>
-        <p>On an unrelated note, it feels ironic that these &#8220;gatekeepers of crypto&#8221; would try to block privacy coins in the name of safety. And yet they actively promote harmful shitcoins that frequently result in a total loss of funds. That screams money more than anything else. Then again, by delisting Monero, they also lost money. So let this reinforce your beliefs that exchanges only care about profit over anything else blockchain.</p>
-        <h3 class="wp-block-heading" id="aioseo-the">The Second Wave Of Private Exchanges</h3>
-        <p>It is shortly after these events that a new generation of exchanges were being created. The old ones were still going strong, and remarkably were hardly subject to any criminal or government activity. The ones that did shut down did so voluntarily.</p>
-        <p>Exchanges such as <a href="https://learn.robosats.com/" title="Robosats">Robosats</a>, <a href="https://www.wizardswap.io/" title="Wizardswap">Wizardswap</a>, <a href="https://agoradesk.com/?language=en" title="Agoradesk">Agoradesk</a> and <a href="https://unstoppableswap.net/" title="UnstoppableSwap">UnstoppableSwap</a> were created during this period. A few <a href="https://bitcointalk.org/index.php?topic=5446315.msg61977036#msg61977036" title="scams">scams</a> were also created, but they must have realized that exchanges are not so profitable, because they all disappeared quickly.</p>
-        <p>It is also around this time when exchanges became widely adopted, mainly by people whose exchanges were giving them a hard time with their funds. Today they represent a glowing future of private coin exchanges, which can trade not only Bitcoin and Monero, but other coins such as Ethereum and stablecoins too.</p>
-        <h3 class="wp-block-heading" id="aioseo-the-use-of-sanctions-to-curtail-mixer-money-laundering">The Use Of Sanctions To Curtail Mixer Money Laundering</h3>
-        <p>Meanwhile, OFAC had already started sanctioning bitcoin addresses as early as <a href="https://bitcointalk.org/index.php?topic=5077471.0" title="2018">2018</a>. Now let me explain briefly why they would want to sanction an address. Sometimes, after they seize a bitcoin mixer, the owners manage to spirit some funds away. Like what Nazis <a href="https://en.wikipedia.org/wiki/Nazi_gold" title="tried">tried</a> to do during World War Two. Authorities must ensure criminals cannot cash out this money, so they add the addresses to OFAC&#8217;s blacklist. Exchanges are supposed to enforce this.</p>
-        <p>Now, it&#8217;s one thing when crypto companies want to maintain their own blacklists. It&#8217;s a whole different thing when governments make a blacklist, because those addresses were used for serious financial crimes. And it was not just bitcoin addresses either. Ethereum and other cryptocurrencies were flagged as well. And in particular, most stablecoin issuers can freeze any address they want to with a click of a button. Which is all the more reason why you should use DAI instead of USDT or USDC. But that&#8217;s another story.</p>
-        <p>In cases when sanctions were not required, it was because law enforcement was easily able to recover funds from people who thought merely <a href="https://bitcointalk.org/index.php?topic=5257516.0" title="stashing">stashing</a> them in cryptocurrency would provide anonymity. Boy were they wrong &#8211; as I have demonstrated at the beginning of this page.</p>
-        <h3 class="wp-block-heading" id="aioseo-tornado-cash">Tornado Cash</h3>
-        <p>The most high-profile mixer sanction award has to go to Tornado Cash. But you would not find it on any bitcoin mixer list, because it is not a bitcoin mixer. In fact, it is an open-source Ethereum mixer. Now I don&#8217;t claim to be an expert in Ethereum, but Tornado Cash was a smart contract. Then there would be dApps on top of it, which lets you use the mixer from a Web3 wallet.</p>
-        <p>When the <a href="https://www.bloomberg.com/news/newsletters/2023-08-24/why-sanctions-on-tornado-cash-founders-pose-existential-defi-threat-torn" title="sanction">sanction</a> hit in 2022, all these dApps started censoring access to the mixer. It even came to the point where the developers who made the mixer were <a href="https://www.theregister.com/2022/08/10/github_tornado_cookies/" title="deplatformed">de-platformed</a> and <a href="https://www.fiod.nl/arrest-of-suspected-developer-of-tornado-cash/" title="arrested">arrested</a>. It has raised some concerns in the DeFi community on how to deal with legal problems.</p>
-        <h3 class="wp-block-heading" id="aioseo-blender-io-and-sinbad">Blender.io and Sinbad</h3>
-        <p>Blender enjoyed an extremely brief time on Bitcointalk advertisements, before they themselves were sanctioned by OFAC on May 2022. I can probably explain the reason why their stint wasn&#8217;t longer is because they&#8217;ve only bought a few weeks worth of advertising. They also regularly had communication outages with the community, and it seems that they had finally disappeared by the time the sanction rolled out against them. Or did they?</p>
-        <p>About 5 months after they went dark, a new bitcoin mixer called Sinbad.io went <a href="https://bitcointalk.org/index.php?topic=5416985.0" title="live">live</a>. Everyone thought they were some new mixer, until Elliptic <a href="https://bitcointalk.org/index.php?topic=5454407.0" title="alleged">alleged</a> that the people who ran Blender sent it <a href="https://www.wired.com/story/sinbad-crypto-mixer-north-korean-hackers/" title="millions of dollars">millions of dollars</a> worth of cryptocurrency to start a new mixer. But nobody thought they were connected. Admittedly, I also did not think it was true at the time.</p>
-        <p>That all changed in November of 2023, when FIOD proudly <a href="https://www.fiod.nl/fiod-takes-large-crypto-currency-mixer-off-the-air/" title="announced">announced</a> in many <a href="https://bitcointalk.org/index.php?topic=5475952.0" title="place">place</a> that they had seized the Sinbad bitcoin mixer. All of a sudden, all Sinbad addresses were placed on the OFAC sanctions list, including addresses used for advertisement and promotion. I strongly believe that FIOD gave these addresses to the US Treasury. <a href="https://bitcointalk.org/index.php?topic=5476064.0" title="Bitcointalk advertisers narrowly escaped sanctions ">Bitcointalk advertisers narrowly escaped sanctions</a> (but never needed to worry about them in the first place as they are independent entities).</p>
-        <p>Interestingly, it appears that the Sinbad owner <em>Mehdi</em> is not on the run. He <a href="https://bitcointalk.org/index.php?topic=5416985.msg63244945#msg63244945" title="promised">promised</a> to post an update days after they seized the mixer, but the Bitcointalk administration banned his account before he could post it. Which makes sense if you think about it, because darknet sites are <a href="https://bitcointalk.org/index.php?topic=5416985.msg63245518#msg63245518" title="forbidden">forbidden</a> there.</p>
-        <h3 class="wp-block-heading" id="aioseo-bitcointalk-bans-bitcoin-mixers">Bitcointalk Bans Bitcoin Mixers</h3>
-        <p>The Sinbad case was the first time law enforcement seized a mixer and announced it on Bitcointalk. It appears that the administration was apprehensive that law enforcement could question or take an action against the forum, so it issued a <a href="https://bitcointalk.org/index.php?topic=5476162.0" title="total ban on mixer advertising">total ban on mixer advertising</a>. This came at a shock to pretty much everyone because the forum&#8217;s mission is &#8220;to be free as possible&#8221;. The community begrudgingly accepted it after much disquiet.</p>
-        <p>Such a ban meant that, among other things, making bitcoin mixer lists was no longer possible, hence why I created this site. It also brought the lush advertisement landscape for mixers to an end.</p>
-        <h2 class="wp-block-heading" id="aioseo-worldwide-crackdown-on-privacy">Worldwide Crackdown on Privacy</h2>
-        <p>As the Bitcointalk administrator predicted, the landscape became really dangerous for operators of bitcoin mixers. The federal governments around the world, and in particular Joe Biden&#8217;s administration, took it upon themselves to destroy any sort of semblance of privacy on Bitcoin. They openly started going after anyone running a service providing privacy of Bitcoin transactions, notlimited to bitcoin mixers, seizing infrastructure left and right, in the hopes that all Bitcoin users would just store their sats on Paypal or something.</p>
-        <p>Using warrants, police, and strongly-worded statements, they used all of their abilities to directly or indirectly take down many privacy services. As I am writing this, they are targetting more infrastructure as we speak. We should be greatful that this website, and bitcoin mixer lists in general, are protected by the First Amendment, though.</p>
-        <h3 id="aioseo-eu-failed-attemot-to-outlaw-crypto-transactions">EU&#8217;s Failed Attempt To Outlaw Crypto Transactions</h3>
-        <p>First, however, it was the European Union who tried to outlaw peer-to-peer Bitcoin transactions. In March of 2024, they were <a href="https://cointelegraph.com/news/eu-enacts-ban-on-anonymous-crypto-transactions-via-self-custody-wallets">discussing</a> a law that would require any peer-to-peer transaction with a value over €1000. Predictably, there was a lot of uproar about this in the crypto communities, and those provisions of the bill were killed later that month.</p>
-        <p>Had the bill passed, it would&#8217;ve had a catastrophic effect on crypto businesses, effectively spelling the end of many businesses that do not have (or don&#8217;t want to have) the resources and infrastructure for identifying everyone. It would have led to the centralization of all services to a few giant providers, who most likely do not care about user experience and ultimately excluding the unbanked class from using their services, as verification often requires a bank statement or utility bill anyway.</p>
-        <h3 class="wp-block-heading" id="aioseo-fbi-seizes-samourai-wallet">FBI Seizes Samourai Wallet</h3>
-        <p>On April 24, 2024, the FBI took away the servers hosting the Samourai Wallet website, their coordinator, and their apps and <a href="https://www.coindesk.com/policy/2024/04/24/samourai-wallet-founders-arrested-and-charged-with-money-laundering/">arrested</a> the two founders of Samourai Wallet, whose names are Keonne Rodriguez and William Hill. This was actually quite devastating news, not only because privacy advocates have lost one of the most private wallets to date, but because I had actually interviewed them while creating this website.</p>
-        <p>The FBI alledges that Samourai Wallet was used to launder over 100 million dollars, and that the two founders were personally responsible for that, since the government had no interest in actually tracking the money launderers themselves. They have been released on bail pending trial.</p>
-        <p>I do not believe that they had received a prior warning from the government prior to the takedown, because if that was the case, they would not have continued updating their warrant canary. It had received regular updates before this event. The takeaway from this is that the governments really don&#8217;t care whether you explicitly state that money launderers and other types of criminals are not allowed to use your platform. If they see that you are not a business and you are not demanding KYC information from everybody, they will just swoop in and take you down, warnings be damned.</p>
-        <h3 id="aioseo-us-governments-advisory-on-non-custodial-walelts">US Government&#8217;s Advisory On Non-Custodial Wallets</h3>
-        <p>The very next day, the FBI posted <a href="https://www.ic3.gov/Media/Y2024/PSA240425">this warning</a> to its website about using non-KYC crypto services. To quote: <em>&#8220;The FBI warns Americans against using cryptocurrency money transmitting services that are not registered as Money Services Businesses (MSB) [...] avoid cryptocurrency money transmitting services that do not collect know your customer (KYC) information from customers when required.&#8221;</em></p>
-        <p></p>Even though the state of identity verification in cryptocurrency services is woefully inadequate as I have already explained earlier on this page, it is apparently much easier for them to demand that every wallet and program collects the documents of all Bitcoin users, and then destroying the services who don&#8217;t comply. It certainly sounds easier than, you know, actually going after the money launderers and criminals on the darknet, right?</p>
-        <p>It would not surprise me one bit if a private citizen is paying for them to destroy Bitcoin privacy, in a similar way to how <a href="https://bitcoincleanup.com">Ripple&#8217;s creator was caught paying Greenpeace to attack Bitcoin</a>.</p>
-        <h3 id="aioseo-wallets-block-us-users">Wallets Block US Users</h3>
-        <p>If the goal of the FBI advisory was to spread FUD - Fear, unrest, and disruption - into the minds of Bitcoin users, then it certainly worked. The developers of many pieces of Bitcoin software rushed to ban Americans from using their software, as if that will actually save them from the Feds (see the previous section for more details). <a href="https://decrypt.co/229543/bitcoin-coin-mixers-shut-americans-out">Alarming reports</a> of Phoenix Wallet and Wasabi came out, stating their intent to ban all US users from accessing their software. This basically means IP restrictions will be put in place, while the apps themselves will be pulled from US app stores. For the record, though, most wallets held their own.</p>
-        <h3 id="aioseo-wasabi-coinjoin-shuts-down">Wasabi CoinJoin Shuts Down</h3>
-        <p>Apparently it was not enough for zkSNACKs to merely block US persons for accessing Wasabi Wallet entirely, but they felt the need to decommission their coordinator entirely. Thus, on May 2, 2024, about a week after the FBI seized Samourai Wallet, zkSNACKs <a href="https://blog.wasabiwallet.io/zksnacks-is-discontinuing-its-coinjoin-coordination-service-1st-of-june/">announced</a> that it would shut down the Wasabi Wallet coordinator by the first of June that year. This completed a stunning u-turn from its intent to implement UTXO blacklisting made two years prior. It turns out that not even filtering is going to appease the government of money laundering concerns with bitcoin services.</p>
-        <p>In the days that followed, a new wallet software called <a href="https://gingerwallet.io/">Ginger Wallet</a> was made, which is compatible with Wasabi Wallet. Unfortuantely this software is also blocked for US users, the reason being that nobody knows the government&#8217;s stance on coinjoins yet. Also independent, a community-ran coordinator called <a href="https://opencoordinator.org">OpenCoordinator</a> was created, without such restrictions.</p>
-        <h3 id="aioseo-edward-snowden-final-warning-for-bitcoin">Edward Snowden: Final Warning for Bitcoin</h3>
-        <p>In the midst of all this chaos, Edward Snowden highlighted the importance of Bitcoin to natively gain privacy-enhancing capabilities:</p>
-        <figure class="wp-block-pullquote">
-          <blockquote>
-            <p>&#8220;I&#8217;ve been warning Bitcoin developers for ten years that privacy needs to be provided for at the protocol level. This is the final warning. The clock is ticking.&#8221;</p><cite>Edward Snowden (<a href="https://twitter.com/Snowden/status/1786170805728039127">Source</a>)</cite>
-          </blockquote>
-        </figure>
-        <p>Ultimately, he is right. The clock is ticking, and with the elimination of independent CoinJoin services &#8211; only JoinMarket remains &#8211; it is up to us, the Bitcoin community, to figure out a solution for this before it is too late.</p>
-        <p>As I was writing this, the crypto world was rocked with news that LocalMonero and its other site Agoradesk were going to <a href="https://protos.com/the-rise-and-fall-of-localmonero/">shut down</a> by the end of the week.</p>
-        <h3 id="aioseo-other-justice-department-actions">Other Justice Department Actions</h3>
-        <p>While Snowden was waiting nervously for the Bitcoin developers to make Bitcoin more private, The US Department of Justice (DoJ) was making moves too. They put the Tornado Cash developers on trial, but thanks to an <a href="https://blockonomi.com/tornado-cash-legal-defense-fund-raises-over-2-million-bolstered-by-vitalik-buterins-contribution/">outstanding amount of community donations</a> not only from people like Vitalik Buterin but also from grassroots privacy projects, the project won a ruling in their favor.</p>
-        <p>The EU also passed <a href="https://www.forbes.com/sites/digital-assets/2024/12/03/what-you-should-know-about-the-latest-mica-regulations-coming-december/">MiCA regulations</a> at the end of 2024 that aim to tighten their grip on crypocurrencies.</p>
-        <p>Somehow, the people who were running Sinbad were located and <a href="https://www.justice.gov/opa/pr/operators-cryptocurrency-mixers-charged-money-laundering">arrested</a> by authorities, who in their official statement made concealed shots at Bitcointalk.org. At any rate, mixers are doing fine now. The majority of them have moved to the Altcoinstalks forum for marketing.</p>
-        <h2 class="wp-block-heading" id="aioseo-why-bitcoin-mixers-are-necessary">Why Bitcoin Mixers are Necessary</h2>
-        <p>At this point, you probably read this history, and might have concluded that a bitcoin mixer list might be a <em>bad</em> thing. Or, you may also think it is a good thing. But here is why you should be optimistic about mixers in the long term.</p>
-        <h3 class="wp-block-heading" id="aioseo-its-much-easier-to-create-a-website-than-a-wallet">It&#8217;s Much Easier To Create A Website Than A Wallet</h3>
-        <p>Firstly, when I say wallet, I mean wallet software. Wasabi and Samourai in their current form, used up a lot of R&amp;D before their developers made them. Developers have put years of research into these wallets so they can have the best and latest privacy features. From 2015 up to now, there have only been three bitcoin wallets with CoinJoin. Compare that with about ten times as many bitcoin mixers during that timeline. <strong>Additional mixers and CoinJoin wallets ensure decentralization of privacy.</strong></p>
-        <h3 class="wp-block-heading" id="aioseo-coordinator-deposits-might-be-blocked-by-exchanges">Exchanges Might Block Coordinator Deposits</h3>
-        <p>Remember how I said there are only three coinjoin wallets? That makes it easy for exchanges such as Binance to block their destination addresses. This is despite the fact that they are not bitcoin mixers and are just privacy technologies. The rate of the number of mixers appearing will overwhelm some exchanges, who won&#8217;t have time to identify their addresses as a result. I know some people who sent mixed coins to an exchange without any issue. But obviously not all mixers are treated equally, so do your research.</p>
-        <h3 class="wp-block-heading" id="aioseo-coordinators-could-be-censored">Countries Could Censor Coordinators</h3>
-        <p>If you live in a censorship-heavy country, chances are that all of the CoinJoin wallets are blocked by domain and IP addresses. Normally in this case, you would download Tor Browser. But if their website is not accessible too, then you&#8217;ll need to look for a bitcoin mixer that is available.</p>
-        <p>Since writing this, the situation has actually become worse: Now we have instances of the services themselves censoring access to their own service.</p>
-        <h3 class="wp-block-heading" id="aioseo-ease-of-use">Ease Of Use</h3>
-        <p>This is not a strong reason since CoinJoins are just as easy to use in Wasabi and Samourai wallets. However, there&#8217;s no software you have to install in order to use a mixer. This means you can send the mixed coins to any wallet, while saving on transaction fees needed to sweep your coins otherwise.</p>
-        <h3 class="wp-block-heading" id="aioseo-other-reasons-why-you-might-use-a-mixer">Other Reasons Why You Might Use A Bitcoin Mixer</h3>
-        <p>But sometimes, you need to mix some bitcoin quickly, maybe you don&#8217;t trust the person who gave you the coins. Maybe you are taking a stand against &#8220;blockchain taint&#8221;. Or maybe you are an activist or some other kind of person who police unfairly go after. Or perhaps you are just an ordinary person who is not savvy in bitcoin. All in all, if you find the wallet interfaces too clunky,</p>
-        <p><a href="https://bitcointalk.org/index.php?topic=509144.0" title="Here is a very good thread">Here is a very good thread</a> from 2014 which explains why people should use mixers, and look one up on a bitcoin mixer list to protect themselves. This is especially true for people who keep their coins on an exchange. By the way, recent events should have shown you that&#8217;s not a safe place to keep them in the first place.</p>
-        <p>As of 2024, we are heading into a dystopian world where there is no privacy in any of your online activities, and, at least in the developed countries, even in your <em>offline</em> activities. As corporations and governments learn the true value of your personal information &#8211; for profit and for control respectively &#8211; they are doing everything in their power to extract and analyze every single byte of your data, and it is up to you to protect yourself and your information if you don&#8217;t want to find it for sale on the dark web, or used to arbitrarily arrest or otherwise &#8220;shadow ban&#8221; you. This includes your financial information, which various malefactors actively seek out to <em>hurt you</em>. So do you really think that succumbing to government advisories and regulation is going to save you? Maybe you think it would, but it will actually just accelerate your bitcoin-related data collection.</p>
-        <h2 class="wp-block-heading" id="aioseo-what-is-a-bitcoin-mixer">Why Does Law Enforcement Hate Bitcoin Mixers?</h2>
-        <p>Governments have a thing against bitcoin mixers because bad guys use them from crime. There&#8217;s no conspiracy theory about governments trying to dismantle Bitcoin or anything like that, but there are <a href="https://en.wikipedia.org/wiki/Jamie_Dimon" title="salty bank chairmen">salty bank chairmen</a> who&#8217;d like to. For the most part, politicians around the world actually see the benefits of cryptocurrency. A few more would agree with this bitcoin mixer list.</p>
-        <p>Unfortunately, there are also a lot of politicians from the old, pre-technology age who do not understand crypto. They are also quick to make judgments about it. Examples should be quite obvious since you can read them in the news on a near-daily basis. So this is where the majority of negative crypto action comes from.</p>
-        <p>Bitcoin mixers, and for that matter, CoinJoin wallets and exchanges, are all abused by criminals, and that is not going to change anytime soon, if ever. But the last thing we need is <a href="https://www.dnb.nl/en/innovations-in-payments-and-banking/digital-euro-what-why-and-how/" title="complete, Orwellian surveillance">complete, Orwellian surveillance</a> over our digital transactions. That is why people make bitcoin mixers. Even the wallets that implement blacklisting do so begrudgingly, because the natural evolution of that is to decide who gets to use your service and who can&#8217;t. (Like PayPal.)</p>
-        <h2 class="wp-block-heading" id="aioseo-which-privacy-method-is-best">Which Is Most Private: Mixers, exchanges, or CoinJoins?</h2>
-        <p>By far and away, the most private method for anonymizing your Bitcoins is by using CoinJoins, followed by exchanges, followed by mixers. The reason behind this is simple: CoinJoins are a built-in part of the protocol and thus leave little trace. Exchanges use ordinary transactions, but if sent between exchanges via Monero, offer equivalent anonymity, but it&#8217;s slightly harder to do. Mixers are centralized, and you need to trust them to not keep logs and <a href="https://bitcointalk.org/index.php?topic=5117328.0" title="to set up their sites properly">to set up their sites properly</a>. And there is the risk that they might be a honeypot.</p>
-        <p>Although as I wrote earlier, <strong>all</strong> of these methods must exist for Bitcoin to be healthy. Because without bitcoin mixers, law enforcement would be going after exchanges or CoinJoin wallets instead. Is that a future we want?</p>
-        <h2 class="wp-block-heading" id="aioseo-how-a-bitcoin-mixer-works">How A Bitcoin Mixer Works</h2>
-        <figure class="wp-block-image size-large is-style-default"><img data-dominant-color="1c201e" data-has-transparency="true" style="--dominant-color: #1c201e;" decoding="async" width="1024" height="826" src="wp-content/uploads/2023/12/deposit-1024x826.png" alt="A user interface of a bitcoin mixer" class="has-transparency wp-image-935" srcset="wp-content/uploads/2023/12/deposit-1024x826.png 1024w, wp-content/uploads/2023/12/deposit-300x242.png 300w, wp-content/uploads/2023/12/deposit-768x620.png 768w, wp-content/uploads/2023/12/deposit.png 1300w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
-        <p>Most modern bitcoin mixers create a session for each user. Each one calls it a different name, but they all look something like the one showed in this picture. (It is defunct, by the way.) The session key is so that you can close the browser, open it later, and then type the key in order to withdraw your bitcoins manually. As such, it is sort of like a password which must be kept secret. Some mixers like the one pictured use a public and private key instead of just one key. Think of it like using SSH keypairs instead of passwords.</p>
-        <p>To start, bitcoin mixers have a large number of transaction outputs before they start the service. It is common for them to have thousands, tens of thousands, or even hundreds of thousands of outputs. Ideally they would receive each transaction output in a different address, in a fixed size. Having coins in fixed sizes like 1 BTC, 0.1 BTC, 0.01 BTC, makes each balance look the same and makes blockchain analysis harder (but not impossible).</p>
-        <p>The above is very important &#8211; if a bitcoin mixer does not start off with a large enough output set, then someone can easily analyze the whole transaction history at once, and the anonymity is reduced to that of a single (giant) CoinJoin.</p>
-        <p>After you create your session, the mixer automatically generates a personal address. Then it waits for you to deposit any amount of bitcoin, and it breaks it into equally-sized pieces as I explained above. Additionally, there may also be an option to donate some of the deposit to the mixer so that you receive less bitcoins. This makes the deposit and withdrawal look like they are from different people.</p>
-        <h3 class="wp-block-heading" id="aioseo-mixers-and-aml-scores">Mixers and AML Scores</h3>
-        <p>AML scores are values between 0 and 100 percent that are calculated by blockchain analysis companies to determine the lkelihood of a particular bitcoin UTXO coming from money laundering activities. It is not a flawless system but it is the basis by which many exchangers decide whether or not to demand KYC from you in order to complete the exchange.</p>
-        <p>Generally, the scores are usually either 0, 25, 50, 75, or 100. Values closer to zero and 25 are UTXOs from mined blocks, exchange withdrawals, coins obtained by payment processors, and inter-wallet transfers. Of course, blockchain analysis can&#8217;t know for sure what kind of activity is associated with an address without corroborating other data from the public internet, which is what they do.</p>
-        <p>Scores closer to 75 and 100 are given to addresses associated with sanctions, scams, gambling, and &#8211; you guessed it &#8211; mixers. Mixers are flagged indescriminately despite the fact that it is impossible to unmask the previous transaction history of mixed funds. However, they do this as a sort of blanket ban.</p>
-        <p>As a result of this, funds from exchange withdrawals are highly sought after by mixers, as they ensure that the mixed funds have a low or zero score associated with them. Some go as far as paying large premiums for those coins, such as Jambler.</p>
-        <h3 class="wp-block-heading" id="aioseo-withdrawing-coins-from-a-mixer">Withdrawing Coins From A Mixer</h3>
-        <p>A bitcoin mixer usually takes a long time to mix the coins. That is because it tries to space out each transaction of the mix into variably-separated blocks so that the timestamps don&#8217;t look too close to each other. Also, sending the mixed bitcoins to the destination right after the mix will give it away too. So mixers usually take one of three approaches:</p>
-        <ul>
-          <li>They automatically send you the withdrawal bit by bit, waiting for some time in between</li>
-          <li>The mixer waits for you to manually initiate a complete withdrawal</li>
-          <li>They give you a set of private keys which you should import in a wallet</li>
-        </ul>
-        <p>Additionally, most mixers allow you to split the withdrawal into many addresses for extra privacy.</p>
-        <p>The most important piece of the setup is the Letter of Guarantee. This is a file with a PGP signature, and contains proof that you started a mix. You download this letter when you begin each session, and it allows you to get your coins out if the mixing process messes up. In order to make the process work, bitcoin mixers put a public key on their website. They also made a private key for PGP and keep it. Most mixers keep the private key on the server so that they can automatically generate letters. But this approach allows law enforcement to compromise the whole mixer, if they seize the server.</p>
-        <h2 class="wp-block-heading" id="aioseo-bitcoin-mixer-list-faq">Bitcoin Mixer List FAQ</h2>
-        <p>Finally, you can find the answer to any topic that I didn&#8217;t write about above in here.</p>
-        <div data-schema-only="false" class="wp-block-aioseo-faq" id="aioseo-why-is-it-called-a-bitcoin-mixer">
-          <h3 class="aioseo-faq-block-question">Why Is It Called A Bitcoin Mixer?</h3>
-          <div class="aioseo-faq-block-answer">
-            <p>It&#8217;s called a bitcoin mixer because it&#8217;s like a kitchen mixer. Other names for it are bitcoin tumbler, and bitcoin blender.</p>
+        <p>Special thanks to <a href="https://wabisator.com/">Wabisator</a> for comiling the coordinators. You can go to their website to download their config and JSON. Please note that coordiantors are very volatile and go up &amp; down frequently.</p>
+                <div class="vg-verify">
+          <div id="scamwhammer">
+            <h2>Mixer Legit Or Scam Lookup</h2>
+            <p>Introducing my brand-new tool for checking the veracity of a mixer link, powered by the <a href="https://gist.githubusercontent.com/ZenulAbidin/511d531980c44051cfafd11b2e3c9dda/raw/scamwhammer-mixers.txt" rel="nofollow noreferrer" target="_blank">ScamWhammer</a> database.</p>
+            <p>ScamWhammer is a database of scam websites that I created in mid-2020. It is aggregated from many current and defunct lists. It is a watered-down version of the original list containing only links to mixers. This database is <strong>completely free to use, with no attribution required.</strong></strong></p>
+            <p>Now you can check whether any mixer is a legit or scam using this tool. Simply type the domain name of the mixer without https prefix. It even works for Tor onion links. ScamWhammer requires Javascript to work.</p>
+            <form id="urlForm" onsubmit="checkUrl(event)">
+              <input type="text" id="urlInput" placeholder="Enter mixer URL (e.g., anonymixer.com)" required>
+              <br>
+              <button type="submit" id="ScamWhammerButton">Check URL</button>
+            </form>
           </div>
-        </div>
-        <div data-schema-only="false" class="wp-block-aioseo-faq" id="aioseo-are-bitcoin-mixers-legal">
-          <h3 class="aioseo-faq-block-question">Are Bitcoin Mixers Legal?</h3>
-          <div class="aioseo-faq-block-answer">
-            <p>For now, yes. No country has specifically outlawed the use of bitcoin mixers yet. This page will be updated as the legal landscape changes.</p>
+          <div id="letter-verify">
+            <h2>Verify Letter of Guarantee</h2>
+            <p>This brand-new tool allows you to verify the letter of guarantee that you receive from any mixer, without installing special software. It requires Javascript to work.</p>
+            <p>It is <strong>very important</strong> that you authenticate your letter of guarrantee to avoid getting scammed, as the letter acts as a legally-binding contract between you and mixer, and insures you from potential loss.</strong> It is the only way you can get customer support or a refund if something goes wrong during a mix.</p>
+            <p>This verification tool runs locally on your browser and does not use browser APIs or fetch data or scripts from other servers. You can even run it offline.</p>
+            <select id="mixerSelect">
+                <option value="">Select a mixer</option>
+                <option value="mixer.money">Mixer.money</option>
+                <option value="mixtum.io">MixTum</option>
+                <option value="coinomize.biz">Coinomize</option>
+                <option value="anonymizer.com">Anonymizer</option>
+                <option value="webmixer.io">Webmixer</option>
+                <option value="mixtura.money">Mixtura.money</option>
+                <option value="mixero.io">Mixero</option>
+                <option value="bitmixer.online">Bitmixer.online</option>
+                <option value="mixy.money">Mixy.money</option>
+                <option value="mixerdream.com">Mixerdream</option>
+                <option value="thormixer.io">Thormixer</option>
+                <option value="jokermix.to">JokerMix</option>
+                <option value="swamplizard.io">Swamplizard</option>
+                <option value="genesismix.cx">GenesisMix</option>
+                <option value="okmix.io">Okmix</option>
+                <option value="cointor.org">CoinTor</option>
+                <option value="reumix.io">Reumix</option>
+                <option value="zeusmix.to">Zeusmix</option>
+            </select>
+            <textarea id="messageTextArea" rows="10" placeholder="Paste the letter of guarantee here..."></textarea>
+            <button id="verifyButton">Verify</button>
           </div>
-        </div>
-        <div data-schema-only="false" class="wp-block-aioseo-faq" id="aioseo-do-bitcoin-mixers-make-me-anonymous">
-          <h3 class="aioseo-faq-block-question">Do Bitcoin Mixers Make Me Anonymous?</h3>
-          <div class="aioseo-faq-block-answer">
-            <p>No, most mixers do not configure their servers properly for providing complete anonymity. There are exceptions though. But I cannot fully verify them.</p>
-          </div>
-        </div>
-        <div data-schema-only="false" class="wp-block-aioseo-faq" id="aioseo-can-bitcoin-mixers-be-traced-by-authorities">
-          <h3 class="aioseo-faq-block-question">Can Bitcoin Mixers Be Traced By Authorities?</h3>
-          <div class="aioseo-faq-block-answer">
-            <p>Yes. For reasons mentioned above, a lot of bitcoin mixers&#8217; anonymity can be severely weakened by thorough blockchain analysis.</p>
-          </div>
-        </div>
-        <div data-schema-only="false" class="wp-block-aioseo-faq" id="aioseo-how-can-i-choose-a-reliable-bitcoin-mixer">
-          <h3 class="aioseo-faq-block-question">How Can I Choose A Reliable Bitcoin Mixer?</h3>
-          <div class="aioseo-faq-block-answer">
-            <p>First check the URL of the bitcoin mixer, and make sure it matches the one listed here. This is to avoid copycats. Then, check the age. An older mixer is usually more reliable, but this may not always be the case.</p>
-          </div>
-        </div>
-        <div data-schema-only="false" class="wp-block-aioseo-faq" id="aioseo-why-did-you-make-this-bitcoin-mixer-list">
-          <h3 class="aioseo-faq-block-question">Why Did You Make This Bitcoin Mixer List?</h3>
-          <div class="aioseo-faq-block-answer">
-            <p>It is necessary to protect the freedom to information. Since linking to bitcoin mixers will no longer be allowed on Bitcointalk, they needed to find a new home.</p>
-          </div>
-          <div data-schema-only="false" class="wp-block-aioseo-faq" id="aioseo-why-so-many-mirrors">
-            <h3 class="aioseo-faq-block-question">Why So Many Mirrors?</h3>
-            <div class="aioseo-faq-block-answer">
-              <p>Originally, I just planned to have a single web site. But apparently, somebody who really hates mixers was trying to organize an effort to knock BitMixList off the internet. Presumably it was threatening the Google search placements of their phishing sites. This network of mirrors ensures that nobody will ever be able to censor this page, even if they succeed in taking down some pages.</p>
-            </div>
-          </div>
-          <div class="post-tags"></div>
+      </div>
+        <p>If we ever shut down for any reason, there is another service directory at <a href="https://bitlist.co">BitList</a> I can vouch for.</p>
         </div>
     </main>
     <footer id="site-footer" class="site-footer" role="contentinfo"></footer>
     <div class="footer">
       <div>Copyright © 2023-2025 <strong><a href="https://bitcointalk.org/index.php?action=profile;u=2739424">NotATether</a></strong>.</div>
-      <div>For general inquiries, email: admin [at] notatether [dot] com</div>
-      <div>Law enforcement: to get a site removed, contact: legal [at] notatether [dot] com, and we will cooperate fully with your request.</div>
+      <div>Contact: admin [at] notatether [dot] com</div>
       <div><em>Disclaimers:</em></div>
-      <div>BitMixList does not knowingly promote sites engaged in money laundering, and only lists websites that are compliant with the law.</div>
-      <div>BitMixList removes malicious websites as soon as they are discovered, which can take a few business days at most.</div>
-      <div>BitMixList and NotATether are independent entities and are not directly affiliated with any of the services on this website.</div>
-      <div>You should only mix funds you have obtained lawfully!</div>
-      <hr/>
-      <div>
-        <script src="https://widgets.coingecko.com/gecko-coin-converter-widget.js"></script>
-        <gecko-coin-converter-widget locale="en" dark-mode="true" outlined="true" coin-id="bitcoin" initial-currency="usd"></gecko-coin-converter-widget>
+      <div>Only mix funds you have obtained lawfully.</div>
+      <div>Do not use BitMixList for money laundering!</div>
+      <hr>
+      <div>Donate (Click to get addresses)</div>
+      <div class="donate">
+        <div><a href="bitcoin:bc1q6sac2xn46fwtv3jqtn606pewz8w6r7hlnwzgvp?amount=0.0001"><img width="150px" src="wp-content/uploads/2023/12/bitcoin.png" title="Donate with Bitcoin"></a></div>
+        <div><a href="monero:89m7X1HMSiY1jy175wSmsrZ6Bzmeo1DUPgVsxP2d9qcDMScoB9YgJmKBLWhQy72E4fiEysHY1rMuQUP965vsAwrU3ktAN1E?tx_amount=0.050000000000"><img width="150px" src="wp-content/uploads/2023/12/monero.png" title="Donate with Monero"></a></div>
       </div>
-      <div>Donate:</div>
-      <div><a href="bitcoin:bc1q6sac2xn46fwtv3jqtn606pewz8w6r7hlnwzgvp?amount=0.0001"><img width="200px" src="wp-content/uploads/2023/12/bitcoin.png" title="Donate with Bitcoin"></a></div>
     </div>
     <script data-optimized="1" src="wp-content/litespeed/js/1d034a87d61ff5f30ca39d179529e895.js" defer></script>
     <script src="wp-content/litespeed/js/openpgp.min.js" defer></script>

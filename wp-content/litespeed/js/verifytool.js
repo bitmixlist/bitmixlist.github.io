@@ -200,6 +200,60 @@ const keys = [
         mnIRZhQoqfKe0kViRodjgUUHd3qkjMRXha9IkPKx4o8iNhaoeUz5RaRq
         =QlMo
         -----END PGP PUBLIC KEY BLOCK-----`),
+    cleanPGPKey(`
+        -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+        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
+        6A==
+        =2Abo
+        -----END PGP PUBLIC KEY BLOCK-----
+        `)
     // Add other keys or addresses as necessary
 ];
 
@@ -274,7 +328,9 @@ const mixerDetails = {
             const address = message.match(/-----START SIGNING ADDRESS-----(.*?)-----END SIGNING ADDRESS-----/s)[1].trim();
             return { body, signature, address };
         }
-    }
+    },
+    'remix.io': { type: 'none' },
+    'zeusmix.to': { type: 'pgp', keyIndex: 8 },
 };
 
 function vrVerify(vrMsg) {
@@ -343,7 +399,7 @@ document.getElementById('verifyButton').addEventListener('click', function() {
             return;
         }
         else if (mixerInfo.type === 'none') {
-            alert('No verification method available for this mixer.');
+            alert('Verification for this mixer is not supported.');
             return;
         }
 
