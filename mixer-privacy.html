@@ -123,28 +123,108 @@
       // Mobile menu functionality
       document.addEventListener('DOMContentLoaded', function() {
         const menuToggle = document.querySelector('.mobile-menu-toggle');
+        const sidebarToggle = document.querySelector('.sidebar-menu-toggle');
         const sidebar = document.querySelector('.sidebar');
-        
+        const overlay = document.querySelector('.sidebar-overlay');
+        const navLinks = document.querySelectorAll('.nav-menu .nav-link');
+        const sections = document.querySelectorAll('section[id]');
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function syncOverlay() {
+          if (!overlay) {
+            return;
+          }
+
+          const shouldShow = !!(sidebar && sidebar.classList.contains('active') && window.innerWidth <= 1024);
+
+          if (shouldShow) {
+            overlay.classList.add('active');
+          } else {
+            overlay.classList.remove('active');
+          }
+        }
+
+        function toggleSidebar() {
+          if (!sidebar) {
+            return;
+          }
+          sidebar.classList.toggle('active');
+          syncOverlay();
+        }
+
+        function closeSidebar() {
+          if (!sidebar) {
+            return;
+          }
+          sidebar.classList.remove('active');
+          syncOverlay();
+        }
+
         if (menuToggle && sidebar) {
-          menuToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('active');
+          menuToggle.addEventListener('click', function(event) {
+            event.stopPropagation();
+            toggleSidebar();
           });
         }
 
-        // Close sidebar when clicking outside
+        if (sidebarToggle && sidebar) {
+          sidebarToggle.addEventListener('click', function(event) {
+            event.stopPropagation();
+            toggleSidebar();
+          });
+        }
+
+        if (overlay) {
+          overlay.addEventListener('click', closeSidebar);
+        }
+
+        if (sidebar) {
+          sidebar.addEventListener('touchstart', function(event) {
+            touchStartX = event.touches[0].clientX;
+            touchEndX = touchStartX;
+          }, { passive: true });
+
+          sidebar.addEventListener('touchmove', function(event) {
+            touchEndX = event.touches[0].clientX;
+          }, { passive: true });
+
+          sidebar.addEventListener('touchend', function() {
+            const swipeDistance = touchStartX - touchEndX;
+            if (swipeDistance > 50 && window.innerWidth <= 1024) {
+              closeSidebar();
+            }
+          });
+        }
+
+        navLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            if (window.innerWidth <= 1024) {
+              setTimeout(closeSidebar, 150);
+            }
+          });
+        });
+
         document.addEventListener('click', function(event) {
-          if (sidebar.classList.contains('active') && 
-              !sidebar.contains(event.target) && 
-              !menuToggle.contains(event.target)) {
-            sidebar.classList.remove('active');
+          if (!sidebar || !sidebar.classList.contains('active')) {
+            return;
+          }
+
+          const clickedToggle = (menuToggle && menuToggle.contains(event.target)) ||
+                                (sidebarToggle && sidebarToggle.contains(event.target));
+
+          if (!sidebar.contains(event.target) && !clickedToggle) {
+            closeSidebar();
           }
         });
 
-        // Highlight active section in sidebar
-        const navLinks = document.querySelectorAll('.nav-menu .nav-link');
-        const sections = document.querySelectorAll('section[id]');
+        window.addEventListener('resize', syncOverlay);
 
         function highlightCurrentSection() {
+          if (!sections.length) {
+            return;
+          }
+
           const scrollY = window.scrollY;
 
           sections.forEach(section => {
@@ -164,6 +244,8 @@
         }
 
         window.addEventListener('scroll', highlightCurrentSection);
+        highlightCurrentSection();
+        syncOverlay();
       });
     </script>
   </head>
@@ -173,6 +255,7 @@
     <!-- Sidebar Navigation -->
     <nav class="sidebar">
       <div class="logo-container">
+        <button class="sidebar-menu-toggle" aria-label="Collapse navigation menu">☰</button>
         <a href="index.html" class="custom-logo-link" rel="home" aria-current="page">
           <img width="200" src="wp-content/uploads/2023/12/logo-2-e1702276596201.png" class="custom-logo has-transparency" alt="BitMixList" decoding="async" fetchpriority="high" data-has-transparency="true" data-dominant-color="955ff5" alt="BitMixList - Bitcoin Mixer List"/>
         </a>
@@ -233,6 +316,7 @@
         <li class="menu-item"><a href="privacy-tools.html" class="nav-link">Privacy Tools</a></li>
       </ul>
     </nav>
+    <div class="sidebar-overlay" aria-hidden="true"></div>
 
     <div class="site-content-wrapper">
       <header id="site-header" class="site-header" role="banner">

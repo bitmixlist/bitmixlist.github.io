@@ -100,8 +100,30 @@ th, td {
     z-index: 1001;
 }
 
-.mobile-menu-toggle:hover {
+.mobile-menu-toggle:hover,
+.mobile-menu-toggle:focus-visible,
+.mobile-menu-toggle:active {
     color: #bb86fc;
+    background-color: transparent;
+}
+
+.sidebar-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #e0e0e0;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    background-color: transparent;
+    transition: color 0.3s ease;
+}
+
+.sidebar-menu-toggle:hover,
+.sidebar-menu-toggle:focus-visible,
+.sidebar-menu-toggle:active {
+    color: #bb86fc;
+    background-color: transparent;
 }
 
 /* Sidebar styles */
@@ -124,15 +146,18 @@ th, td {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 1rem;
-    text-align: center;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
     background-color: #1e1e1e;
     z-index: 2;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar .logo-container img {
-    max-width: 180px;
+    max-width: 150px;
     height: auto;
 }
 
@@ -199,35 +224,72 @@ th, td {
     display: none;
 }
 
-/* Responsive design */
-@media screen and (max-width: 1024px) {
-    .sidebar {
-        width: 200px;
-    }
-    
-    .site-content-wrapper {
-        margin-left: 200px;
-    }
+.sidebar-overlay {
+    display: none;
 }
 
-@media screen and (max-width: 768px) {
-    .mobile-menu-toggle {
+/* Responsive design */
+@media screen and (max-width: 1024px) {
+    .mobile-menu-toggle,
+    .sidebar-menu-toggle {
         display: block;
     }
 
     .sidebar {
-        transform: translateX(-100%);
         width: 250px;
+        transform: translateX(-100%);
     }
 
     .sidebar.active {
         transform: translateX(0);
     }
 
-    .site-content-wrapper {
-        margin-left: 0;
+    .sidebar .logo-container {
+        justify-content: flex-start;
     }
 
+    .site-content-wrapper {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .site-main,
+    .page-content {
+        max-width: none;
+        width: 100%;
+        margin: 0;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        box-sizing: border-box;
+    }
+
+    body .is-layout-constrained>:where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+        max-width: none;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .sidebar-overlay {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.6);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 1000;
+    }
+
+    .sidebar-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+@media screen and (max-width: 768px) {
     .sylvester-top {
         display: none;
     }
