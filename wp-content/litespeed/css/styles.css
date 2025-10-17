@@ -102,6 +102,7 @@ th, td {
 
 .mobile-menu-toggle:hover,
 .mobile-menu-toggle:focus-visible,
+.mobile-menu-toggle:focus,
 .mobile-menu-toggle:active {
     color: #bb86fc;
     background-color: transparent;
@@ -122,6 +123,7 @@ th, td {
 
 .sidebar-menu-toggle:hover,
 .sidebar-menu-toggle:focus-visible,
+.sidebar-menu-toggle:focus,
 .sidebar-menu-toggle:active {
     color: #bb86fc;
     background-color: transparent;
