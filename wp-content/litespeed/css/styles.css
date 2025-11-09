@@ -422,6 +422,13 @@ scroll-padding-top: 50px; /* Alternative approach for browsers that don't suppor
 
 /* Ensure main content doesn't overflow */
 .site-content-wrapper {
-width: 100%;
-overflow-x: hidden;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+@media screen and (min-width: 1025px) {
+    .site-content-wrapper {
+        width: auto;
+        padding: 0 2rem;
+    }
 }
