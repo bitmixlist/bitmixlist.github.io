@@ -244,6 +244,10 @@ th, td {
     }
 }
 
+/* We intentionally leave oversized padding for mobile as a guard
+ * against overflowing headers covering the banners
+ */
+
 .sylvester-top-mobile {
     display: none;
 }
