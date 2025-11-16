@@ -231,6 +231,7 @@ th, td {
 /* Ad banners */
 .sylvester-top,
 .sylvester-top-mobile {
+    margin-top: 6rem;
     text-align: center;
     padding: 1rem 0;
     background-color: #1a1a1a;
