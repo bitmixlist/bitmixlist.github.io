@@ -278,8 +278,8 @@
 
 
           /* Bail out on Chrome/Firefox/Edge < 88 and Safari < 14.1 */
-          @supports not (width: fit-content) and not (inset: 0) {
-            [popover]:not(.\:popover-open) {
+          @supports  not (inset: 0) {
+            .config-popover {
               display: none;
             }
           }
