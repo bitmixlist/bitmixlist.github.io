@@ -1303,47 +1303,6 @@
     <script src="wp-content/litespeed/js/verifytool.js" defer></script>
     <script src="wp-content/litespeed/js/scamwhammer.js" defer></script>
     <script src="wp-content/litespeed/js/popover.min.js" defer></script>
-    <script>
-    // Fallback for browsers without Popover API (e.g., iOS 12 Safari)
-    if (!('showPopover' in HTMLElement)) {
-      // Handle "Show Config" buttons (toggle)
-      document.querySelectorAll('.config-button').forEach(button => {
-        button.addEventListener('click', () => {
-          const targetId = button.getAttribute('popovertarget');
-          const popover = document.getElementById(targetId);
-          if (popover) {
-            if (popover.hasAttribute('hidden')) {
-              popover.removeAttribute('hidden');
-              // Optional: Add a class for basic overlay positioning if needed
-              popover.style.position = 'absolute';
-              popover.style.zIndex = '1000';
-              popover.style.background = 'white';
-              popover.style.border = '1px solid #ccc';
-              popover.style.padding = '1rem';
-              // Position relative to button (rough; tweak as needed)
-              const rect = button.getBoundingClientRect();
-              popover.style.top = `${rect.bottom + window.scrollY}px`;
-              popover.style.left = `${rect.left + window.scrollX}px`;
-            } else {
-              popover.setAttribute('hidden', '');
-            }
-          }
-        });
-      });
-
-      // Handle close buttons (always hide)
-      document.querySelectorAll('.config-close').forEach(button => {
-        button.addEventListener('click', (e) => {
-          e.preventDefault();
-          const targetId = button.getAttribute('popovertarget');
-          const popover = document.getElementById(targetId);
-          if (popover) {
-            popover.setAttribute('hidden', '');
-          }
-        });
-      });
-    }
-    </script>
   </body>
 </html>
 <!-- Page optimized by LiteSpeed Cache @2023-12-12 10:30:01 -->
