@@ -275,6 +275,14 @@
           .config-close:hover, .config-close:focus { background: #27184d; outline: none; }
           .config-popover ul { padding-left: 18px; margin: 8px 0 0; }
           .config-popover li { margin-bottom: 4px; }
+
+
+          /* Bail out on Chrome/Firefox/Edge < 88 and Safari < 14.1 */
+          @supports not (width: fit-content) and not (inset: 0) {
+            [popover]:not(.\:popover-open) {
+              display: none;
+            }
+          }
         </style>
   </head>
   <body class="home page-template-default page page-id-34 wp-custom-logo">
