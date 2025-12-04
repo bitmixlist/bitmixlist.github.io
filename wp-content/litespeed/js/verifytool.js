@@ -289,7 +289,8 @@ const mixerDetails = {
     'mixy.money': { type: 'pgp', keyIndex: 0 },
     'mixtura.money': { type: 'pgp', keyIndex: 0 },
     'bitmixer.online': { type: 'pgp', keyIndex: 0 },
-    'swamplizard.io': { type: 'pgp', keyIndex: 0 },
+    'trustmixer.io': { type: 'pgp', keyIndex: 0 },
+    'bmix.io': { type: 'pgp', keyIndex: 0 },
     'okmix.io': { type: 'pgp', keyIndex: 0 },
     'cointor.org': { type: 'pgp', keyIndex: 7 },
     'coinomize.biz': {
@@ -329,7 +330,7 @@ const mixerDetails = {
             return { body, signature, address };
         }
     },
-    'remix.io': { type: 'none' },
+    'reumix.io': { type: 'none' },
     'zeusmix.to': { type: 'pgp', keyIndex: 8 },
 };
 
