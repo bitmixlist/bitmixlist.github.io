@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <link data-optimized="2" rel="stylesheet" href="wp-content/litespeed/css/d4d1cd3e2db3bf373348bdfd89958038.css" />
+    <link rel="stylesheet" href="wp-content/litespeed/css/aml-check.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="profile" href="https://gmpg.org/xfn/11">
     <title>Bitcoin Mixers List – Best Reliable, Private Sites</title>
@@ -304,6 +305,7 @@
         <li class="menu-item"><a href="index.html#coordinators" class="nav-link">Coordinators</a></li>
         <li class="menu-item"><a href="index.html#scamwhammer" class="nav-link">Scam Lookup</a></li>
         <li class="menu-item"><a href="index.html#letter-verify" class="nav-link">Verify Guarrantee</a></li>
+        <li class="menu-item"><a href="index.html#aml-check" class="nav-link">AML Checker</a></li>
         <li class="menu-item"><a href="introduction.html" class="nav -link">Introduction</a></li>
         <li class="menu-item submenu-item"><a href="introduction.html#disclaimer" class="nav-link">Disclaimer</a></li>
         <li class="menu-item"><a href="terms-and-conditions.html" class="nav-link">Acceptable Use</a></li>
@@ -1332,7 +1334,7 @@
           </table>
         </figure>
         <p>Special thanks to <a href="https://wabisator.com/">Wabisator</a> for comiling the coordinators. You can go to their website to check their onine status. Please note that coordiantors are very volatile and go up &amp; down frequently.</p>
-                <div class="vg-verify">
+        <div class="vg-verify">
           <div id="scamwhammer">
             <h2>Mixer Legit Or Scam Lookup</h2>
             <p>Introducing my brand-new tool for checking the veracity of a mixer link, powered by the <a href="https://gist.githubusercontent.com/ZenulAbidin/511d531980c44051cfafd11b2e3c9dda/raw/scamwhammer-mixers.txt" rel="noopener noreferrer" target="_blank">ScamWhammer</a> database.</p>
@@ -1346,7 +1348,7 @@
           </div>
           <div id="letter-verify">
             <h2>Verify Letter of Guarantee</h2>
-            <p>This brand-new tool allows you to verify the letter of guarantee that you receive from any mixer, without installing special software. It requires Javascript to work.</p>
+            <p>This tool allows you to verify the letter of guarantee that you receive from any mixer, without installing special software. It requires Javascript to work.</p>
             <p>It is <strong>very important</strong> that you authenticate your letter of guarrantee to avoid getting scammed, as the letter acts as a legally-binding contract between you and mixer, and insures you from potential loss.</strong> It is the only way you can get customer support or a refund if something goes wrong during a mix.</p>
             <p>This verification tool runs locally on your browser and does not use browser APIs or fetch data or scripts from other servers. You can even run it offline.</p>
             <select id="mixerSelect">
@@ -1372,6 +1374,114 @@
             <textarea id="messageTextArea" rows="10" placeholder="Paste the letter of guarantee here..."></textarea>
             <button id="verifyButton">Verify</button>
           </div>
+        </div>
+        <div id="aml-check">
+          <h2>Anonymous Address AML Score Checker</h2>
+          <p>BitMixList is proud to introduce a new service for checking the AML score of Bitcoin addresses anonymously. Our scores are sourced from reputable third-parties
+          without sharing your personal data such as IP address. Only the crypto address is sent to them. The address checker requires Javascript to run.</p>
+          <p>In recent years it has become paramount to check the AML score of your address before sending funds to a regulated entity such as an exchange or a payment gateway. If the AML score is too high, these services will freeze your funds and may never return them. Therefore, it is less costly to simply check their AML score of your addresses than taking the risk.</p>
+          <p>We currently don&#8217;t have an API and have no plans to make one in the near future.</p>
+          <h3>Recommended Usage Of The Address Checker</h3>
+          <p>It is recommended to test all of the following addresses in addition to your target address, to uncover AML risks and to minimize the chance of exchanges freezing our funds.</p>
+          <ul>
+            <li>Addresses it has send funds to within the last 90 days</li>
+            <li>Addresses it has received funds from within the last 90 days</li>
+            <li>Any address mentioned in an ancestor transaction up to 10 levels up</li>
+          </ul>
+          <p>This type of exhaustive check is necessary to maximize AML score compatibility with a regulated entity. Additionally, you should check your addresses periodically and whenever you receive or send a new transaction. You should keep in mind the amount of crypto you are going to send, as exceeding certain thresholds will trigger some automated measures irrespective of the AML score of the address.</p>
+          <h3>How to use the Address Checker</h3>
+          <ul>
+            <li>To begin, create a token. Your token must be kept secret. Do not lose your token - it is the only way you can store your AML checks. For security reasons, we cannot help you recover your token if you lose it.</li>
+            <li>AML checks can be purchased in batches of 100 for $10. All payments are non-refundable.</li>
+            <li>Checks are credited after 1 blockchain confirmation.</li>
+            <li>After you run a check, you will receive the AML score as well as scam and sanctions information, as well as information about counterparties if available.</li>
+            <li>It may take a few minutes for an address check to be processed.</li>
+          </ul>
+          <p>If you have any issues with your payment, send an email with your payment ID for manual crediting.</p>
+          <div class="address-checker-container">
+            <div class="aml-widget">
+              <h2>AML Checks &amp; Payments</h2>
+              <div class="flex">
+                <div class="token-section">
+                  <label for="tokenInput">Token</label>
+                  <input id="tokenInput" placeholder="Enter your API token" type="text"/>
+                  <div class="token-action-buttons" style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                  <button onclick="loadToken(this)">Load token info</button>
+                  <button onclick="generateToken(this)" style="background:#34d399;color:#022c22;">Generate token</button>
+                </div>
+                <div class="error" id="tokenError"></div>
+                <div id="tokenDetails" style="margin-top:1rem"></div>
+              </div>
+              <div class="actions-section">
+                <label>Actions</label>
+                <button id="createPaymentBtn" onclick="createPayment()">Buy checks</button>
+                <button onclick="refreshPaymentsClick(this)" style="margin-left:0.5rem">Refresh payments</button>
+                <button onclick="loadLastJob()" style="margin-left:0.5rem">Load last check</button>
+                <div class="error" id="paymentMessage" style="margin-top:0.5rem"></div>
+              </div>
+            </div>
+            <div style="margin-top:1rem">
+              <label>AML lookup</label>
+              <div class="flex">
+                <div>
+                  <select id="chainSelect">
+                  <option value="bitcoin">Bitcoin</option>
+                  </select>
+                </div>
+                <div class="lookup-input-container">
+                  <input id="addressInput" placeholder="Address" type="text"/>
+                </div>
+                <div class="lookup-button-container">
+                  <button id="runButton" onclick="runLookup()">Run AML check</button>
+                </div>
+              </div>
+              <div class="error" id="lookupError"></div>
+                <div class="info-card" id="lookupStatus" style="display:none;align-items:center;gap:0.75rem;">
+                  <div class="spinner" id="lookupSpinner" style="display:none"></div>
+                  <div>
+                    <div id="lookupStatusText"></div>
+                    <div id="lookupJobMeta" style="font-size:0.8rem;color:#94a3b8;"></div>
+                  </div>
+                </div>
+              <div class="result-grid" id="lookupVisualResult">
+                <div class="result-card" id="amlScoreCard">
+                  <h4>AML Score</h4>
+                  <div class="aml-score-value" id="amlScoreValue">--</div>
+                  <div class="aml-risk-label" id="amlRiskLabel"></div>
+                  <div class="aml-score-bar">
+                    <div class="aml-score-marker" id="amlScoreMarker" style="left:0%;"></div>
+                  </div>
+                  <div class="result-footnote">Results from AMLCrypto</div>
+                </div>
+                <div class="result-card" id="misttrackCard">
+                  <h4>Counterparties</h4>
+                  <div class="misttrack-content">
+                    <div class="misttrack-pie" id="misttrackPie"></div>
+                    <div class="misttrack-legend" id="misttrackLegend"></div>
+                  </div>
+                  <div class="result-footnote">Results from MistTrack</div>
+                </div>
+                <div class="result-card" id="chainabuseCard">
+                  <h4>Scam Reports</h4>
+                  <div class="chainabuse-value" id="chainabuseValue">--</div>
+                  <div class="result-footnote">Results from ChainAbuse</div>
+                </div>
+                <div class="result-card" id="sanctionsCard">
+                  <h4>Sanctions</h4>
+                  <div class="sanctions-status" id="sanctionsStatus">--</div>
+                  <div style="font-size:0.75rem;color:#94a3b8;margin-top:0.3rem;">Data from OFAC &amp; OFSI</div>
+                </div>
+              </div>
+              <div class="export-row" id="exportRow">
+                <button id="exportResultBtn" onclick="exportLookupResult()">Export as text</button>
+              </div>
+            </div>
+            <div style="margin-top:1.5rem">
+              <h3>Payment requests</h3>
+              <div id="paymentsTable">No payments yet.</div>
+            </div>
+          </div>
+        </div>
       </div>
         <p>If we ever shut down for any reason, there is another service directory at <a href="https://bitlist.co">BitList</a> I can vouch for.</p>
         </div>
@@ -1396,6 +1506,7 @@
     <script src="wp-content/litespeed/js/verifytool.js" defer></script>
     <script src="wp-content/litespeed/js/scamwhammer.js" defer></script>
     <script src="wp-content/litespeed/js/popover.min.js" defer></script>
+    <script src="wp-content/litespeed/js/aml-check.js" defer></script>
   </body>
 </html>
 <!-- Page optimized by LiteSpeed Cache @2023-12-12 10:30:01 -->
