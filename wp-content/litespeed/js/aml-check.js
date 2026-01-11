@@ -518,12 +518,30 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
 
       async function runLookup() {
         clearAllMessages(['lookupError']);
+        const runButton = document.getElementById('runButton');
+        const maintenanceNote = document.getElementById('lookupMaintenanceNote');
         stopLookupPolling();
         setLookupStatus('', false, '');
         clearLookupResult();
         if (!currentToken) {
           document.getElementById('lookupError').textContent = 'Load a token first.';
           return;
+        }
+        const isAdminToken = currentToken.startsWith('pmB-');
+        if (!isAdminToken) {
+          document.getElementById('lookupError').textContent = 'Temporarily unavailable due to maintenance.';
+          if (runButton) {
+            runButton.disabled = true;
+          }
+          if (maintenanceNote) {
+            maintenanceNote.textContent = 'Temporarily unavailable due to maintenance.';
+          }
+          return;
+        } else if (maintenanceNote) {
+          maintenanceNote.textContent = '';
+          if (runButton) {
+            runButton.disabled = false;
+          }
         }
         const chain = document.getElementById('chainSelect').value;
         const address = document.getElementById('addressInput').value.trim();
