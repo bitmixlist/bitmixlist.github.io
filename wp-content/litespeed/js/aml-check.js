@@ -3,12 +3,30 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
       let lookupPollHandle = null;
       let activeLookupJob = '';
       const WAITING_STATES = new Set(['queued', 'waiting', 'processing']);
-      const MISTTRACK_COLORS = ['#38bdf8','#f472b6','#fb923c'];
+      const ARKHAM_COLORS = ['#38bdf8','#f472b6','#fb923c','#facc15','#c084fc','#34d399'];
       const UNKNOWN_SEGMENT_COLOR = '#94a3b8';
       let jobInProgress = false;
       let lastLookupSummary = null;
       let lastLookupContext = null;
       let lastLookupTimestamp = null;
+      let chainabusePopoverOpen = false;
+
+      function initChainabuseUi() {
+        const viewBtn = document.getElementById('chainabuseViewBtn');
+        const closeBtn = document.getElementById('chainabuseClosePopover');
+        if (viewBtn) {
+          viewBtn.addEventListener('click', () => {
+            if (!viewBtn.disabled) {
+              toggleChainabusePopover(true);
+            }
+          });
+        }
+        if (closeBtn) {
+          closeBtn.addEventListener('click', () => toggleChainabusePopover(false));
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', initChainabuseUi);
 
       function clearAllMessages(skip = []) {
         ['tokenError', 'paymentMessage', 'lookupError'].forEach((id) => {
@@ -84,18 +102,47 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         if (marker) {
           marker.style.left = '0%';
         }
-        const pie = document.getElementById('misttrackPie');
+        const totals = document.getElementById('arkhamTotals');
+        if (totals) {
+          totals.innerHTML = `
+            <div class="arkham-total-label">Total Volume</div>
+            <div class="arkham-total-value">-- BTC</div>
+            <div class="arkham-total-value">$--</div>
+          `;
+        }
+        const pie = document.getElementById('arkhamPie');
         if (pie) {
           pie.style.background = '#1e293b';
         }
-        const legend = document.getElementById('misttrackLegend');
+        const legend = document.getElementById('arkhamLegend');
         if (legend) {
-          legend.innerHTML = '';
+          legend.innerHTML = '<div class="arkham-empty">No counterparties detected.</div>';
+        }
+        const unknown = document.getElementById('arkhamUnknown');
+        if (unknown) {
+          unknown.textContent = 'No unknown counterparties reported.';
         }
         const chainVal = document.getElementById('chainabuseValue');
         if (chainVal) {
           chainVal.textContent = '--';
           chainVal.style.color = '#f8fafc';
+        }
+        const chainViewBtn = document.getElementById('chainabuseViewBtn');
+        if (chainViewBtn) {
+          chainViewBtn.disabled = true;
+        }
+        const chainViewLink = document.getElementById('chainabuseViewLink');
+        if (chainViewLink) {
+          chainViewLink.style.visibility = 'hidden';
+        }
+        const chainPopover = document.getElementById('chainabusePopover');
+        if (chainPopover) {
+          chainPopover.classList.remove('open');
+          chainabusePopoverOpen = false;
+        }
+        const reportsList = document.getElementById('chainabuseReportsList');
+        if (reportsList) {
+          reportsList.innerHTML = '<div class="chainabuse-empty">No reports to show.</div>';
         }
         const sanctionsStatus = document.getElementById('sanctionsStatus');
         if (sanctionsStatus) {
@@ -110,10 +157,60 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
       }
 
       function formatPercent(value) {
-        if (typeof value !== 'number') return '0%';
+        if (typeof value !== 'number' || Number.isNaN(value)) return '--%';
         const formatted = value.toFixed(1);
         return `${formatted.endsWith('.0') ? formatted.slice(0, -2) : formatted}%`;
       }
+
+      function formatBtcAmount(value) {
+        const num = Number(value);
+        if (!Number.isFinite(num)) return '--';
+        return num.toFixed(8);
+      }
+
+      function formatUsdAmount(value) {
+        const num = Number(value);
+        if (!Number.isFinite(num)) return '--';
+        return num.toFixed(2);
+      }
+
+      function formatChainabuseDate(value) {
+        if (!value) return 'Unknown date';
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return 'Unknown date';
+        return date.toLocaleDateString(undefined, {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        });
+      }
+
+      function toggleChainabusePopover(open) {
+        const popover = document.getElementById('chainabusePopover');
+        if (!popover) return;
+        if (open) {
+          popover.classList.add('open');
+        } else {
+          popover.classList.remove('open');
+        }
+        chainabusePopoverOpen = !!open;
+      }
+
+      function handleChainabuseOutsideClick(event) {
+        if (!chainabusePopoverOpen) return;
+        const popover = document.getElementById('chainabusePopover');
+        const viewBtn = document.getElementById('chainabuseViewBtn');
+        if (!popover) return;
+        if (popover.contains(event.target)) {
+          return;
+        }
+        if (viewBtn && viewBtn.contains(event.target)) {
+          return;
+        }
+        toggleChainabusePopover(false);
+      }
+
+      document.addEventListener('click', handleChainabuseOutsideClick);
 
       function getRiskColor(label='') {
         if (!label) return '#cbd5f5';
@@ -143,33 +240,96 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         const amlScore = toNumber(scoreRaw);
         const riskLabel = deriveRiskLabel(amlScore);
 
-        const mistSource = raw.misttrack || raw.mist_track || raw.mistTrack || {};
-        const listSource = Array.isArray(mistSource.top_counterparties)
-          ? mistSource.top_counterparties
-          : Array.isArray(mistSource.counterparties)
-          ? mistSource.counterparties
-          : [];
-        const counterparties = [];
-        let total = 0;
-        listSource.forEach((entry) => {
-          if (counterparties.length >= 3 || total >= 100) return;
-          const pctRaw = entry && (entry.percentage ?? entry.percent ?? entry.share ?? entry.value ?? entry.score);
-          const pct = toNumber(pctRaw);
-          if (pct === null) return;
-          const clamped = Math.max(0, Math.min(pct, 100));
-          const remaining = Math.max(0, 100 - total);
-          const share = Math.min(clamped, remaining);
-          total += share;
-          counterparties.push({
-            label: entry.name || entry.entity || entry.counterparty || `Counterparty ${counterparties.length + 1}`,
-            percentage: share,
-            color: MISTTRACK_COLORS[counterparties.length] || '#38bdf8',
-          });
-        });
-        const unknownShare = Math.max(0, 100 - total);
+        const arkhamSource =
+          raw.arkham_counterparties ||
+          raw.arkhamCounterparties ||
+          raw.arkham ||
+          {};
+        const normalizeArkhamEntity = (entry) => {
+          if (!entry) return null;
+          return {
+            name: entry.name || entry.entity || 'Unknown entity',
+            type: entry.type || null,
+            totalBtc: toNumber(entry.total_btc ?? entry.totalBtc ?? entry.btc),
+            totalUsd: toNumber(entry.total_usd ?? entry.totalUsd ?? entry.usd),
+            percentage: toNumber(entry.percentage_btc ?? entry.percentageBtc ?? entry.percentage),
+          };
+        };
+        const rawArkhamEntities = (Array.isArray(arkhamSource.entities) ? arkhamSource.entities : [])
+          .map(normalizeArkhamEntity)
+          .filter(Boolean);
+        const totalsRaw = arkhamSource.totals || {};
+        const totalBtc = toNumber(totalsRaw.total_btc ?? totalsRaw.totalBtc ?? totalsRaw.btc);
+        const totalUsd = toNumber(totalsRaw.total_usd ?? totalsRaw.totalUsd ?? totalsRaw.usd);
+        const arkhamTotals = {
+          totalBtc,
+          totalUsd,
+        };
+        const computeEntityPercentage = (entry) => {
+          if (typeof entry.percentage === 'number' && !Number.isNaN(entry.percentage)) {
+            return entry.percentage;
+          }
+          if (Number.isFinite(entry.totalBtc) && Number.isFinite(totalBtc) && totalBtc) {
+            return (entry.totalBtc / totalBtc) * 100;
+          }
+          if (Number.isFinite(entry.totalUsd) && Number.isFinite(totalUsd) && totalUsd) {
+            return (entry.totalUsd / totalUsd) * 100;
+          }
+          return null;
+        };
+        const arkhamEntities = rawArkhamEntities.map((entry) => ({
+          ...entry,
+          percentage: computeEntityPercentage(entry),
+        }));
+        const arkhamUnknownRaw = arkhamSource.unknown;
+        let arkhamUnknown = arkhamUnknownRaw
+          ? {
+              totalBtc: toNumber(arkhamUnknownRaw.total_btc ?? arkhamUnknownRaw.totalBtc ?? arkhamUnknownRaw.btc),
+              totalUsd: toNumber(arkhamUnknownRaw.total_usd ?? arkhamUnknownRaw.totalUsd ?? arkhamUnknownRaw.usd),
+              percentage: toNumber(
+                arkhamUnknownRaw.percentage_btc ??
+                  arkhamUnknownRaw.percentageBtc ??
+                  arkhamUnknownRaw.percentage
+              ),
+            }
+          : null;
+        const derivedUnknownFromTotals = () => {
+          if (arkhamUnknown && (arkhamUnknown.percentage === null || Number.isNaN(arkhamUnknown.percentage))) {
+            if (Number.isFinite(arkhamUnknown.totalBtc) && Number.isFinite(totalBtc) && totalBtc) {
+              arkhamUnknown.percentage = (arkhamUnknown.totalBtc / totalBtc) * 100;
+            } else if (Number.isFinite(arkhamUnknown.totalUsd) && Number.isFinite(totalUsd) && totalUsd) {
+              arkhamUnknown.percentage = (arkhamUnknown.totalUsd / totalUsd) * 100;
+            }
+          }
+        };
+        derivedUnknownFromTotals();
+        if (arkhamUnknown && (arkhamUnknown.percentage === null || Number.isNaN(arkhamUnknown.percentage))) {
+          const knownPercentage = arkhamEntities.reduce(
+            (sum, entry) => sum + (Number.isFinite(entry.percentage) ? entry.percentage : 0),
+            0
+          );
+          const remaining = Math.max(0, 100 - knownPercentage);
+          arkhamUnknown.percentage = remaining || null;
+        }
 
         const chainSource = raw.chainabuse || raw.chain_abuse || raw.chainAbuse || {};
-        const chainReports = toNumber(chainSource.scam_reports ?? chainSource.reports ?? chainSource.count);
+        const chainReports = toNumber(
+          chainSource.scam_reports ?? chainSource.reports ?? chainSource.count
+        );
+        const chainReportDetailsRaw = Array.isArray(chainSource.reports_details)
+          ? chainSource.reports_details
+          : [];
+        const chainReportDetails = chainReportDetailsRaw
+          .filter((entry) => entry && entry.id)
+          .map((entry) => ({
+            id: entry.id,
+            category: entry.category || null,
+            description: entry.description || '',
+            reportedAt: entry.reported_at || null,
+            reportedBy: entry.reported_by || null,
+            url: entry.url || null,
+          }));
+        const chainReportUrl = chainSource.view_url || null;
 
         const sanctionsValue = raw.sanctions ?? raw.sanction ?? raw.ofac ?? raw.ofsi ?? null;
         let sanctioned = null;
@@ -199,9 +359,12 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         return {
           amlScore,
           riskLabel,
-          counterparties,
-          unknownShare,
+          arkhamEntities,
+          arkhamUnknown,
+          arkhamTotals,
           chainReports,
+          chainReportDetails,
+          chainReportUrl,
           isSanctioned: sanctioned,
           sanctionsLabel,
         };
@@ -243,62 +406,157 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
             marker.style.left = '0%';
           }
         }
-        renderMisttrackSection(summary);
+        renderArkhamSection(summary);
         renderChainabuseSection(summary);
         renderSanctionsSection(summary);
       }
 
-      function renderMisttrackSection(summary) {
-        const pie = document.getElementById('misttrackPie');
-        const legend = document.getElementById('misttrackLegend');
-        if (!pie || !legend) return;
+      function renderArkhamSection(summary) {
+        const totalsEl = document.getElementById('arkhamTotals');
+        const pieEl = document.getElementById('arkhamPie');
+        const legendEl = document.getElementById('arkhamLegend');
+        const unknownEl = document.getElementById('arkhamUnknown');
+        if (!totalsEl || !pieEl || !legendEl || !unknownEl) return;
+        const totalBtc = formatBtcAmount(summary.arkhamTotals.totalBtc);
+        const totalUsd = formatUsdAmount(summary.arkhamTotals.totalUsd);
+        totalsEl.innerHTML = `
+          <div class="arkham-total-label">Total Volume</div>
+          <div class="arkham-total-value">${totalBtc} BTC</div>
+          <div class="arkham-total-value">$${totalUsd}</div>
+        `;
+
         const segments = [];
-        let currentAngle = 0;
-        legend.innerHTML = '';
-        summary.counterparties.forEach((entry) => {
-          const sweep = (entry.percentage / 100) * 360;
-          const nextAngle = currentAngle + sweep;
-          segments.push(`${entry.color} ${currentAngle}deg ${nextAngle}deg`);
-          currentAngle = nextAngle;
-        });
-        if (summary.unknownShare > 0) {
-          const sweep = (summary.unknownShare / 100) * 360;
-          const nextAngle = currentAngle + sweep;
-          segments.push(`${UNKNOWN_SEGMENT_COLOR} ${currentAngle}deg ${nextAngle}deg`);
-        }
-        if (segments.length) {
-          pie.style.background = `conic-gradient(${segments.join(',')})`;
-        } else {
-          pie.style.background = '#1e293b';
-        }
-        const legendItems = summary.counterparties.map((entry) => `
-          <div class="legend-item">
-            <span><span class="legend-dot" style="background:${entry.color};"></span>${entry.label}</span>
-            <span>${formatPercent(entry.percentage)}</span>
-          </div>
-        `);
-        if (summary.unknownShare > 0) {
-          legendItems.push(`
-            <div class="legend-item">
-              <span><span class="legend-dot" style="background:${UNKNOWN_SEGMENT_COLOR};"></span>Unknown</span>
-              <span>${formatPercent(summary.unknownShare)}</span>
+        let chartUsed = 0;
+        const legendItems = summary.arkhamEntities.map((entry, idx) => {
+          const color = ARKHAM_COLORS[idx % ARKHAM_COLORS.length];
+          const percentValue = typeof entry.percentage === 'number' ? Math.max(entry.percentage, 0) : null;
+          if (percentValue && chartUsed < 100) {
+            const share = Math.min(percentValue, Math.max(0, 100 - chartUsed));
+            if (share > 0) {
+              const start = (chartUsed / 100) * 360;
+              const end = ((chartUsed + share) / 100) * 360;
+              segments.push(`${color} ${start}deg ${end}deg`);
+              chartUsed += share;
+            }
+          }
+          const typeText = entry.type || 'Unknown';
+          return `
+            <div class="arkham-legend-item">
+              <div class="arkham-legend-label">
+                <div class="arkham-legend-name">
+                  <span class="arkham-legend-dot" style="background:${color};"></span>${entry.name}
+                </div>
+                <div class="arkham-legend-type">${typeText}</div>
+              </div>
+              <div class="arkham-legend-metrics">
+                <span>${formatPercent(entry.percentage)}</span>
+                <span>${formatBtcAmount(entry.totalBtc)} BTC</span>
+                <span>$${formatUsdAmount(entry.totalUsd)}</span>
+              </div>
             </div>
-          `);
+          `;
+        });
+
+        if (
+          summary.arkhamUnknown &&
+          (Number.isFinite(summary.arkhamUnknown.totalBtc) || Number.isFinite(summary.arkhamUnknown.totalUsd))
+        ) {
+          const btc = formatBtcAmount(summary.arkhamUnknown.totalBtc);
+          const usd = formatUsdAmount(summary.arkhamUnknown.totalUsd);
+          const percentText =
+            typeof summary.arkhamUnknown.percentage === 'number'
+              ? ` (${formatPercent(summary.arkhamUnknown.percentage)})`
+              : '';
+          unknownEl.textContent = `Unknown counterparties: ${btc} BTC ($${usd})${percentText}.`;
+          const unknownPercent =
+            typeof summary.arkhamUnknown.percentage === 'number'
+              ? Math.max(summary.arkhamUnknown.percentage, 0)
+              : Math.max(0, 100 - chartUsed);
+          if (unknownPercent && chartUsed < 100) {
+            const share = Math.min(unknownPercent, Math.max(0, 100 - chartUsed));
+            if (share > 0) {
+              const start = (chartUsed / 100) * 360;
+              const end = ((chartUsed + share) / 100) * 360;
+              segments.push(`${UNKNOWN_SEGMENT_COLOR} ${start}deg ${end}deg`);
+              chartUsed += share;
+            }
+          }
+        } else {
+          unknownEl.textContent = 'No unknown counterparties reported.';
         }
-        legend.innerHTML = legendItems.length
+
+        if (segments.length === 0) {
+          pieEl.style.background = '#1e293b';
+        } else {
+          if (chartUsed < 100) {
+            const start = (chartUsed / 100) * 360;
+            segments.push(`#1e293b ${start}deg 360deg`);
+          }
+          pieEl.style.background = `conic-gradient(${segments.join(',')})`;
+        }
+
+        legendEl.innerHTML = legendItems.length
           ? legendItems.join('')
-          : '<div style="color:#94a3b8;">No counterparties reported.</div>';
+          : '<div class="arkham-empty">No counterparties detected.</div>';
       }
 
       function renderChainabuseSection(summary) {
         const valueEl = document.getElementById('chainabuseValue');
-        if (!valueEl) return;
-        if (summary.chainReports === null) {
-          valueEl.textContent = 'N/A';
-          valueEl.style.color = '#94a3b8';
-        } else {
-          valueEl.textContent = summary.chainReports;
-          valueEl.style.color = summary.chainReports === 0 ? '#4ade80' : '#f87171';
+        const viewBtn = document.getElementById('chainabuseViewBtn');
+        const viewLink = document.getElementById('chainabuseViewLink');
+        const popover = document.getElementById('chainabusePopover');
+        const reportsList = document.getElementById('chainabuseReportsList');
+        const hasReports = Array.isArray(summary.chainReportDetails) && summary.chainReportDetails.length > 0;
+        if (valueEl) {
+          if (summary.chainReports === null) {
+            valueEl.textContent = 'N/A';
+            valueEl.style.color = '#94a3b8';
+          } else {
+            valueEl.textContent = summary.chainReports;
+            valueEl.style.color = summary.chainReports === 0 ? '#4ade80' : '#f87171';
+          }
+        }
+        if (viewBtn) {
+          viewBtn.disabled = !hasReports;
+        }
+        if (viewLink) {
+          if (summary.chainReportUrl) {
+            viewLink.href = summary.chainReportUrl;
+            viewLink.style.visibility = 'visible';
+          } else {
+            viewLink.style.visibility = 'hidden';
+          }
+        }
+        if (!hasReports && popover) {
+          popover.classList.remove('open');
+          chainabusePopoverOpen = false;
+        }
+        if (reportsList) {
+          if (hasReports) {
+            reportsList.innerHTML = summary.chainReportDetails
+              .map((item) => {
+                const dateLabel = formatChainabuseDate(item.reportedAt);
+                const category = item.category ? item.category.replace(/_/g, ' ').toLowerCase() : 'unknown';
+                const safeDescription = (item.description || '').trim();
+                const preview = safeDescription.length > 240 ? `${safeDescription.slice(0, 237)}...` : safeDescription;
+                const link = item.url
+                  ? `<a class="chainabuse-report-link" href="${item.url}" target="_blank" rel="noopener noreferrer">View report</a>`
+                  : '';
+                return `
+                  <div class="chainabuse-report">
+                    <div class="chainabuse-report-meta">
+                      <span class="chainabuse-report-category">${category}</span>
+                      <span>${dateLabel}</span>
+                    </div>
+                    <div class="chainabuse-report-body">${preview || 'No description provided.'}</div>
+                    ${link}
+                  </div>
+                `;
+              })
+              .join('');
+          } else {
+            reportsList.innerHTML = '<div class="chainabuse-empty">No reports to show.</div>';
+          }
         }
       }
 
@@ -329,19 +587,72 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         lines.push(`AMLCrypto Score: ${formattedScore ? `${formattedScore}/100` : 'No score data'}`);
         lines.push(`Risk: ${lastLookupSummary.riskLabel || 'Unknown'}`);
         lines.push('');
-        lines.push('Counterparties:');
-        if (!lastLookupSummary.counterparties.length && lastLookupSummary.unknownShare === 0) {
+        lines.push('Arkham Counterparties:');
+        if (
+          !lastLookupSummary.arkhamEntities.length &&
+          !(
+            lastLookupSummary.arkhamUnknown &&
+            (Number.isFinite(lastLookupSummary.arkhamUnknown.totalBtc) ||
+              Number.isFinite(lastLookupSummary.arkhamUnknown.totalUsd))
+          )
+        ) {
           lines.push('  None reported.');
         } else {
-          lastLookupSummary.counterparties.forEach((entry, idx) => {
-            lines.push(`  ${idx + 1}. ${entry.label}: ${formatPercent(entry.percentage)}`);
+          lastLookupSummary.arkhamEntities.forEach((entry, idx) => {
+            const typeSuffix = entry.type ? ` (${entry.type})` : '';
+            const percentText = typeof entry.percentage === 'number' ? ` - ${formatPercent(entry.percentage)}` : '';
+            lines.push(
+              `  ${idx + 1}. ${entry.name}${typeSuffix}: ${formatBtcAmount(entry.totalBtc)} BTC ($${formatUsdAmount(
+                entry.totalUsd
+              )})${percentText}`
+            );
           });
-          if (lastLookupSummary.unknownShare > 0) {
-            lines.push(`  Unknown: ${formatPercent(lastLookupSummary.unknownShare)}`);
+          if (
+            lastLookupSummary.arkhamUnknown &&
+            (Number.isFinite(lastLookupSummary.arkhamUnknown.totalBtc) ||
+              Number.isFinite(lastLookupSummary.arkhamUnknown.totalUsd))
+          ) {
+            const percentText =
+              typeof lastLookupSummary.arkhamUnknown.percentage === 'number'
+                ? ` - ${formatPercent(lastLookupSummary.arkhamUnknown.percentage)}`
+                : '';
+            lines.push(
+              `  Unknown: ${formatBtcAmount(lastLookupSummary.arkhamUnknown.totalBtc)} BTC ($${formatUsdAmount(
+                lastLookupSummary.arkhamUnknown.totalUsd
+              )})${percentText}`
+            );
           }
         }
+        lines.push(
+          `  Totals: ${formatBtcAmount(lastLookupSummary.arkhamTotals.totalBtc)} BTC ($${formatUsdAmount(
+            lastLookupSummary.arkhamTotals.totalUsd
+          )})`
+        );
         lines.push('');
-        lines.push(`Chainabuse Scam Reports: ${lastLookupSummary.chainReports === null ? 'N/A' : lastLookupSummary.chainReports}`);
+        lines.push(
+          `Chainabuse Scam Reports: ${
+            lastLookupSummary.chainReports === null ? 'N/A' : lastLookupSummary.chainReports
+          }`
+        );
+        if (lastLookupSummary.chainReportDetails.length) {
+          lastLookupSummary.chainReportDetails.forEach((item, idx) => {
+            const date = formatChainabuseDate(item.reportedAt);
+            const category = item.category ? item.category.replace(/_/g, ' ').toLowerCase() : 'unknown';
+            lines.push(
+              `  ${idx + 1}. ${category} - ${date}${
+                item.url ? ` (${item.url})` : ''
+              }`
+            );
+            if (item.description) {
+              const cleaned = item.description.replace(/\s+/g, ' ').trim();
+              const preview = cleaned.length > 140 ? `${cleaned.slice(0, 137)}...` : cleaned;
+              lines.push(`     "${preview}"`);
+            }
+          });
+        }
+        if (lastLookupSummary.chainReportUrl) {
+          lines.push(`  View reports: ${lastLookupSummary.chainReportUrl}`);
+        }
         lines.push(`Sanctions Status: ${lastLookupSummary.sanctionsLabel}`);
         lines.push('Data from OFAC & OFSI');
         lines.push('');
@@ -528,16 +839,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
           return;
         }
         const isAdminToken = currentToken.startsWith('pmB-');
-        if (!isAdminToken) {
-          document.getElementById('lookupError').textContent = 'Temporarily unavailable due to maintenance.';
-          if (runButton) {
-            runButton.disabled = true;
-          }
-          if (maintenanceNote) {
-            maintenanceNote.textContent = 'Temporarily unavailable due to maintenance.';
-          }
-          return;
-        } else if (maintenanceNote) {
+        if (maintenanceNote) {
           maintenanceNote.textContent = '';
           if (runButton) {
             runButton.disabled = false;
@@ -613,14 +915,20 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
           return;
         }
         const button = document.getElementById('createPaymentBtn');
+        const packageSelect = document.getElementById('checkPackageSelect');
+        const selectedChecks = packageSelect ? Number.parseInt(packageSelect.value, 10) : 100;
         const originalText = button ? button.textContent : '';
         if (button) {
           button.disabled = true;
           button.textContent = 'Creating...';
         }
         try {
-          const payment = await api(`/tokens/${currentToken}/payments`, { method: 'POST' });
-          document.getElementById('paymentMessage').textContent = `Created payment for ${payment.amount_btc} BTC (expires ${new Date(payment.expires_at*1000).toLocaleString()}).`;
+          const payment = await api(`/tokens/${currentToken}/payments`, {
+            method: 'POST',
+            body: JSON.stringify({ checks: selectedChecks }),
+          });
+          document.getElementById('paymentMessage').textContent =
+            `Created ${payment.checks}-check payment for ${payment.amount_btc} BTC (expires ${new Date(payment.expires_at*1000).toLocaleString()}).`;
           await refreshPayments();
         } catch (err) {
           document.getElementById('paymentMessage').textContent = parseErrorMessage(err);
@@ -664,6 +972,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
           const rows = payments.map(p => `
             <tr>
               <td>${p.id}</td>
+              <td>${p.checks ? `${p.checks} checks` : '—'}</td>
               <td>${p.amount_btc}</td>
               <td><span class="status-pill status-${p.status}">${p.status}</span></td>
               <td>${new Date(p.created_at*1000).toLocaleString()}</td>
@@ -674,7 +983,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
           document.getElementById('paymentsTable').innerHTML = `
             <table>
               <thead>
-                <tr><th>ID</th><th>Amount</th><th>Status</th><th>Created</th><th>Expires</th><th>Link</th></tr>
+                <tr><th>ID</th><th>Package</th><th>Amount</th><th>Status</th><th>Created</th><th>Expires</th><th>Link</th></tr>
               </thead>
               <tbody>${rows}</tbody>
             </table>`;
