@@ -829,6 +829,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
 
       async function runLookup() {
         clearAllMessages(['lookupError']);
+        document.getElementById('lookupError').textContent = '';
         const runButton = document.getElementById('runButton');
         const maintenanceNote = document.getElementById('lookupMaintenanceNote');
         stopLookupPolling();
