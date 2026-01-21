@@ -2,12 +2,6 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-@font-face {
-    font-family: 'BitmixSidebarSystem';
-    src: local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Helvetica'), local('Arial');
-    font-display: optional;
-}
-
 /* Base styles */
 /* Scrollbar styles for Firefox */
 * {
@@ -226,13 +220,6 @@ th, td {
     border-left: 4px solid transparent;
 }
 
-.sidebar,
-.sidebar .nav-menu,
-.sidebar .nav-menu a,
-.sidebar .nav-menu button {
-    font-family: 'BitmixSidebarSystem', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-}
-
 .sidebar .nav-menu a:hover,
 .sidebar .nav-menu a.active {
     background-color: #2d2d2d;
@@ -245,26 +232,6 @@ th, td {
     padding-top: 80px;
     min-height: 100vh;
     transition: margin-left 0.3s ease;
-}
-
-.hero-graphic {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: min(90vw, 800px);
-    aspect-ratio: 2 / 1;
-    margin: 0 auto 1.5rem;
-}
-
-.hero-graphic picture,
-.hero-graphic img {
-    width: 100%;
-    height: 100%;
-    display: block;
-}
-
-.hero-graphic img {
-    object-fit: contain;
 }
 
 /* Ad banners */
