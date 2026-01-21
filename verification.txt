@@ -1,0 +1,34 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Wednesday, January 21, 2026
+
+These are the only official domains of BitMixList. All others are scams.
+
+bitmixlist.org
+bitmixlist.com
+bitmixlist-lao7a.kinsta.page
+mixlistihakx3uexhl3wv7xxpnso75pl2fxxupulqz3gpoybum62puid.onion
+bitmixlistorg.bitbucket.io
+bitmixlist.github.io
+bitmixlist.netlify.app
+bitmixlist.onrender.com
+bitmixlist.vercel.app
+
+NotATether's PGP fingerprint is F9F1 A489 1730 91A8 53F4  6B1C 3C23 6DD6 217A B77F.
+
+Public key: https://bitcointalk.org/index.php?topic=1159946.msg63741748#msg63741748
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAEBCgAdFiEE+fGkiRcwkahT9GscPCNt1iF6t38FAmlwjMsACgkQPCNt1iF6
+t39/cwwAzbNH0wsLshAsfTuOHEEtIWEEH0xMD4ZxOrscLjwkAXM2b7qDflp6Nmff
+p/kAFmhhIxCSOuHfgnne24ei4+ZI3+jZKAX9j+R4ieyqHUkMkl2aZ0GZ4EnYcBMb
+LgbyXk1gdwsqOZsz6qJWcJ80NZZOwFtYJFJkp/Nn23z/TmVoGZovZa5XKXGWhd+3
+JKJXJUeaFJHPopJwGMEFxkSyMkFpHRfhMPYS74aXz4jbkKUi0dSDrSryNWQia/6S
+ptoe+D3jzuihXKlnbBG6+o1DtPktTVHr3/2q9dmDbCRjxfugeO3NhtyaVDkUCI/i
+hgzRKwvI/WPhReaLaV+nc1OKdNAd1JyB5hIOSXQ/wohPhhy/V2R2q8WQsKu3wuiN
+D18wQvZ38IOqqF0xYxmxbTUCM7KNzERg2NqfYx24V0UXBGqPVR23DuSy3OwMbARB
+oc4vQoYm2LqiJgC2pi6/Z7fTb8UERiVEd9bQib9JbKqm5YjzC2Edyn+UyL8UYNkq
+AcAXrIVB
+=dSVM
+-----END PGP SIGNATURE-----
