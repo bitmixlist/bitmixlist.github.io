@@ -853,31 +853,6 @@
 
         window.addEventListener('resize', syncOverlay);
 
-        function highlightCurrentSection() {
-          if (!sections.length) {
-            return;
-          }
-
-          const scrollY = window.scrollY;
-
-          sections.forEach(section => {
-            const sectionTop = section.offsetTop - 100;
-            const sectionBottom = sectionTop + section.offsetHeight;
-
-            if (scrollY >= sectionTop && scrollY < sectionBottom) {
-              navLinks.forEach(link => {
-                if (link.getAttribute('href') === '#' + section.id) {
-                  link.classList.add('active');
-                } else {
-                  link.classList.remove('active');
-                }
-              });
-            }
-          });
-        }
-
-        window.addEventListener('scroll', highlightCurrentSection);
-        highlightCurrentSection();
         syncOverlay();
       });
     </script>
