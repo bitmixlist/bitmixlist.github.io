@@ -40,6 +40,13 @@ html, body {
 a {
     color: #e3c3ff;
     text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+a:hover,
+a:focus-visible {
+    color: #fff;
+    text-decoration: underline;
 }
 
 .header, .footer {
