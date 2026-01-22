@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://bitmixlist.org/sitemap.xml
