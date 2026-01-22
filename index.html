@@ -741,6 +741,7 @@
         linkElementDesktop.href = selectedAd.link;
         const imgElementDesktop = document.createElement('img');
         imgElementDesktop.src = selectedAd.image;
+        imgElementDesktop.alt = 'Sponsored banner';
         linkElementDesktop.appendChild(imgElementDesktop);
         const desktopAdSlot = document.querySelector('.sylvester-top');
         desktopAdSlot.appendChild(linkElementDesktop);
@@ -748,6 +749,7 @@
         linkElementMobile.href = selectedAd.link;
         const imgElementMobile = document.createElement('img');
         imgElementMobile.src = selectedAd.image;
+        imgElementMobile.alt = 'Sponsored banner';
         linkElementMobile.appendChild(imgElementMobile);
         const mobileAdSlot = document.querySelector('.sylvester-top-mobile');
         mobileAdSlot.appendChild(linkElementMobile);
@@ -978,10 +980,10 @@
 </div>
 </header>
 <div class="sylvester-top" style="width:728px;height:90px;">
-<noscript><a href="https://r7promotions.com/go/bh8697"><img src="https://r7promotions.com/r7-asset/site-banners/post-top-728x90.gif"/></a></noscript>
+<noscript><a href="https://r7promotions.com/go/bh8697"><img alt="Sponsored banner" src="https://r7promotions.com/r7-asset/site-banners/post-top-728x90.gif"/></a></noscript>
 </div>
 <div class="sylvester-top-mobile" style="width:350px;height:50px;">
-<noscript><a href="https://r7promotions.com/go/bh8697"><img src="https://r7promotions.com/r7-asset/site-banners/home-350x50-mobile.gif"/></a></noscript>
+<noscript><a href="https://r7promotions.com/go/bh8697"><img alt="Sponsored banner" src="https://r7promotions.com/r7-asset/site-banners/home-350x50-mobile.gif"/></a></noscript>
 </div>
 <div class="centered"><p>This is an ad. Ads are not endorsed by BitMixList.</p></div>
 <main class="site-main post-34 page type-page status-publish hentry" id="content">

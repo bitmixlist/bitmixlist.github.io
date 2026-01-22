@@ -167,6 +167,7 @@
         linkElementDesktop.href = selectedAd.link;
         const imgElementDesktop = document.createElement('img');
         imgElementDesktop.src = selectedAd.image;
+        imgElementDesktop.alt = 'Sponsored banner';
         linkElementDesktop.appendChild(imgElementDesktop);
         const desktopAdSlot = document.querySelector('.sylvester-top');
         desktopAdSlot.appendChild(linkElementDesktop);
@@ -174,6 +175,7 @@
         linkElementMobile.href = selectedAd.link;
         const imgElementMobile = document.createElement('img');
         imgElementMobile.src = selectedAd.image;
+        imgElementMobile.alt = 'Sponsored banner';
         linkElementMobile.appendChild(imgElementMobile);
         const mobileAdSlot = document.querySelector('.sylvester-top-mobile');
         mobileAdSlot.appendChild(linkElementMobile);
