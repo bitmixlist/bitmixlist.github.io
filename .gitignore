@@ -1,5 +1,5 @@
 .ignore
-aml-checks.html
 .vscode
 # image backups
 *.bak
+.codex-and-claude-skills-important-readme
