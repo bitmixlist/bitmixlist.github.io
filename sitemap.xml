@@ -1,92 +1,392 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://bitmixlist.org/address-reuse.html</loc>
+    <lastmod>2026-02-16T12:52:17Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://bitmixlist.org/aftermath.html</loc>
-    <lastmod>2026-01-22T06:53:12Z</lastmod>
+    <lastmod>2026-02-18T12:28:58Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/altcoinstalks-forum.html</loc>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bitmixlist.org/aml-check.html</loc>
-    <lastmod>2026-01-22T06:53:12Z</lastmod>
+    <lastmod>2026-02-12T07:45:19Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/are-bitcoin-mixers-legal.html</loc>
+    <lastmod>2026-02-12T08:26:40Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/atomic-swaps.html</loc>
+    <lastmod>2026-02-16T12:55:02Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/bestmixer-seizure.html</loc>
+    <lastmod>2026-02-14T13:49:43Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/bitcoin-fog-sterlingov.html</loc>
+    <lastmod>2026-02-14T08:28:05Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/bitcoin-mixer-guide.html</loc>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/blender-sanctions.html</loc>
+    <lastmod>2026-02-14T14:06:12Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/blind-signatures.html</loc>
+    <lastmod>2026-02-14T08:54:23Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/centralized-mixers.html</loc>
+    <lastmod>2026-02-18T12:18:06Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/chain-analysis.html</loc>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/change-addresses.html</loc>
+    <lastmod>2026-02-16T12:51:00Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/chipmixer-seizure.html</loc>
+    <lastmod>2026-02-14T08:03:48Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/coinjoin.html</loc>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/coordinator-censorship.html</loc>
+    <lastmod>2026-02-18T12:24:02Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bitmixlist.org/crackdown.html</loc>
-    <lastmod>2026-01-22T06:53:12Z</lastmod>
+    <lastmod>2026-02-18T07:49:39Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bitmixlist.org/crime.html</loc>
-    <lastmod>2026-01-22T06:53:12Z</lastmod>
+    <lastmod>2026-02-18T12:01:56Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/cryptomixer-eu-seizure.html</loc>
+    <lastmod>2026-02-14T08:22:52Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/cybercrime-cryptocurrency.html</loc>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/decentralized-mixers.html</loc>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bitmixlist.org/early-history.html</loc>
-    <lastmod>2026-01-22T06:53:12Z</lastmod>
+    <lastmod>2026-02-18T12:33:10Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/educational-disclaimer-irony.html</loc>
+    <lastmod>2026-02-12T07:55:03Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/edward-snowden-warning.html</loc>
+    <lastmod>2026-02-14T14:54:10Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/enhanced-coinjoins.html</loc>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/eu-p2p-ban-attempt.html</loc>
+    <lastmod>2026-02-14T14:20:25Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bitmixlist.org/evolving-regulation.html</loc>
-    <lastmod>2026-01-22T06:53:12Z</lastmod>
+    <lastmod>2026-02-18T06:30:28Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/exch-seizure.html</loc>
+    <lastmod>2026-02-14T15:13:55Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/exchange-freezes.html</loc>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bitmixlist.org/faq.html</loc>
-    <lastmod>2026-01-22T06:53:12Z</lastmod>
+    <lastmod>2026-02-12T08:26:34Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/fatf-travel-rule.html</loc>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/fbi-non-custodial-warning.html</loc>
+    <lastmod>2026-02-14T14:29:49Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/fincen-2019-guidance.html</loc>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/fincen-mixing-rulemaking.html</loc>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/helix-larry-harmon.html</loc>
+    <lastmod>2026-02-14T13:56:14Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bitmixlist.org/</loc>
-    <lastmod>2026-01-22T06:53:12Z</lastmod>
+    <lastmod>2026-02-18T13:03:41Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bitmixlist.org/introduction.html</loc>
-    <lastmod>2026-01-22T06:53:12Z</lastmod>
+    <lastmod>2026-02-12T08:26:30Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/jambler-mixer-service.html</loc>
+    <lastmod>2026-02-12T07:45:19Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bitmixlist.org/letter-verify.html</loc>
-    <lastmod>2026-01-22T06:53:12Z</lastmod>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/localmonero-agoradesk-exit.html</loc>
+    <lastmod>2026-02-14T14:54:37Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/mica-privacy-rules.html</loc>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/mixer-advertising.html</loc>
+    <lastmod>2026-02-12T13:42:48Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/mixer-extortion.html</loc>
+    <lastmod>2026-02-12T13:43:15Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bitmixlist.org/mixer-privacy.html</loc>
-    <lastmod>2026-01-22T06:53:12Z</lastmod>
+    <lastmod>2026-02-18T11:21:38Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/mixer-website-vs-wallet.html</loc>
+    <lastmod>2026-02-12T12:35:00Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bitmixlist.org/mixers-necessity.html</loc>
-    <lastmod>2026-01-22T06:53:12Z</lastmod>
+    <lastmod>2026-02-16T13:02:10Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/monero-market-fungibility.html</loc>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/monero-privacy-alternative.html</loc>
+    <lastmod>2026-02-14T08:00:04Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/privacy-coin-delistings.html</loc>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bitmixlist.org/privacy-tools.html</loc>
-    <lastmod>2026-01-22T06:53:12Z</lastmod>
+    <lastmod>2026-02-14T07:46:19Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/private-exchanges.html</loc>
+    <lastmod>2026-02-12T13:44:58Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/roman-storm-case.html</loc>
+    <lastmod>2026-02-14T15:05:25Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/samourai-wallet-case.html</loc>
+    <lastmod>2026-02-14T14:27:53Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bitmixlist.org/scam-lookup.html</loc>
-    <lastmod>2026-01-22T06:53:12Z</lastmod>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/secret-service-mixer-advisory.html</loc>
+    <lastmod>2026-02-12T08:26:45Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/sinbad-sanctions.html</loc>
+    <lastmod>2026-02-14T14:15:43Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/stealth-addresses.html</loc>
+    <lastmod>2026-02-16T12:49:39Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bitmixlist.org/terms-and-conditions.html</loc>
-    <lastmod>2026-01-22T06:53:12Z</lastmod>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/tornado-cash-ruling.html</loc>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/tradeogre-seizure.html</loc>
+    <lastmod>2026-02-14T15:15:16Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/treasury-mixer-sanctions.html</loc>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/tumblebit.html</loc>
+    <lastmod>2026-02-12T07:45:20Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/wallets-block-us.html</loc>
+    <lastmod>2026-02-14T14:38:46Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/zerolink.html</loc>
+    <lastmod>2026-02-12T07:45:19Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

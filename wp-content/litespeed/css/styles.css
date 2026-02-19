@@ -459,3 +459,9 @@ scroll-padding-top: 50px; /* Alternative approach for browsers that don't suppor
         padding: 0 2rem;
     }
 }
+
+/* Ensure figure captions remain legible on dark background */
+figcaption {
+    color: #fff;
+    opacity: 0.9;
+}

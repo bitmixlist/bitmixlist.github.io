@@ -7,17 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="profile" href="https://gmpg.org/xfn/11">
     <meta name="author" content="NotATether">
-    <title>Early History of Bitcoin Mixers – BitMixList</title>
-    <meta name="description" content="Early history of Bitcoin mixers: from BitLaundry and Blindbitcoin to CoinJoin, LocalBitcoins, and the first wave of privacy tooling experiments." />
+    <title>Bitcoin Address Reuse Risks &amp; Best Practices – BitMixList</title>
+    <meta name="description" content="Bitcoin address reuse guide: why reused addresses leak identity, raise freeze risk, and how HD wallets, PayNyms, and silent payments prevent long-term traceability." />
     <meta name="robots" content="max-image-preview:large" />
-    <link rel="canonical" href="https://bitmixlist.org/early-history/" />
+    <link rel="canonical" href="https://bitmixlist.org/address-reuse/" />
     <meta name="generator" content="All in One SEO (AIOSEO) 4.5.1.1" />
     <meta property="og:locale" content="en_GB" />
     <meta property="og:site_name" content="BitMixList -" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Early History of Bitcoin Mixers – BitMixList" />
-    <meta property="og:description" content="Early history of Bitcoin mixers: from BitLaundry and Blindbitcoin to CoinJoin, LocalBitcoins, and the first wave of privacy tooling experiments." />
-    <meta property="og:url" content="https://bitmixlist.org/early-history/" />
+    <meta property="og:title" content="Bitcoin Address Reuse Risks &amp; Best Practices – BitMixList" />
+    <meta property="og:description" content="Bitcoin address reuse guide: why reused addresses leak identity, raise freeze risk, and how HD wallets, PayNyms, and silent payments prevent long-term traceability." />
+    <meta property="og:url" content="https://bitmixlist.org/address-reuse/" />
     <meta property="og:image" content="wp-content/uploads/2023/12/logo-1-e1701782109696.png" />
     <meta property="og:image:secure_url" content="wp-content/uploads/2023/12/logo-1-e1701782109696.png" />
     <meta property="og:image:width" content="350" />
@@ -25,8 +25,8 @@
     <meta property="article:published_time" content="2023-12-05T04:40:14+00:00" />
     <meta property="article:modified_time" content="2026-02-19T00:00:00+00:00" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Early History of Bitcoin Mixers – BitMixList" />
-    <meta name="twitter:description" content="Early history of Bitcoin mixers: from BitLaundry and Blindbitcoin to CoinJoin, LocalBitcoins, and the first wave of privacy tooling experiments." />
+    <meta name="twitter:title" content="Bitcoin Address Reuse Risks &amp; Best Practices – BitMixList" />
+    <meta name="twitter:description" content="Bitcoin address reuse guide: why reused addresses leak identity, raise freeze risk, and how HD wallets, PayNyms, and silent payments prevent long-term traceability." />
     <meta name="twitter:image" content="wp-content/uploads/2023/12/logo-1-e1701782109696.png" />
     <script type="application/ld+json" class="aioseo-schema">
       {
@@ -91,13 +91,13 @@
       {
         "@context": "https://schema.org",
         "@type": "Article",
-        "@id": "https://bitmixlist.org/early-history/#article",
+        "@id": "https://bitmixlist.org/address-reuse/#article",
         "mainEntityOfPage": {
           "@type": "WebPage",
-          "@id": "https://bitmixlist.org/early-history/"
+          "@id": "https://bitmixlist.org/address-reuse/"
         },
-        "headline": "Early History \u2013 Bitcoin Mixers List",
-        "description": "Early history of Bitcoin mixers: from BitLaundry and Blindbitcoin to CoinJoin, LocalBitcoins, and the first wave of privacy tooling experiments.",
+        "headline": "Bitcoin Address Reuse Risks & Best Practices – BitMixList",
+        "description": "Bitcoin address reuse guide: why reused addresses leak identity, raise freeze risk, and how HD wallets, PayNyms, and silent payments prevent long-term traceability.",
         "datePublished": "2023-12-05T04:40:14+00:00",
         "dateModified": "2026-02-19T00:00:00+00:00",
         "author": {
@@ -336,7 +336,7 @@
       <header id="site-header" class="site-header" role="banner">
         <div class="header-inner">
           <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">☰</button>
-            <h4>Early History of Mixers</h4>
+            <h4>Address Reuse</h4>
         </div>
       </header>
 
@@ -346,46 +346,193 @@
 
       <main id="content" class="site-main post-34 page type-page status-publish hentry">
       <header class="page-header">
-        <h1 class="entry-title">Early History Of Bitcoin Mixers</h1>
+        <h1 class="entry-title">Bitcoin Address Reuse Risks &amp; Best Practices</h1>
       </header>
       <div class="page-content">
-        <p>The concept of mixing bitcoins dates back to at least 2010 when <a href="https://bitcointalk.org/index.php?topic=5979.0" title="Bitcointalk">Bitcointalk</a> and various online communities started <a href="https://bitcointalk.org/index.php?topic=10755.msg156039#msg156039" title="discussing">discussing</a> the <a href="https://bitcointalk.org/index.php?topic=12456.msg179363#msg179363" title="need">need</a> for <a href="https://bitcointalk.org/index.php?topic=17473.msg224662#msg224662" title="improved">improved</a> <a href="https://bitcointalk.org/index.php?topic=31539.0" title="privacy">privacy</a> <a href="https://bitcointalk.org/index.php?topic=34585.0" rel="nofollow noreferrer" title="features">features</a>. The first Bitcoin mixer, known as <a href="https://bitcointalk.org/index.php?topic=2053.msg26421#msg26421" title="Bitcoin Laundry">Bitcoin Laundry</a> (also called <a href="https://bitcointalk.org/index.php?topic=18684.0" title="BitLaundry">BitLaundry</a>), is believed to have been launched around this time. Bitcoin Laundry allowed users to hide their funds by sending bitcoins to the service and receiving other bitcoins forwarded from the service.</p>
-        <p>The first bitcoin mixer to make use of <a href="https://en.wikipedia.org/wiki/Blind_signature" target="_blank" rel="noopener" title="blind signatures">blind signatures</a> was called <a href="https://bitcointalk.org/index.php?topic=12751.0" title="Blindbitcoin">Blindbitcoin</a>, announced on June 2011. Blind Signatures are a cryptographic process created by David Chaum which hide the contents of a message before it is signed with a digital signature such as DSA, or ECDSA in the case of Bitcoin. The idea for mixers to use variable fees was <a href="https://bitcointalk.org/index.php?topic=93442.0" target="_blank" rel="noopener" title="proposed">proposed</a> on June 2012, around the same time the first mixer <a href="https://bitcointalk.org/index.php?topic=81045.0" title="hack">hack</a> occurred (and the <a href="https://bitcointalk.org/index.php?topic=93074.0" title="second">second</a>).</p>
-        <p>We keep a dedicated <a href="blind-signatures.html">blind signatures explainer</a> for readers who want the full Chaumian credential story.</p>
-        <p>Ironically, that mixer started a <a href="https://bitcointalk.org/index.php?topic=81045.msg897900#msg897900" title="claims page,">claims page,</a> which directed users to perform identity verification to receive their funds back. Don&#8217;t ask me how it got to that. Such a thing would be unspeakable in the present day. Even Blockchain dot com was <a href="https://bitcointalk.org/index.php?topic=105985.msg1162291#msg1162291" title="running a mixer">running a mixer</a> at the time (surprise!).</p>
-        <p>Also it should be noted that the bitcoin mixer list does not have any of these mixers listed because they appear to have been taken offline a long time ago, but by their owners at least, not any government.</p>
-        <p>If you want to compare those early services with today&#8217;s custodial offerings, head over to the <a href="centralized-mixers.html">centralized mixers overview</a>.</p>
-        <h3 class="wp-block-heading" id="coinjoins">The Use Of CoinJoin By Bitcoin Mixers</h3>
-        <p>An in-depth breakdown of CoinJoin wallets, fees, and risks now lives on <a href="coinjoin.html">CoinJoin Mixing Explained</a>. This section remains as a quick reminder of how the concept emerged.</p>
-
-        <figure class="wp-block-image size-full"><picture>
-  <source srcset="wp-content/uploads/2023/12/tx.flow_.webp" type="image/webp">
-  <img data-dominant-color="ababab" data-has-transparency="true" decoding="async" width="719" height="249" src="wp-content/uploads/2023/12/tx.flow_.jpg" alt="Anatomy of a CoinJoin transaction." class="has-transparency wp-image-856" style="--dominant-color: #ababab; object-fit:cover" srcset="wp-content/uploads/2023/12/tx.flow_.webp 719w, wp-content/uploads/2023/12/tx.flow_-300x104.webp 300w" sizes="(max-width: 719px) 100vw, 719px" />
-</picture></figure>
-        <p>Over time, as the demand for privacy solutions increased, more Bitcoin mixers entered the scene. They offered different algorithms and methodologies to break the link between the sender and the receiver of bitcoins. Some mixers focused on implementing <a href="https://bitcointalk.org/index.php?topic=279249.0" title="CoinJoin">CoinJoin</a> (a technique created by former Bitcoin Core developer Greg Maxwell), which combines multiple transactions into a single transaction, while others adopted different techniques to achieve the same goal.</p>
-        <p>To give you an idea of the theory that makes CoinJoin work, here is a description from Greg Maxwell himself.</p>
-        <figure class="wp-block-pullquote">
-          <blockquote>
-            <p>&#8220;The signatures, one per input, inside a transaction are <strong>completely</strong> independent of each other. This means that it&#8217;s possible for Bitcoin users to agree on a set of inputs to spend, and a set of outputs to pay to, and then to individually and separately sign a transaction and later merge their signatures. The transaction is not valid and won&#8217;t be accepted by the network until all signatures are provided, and no one will sign a transaction which is not to their liking.&#8221;</p><cite>Greg Maxwell</cite>
-          </blockquote>
-        </figure>
-        <p>The independence of transaction inputs is why CoinJoin works at all—but instead of retelling the engineering details here, we point readers to <a href="coinjoin.html">CoinJoin Mixing Explained</a> for current wallets, PSBT workflows, and threat models.</p>
-        <h3 class="wp-block-heading" id="fragility">Fragility of Early Mixers</h3>
-        <p>Those early services were fragile—many stored user funds on Mt. Gox, disappeared when admins lost interest, or flat-out scammed customers. The <a href="centralized-mixers.html">centralized mixers overview</a> explains how modern custodial mixers solved those operational problems with proper liquidity management and multi-sig vaults.</p>
-        <h2 class="wp-block-heading" id="localbitcoins">LocalBitcoins And The Beginning Of Private Exchanges</h2>
-        <p>When <a href="https://en.wikipedia.org/wiki/LocalBitcoins" title="LocalBitcoins">LocalBitcoins</a> opened in June 2012, it was the first peer-to-peer marketplace of its kind. In a way, it was a precursor of the private exchanges as we know them today. Why is this important, you ask? Because in a private exchange, the buyer and seller directly trade cryptocurrencies with each other. Also fiat currencies could be traded, but that is beyond the scope of this website.</p>
-        <p>Way back then, people trusted each other enough to do direct trades on forums. When PayPal banned bitcoin sales, LocalBitcoins became the template for the <a href="private-exchanges.html">second wave of private exchanges</a> that mixers rely on today.</p>
-        <h3 class="wp-block-heading" id="early-blacklisting">Early Blacklisting of Bitcoins By Companies</h3>
-        <p>By 2015 payment processors like BitPay started declining coins linked to mixers, signalling the rise of exchange freezes and chain-surveillance outsourcing. We cover the modern version of those tactics (and how to respond) in <a href="exchange-freezes.html">Exchange Freezes After Mixing</a>.</p>
-        <h2 class="wp-block-heading" id="codify-mixers">Attempts To Codify Mixers Into Bitcoin</h2>
-        <p>In the years after Mt. Gox collapsed, several community members floated proposals to embed mixing directly into the Bitcoin reference client. One notable thread by <a href="https://bitcointalk.org/index.php?topic=94155.0" title="Casascius">Casascius</a> described a relay where wallet-enabled nodes exchange their list of UXTOs and automatically craft CoinJoin transactions that both parties sign and broadcast. If Bitcoin Core developers had implemented something like it, nobody would need separate mixers because every wallet could shuffle coins on demand. In practice, the idea never gained steam—partially because SPV wallets, hardware devices, and KYC exchanges pushed privacy tooling to the edges, and partially because altcoins like Monero jumped at the chance to integrate ring signatures from day one.</p>
-        <h3 class="wp-block-heading" id="monero-rise">The Rise Of Monero As An Alternative</h3>
-        <p>Monero launched in April 2014 with built-in <a href="https://en.wikipedia.org/wiki/Ring_signature">ring signatures</a>, stealth addresses, and mandatory mixins derived from the <a href="https://web.archive.org/web/20180714233346/https://cryptonote.org/whitepaper.pdf">CryptoNote whitepaper</a> written by the pseudonymous Nicolas van Saberhagen. Ring signatures let a group sign a transaction without revealing which participant actually authorized it, giving Monero a level of default privacy that Bitcoin could only emulate via external tools. Despite a $625,000 IRS bounty to “break” Monero, chain-analysts have repeatedly failed to pierce its design, which is why it became the currency of choice on many darknet markets. Every time someone claims “Bitcoin is only for criminals,” point them to these unmaskings of Bitcoin mixers and remind them that Monero is where serious anonymization lives today.</p>
-        <h3 class="wp-block-heading" id="joinmarket-history">JoinMarket and Practical CoinJoin Software</h3>
-        <p>By early 2015, open-source developers launched <a href="https://bitcointalk.org/index.php?topic=919116.0" title="JoinMarket">JoinMarket</a>, a wallet plus coordinator stack built atop <a href="https://libbitcoin.info/" title="libbitcoin">libbitcoin</a> that enables anyone to run maker bots and earn fees while helping takers CoinJoin. JoinMarket ships both CLI and Qt interfaces, is still <a href="https://github.com/JoinMarket-Org/joinmarket-clientserver">actively maintained</a>, and even supports <a href="https://en.bitcoin.it/wiki/PayJoin" title="PayJoin">PayJoin</a> for two-party CoinJoins. Its popularity proved that privacy tooling could thrive outside Bitcoin Core and paved the way for Whirlpool and Wasabi to adopt similar patterns.</p>
-        
-          <div class="post-tags"></div>
-        
+        <p>Address reuse sounds harmless until you watch what it reveals in practice. The moment the same Bitcoin address appears in multiple payments, outside observers can start building a stable profile of ownership, counterparties, and cash flow patterns. That profile does not stay limited to hobbyist block explorers. It gets absorbed into exchange risk engines, compliance tooling, and long-term chain surveillance databases.</p>
+        <p>Modern wallets already solved the technical side years ago. Hardware and software HD wallets can generate a fresh address for every payment from one seed, so users do not need to trade convenience for privacy. The real problem is human behavior: old QR codes on websites, repeated donation addresses, reused invoice links, and copied receive strings from chat logs.</p>
+        <p>This page focuses on the operational reality in 2026: what counts as reuse, why reuse keeps getting people flagged, and how to eliminate it without making daily wallet use painful.</p>
+        <h2 class="wp-block-heading" id="what-is-address-reuse">What Counts as Address Reuse?</h2>
+        <p>Address reuse happens whenever two or more transactions pay into the same script or public key, including cases where change gets routed back to a previously used destination. On a transparent ledger, that creates an immediate ownership clue. Analysts no longer need guesswork to connect those inflows. The wallet has effectively done the clustering for them.</p>
+        <p>Reuse usually enters through routine shortcuts: tip-jar addresses hardcoded on public pages, merchant invoice templates that never rotate, or teams that keep sending to "the old company address" because it is already in the books. Even Lightning can leak if channels close into reused on-chain scripts. For technical background, see the <a href="https://en.bitcoin.it/wiki/Address_reuse" target="_blank" rel="noopener">Bitcoin Wiki entry on address reuse</a> and <a href="https://bitcoinops.org/en/topics/output-linking" target="_blank" rel="noopener">Bitcoin Optech output-linking notes</a>.</p>
+        <h2 class="wp-block-heading" id="privacy-harms">Privacy Fallout from Reuse</h2>
+        <p>Once one address becomes a permanent identifier, privacy loss compounds over time. Every new payment enriches the same data point, and the resulting graph is easy to search, export, and score.</p>
+        <ul>
+          <li>Observers can estimate total historical inflow and current balances tied to that identifier.</li>
+          <li>Relationship mapping becomes easier across donors, customers, payroll, exchanges, and vendors.</li>
+          <li>KYC-linked touchpoints can deanonymize not only the owner, but also counterparties who transact with that owner later.</li>
+        </ul>
+        <p>This is exactly how clustering heuristics gain strength in the <a href="mixer-privacy.html">Mixer Privacy</a> model: reused addresses become anchor points for broader attribution. After that, recovery is harder and usually requires heavier tools such as <a href="enhanced-coinjoins.html">CoinJoin rounds</a>, swap bridges, or <a href="stealth-addresses.html">stealth receiver patterns</a>.</p>
+        <h2 class="wp-block-heading" id="censorship-security">Censorship Resistance &amp; Security Risks</h2>
+        <p>Reuse is not only a privacy issue; it is a pressure issue. If one visible address looks like the center of a treasury, that address becomes easier to target for account restrictions, compliance escalation, social engineering, and coercion. Public certainty around ownership lowers the work factor for anyone trying to block or pressure you.</p>
+        <p>There is also a cryptographic exposure angle. Fresh addresses keep the spending public key hidden behind hashes until spend time, while repeated reuse can expose key material patterns more often than necessary. Most users will never face advanced key-recovery attacks, but history already shows nonce failures and signing bugs can be catastrophic when key reuse patterns exist. The safer rule is simple: do not build unnecessary long-lived targets.</p>
+        <h2 class="wp-block-heading" id="best-practices">2026 Best Practices to Eliminate Reuse</h2>
+        <p>You do not need exotic tooling to avoid reuse. You need repeatable wallet habits and a payment stack that does not fall back to static receive addresses when teams are busy.</p>
+        <ul>
+          <li><strong>Let HD wallets do their job.</strong> Always issue a new receive address and stop copying old addresses from previous messages.</li>
+          <li><strong>Keep change separation enabled.</strong> Use wallet configurations that isolate change outputs from public receive history.</li>
+          <li><strong>Enforce per-invoice addressing.</strong> Payment processors should generate unique invoice addresses by default.</li>
+          <li><strong>Preserve provenance records.</strong> Keep labels, logs, and pre-checks with <a href="aml-check.html">AML Checker</a> before sending to regulated venues.</li>
+        </ul>
+        <p>Then add coin-control discipline: label UTXOs, avoid merging unrelated histories, and review spend selection before broadcast. Most preventable reuse problems come from rushed execution, not lack of wallet features.</p>
+        <h2 class="wp-block-heading" id="static-identifiers">Static Donation Links without Reuse</h2>
+        <p>People usually reuse addresses because they want one static identifier they can post publicly. The good news is that better options now exist, so you can keep a stable public handle without recycling the same on-chain destination.</p>
+        <ul>
+          <li><strong>BIP47 payment codes / PayNyms:</strong> One published code, fresh derived receive addresses for each payer.</li>
+          <li><strong>Silent payments (BIP352):</strong> One Taproot-style identifier that still results in unique on-chain outputs.</li>
+          <li><strong>Lightning and LNURL:</strong> Tipping and recurring payments without exposing a static on-chain receive target.</li>
+        </ul>
+        <p>For implementation details, continue to <a href="stealth-addresses.html">Stealth Addresses</a> and pair it with <a href="privacy-tools.html">Privacy Tools</a> so unlinkability survives beyond the receive step.</p>
+        <h2 class="wp-block-heading" id="businesses">Merchants, Payroll, and Exchanges</h2>
+        <p>Business teams usually feel reuse damage first. Customers bookmark old invoice addresses, payroll staff reuse past templates, and support teams resend old QR codes for convenience. Those shortcuts eventually create a public relationship map between your customers, your treasury flows, and your exchange endpoints.</p>
+        <p>Set policy that every invoice and every payroll cycle gets new addresses, enforce it in BTCPay or your payment API, and train staff that old deposit addresses are not "defaults." During reviews, maintain logs that prove unique addressing and show how funds moved through documented custody flows such as <a href="letter-verify.html">guarantee verification</a>. Without that evidence, compliance defense becomes harder than it needs to be.</p>
+        <h2 class="wp-block-heading" id="recovering">Regaining Privacy After Reuse</h2>
+        <p>If reuse already happened, treat those outputs as compromised metadata, then move methodically. Start with a clean HD account, split value into manageable UTXOs, and rebuild separation with tools that match your risk profile: <a href="enhanced-coinjoins.html">CoinJoin</a>, <a href="atomic-swaps.html">atomic swaps</a>, Lightning loops, or a temporary privacy rail through <a href="monero-privacy-alternative.html">Monero</a> before re-entry.</p>
+        <p>Recovery is possible, but it is slower and more expensive than prevention. The durable rule is still the same: each payment gets a fresh address. If you need a static public identity, use PayNyms or silent payments instead of permanent reuse.</p>
+                <section id="privacy-tech-matrix" class="privacy-matrix">
+          <h2 class="wp-block-heading">Anonymization Technique Comparison</h2>
+          <p>Each column below maps to the most common privacy workflows. Swipe horizontally on mobile.</p>
+          <style>
+            #privacy-tech-matrix .scroll-wrap {
+              overflow-x: auto;
+            }
+            #privacy-tech-matrix table {
+              border-collapse: separate;
+              border-spacing: 0;
+              width: 100%;
+              min-width: 980px;
+              font-size: 14px;
+              border: 1px solid rgba(255,255,255,0.08);
+            }
+            #privacy-tech-matrix th,
+            #privacy-tech-matrix td {
+              padding: 12px 14px;
+              border-bottom: 1px solid rgba(255,255,255,0.08);
+              border-right: 1px solid rgba(255,255,255,0.06);
+              white-space: nowrap;
+            }
+            #privacy-tech-matrix th {
+              font-weight: 600;
+              background: rgba(12,12,12,0.9);
+              position: sticky;
+              top: 0;
+            }
+            #privacy-tech-matrix .rowhead {
+              font-weight: 600;
+              position: sticky;
+              left: 0;
+              background: rgba(5,5,5,0.85);
+              max-width: 230px;
+              z-index: 3;
+            }
+            #privacy-tech-matrix tbody tr:nth-child(even) .rowhead {
+              background: rgba(5,5,5,0.95);
+            }
+            #privacy-tech-matrix tbody tr:nth-child(even) td {
+              background: rgba(255,255,255,0.02);
+            }
+            #privacy-tech-matrix .badge {
+              display: inline-flex;
+              align-items: center;
+              gap: 6px;
+              padding: 4px 10px;
+              border-radius: 999px;
+              border: 1px solid rgba(255,255,255,0.12);
+              font-weight: 600;
+            }
+            #privacy-tech-matrix .dot {
+              width: 9px;
+              height: 9px;
+              border-radius: 50%;
+            }
+            #privacy-tech-matrix .yes .dot { background: #2ee9a6; }
+            #privacy-tech-matrix .no .dot { background: #ff5c7a; }
+            #privacy-tech-matrix .maybe .dot { background: #ffd15c; }
+            #privacy-tech-matrix .notes {
+              white-space: normal;
+              line-height: 1.35;
+            }
+          </style>
+          <div class="scroll-wrap" role="region" aria-label="Privacy technology comparison">
+            <table>
+              <thead>
+                <tr>
+                  <th class="rowhead">Capability</th>
+                  <th>Mixers</th>
+                  <th>CoinJoin</th>
+                  <th>Stealth Addresses / Silent Payments</th>
+                  <th>Monero</th>
+                  <th>Cross-Chain Bridges / Atomic Swaps</th>
+                  <th>Fresh Addresses</th>
+                  <th>Change Output Randomization</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="rowhead">Trusted third party?</td>
+                  <td><span class="badge maybe"><span class="dot"></span>Custodial risk</span></td>
+                  <td><span class="badge no"><span class="dot"></span>No</span></td>
+                  <td><span class="badge no"><span class="dot"></span>No</span></td>
+                  <td><span class="badge no"><span class="dot"></span>No</span></td>
+                  <td><span class="badge maybe"><span class="dot"></span>Route dependent</span></td>
+                  <td><span class="badge no"><span class="dot"></span>No</span></td>
+                  <td><span class="badge no"><span class="dot"></span>No</span></td>
+                </tr>
+                <tr>
+                  <td class="rowhead">Breaks input/output linkability</td>
+                  <td><span class="badge yes"><span class="dot"></span>Yes</span></td>
+                  <td><span class="badge yes"><span class="dot"></span>Yes</span></td>
+                  <td><span class="badge maybe"><span class="dot"></span>Receiver only</span></td>
+                  <td><span class="badge yes"><span class="dot"></span>Yes</span></td>
+                  <td><span class="badge yes"><span class="dot"></span>Yes (multi-hop)</span></td>
+                  <td><span class="badge maybe"><span class="dot"></span>Reduces reuse</span></td>
+                  <td><span class="badge maybe"><span class="dot"></span>Reduces heuristics</span></td>
+                </tr>
+                <tr>
+                  <td class="rowhead">Hides amounts</td>
+                  <td><span class="badge no"><span class="dot"></span>No</span></td>
+                  <td><span class="badge no"><span class="dot"></span>No</span></td>
+                  <td><span class="badge no"><span class="dot"></span>No</span></td>
+                  <td><span class="badge yes"><span class="dot"></span>Yes (RingCT)</span></td>
+                  <td><span class="badge maybe"><span class="dot"></span>Depends on chain</span></td>
+                  <td><span class="badge no"><span class="dot"></span>No</span></td>
+                  <td><span class="badge no"><span class="dot"></span>No</span></td>
+                </tr>
+                <tr>
+                  <td class="rowhead">Default privacy &amp; UX</td>
+                  <td><span class="badge maybe"><span class="dot"></span>Easy UX, fragile legality</span></td>
+                  <td><span class="badge maybe"><span class="dot"></span>DIY UX, resilient</span></td>
+                  <td><span class="badge maybe"><span class="dot"></span>Wallet support needed</span></td>
+                  <td><span class="badge yes"><span class="dot"></span>Always-on</span></td>
+                  <td><span class="badge maybe"><span class="dot"></span>Advanced routing</span></td>
+                  <td><span class="badge yes"><span class="dot"></span>Built-in for most wallets</span></td>
+                  <td><span class="badge maybe"><span class="dot"></span>Wallet dependent</span></td>
+                </tr>
+                <tr>
+                  <td class="rowhead">Best use case</td>
+                  <td class="notes">Fast BTC obfuscation when you accept custodial exposure.</td>
+                  <td class="notes">Self-hosted mixing that keeps BTC liquidity intact.</td>
+                  <td class="notes">Protecting reusable donation or invoice addresses.</td>
+                  <td class="notes">Long-term storage and cross-chain hops with default privacy.</td>
+                  <td class="notes">Re-entering BTC with a new graph after leaving the chain.</td>
+                  <td class="notes">Basic hygiene against address-reuse heuristics.</td>
+                  <td class="notes">Avoiding deterministic change outputs that leak ownership.</td>
+                </tr>
+                <tr>
+                  <td class="rowhead">Main page</td>
+                  <td><a href="faq.html">Mixers</a></td>
+                  <td><a href="enhanced-coinjoins.html">CoinJoin</a></td>
+                  <td><a href="stealth-addresses.html">Stealth addresses</a></td>
+                  <td><a href="monero-privacy-alternative.html">Monero</a></td>
+                  <td><a href="atomic-swaps.html">Bridges / swaps</a></td>
+                  <td><a href="address-reuse.html">Fresh addresses</a></td>
+                  <td><a href="change-addresses.html">Change addresses</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      
         <section class="author-card" style="width:100%;box-sizing:border-box;margin:28px 0 0 0;padding:24px;border:1px solid #d7d7e0;border-radius:12px;background:#f7f7fb;">
           <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
             <picture style="flex:0 0 88px;">
@@ -400,6 +547,7 @@
           </div>
         </section>
 </div>
+      </div>
     </main>
     <footer class="site-footer" id="site-footer" role="contentinfo"></footer>
 <div class="footer">
@@ -425,5 +573,3 @@
     <script data-optimized="1" src="wp-content/litespeed/js/1d034a87d61ff5f30ca39d179529e895.js" defer></script>
   </body>
 </html>
-<!-- Page optimized by LiteSpeed Cache @2023-12-12 10:30:01 -->
-<!-- Page cached by LiteSpeed Cache 5.7.0.1 on 2023-12-12 10:30:01 -->

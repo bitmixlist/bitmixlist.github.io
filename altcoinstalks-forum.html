@@ -7,26 +7,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="profile" href="https://gmpg.org/xfn/11">
     <meta name="author" content="NotATether">
-    <title>Early History of Bitcoin Mixers – BitMixList</title>
-    <meta name="description" content="Early history of Bitcoin mixers: from BitLaundry and Blindbitcoin to CoinJoin, LocalBitcoins, and the first wave of privacy tooling experiments." />
+    <title>Altcoinstalks Becomes the Mixer Forum – BitMixList</title>
+    <meta name="description" content="How Altcoinstalks became the main mixer forum after Bitcointalk restrictions, including Teleport trust verification, ad migration, and operational updates." />
     <meta name="robots" content="max-image-preview:large" />
-    <link rel="canonical" href="https://bitmixlist.org/early-history/" />
+    <link rel="canonical" href="https://bitmixlist.org/altcoinstalks-forum/" />
     <meta name="generator" content="All in One SEO (AIOSEO) 4.5.1.1" />
     <meta property="og:locale" content="en_GB" />
     <meta property="og:site_name" content="BitMixList -" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Early History of Bitcoin Mixers – BitMixList" />
-    <meta property="og:description" content="Early history of Bitcoin mixers: from BitLaundry and Blindbitcoin to CoinJoin, LocalBitcoins, and the first wave of privacy tooling experiments." />
-    <meta property="og:url" content="https://bitmixlist.org/early-history/" />
+    <meta property="og:title" content="Altcoinstalks Becomes the Mixer Forum – BitMixList" />
+    <meta property="og:description" content="How Altcoinstalks became the main mixer forum after Bitcointalk restrictions, including Teleport trust verification, ad migration, and operational updates." />
+    <meta property="og:url" content="https://bitmixlist.org/altcoinstalks-forum/" />
     <meta property="og:image" content="wp-content/uploads/2023/12/logo-1-e1701782109696.png" />
     <meta property="og:image:secure_url" content="wp-content/uploads/2023/12/logo-1-e1701782109696.png" />
     <meta property="og:image:width" content="350" />
     <meta property="og:image:height" content="105" />
-    <meta property="article:published_time" content="2023-12-05T04:40:14+00:00" />
+    <meta property="article:published_time" content="2025-04-15T00:00:00+00:00" />
     <meta property="article:modified_time" content="2026-02-19T00:00:00+00:00" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Early History of Bitcoin Mixers – BitMixList" />
-    <meta name="twitter:description" content="Early history of Bitcoin mixers: from BitLaundry and Blindbitcoin to CoinJoin, LocalBitcoins, and the first wave of privacy tooling experiments." />
+    <meta name="twitter:title" content="Altcoinstalks Becomes the Mixer Forum – BitMixList" />
+    <meta name="twitter:description" content="How Altcoinstalks became the main mixer forum after Bitcointalk restrictions, including Teleport trust verification, ad migration, and operational updates." />
     <meta name="twitter:image" content="wp-content/uploads/2023/12/logo-1-e1701782109696.png" />
     <script type="application/ld+json" class="aioseo-schema">
       {
@@ -56,7 +56,7 @@
           "@type": "WebPage",
           "@id": "https:\/\/bitmixlist.org\/#webpage",
           "url": "https:\/\/bitmixlist.org\/",
-          "name": "Bitcoin Mixers List \u2013 Best Reliable, Private Sites",
+          "name": "Bitcoin Mixers List – Best Reliable, Private Sites",
           "description": "Bitcoin mixers list: Prioritize confidentiality in your cryptocurrency transactions. Explore trusted services for enhanced privacy today.",
           "inLanguage": "en-GB",
           "isPartOf": {
@@ -91,14 +91,14 @@
       {
         "@context": "https://schema.org",
         "@type": "Article",
-        "@id": "https://bitmixlist.org/early-history/#article",
+        "@id": "https://bitmixlist.org/altcoinstalks-forum/#article",
         "mainEntityOfPage": {
           "@type": "WebPage",
-          "@id": "https://bitmixlist.org/early-history/"
+          "@id": "https://bitmixlist.org/altcoinstalks-forum/"
         },
-        "headline": "Early History \u2013 Bitcoin Mixers List",
-        "description": "Early history of Bitcoin mixers: from BitLaundry and Blindbitcoin to CoinJoin, LocalBitcoins, and the first wave of privacy tooling experiments.",
-        "datePublished": "2023-12-05T04:40:14+00:00",
+        "headline": "Altcoinstalks Becomes the Mixer Forum – BitMixList",
+        "description": "How Altcoinstalks became the main mixer forum after Bitcointalk restrictions, including Teleport trust verification, ad migration, and operational updates.",
+        "datePublished": "2025-04-15T00:00:00+00:00",
         "dateModified": "2026-02-19T00:00:00+00:00",
         "author": {
           "@type": "Person",
@@ -128,7 +128,7 @@
       }
     </script>
 
-    <link rel="alternate" type="application/rss+xml" title="BitMixList &raquo; Feed" href="feed/index.html" />
+    <link rel="alternate" type="application/rss+xml" title="BitMixList » Feed" href="feed/index.html" />
     <link rel="https://api.w.org/" href="wp-json/index.html" />
     <link rel="alternate" type="application/json" href="wp-json/wp/v2/pages/34" />
     <link rel="EditURI" type="application/rsd+xml" title="RSD" href="xmlrpc.php%3Frsd" />
@@ -207,79 +207,51 @@
           syncOverlay();
         }
 
-        if (menuToggle && sidebar) {
-          menuToggle.addEventListener('click', function(event) {
-            event.stopPropagation();
-            toggleSidebar();
-          });
+        if (menuToggle) {
+          menuToggle.addEventListener('click', toggleSidebar);
         }
 
-        if (sidebarToggle && sidebar) {
-          sidebarToggle.addEventListener('click', function(event) {
-            event.stopPropagation();
-            toggleSidebar();
-          });
+        if (sidebarToggle) {
+          sidebarToggle.addEventListener('click', toggleSidebar);
         }
 
         if (overlay) {
           overlay.addEventListener('click', closeSidebar);
         }
 
-        if (sidebar) {
-          sidebar.addEventListener('touchstart', function(event) {
-            touchStartX = event.touches[0].clientX;
-            touchEndX = touchStartX;
-          }, { passive: true });
-
-          sidebar.addEventListener('touchmove', function(event) {
-            touchEndX = event.touches[0].clientX;
-          }, { passive: true });
-
-          sidebar.addEventListener('touchend', function() {
-            const swipeDistance = touchStartX - touchEndX;
-            if (swipeDistance > 50 && window.innerWidth <= 1024) {
-              closeSidebar();
-            }
-          });
-        }
-
-        navLinks.forEach(link => {
-          link.addEventListener('click', function() {
-            if (window.innerWidth <= 1024) {
-              setTimeout(closeSidebar, 150);
-            }
-          });
+        document.addEventListener('touchstart', function(event) {
+          touchStartX = event.changedTouches[0].screenX;
         });
 
-        document.addEventListener('click', function(event) {
-          if (!sidebar || !sidebar.classList.contains('active')) {
-            return;
-          }
+        document.addEventListener('touchend', function(event) {
+          touchEndX = event.changedTouches[0].screenX;
+          handleGesture();
+        });
 
-          const clickedToggle = (menuToggle && menuToggle.contains(event.target)) ||
-                                (sidebarToggle && sidebarToggle.contains(event.target));
-
-          if (!sidebar.contains(event.target) && !clickedToggle) {
+        function handleGesture() {
+          if (touchEndX < touchStartX - 50) {
             closeSidebar();
           }
-        });
 
-        window.addEventListener('resize', syncOverlay);
+          if (touchEndX > touchStartX + 50) {
+            if (window.innerWidth <= 1024) {
+              sidebar && sidebar.classList.add('active');
+              syncOverlay();
+            }
+          }
+        }
 
         function highlightCurrentSection() {
-          if (!sections.length) {
-            return;
-          }
-
-          const scrollY = window.scrollY;
+          let scrollPosition = window.scrollY;
 
           sections.forEach(section => {
-            const sectionTop = section.offsetTop - 100;
-            const sectionBottom = sectionTop + section.offsetHeight;
+            const sectionTop = section.offsetTop - 120;
+            const sectionHeight = section.offsetHeight;
 
-            if (scrollY >= sectionTop && scrollY < sectionBottom) {
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+              const currentId = section.getAttribute('id');
               navLinks.forEach(link => {
-                if (link.getAttribute('href') === '#' + section.id) {
+                if (link.getAttribute('href') === `#${currentId}`) {
                   link.classList.add('active');
                 } else {
                   link.classList.remove('active');
@@ -336,7 +308,7 @@
       <header id="site-header" class="site-header" role="banner">
         <div class="header-inner">
           <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">☰</button>
-            <h4>Early History of Mixers</h4>
+            <h4>Altcoinstalks</h4>
         </div>
       </header>
 
@@ -346,46 +318,44 @@
 
       <main id="content" class="site-main post-34 page type-page status-publish hentry">
       <header class="page-header">
-        <h1 class="entry-title">Early History Of Bitcoin Mixers</h1>
+        <h1 class="entry-title">Altcoinstalks Replaces Bitcointalk for Mixers</h1>
       </header>
       <div class="page-content">
-        <p>The concept of mixing bitcoins dates back to at least 2010 when <a href="https://bitcointalk.org/index.php?topic=5979.0" title="Bitcointalk">Bitcointalk</a> and various online communities started <a href="https://bitcointalk.org/index.php?topic=10755.msg156039#msg156039" title="discussing">discussing</a> the <a href="https://bitcointalk.org/index.php?topic=12456.msg179363#msg179363" title="need">need</a> for <a href="https://bitcointalk.org/index.php?topic=17473.msg224662#msg224662" title="improved">improved</a> <a href="https://bitcointalk.org/index.php?topic=31539.0" title="privacy">privacy</a> <a href="https://bitcointalk.org/index.php?topic=34585.0" rel="nofollow noreferrer" title="features">features</a>. The first Bitcoin mixer, known as <a href="https://bitcointalk.org/index.php?topic=2053.msg26421#msg26421" title="Bitcoin Laundry">Bitcoin Laundry</a> (also called <a href="https://bitcointalk.org/index.php?topic=18684.0" title="BitLaundry">BitLaundry</a>), is believed to have been launched around this time. Bitcoin Laundry allowed users to hide their funds by sending bitcoins to the service and receiving other bitcoins forwarded from the service.</p>
-        <p>The first bitcoin mixer to make use of <a href="https://en.wikipedia.org/wiki/Blind_signature" target="_blank" rel="noopener" title="blind signatures">blind signatures</a> was called <a href="https://bitcointalk.org/index.php?topic=12751.0" title="Blindbitcoin">Blindbitcoin</a>, announced on June 2011. Blind Signatures are a cryptographic process created by David Chaum which hide the contents of a message before it is signed with a digital signature such as DSA, or ECDSA in the case of Bitcoin. The idea for mixers to use variable fees was <a href="https://bitcointalk.org/index.php?topic=93442.0" target="_blank" rel="noopener" title="proposed">proposed</a> on June 2012, around the same time the first mixer <a href="https://bitcointalk.org/index.php?topic=81045.0" title="hack">hack</a> occurred (and the <a href="https://bitcointalk.org/index.php?topic=93074.0" title="second">second</a>).</p>
-        <p>We keep a dedicated <a href="blind-signatures.html">blind signatures explainer</a> for readers who want the full Chaumian credential story.</p>
-        <p>Ironically, that mixer started a <a href="https://bitcointalk.org/index.php?topic=81045.msg897900#msg897900" title="claims page,">claims page,</a> which directed users to perform identity verification to receive their funds back. Don&#8217;t ask me how it got to that. Such a thing would be unspeakable in the present day. Even Blockchain dot com was <a href="https://bitcointalk.org/index.php?topic=105985.msg1162291#msg1162291" title="running a mixer">running a mixer</a> at the time (surprise!).</p>
-        <p>Also it should be noted that the bitcoin mixer list does not have any of these mixers listed because they appear to have been taken offline a long time ago, but by their owners at least, not any government.</p>
-        <p>If you want to compare those early services with today&#8217;s custodial offerings, head over to the <a href="centralized-mixers.html">centralized mixers overview</a>.</p>
-        <h3 class="wp-block-heading" id="coinjoins">The Use Of CoinJoin By Bitcoin Mixers</h3>
-        <p>An in-depth breakdown of CoinJoin wallets, fees, and risks now lives on <a href="coinjoin.html">CoinJoin Mixing Explained</a>. This section remains as a quick reminder of how the concept emerged.</p>
-
-        <figure class="wp-block-image size-full"><picture>
-  <source srcset="wp-content/uploads/2023/12/tx.flow_.webp" type="image/webp">
-  <img data-dominant-color="ababab" data-has-transparency="true" decoding="async" width="719" height="249" src="wp-content/uploads/2023/12/tx.flow_.jpg" alt="Anatomy of a CoinJoin transaction." class="has-transparency wp-image-856" style="--dominant-color: #ababab; object-fit:cover" srcset="wp-content/uploads/2023/12/tx.flow_.webp 719w, wp-content/uploads/2023/12/tx.flow_-300x104.webp 300w" sizes="(max-width: 719px) 100vw, 719px" />
-</picture></figure>
-        <p>Over time, as the demand for privacy solutions increased, more Bitcoin mixers entered the scene. They offered different algorithms and methodologies to break the link between the sender and the receiver of bitcoins. Some mixers focused on implementing <a href="https://bitcointalk.org/index.php?topic=279249.0" title="CoinJoin">CoinJoin</a> (a technique created by former Bitcoin Core developer Greg Maxwell), which combines multiple transactions into a single transaction, while others adopted different techniques to achieve the same goal.</p>
-        <p>To give you an idea of the theory that makes CoinJoin work, here is a description from Greg Maxwell himself.</p>
-        <figure class="wp-block-pullquote">
-          <blockquote>
-            <p>&#8220;The signatures, one per input, inside a transaction are <strong>completely</strong> independent of each other. This means that it&#8217;s possible for Bitcoin users to agree on a set of inputs to spend, and a set of outputs to pay to, and then to individually and separately sign a transaction and later merge their signatures. The transaction is not valid and won&#8217;t be accepted by the network until all signatures are provided, and no one will sign a transaction which is not to their liking.&#8221;</p><cite>Greg Maxwell</cite>
-          </blockquote>
-        </figure>
-        <p>The independence of transaction inputs is why CoinJoin works at all—but instead of retelling the engineering details here, we point readers to <a href="coinjoin.html">CoinJoin Mixing Explained</a> for current wallets, PSBT workflows, and threat models.</p>
-        <h3 class="wp-block-heading" id="fragility">Fragility of Early Mixers</h3>
-        <p>Those early services were fragile—many stored user funds on Mt. Gox, disappeared when admins lost interest, or flat-out scammed customers. The <a href="centralized-mixers.html">centralized mixers overview</a> explains how modern custodial mixers solved those operational problems with proper liquidity management and multi-sig vaults.</p>
-        <h2 class="wp-block-heading" id="localbitcoins">LocalBitcoins And The Beginning Of Private Exchanges</h2>
-        <p>When <a href="https://en.wikipedia.org/wiki/LocalBitcoins" title="LocalBitcoins">LocalBitcoins</a> opened in June 2012, it was the first peer-to-peer marketplace of its kind. In a way, it was a precursor of the private exchanges as we know them today. Why is this important, you ask? Because in a private exchange, the buyer and seller directly trade cryptocurrencies with each other. Also fiat currencies could be traded, but that is beyond the scope of this website.</p>
-        <p>Way back then, people trusted each other enough to do direct trades on forums. When PayPal banned bitcoin sales, LocalBitcoins became the template for the <a href="private-exchanges.html">second wave of private exchanges</a> that mixers rely on today.</p>
-        <h3 class="wp-block-heading" id="early-blacklisting">Early Blacklisting of Bitcoins By Companies</h3>
-        <p>By 2015 payment processors like BitPay started declining coins linked to mixers, signalling the rise of exchange freezes and chain-surveillance outsourcing. We cover the modern version of those tactics (and how to respond) in <a href="exchange-freezes.html">Exchange Freezes After Mixing</a>.</p>
-        <h2 class="wp-block-heading" id="codify-mixers">Attempts To Codify Mixers Into Bitcoin</h2>
-        <p>In the years after Mt. Gox collapsed, several community members floated proposals to embed mixing directly into the Bitcoin reference client. One notable thread by <a href="https://bitcointalk.org/index.php?topic=94155.0" title="Casascius">Casascius</a> described a relay where wallet-enabled nodes exchange their list of UXTOs and automatically craft CoinJoin transactions that both parties sign and broadcast. If Bitcoin Core developers had implemented something like it, nobody would need separate mixers because every wallet could shuffle coins on demand. In practice, the idea never gained steam—partially because SPV wallets, hardware devices, and KYC exchanges pushed privacy tooling to the edges, and partially because altcoins like Monero jumped at the chance to integrate ring signatures from day one.</p>
-        <h3 class="wp-block-heading" id="monero-rise">The Rise Of Monero As An Alternative</h3>
-        <p>Monero launched in April 2014 with built-in <a href="https://en.wikipedia.org/wiki/Ring_signature">ring signatures</a>, stealth addresses, and mandatory mixins derived from the <a href="https://web.archive.org/web/20180714233346/https://cryptonote.org/whitepaper.pdf">CryptoNote whitepaper</a> written by the pseudonymous Nicolas van Saberhagen. Ring signatures let a group sign a transaction without revealing which participant actually authorized it, giving Monero a level of default privacy that Bitcoin could only emulate via external tools. Despite a $625,000 IRS bounty to “break” Monero, chain-analysts have repeatedly failed to pierce its design, which is why it became the currency of choice on many darknet markets. Every time someone claims “Bitcoin is only for criminals,” point them to these unmaskings of Bitcoin mixers and remind them that Monero is where serious anonymization lives today.</p>
-        <h3 class="wp-block-heading" id="joinmarket-history">JoinMarket and Practical CoinJoin Software</h3>
-        <p>By early 2015, open-source developers launched <a href="https://bitcointalk.org/index.php?topic=919116.0" title="JoinMarket">JoinMarket</a>, a wallet plus coordinator stack built atop <a href="https://libbitcoin.info/" title="libbitcoin">libbitcoin</a> that enables anyone to run maker bots and earn fees while helping takers CoinJoin. JoinMarket ships both CLI and Qt interfaces, is still <a href="https://github.com/JoinMarket-Org/joinmarket-clientserver">actively maintained</a>, and even supports <a href="https://en.bitcoin.it/wiki/PayJoin" title="PayJoin">PayJoin</a> for two-party CoinJoins. Its popularity proved that privacy tooling could thrive outside Bitcoin Core and paved the way for Whirlpool and Wasabi to adopt similar patterns.</p>
-        
-          <div class="post-tags"></div>
-        
+        <p>When Bitcointalk shut down mixer advertising and removed many service threads, the ecosystem did not lose demand; it lost coordination. Operators still needed one place to publish verified announcements, users still needed somewhere to compare uptime and support quality, and researchers still needed a public archive of service behavior. Altcoinstalks stepped into that gap quickly, and by 2025 it had already become the default discussion layer for many mixer-adjacent communities.</p>
+        <p>That transition mattered because forums are not only marketing channels. They are where incidents get disclosed, phishing mirrors are flagged, PGP ownership is proven, and long-running service reputations are built in public. Without that forum layer, users are pushed into fragmented Telegram chats and ad networks where verification is weaker and scams scale faster.</p>
+        <h2 class="wp-block-heading" id="why">Why Altcoinstalks Stepped Up</h2>
+        <p>Altcoinstalks worked because it offered predictable rules instead of sudden reversals. Operators who spend time building guides, translations, and support threads need confidence that a policy shift will not erase years of reputation overnight.</p>
+        <ul>
+          <li><strong>Clear policy:</strong> The forum published explicit acceptable-use rules aligned with lawful-use expectations like <a href="terms-and-conditions.html">BitMixList policy</a>.</li>
+          <li><strong>Dedicated moderation:</strong> Staff familiar with mixer disputes handle scam reports and escrow conflicts without turning every thread into a panic cycle.</li>
+          <li><strong>Operator onboarding:</strong> New projects get templates for PGP proofs, disclosure notes, and support-response standards.</li>
+        </ul>
+        <p>This kind of structure is boring in the best way. It reduces chaos, keeps legitimate operators engaged, and gives users a stable place to evaluate claims before sending funds anywhere.</p>
+        <h2 class="wp-block-heading" id="teleport">Teleport &amp; Trust Signals</h2>
+        <p>Teleport is one of the key trust features Altcoinstalks added during the migration period. It lets established members vouch for identity continuity using cryptographic and social proofs without forcing full personal disclosure. For privacy infrastructure projects, that balance is critical: users need confidence that a thread is authentic, but operators still need pseudonymity for safety.</p>
+        <ol>
+          <li>Prove continuity between legacy identities and new forum profiles.</li>
+          <li>Push emergency mirror updates when phishing clones appear.</li>
+          <li>Coordinate campaigns, audits, and incident notices with verifiable signatures.</li>
+        </ol>
+        <p>In practice, Teleport replaced older trust webs with a model that is more explicit and easier to audit. It does not remove fraud risk, but it raises the cost of impersonation and reduces confusion during high-pressure incidents.</p>
+        <h2 class="wp-block-heading" id="advertisers">Advertising &amp; Community Activity</h2>
+        <p>After the migration, ad demand moved fast. Altcoinstalks gave operators more flexible placements, richer creatives, and direct Tor mirror linking, which made it more practical than legacy forum inventory for many privacy-focused services. But the long-term value is not only banners; it is the surrounding discussion layer that keeps advertising claims tied to public accountability.</p>
+        <ul>
+          <li>AMA threads with wallet developers, operators, and compliance specialists.</li>
+          <li>Security disclosure boards for bug bounty and responsible reporting.</li>
+          <li>Peer-review threads for pages like <a href="coinjoin.html">Concept Explainers</a> and enforcement timelines.</li>
+        </ul>
+        <p>The result is a healthier feedback loop: operators publish roadmaps, users document breakages, and outside observers can watch the same evidence stream instead of relying on private rumor channels.</p>
+        <h2 class="wp-block-heading" id="how-to-follow">How to Follow Updates</h2>
+        <p>If you use the forum operationally, do not rely on manual refresh. Track feeds so you catch mirror migrations, downtime notices, and support announcements before they become urgent.</p>
+        <ul>
+          <li>The <strong>Mixers</strong> board for ANN updates, support activity, and service notices.</li>
+          <li>The <strong>Teleport</strong> feed for high-signal security and identity-continuity alerts.</li>
+          <li>The <strong>Marketplace</strong> section for escrow offers, liquidity postings, and operational chatter.</li>
+        </ul>
+        <p>For the broader legal and market context, connect this page with <a href="crackdown.html">Crackdown</a> and <a href="aftermath.html#altcoinstalks">Aftermath</a>. Altcoinstalks is not just a forum swap; it is part of how the ecosystem adapted after enforcement pressure changed the old distribution channels.</p>
+      
         <section class="author-card" style="width:100%;box-sizing:border-box;margin:28px 0 0 0;padding:24px;border:1px solid #d7d7e0;border-radius:12px;background:#f7f7fb;">
           <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
             <picture style="flex:0 0 88px;">
@@ -400,6 +370,7 @@
           </div>
         </section>
 </div>
+      </div>
     </main>
     <footer class="site-footer" id="site-footer" role="contentinfo"></footer>
 <div class="footer">

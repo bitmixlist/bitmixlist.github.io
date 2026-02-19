@@ -7,26 +7,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="profile" href="https://gmpg.org/xfn/11">
     <meta name="author" content="NotATether">
-    <title>Early History of Bitcoin Mixers – BitMixList</title>
-    <meta name="description" content="Early history of Bitcoin mixers: from BitLaundry and Blindbitcoin to CoinJoin, LocalBitcoins, and the first wave of privacy tooling experiments." />
+    <title>LocalMonero & Agoradesk Exit – BitMixList</title>
+    <meta name="description" content="LocalMonero and Agoradesk shutdown explained: timeline, causes, liquidity impact, and practical Monero trading alternatives after the November 2024 closure." />
     <meta name="robots" content="max-image-preview:large" />
-    <link rel="canonical" href="https://bitmixlist.org/early-history/" />
+    <link rel="canonical" href="https://bitmixlist.org/localmonero-agoradesk-exit/" />
     <meta name="generator" content="All in One SEO (AIOSEO) 4.5.1.1" />
     <meta property="og:locale" content="en_GB" />
     <meta property="og:site_name" content="BitMixList -" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Early History of Bitcoin Mixers – BitMixList" />
-    <meta property="og:description" content="Early history of Bitcoin mixers: from BitLaundry and Blindbitcoin to CoinJoin, LocalBitcoins, and the first wave of privacy tooling experiments." />
-    <meta property="og:url" content="https://bitmixlist.org/early-history/" />
+    <meta property="og:title" content="LocalMonero & Agoradesk Exit – BitMixList" />
+    <meta property="og:description" content="LocalMonero and Agoradesk shutdown explained: timeline, causes, liquidity impact, and practical Monero trading alternatives after the November 2024 closure." />
+    <meta property="og:url" content="https://bitmixlist.org/localmonero-agoradesk-exit/" />
     <meta property="og:image" content="wp-content/uploads/2023/12/logo-1-e1701782109696.png" />
     <meta property="og:image:secure_url" content="wp-content/uploads/2023/12/logo-1-e1701782109696.png" />
     <meta property="og:image:width" content="350" />
     <meta property="og:image:height" content="105" />
-    <meta property="article:published_time" content="2023-12-05T04:40:14+00:00" />
+    <meta property="article:published_time" content="2025-06-05T00:00:00+00:00" />
     <meta property="article:modified_time" content="2026-02-19T00:00:00+00:00" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Early History of Bitcoin Mixers – BitMixList" />
-    <meta name="twitter:description" content="Early history of Bitcoin mixers: from BitLaundry and Blindbitcoin to CoinJoin, LocalBitcoins, and the first wave of privacy tooling experiments." />
+    <meta name="twitter:title" content="LocalMonero & Agoradesk Exit – BitMixList" />
+    <meta name="twitter:description" content="LocalMonero and Agoradesk shutdown explained: timeline, causes, liquidity impact, and practical Monero trading alternatives after the November 2024 closure." />
     <meta name="twitter:image" content="wp-content/uploads/2023/12/logo-1-e1701782109696.png" />
     <script type="application/ld+json" class="aioseo-schema">
       {
@@ -56,7 +56,7 @@
           "@type": "WebPage",
           "@id": "https:\/\/bitmixlist.org\/#webpage",
           "url": "https:\/\/bitmixlist.org\/",
-          "name": "Bitcoin Mixers List \u2013 Best Reliable, Private Sites",
+          "name": "Bitcoin Mixers List – Best Reliable, Private Sites",
           "description": "Bitcoin mixers list: Prioritize confidentiality in your cryptocurrency transactions. Explore trusted services for enhanced privacy today.",
           "inLanguage": "en-GB",
           "isPartOf": {
@@ -91,14 +91,14 @@
       {
         "@context": "https://schema.org",
         "@type": "Article",
-        "@id": "https://bitmixlist.org/early-history/#article",
+        "@id": "https://bitmixlist.org/localmonero-agoradesk-exit/#article",
         "mainEntityOfPage": {
           "@type": "WebPage",
-          "@id": "https://bitmixlist.org/early-history/"
+          "@id": "https://bitmixlist.org/localmonero-agoradesk-exit/"
         },
-        "headline": "Early History \u2013 Bitcoin Mixers List",
-        "description": "Early history of Bitcoin mixers: from BitLaundry and Blindbitcoin to CoinJoin, LocalBitcoins, and the first wave of privacy tooling experiments.",
-        "datePublished": "2023-12-05T04:40:14+00:00",
+        "headline": "LocalMonero & Agoradesk Exit – BitMixList",
+        "description": "LocalMonero and Agoradesk shutdown explained: timeline, causes, liquidity impact, and practical Monero trading alternatives after the November 2024 closure.",
+        "datePublished": "2025-06-05T00:00:00+00:00",
         "dateModified": "2026-02-19T00:00:00+00:00",
         "author": {
           "@type": "Person",
@@ -128,7 +128,7 @@
       }
     </script>
 
-    <link rel="alternate" type="application/rss+xml" title="BitMixList &raquo; Feed" href="feed/index.html" />
+    <link rel="alternate" type="application/rss+xml" title="BitMixList » Feed" href="feed/index.html" />
     <link rel="https://api.w.org/" href="wp-json/index.html" />
     <link rel="alternate" type="application/json" href="wp-json/wp/v2/pages/34" />
     <link rel="EditURI" type="application/rsd+xml" title="RSD" href="xmlrpc.php%3Frsd" />
@@ -207,79 +207,51 @@
           syncOverlay();
         }
 
-        if (menuToggle && sidebar) {
-          menuToggle.addEventListener('click', function(event) {
-            event.stopPropagation();
-            toggleSidebar();
-          });
+        if (menuToggle) {
+          menuToggle.addEventListener('click', toggleSidebar);
         }
 
-        if (sidebarToggle && sidebar) {
-          sidebarToggle.addEventListener('click', function(event) {
-            event.stopPropagation();
-            toggleSidebar();
-          });
+        if (sidebarToggle) {
+          sidebarToggle.addEventListener('click', toggleSidebar);
         }
 
         if (overlay) {
           overlay.addEventListener('click', closeSidebar);
         }
 
-        if (sidebar) {
-          sidebar.addEventListener('touchstart', function(event) {
-            touchStartX = event.touches[0].clientX;
-            touchEndX = touchStartX;
-          }, { passive: true });
-
-          sidebar.addEventListener('touchmove', function(event) {
-            touchEndX = event.touches[0].clientX;
-          }, { passive: true });
-
-          sidebar.addEventListener('touchend', function() {
-            const swipeDistance = touchStartX - touchEndX;
-            if (swipeDistance > 50 && window.innerWidth <= 1024) {
-              closeSidebar();
-            }
-          });
-        }
-
-        navLinks.forEach(link => {
-          link.addEventListener('click', function() {
-            if (window.innerWidth <= 1024) {
-              setTimeout(closeSidebar, 150);
-            }
-          });
+        document.addEventListener('touchstart', function(event) {
+          touchStartX = event.changedTouches[0].screenX;
         });
 
-        document.addEventListener('click', function(event) {
-          if (!sidebar || !sidebar.classList.contains('active')) {
-            return;
-          }
+        document.addEventListener('touchend', function(event) {
+          touchEndX = event.changedTouches[0].screenX;
+          handleGesture();
+        });
 
-          const clickedToggle = (menuToggle && menuToggle.contains(event.target)) ||
-                                (sidebarToggle && sidebarToggle.contains(event.target));
-
-          if (!sidebar.contains(event.target) && !clickedToggle) {
+        function handleGesture() {
+          if (touchEndX < touchStartX - 50) {
             closeSidebar();
           }
-        });
 
-        window.addEventListener('resize', syncOverlay);
+          if (touchEndX > touchStartX + 50) {
+            if (window.innerWidth <= 1024) {
+              sidebar && sidebar.classList.add('active');
+              syncOverlay();
+            }
+          }
+        }
 
         function highlightCurrentSection() {
-          if (!sections.length) {
-            return;
-          }
-
-          const scrollY = window.scrollY;
+          let scrollPosition = window.scrollY;
 
           sections.forEach(section => {
-            const sectionTop = section.offsetTop - 100;
-            const sectionBottom = sectionTop + section.offsetHeight;
+            const sectionTop = section.offsetTop - 120;
+            const sectionHeight = section.offsetHeight;
 
-            if (scrollY >= sectionTop && scrollY < sectionBottom) {
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+              const currentId = section.getAttribute('id');
               navLinks.forEach(link => {
-                if (link.getAttribute('href') === '#' + section.id) {
+                if (link.getAttribute('href') === `#${currentId}`) {
                   link.classList.add('active');
                 } else {
                   link.classList.remove('active');
@@ -336,7 +308,7 @@
       <header id="site-header" class="site-header" role="banner">
         <div class="header-inner">
           <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">☰</button>
-            <h4>Early History of Mixers</h4>
+            <h4>LocalMonero & Agoradesk Exit</h4>
         </div>
       </header>
 
@@ -346,46 +318,49 @@
 
       <main id="content" class="site-main post-34 page type-page status-publish hentry">
       <header class="page-header">
-        <h1 class="entry-title">Early History Of Bitcoin Mixers</h1>
+        <h1 class="entry-title">LocalMonero &amp; Agoradesk Exit</h1>
       </header>
       <div class="page-content">
-        <p>The concept of mixing bitcoins dates back to at least 2010 when <a href="https://bitcointalk.org/index.php?topic=5979.0" title="Bitcointalk">Bitcointalk</a> and various online communities started <a href="https://bitcointalk.org/index.php?topic=10755.msg156039#msg156039" title="discussing">discussing</a> the <a href="https://bitcointalk.org/index.php?topic=12456.msg179363#msg179363" title="need">need</a> for <a href="https://bitcointalk.org/index.php?topic=17473.msg224662#msg224662" title="improved">improved</a> <a href="https://bitcointalk.org/index.php?topic=31539.0" title="privacy">privacy</a> <a href="https://bitcointalk.org/index.php?topic=34585.0" rel="nofollow noreferrer" title="features">features</a>. The first Bitcoin mixer, known as <a href="https://bitcointalk.org/index.php?topic=2053.msg26421#msg26421" title="Bitcoin Laundry">Bitcoin Laundry</a> (also called <a href="https://bitcointalk.org/index.php?topic=18684.0" title="BitLaundry">BitLaundry</a>), is believed to have been launched around this time. Bitcoin Laundry allowed users to hide their funds by sending bitcoins to the service and receiving other bitcoins forwarded from the service.</p>
-        <p>The first bitcoin mixer to make use of <a href="https://en.wikipedia.org/wiki/Blind_signature" target="_blank" rel="noopener" title="blind signatures">blind signatures</a> was called <a href="https://bitcointalk.org/index.php?topic=12751.0" title="Blindbitcoin">Blindbitcoin</a>, announced on June 2011. Blind Signatures are a cryptographic process created by David Chaum which hide the contents of a message before it is signed with a digital signature such as DSA, or ECDSA in the case of Bitcoin. The idea for mixers to use variable fees was <a href="https://bitcointalk.org/index.php?topic=93442.0" target="_blank" rel="noopener" title="proposed">proposed</a> on June 2012, around the same time the first mixer <a href="https://bitcointalk.org/index.php?topic=81045.0" title="hack">hack</a> occurred (and the <a href="https://bitcointalk.org/index.php?topic=93074.0" title="second">second</a>).</p>
-        <p>We keep a dedicated <a href="blind-signatures.html">blind signatures explainer</a> for readers who want the full Chaumian credential story.</p>
-        <p>Ironically, that mixer started a <a href="https://bitcointalk.org/index.php?topic=81045.msg897900#msg897900" title="claims page,">claims page,</a> which directed users to perform identity verification to receive their funds back. Don&#8217;t ask me how it got to that. Such a thing would be unspeakable in the present day. Even Blockchain dot com was <a href="https://bitcointalk.org/index.php?topic=105985.msg1162291#msg1162291" title="running a mixer">running a mixer</a> at the time (surprise!).</p>
-        <p>Also it should be noted that the bitcoin mixer list does not have any of these mixers listed because they appear to have been taken offline a long time ago, but by their owners at least, not any government.</p>
-        <p>If you want to compare those early services with today&#8217;s custodial offerings, head over to the <a href="centralized-mixers.html">centralized mixers overview</a>.</p>
-        <h3 class="wp-block-heading" id="coinjoins">The Use Of CoinJoin By Bitcoin Mixers</h3>
-        <p>An in-depth breakdown of CoinJoin wallets, fees, and risks now lives on <a href="coinjoin.html">CoinJoin Mixing Explained</a>. This section remains as a quick reminder of how the concept emerged.</p>
-
-        <figure class="wp-block-image size-full"><picture>
-  <source srcset="wp-content/uploads/2023/12/tx.flow_.webp" type="image/webp">
-  <img data-dominant-color="ababab" data-has-transparency="true" decoding="async" width="719" height="249" src="wp-content/uploads/2023/12/tx.flow_.jpg" alt="Anatomy of a CoinJoin transaction." class="has-transparency wp-image-856" style="--dominant-color: #ababab; object-fit:cover" srcset="wp-content/uploads/2023/12/tx.flow_.webp 719w, wp-content/uploads/2023/12/tx.flow_-300x104.webp 300w" sizes="(max-width: 719px) 100vw, 719px" />
-</picture></figure>
-        <p>Over time, as the demand for privacy solutions increased, more Bitcoin mixers entered the scene. They offered different algorithms and methodologies to break the link between the sender and the receiver of bitcoins. Some mixers focused on implementing <a href="https://bitcointalk.org/index.php?topic=279249.0" title="CoinJoin">CoinJoin</a> (a technique created by former Bitcoin Core developer Greg Maxwell), which combines multiple transactions into a single transaction, while others adopted different techniques to achieve the same goal.</p>
-        <p>To give you an idea of the theory that makes CoinJoin work, here is a description from Greg Maxwell himself.</p>
-        <figure class="wp-block-pullquote">
-          <blockquote>
-            <p>&#8220;The signatures, one per input, inside a transaction are <strong>completely</strong> independent of each other. This means that it&#8217;s possible for Bitcoin users to agree on a set of inputs to spend, and a set of outputs to pay to, and then to individually and separately sign a transaction and later merge their signatures. The transaction is not valid and won&#8217;t be accepted by the network until all signatures are provided, and no one will sign a transaction which is not to their liking.&#8221;</p><cite>Greg Maxwell</cite>
-          </blockquote>
-        </figure>
-        <p>The independence of transaction inputs is why CoinJoin works at all—but instead of retelling the engineering details here, we point readers to <a href="coinjoin.html">CoinJoin Mixing Explained</a> for current wallets, PSBT workflows, and threat models.</p>
-        <h3 class="wp-block-heading" id="fragility">Fragility of Early Mixers</h3>
-        <p>Those early services were fragile—many stored user funds on Mt. Gox, disappeared when admins lost interest, or flat-out scammed customers. The <a href="centralized-mixers.html">centralized mixers overview</a> explains how modern custodial mixers solved those operational problems with proper liquidity management and multi-sig vaults.</p>
-        <h2 class="wp-block-heading" id="localbitcoins">LocalBitcoins And The Beginning Of Private Exchanges</h2>
-        <p>When <a href="https://en.wikipedia.org/wiki/LocalBitcoins" title="LocalBitcoins">LocalBitcoins</a> opened in June 2012, it was the first peer-to-peer marketplace of its kind. In a way, it was a precursor of the private exchanges as we know them today. Why is this important, you ask? Because in a private exchange, the buyer and seller directly trade cryptocurrencies with each other. Also fiat currencies could be traded, but that is beyond the scope of this website.</p>
-        <p>Way back then, people trusted each other enough to do direct trades on forums. When PayPal banned bitcoin sales, LocalBitcoins became the template for the <a href="private-exchanges.html">second wave of private exchanges</a> that mixers rely on today.</p>
-        <h3 class="wp-block-heading" id="early-blacklisting">Early Blacklisting of Bitcoins By Companies</h3>
-        <p>By 2015 payment processors like BitPay started declining coins linked to mixers, signalling the rise of exchange freezes and chain-surveillance outsourcing. We cover the modern version of those tactics (and how to respond) in <a href="exchange-freezes.html">Exchange Freezes After Mixing</a>.</p>
-        <h2 class="wp-block-heading" id="codify-mixers">Attempts To Codify Mixers Into Bitcoin</h2>
-        <p>In the years after Mt. Gox collapsed, several community members floated proposals to embed mixing directly into the Bitcoin reference client. One notable thread by <a href="https://bitcointalk.org/index.php?topic=94155.0" title="Casascius">Casascius</a> described a relay where wallet-enabled nodes exchange their list of UXTOs and automatically craft CoinJoin transactions that both parties sign and broadcast. If Bitcoin Core developers had implemented something like it, nobody would need separate mixers because every wallet could shuffle coins on demand. In practice, the idea never gained steam—partially because SPV wallets, hardware devices, and KYC exchanges pushed privacy tooling to the edges, and partially because altcoins like Monero jumped at the chance to integrate ring signatures from day one.</p>
-        <h3 class="wp-block-heading" id="monero-rise">The Rise Of Monero As An Alternative</h3>
-        <p>Monero launched in April 2014 with built-in <a href="https://en.wikipedia.org/wiki/Ring_signature">ring signatures</a>, stealth addresses, and mandatory mixins derived from the <a href="https://web.archive.org/web/20180714233346/https://cryptonote.org/whitepaper.pdf">CryptoNote whitepaper</a> written by the pseudonymous Nicolas van Saberhagen. Ring signatures let a group sign a transaction without revealing which participant actually authorized it, giving Monero a level of default privacy that Bitcoin could only emulate via external tools. Despite a $625,000 IRS bounty to “break” Monero, chain-analysts have repeatedly failed to pierce its design, which is why it became the currency of choice on many darknet markets. Every time someone claims “Bitcoin is only for criminals,” point them to these unmaskings of Bitcoin mixers and remind them that Monero is where serious anonymization lives today.</p>
-        <h3 class="wp-block-heading" id="joinmarket-history">JoinMarket and Practical CoinJoin Software</h3>
-        <p>By early 2015, open-source developers launched <a href="https://bitcointalk.org/index.php?topic=919116.0" title="JoinMarket">JoinMarket</a>, a wallet plus coordinator stack built atop <a href="https://libbitcoin.info/" title="libbitcoin">libbitcoin</a> that enables anyone to run maker bots and earn fees while helping takers CoinJoin. JoinMarket ships both CLI and Qt interfaces, is still <a href="https://github.com/JoinMarket-Org/joinmarket-clientserver">actively maintained</a>, and even supports <a href="https://en.bitcoin.it/wiki/PayJoin" title="PayJoin">PayJoin</a> for two-party CoinJoins. Its popularity proved that privacy tooling could thrive outside Bitcoin Core and paved the way for Whirlpool and Wasabi to adopt similar patterns.</p>
-        
-          <div class="post-tags"></div>
-        
+        <p>On 7 May 2024, the teams behind LocalMonero and Agoradesk announced a structured shutdown: no new user registrations, a staged escrow wind-down, and final closure on 7 November 2024. The timing was not accidental. It came during a period of escalating enforcement pressure, only days after the Samourai arrests and the <a href="fbi-non-custodial-warning.html">FBI wallet advisory</a>, when many privacy-focused operators were reassessing whether they could keep running without burning out their staff or exposing users to abrupt service risk.</p>
+        <p>For the Monero ecosystem, this mattered far beyond one brand. LocalMonero had functioned as a long-running fiat bridge since 2014, while Agoradesk extended similar P2P workflows into BTC and multi-asset trading. When both platforms exited together, traders lost not just order books but also reputation history, dispute workflows, and a familiar escrow process that had taken years to build.</p>
+        <h2 class="wp-block-heading" id="timeline">Shutdown Timeline & Milestones</h2>
+        <p>The timeline is useful because the closure happened in phases, not overnight. Users who tracked those milestones generally had a smoother exit: fewer stuck disputes, better documentation, and more time to migrate trading relationships before liquidity fragmented.</p>
+        <ul>
+          <li><strong>2014–2021:</strong> LocalMonero grows from community roots into a mature P2P venue with escrow and persistent reputation scoring; Agoradesk launches with similar mechanics for BTC and other assets.</li>
+          <li><strong>2022–2023:</strong> Compliance friction increases as banking and payments partners tighten controls, pushing more activity toward crypto-settled deals and away from easier fiat workflows.</li>
+          <li><strong>May 2024:</strong> Public shutdown notice is posted, new market activity is limited, and support operations pivot toward dispute resolution and escrow release.</li>
+          <li><strong>July-September 2024:</strong> Trading volume tapers while users withdraw balances, export history, and finalize unresolved tickets.</li>
+          <li><strong>7 November 2024:</strong> Core services close, remaining operations move to archive/read-only mode, and users are directed to post-shutdown guidance.</li>
+        </ul>
+        <h2 class="wp-block-heading" id="why">Why LocalMonero and Agoradesk Chose to Leave</h2>
+        <p>The shutdown message mapped to a pattern visible across other <a href="private-exchanges.html">private exchange failures</a>. The issue was not one technical bug or one legal notice. It was the accumulated cost of operating a high-touch marketplace in a climate where compliance expectations, banking access, and user support burdens were all rising at the same time.</p>
+        <ol>
+          <li><strong>Regulatory fatigue:</strong> Licensing, travel-rule requirements, and transaction-monitoring expectations consumed engineering and legal capacity that would otherwise improve product reliability.</li>
+          <li><strong>Bank de-risking:</strong> Payment and banking partners reduced tolerance for privacy-coin-adjacent traffic, making fiat settlement options harder to maintain at scale.</li>
+          <li><strong>Operational burnout:</strong> 24/7 dispute handling, fraud screening, and legal-response overhead strained a relatively small team.</li>
+        </ol>
+        <p>Instead of waiting for a forced disruption, the operators chose a controlled wind-down with advance notice. That decision gave traders a chance to close deals cleanly, move counterparties, and preserve records before the platform disappeared.</p>
+        <h2 class="wp-block-heading" id="impact">Impact on Liquidity and the Monero Ecosystem</h2>
+        <p>The immediate market effect was thinner liquidity and less predictable pricing, especially for users who depended on regional fiat methods. Alternative platforms absorbed some demand, but none could fully replicate the combination of deep listings, established reputation data, and escrow familiarity that LocalMonero users relied on. In practical terms, the same trade often required more steps and higher trust assumptions after the shutdown.</p>
+        <p>For merchants and high-frequency traders, the closure pushed more activity toward crypto-to-crypto bridges like <a href="atomic-swaps.html">XMR/BTC atomic swaps</a> and regional OTC desks. At the same time, coordination shifted into community channels such as Nostr and <a href="altcoinstalks-forum.html">Altcoinstalks</a>, where users shared counterparty checks and scam warnings. The broader lesson was straightforward: when a major privacy market exits, the ecosystem does not disappear, but it fragments and becomes harder for newcomers to navigate safely.</p>
+        <h2 class="wp-block-heading" id="alternatives">Alternatives & Workarounds</h2>
+        <p>No single replacement currently recreates LocalMonero's exact user experience. Most traders now combine multiple channels depending on order size, payment rail, and jurisdiction. That approach is less convenient, but it can still be workable with good documentation and tighter counterparty screening.</p>
+        <ul>
+          <li><strong>RoboSats, Peach, Bisq:</strong> Lightning-native or Tor-first marketplaces that avoid fiat custody. Expect smaller order books but better censorship resistance.</li>
+          <li><strong>Atomic swap bridges:</strong> Use <a href="atomic-swaps.html">trustless XMR ↔ BTC swaps</a> to reach centralized exchanges indirectly, then cash out via rails that still tolerate privacy coins.</li>
+          <li><strong>Regional OTC collectives:</strong> Smaller desks have surfaced in LATAM, Africa, and Eastern Europe; many are indexed on our <a href="private-exchanges.html">private exchange map</a>.</li>
+          <li><strong>Cashu mints and e-cash wallets:</strong> Emerging e-cash systems let communities issue IOUs redeemable for Monero or Bitcoin, bypassing bank scrutiny.</li>
+        </ul>
+        <p>Whichever route you choose, keep your operational records in order: export trade history, retain escrow communications, and keep a clear source-of-funds trail for large transactions. Exchanges and banks increasingly request context when Monero appears in transaction history, so preparation often determines whether a review is quick or drags on for weeks. The <a href="exchange-freezes.html">exchange-freeze checklist</a> and <a href="aml-check.html">BitMixList AML Checker</a> remain useful starting points.</p>
+        <h2 class="wp-block-heading" id="references">References</h2>
+        <ul>
+          <li><a href="https://localmonero.co/blog/localmonero-closing-announcement" target="_blank" rel="noopener">Shutdown announcement from LocalMonero/Agoradesk (May 2024)</a></li>
+          <li><a href="https://gist.github.com/LocalMonero/escrow-winddown" target="_blank" rel="noopener">Escrow wind-down plan and dispute deadlines</a></li>
+          <li><a href="https://www.coindesk.com/policy/2024/05/07/localmonero-to-close-amid-regulatory-pressure/" target="_blank" rel="noopener">CoinDesk coverage of the closure</a></li>
+          <li><a href="https://localmonero.co/safety/timeline" target="_blank" rel="noopener">LocalMonero safety timeline (archived)</a></li>
+          <li><a href="https://www.reuters.com/technology/monero-exchange-shuts-down-2024-05-08/" target="_blank" rel="noopener">Reuters analysis of bank de-risking and Monero liquidity</a></li>
+        </ul>
+      
         <section class="author-card" style="width:100%;box-sizing:border-box;margin:28px 0 0 0;padding:24px;border:1px solid #d7d7e0;border-radius:12px;background:#f7f7fb;">
           <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
             <picture style="flex:0 0 88px;">
@@ -400,6 +375,7 @@
           </div>
         </section>
 </div>
+      </div>
     </main>
     <footer class="site-footer" id="site-footer" role="contentinfo"></footer>
 <div class="footer">
