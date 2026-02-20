@@ -318,7 +318,6 @@
 <li class="menu-item"><a class="nav-link" href="scam-lookup.html">Scam Lookup</a></li>
 <li class="menu-item"><a class="nav-link" href="letter-verify.html">Verify Guarrantee</a></li>
 <li class="menu-item"><a class="nav-link" href="aml-check.html">AML Checker</a></li>
-<li class="menu-item"><a class="nav-link" href="terms-and-conditions.html">Acceptable Use</a></li>
 <li class="menu-item"><a class="nav-link" href="early-history.html">Early History</a></li>
 <li class="menu-item"><a class="nav-link" href="mixer-privacy.html">Mixer Privacy</a></li>
 <li class="menu-item"><a class="nav-link" href="evolving-regulation.html">Evolving Regulation</a></li>
@@ -327,6 +326,7 @@
 <li class="menu-item"><a class="nav-link" href="aftermath.html">Aftermath</a></li>
 <li class="menu-item"><a class="nav-link" href="mixers-necessity.html">Why We Need Mixers</a></li>
 <li class="menu-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+<li class="menu-item"><a class="nav-link" href="terms-and-conditions.html">Acceptable Use</a></li>
 </ul>
 
     </nav>
@@ -349,7 +349,7 @@
         <h1 class="entry-title">Blind Signatures In Bitcoin Mixers</h1>
       </header>
       <div class="page-content">
-        <p>Blind signatures let a signer validate a message without learning its contents. David Chaum introduced the primitive in the 1980s for his eCash experiments, and Bitcoin privacy developers still rely on it to hide the link between deposits and withdrawals. When a mixer issues a blind signature, it promises to honor a payout without knowing which participant will redeem the credential later. That single property neutralizes curious (or subpoenaed) coordinators and explains why Chaumian CoinJoin designs continue to power tools listed on the <a href="privacy-tools.html">BitMixList privacy directory</a>.</p>
+        <p>Blind signatures let a signer validate a message without learning its contents. David Chaum introduced the primitive in the 1980s for his eCash experiments, and Bitcoin privacy developers still rely on it to hide the link between deposits and withdrawals. When a mixer issues a blind signature, it promises to honor a payout without knowing which participant will redeem the credential later. That single property neutralizes curious (or subpoenaed) coordinators and explains why Chaumian CoinJoin designs continue to power tools listed on the <a href="index.html#privacy-tools">BitMixList privacy directory</a>.</p>
         <h2 class="wp-block-heading" id="how-it-works">How Chaumian Blind Signatures Work</h2>
         <p>The classic flow involves four steps. First, a user generates a random token and “blinds” it by multiplying with a secret factor. Second, after the user proves they deposited funds, the coordinator signs the blinded token. Third, the user removes the secret factor, revealing a valid signature on the original token. Finally, the user redeems that token for an output in a later round. Because the coordinator never saw the unblinded token, it cannot match the redemption to the original deposit. Implementations typically use RSA blinding for compatibility, but research into Schnorr- and BLS-based schemes continues so that Taproot-era protocols can batch-verify credentials.</p>
         <p>Blind signatures solve only the mapping problem. Mixers still need healthy liquidity, uptime, and sybil resistance—a lesson underscored by custodial failures such as <a href="chipmixer-seizure.html">ChipMixer</a> and <a href="cryptomixer-eu-seizure.html">CryptoMixer</a>. When those services fell, Chaumian wallets gained favor because even a compromised coordinator could not retroactively deanonymize honest users.</p>

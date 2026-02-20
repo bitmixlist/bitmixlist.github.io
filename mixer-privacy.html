@@ -317,7 +317,6 @@
 <li class="menu-item"><a class="nav-link" href="scam-lookup.html">Scam Lookup</a></li>
 <li class="menu-item"><a class="nav-link" href="letter-verify.html">Verify Guarrantee</a></li>
 <li class="menu-item"><a class="nav-link" href="aml-check.html">AML Checker</a></li>
-<li class="menu-item"><a class="nav-link" href="terms-and-conditions.html">Acceptable Use</a></li>
 <li class="menu-item"><a class="nav-link" href="early-history.html">Early History</a></li>
 <li class="menu-item"><a class="nav-link" href="mixer-privacy.html">Mixer Privacy</a></li>
 <li class="menu-item"><a class="nav-link" href="evolving-regulation.html">Evolving Regulation</a></li>
@@ -326,6 +325,7 @@
 <li class="menu-item"><a class="nav-link" href="aftermath.html">Aftermath</a></li>
 <li class="menu-item"><a class="nav-link" href="mixers-necessity.html">Why We Need Mixers</a></li>
 <li class="menu-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+<li class="menu-item"><a class="nav-link" href="terms-and-conditions.html">Acceptable Use</a></li>
 </ul>
 
 
@@ -374,7 +374,7 @@
               border-collapse: separate;
               border-spacing: 0;
               width: 100%;
-              min-width: 1120px;
+              min-width: 1240px;
               font-size: 14px;
               border: 1px solid rgba(255,255,255,0.08);
             }
@@ -434,12 +434,13 @@
                   <th class="rowhead">Capability</th>
                   <th>Mixers</th>
                   <th>CoinJoin</th>
-                  <th>TumbleBit</th>
                   <th>Stealth Addresses / Silent Payments</th>
                   <th>Monero</th>
                   <th>Cross-Chain Bridges / Atomic Swaps</th>
                   <th>Fresh Addresses</th>
                   <th>Change Output Randomization</th>
+                  <th>TumbleBit</th>
+                  <th>ZeroLink</th>
                 </tr>
               </thead>
               <tbody>
@@ -447,16 +448,16 @@
                   <td class="rowhead">Trusted third party?</td>
                   <td><span class="badge maybe"><span class="dot"></span>Custodial risk</span></td>
                   <td><span class="badge no"><span class="dot"></span>No</span></td>
-                  <td><span class="badge maybe"><span class="dot"></span>Hub liveness risk</span></td>
                   <td><span class="badge no"><span class="dot"></span>No</span></td>
                   <td><span class="badge no"><span class="dot"></span>No</span></td>
                   <td><span class="badge maybe"><span class="dot"></span>Route dependent</span></td>
                   <td><span class="badge no"><span class="dot"></span>No</span></td>
                   <td><span class="badge no"><span class="dot"></span>No</span></td>
+                  <td><span class="badge maybe"><span class="dot"></span>Hub liveness risk</span></td>
+                  <td><span class="badge maybe"><span class="dot"></span>Coordinator liveness</span></td>
                 </tr>
                 <tr>
                   <td class="rowhead">Breaks input/output linkability</td>
-                  <td><span class="badge yes"><span class="dot"></span>Yes</span></td>
                   <td><span class="badge yes"><span class="dot"></span>Yes</span></td>
                   <td><span class="badge yes"><span class="dot"></span>Yes</span></td>
                   <td><span class="badge maybe"><span class="dot"></span>Receiver only</span></td>
@@ -464,10 +465,11 @@
                   <td><span class="badge yes"><span class="dot"></span>Yes (multi-hop)</span></td>
                   <td><span class="badge maybe"><span class="dot"></span>Reduces reuse</span></td>
                   <td><span class="badge maybe"><span class="dot"></span>Reduces heuristics</span></td>
+                  <td><span class="badge yes"><span class="dot"></span>Yes</span></td>
+                  <td><span class="badge yes"><span class="dot"></span>Yes</span></td>
                 </tr>
                 <tr>
                   <td class="rowhead">Hides amounts</td>
-                  <td><span class="badge no"><span class="dot"></span>No</span></td>
                   <td><span class="badge no"><span class="dot"></span>No</span></td>
                   <td><span class="badge no"><span class="dot"></span>No</span></td>
                   <td><span class="badge no"><span class="dot"></span>No</span></td>
@@ -475,39 +477,44 @@
                   <td><span class="badge maybe"><span class="dot"></span>Depends on chain</span></td>
                   <td><span class="badge no"><span class="dot"></span>No</span></td>
                   <td><span class="badge no"><span class="dot"></span>No</span></td>
+                  <td><span class="badge no"><span class="dot"></span>No</span></td>
+                  <td><span class="badge no"><span class="dot"></span>No</span></td>
                 </tr>
                 <tr>
                   <td class="rowhead">Default privacy &amp; UX</td>
                   <td><span class="badge maybe"><span class="dot"></span>Easy UX, fragile legality</span></td>
                   <td><span class="badge maybe"><span class="dot"></span>DIY UX, resilient</span></td>
-                  <td><span class="badge maybe"><span class="dot"></span>Strong model, niche tooling</span></td>
                   <td><span class="badge maybe"><span class="dot"></span>Wallet support needed</span></td>
                   <td><span class="badge yes"><span class="dot"></span>Always-on</span></td>
                   <td><span class="badge maybe"><span class="dot"></span>Advanced routing</span></td>
                   <td><span class="badge yes"><span class="dot"></span>Built-in for most wallets</span></td>
                   <td><span class="badge maybe"><span class="dot"></span>Wallet dependent</span></td>
+                  <td><span class="badge maybe"><span class="dot"></span>Strong model, niche tooling</span></td>
+                  <td><span class="badge maybe"><span class="dot"></span>Framework, wallet-dependent</span></td>
                 </tr>
                 <tr>
                   <td class="rowhead">Best use case</td>
                   <td class="notes">Fast BTC obfuscation when you accept custodial exposure.</td>
                   <td class="notes">Self-hosted mixing that keeps BTC liquidity intact.</td>
-                  <td class="notes">Research-grade, trust-minimized unlinkability model for hub-based routing.</td>
                   <td class="notes">Protecting reusable donation or invoice addresses.</td>
                   <td class="notes">Long-term storage and cross-chain hops with default privacy.</td>
                   <td class="notes">Re-entering BTC with a new graph after leaving the chain.</td>
                   <td class="notes">Basic hygiene against address-reuse heuristics.</td>
                   <td class="notes">Avoiding deterministic change outputs that leak ownership.</td>
+                  <td class="notes">Research-grade, trust-minimized unlinkability model for hub-based routing.</td>
+                  <td class="notes">Protocol framework for Chaumian CoinJoin wallet design and toxic-change handling.</td>
                 </tr>
                 <tr>
                   <td class="rowhead">Main page</td>
                   <td><a href="faq.html">Mixers</a></td>
                   <td><a href="enhanced-coinjoins.html">CoinJoin</a></td>
-                  <td><a href="tumblebit.html">TumbleBit</a></td>
                   <td><a href="stealth-addresses.html">Stealth addresses</a></td>
                   <td><a href="monero-privacy-alternative.html">Monero</a></td>
                   <td><a href="atomic-swaps.html">Bridges / swaps</a></td>
                   <td><a href="address-reuse.html">Fresh addresses</a></td>
                   <td><a href="change-addresses.html">Change addresses</a></td>
+                  <td><a href="tumblebit.html">TumbleBit</a></td>
+                  <td><a href="zerolink.html">ZeroLink</a></td>
                 </tr>
               </tbody>
             </table>

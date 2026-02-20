@@ -318,7 +318,6 @@
 <li class="menu-item"><a class="nav-link" href="scam-lookup.html">Scam Lookup</a></li>
 <li class="menu-item"><a class="nav-link" href="letter-verify.html">Verify Guarrantee</a></li>
 <li class="menu-item"><a class="nav-link" href="aml-check.html">AML Checker</a></li>
-<li class="menu-item"><a class="nav-link" href="terms-and-conditions.html">Acceptable Use</a></li>
 <li class="menu-item"><a class="nav-link" href="early-history.html">Early History</a></li>
 <li class="menu-item"><a class="nav-link" href="mixer-privacy.html">Mixer Privacy</a></li>
 <li class="menu-item"><a class="nav-link" href="evolving-regulation.html">Evolving Regulation</a></li>
@@ -327,6 +326,7 @@
 <li class="menu-item"><a class="nav-link" href="aftermath.html">Aftermath</a></li>
 <li class="menu-item"><a class="nav-link" href="mixers-necessity.html">Why We Need Mixers</a></li>
 <li class="menu-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+<li class="menu-item"><a class="nav-link" href="terms-and-conditions.html">Acceptable Use</a></li>
 </ul>
 
     </nav>
@@ -357,10 +357,10 @@
         <p>Those milestones show an arc from concept to near-standard. While the base protocol stayed agnostic, wallet authors, especially in the privacy space, kept iterating. Each generation reduced setup friction, removed telltale transaction fingerprints, and aligned more closely with how Monero’s view/spend key pairs operate. Today’s silent-payment prototypes are the culmination of that fifteen-year conversation.</p>
         <h2 class="wp-block-heading" id="bip47">BIP47 – Reusable Payment Codes</h2>
         <p>BIP47 introduced payment codes—encoded public keys plus metadata that function as a reusable “contact card.” A receiver publishes that code via website, QR, or PayNym handle. The sender first broadcasts a small notification transaction containing an OP_RETURN payload or a specific script template. That transaction uses ECDH to establish a shared secret so both parties can derive an infinite tree of one-time addresses. All later payments land directly on those derived addresses, so outside observers never see reuse, and the sender never has to ask for a fresh invoice.</p>
-        <p>In practice the trade-offs revolve around usability and leakage. Wallets such as Samourai Wallet’s PayNyms handle the notification handshake automatically, but that transaction still reveals that two parties agreed to communicate, and it costs on-chain fees. When operators combine BIP47 flows with manual change management or the <a href="privacy-tools.html">broader privacy tool stack</a>, they can keep donation accounts open indefinitely with acceptable overhead.</p>
+        <p>In practice the trade-offs revolve around usability and leakage. Wallets such as Samourai Wallet’s PayNyms handle the notification handshake automatically, but that transaction still reveals that two parties agreed to communicate, and it costs on-chain fees. When operators combine BIP47 flows with manual change management or the <a href="index.html#privacy-tools">broader privacy tool stack</a>, they can keep donation accounts open indefinitely with acceptable overhead.</p>
         <h2 class="wp-block-heading" id="silent-payments">Silent Payments (BIP352)</h2>
         <p>Silent Payments, standardized as BIP 352 in 2022, remove the need for a notification transaction. The receiver shares a silent payment address derived from their Taproot key. For each payment, the sender generates an ephemeral keypair, performs an ECDH exchange with the published point, and tweaks a P2TR output so the funds land on a unique address. Because Taproot commits to the entire script tree, the payment looks indistinguishable from other P2TR spends on the blockchain.</p>
-        <p>The receiver’s wallet scans new blocks, plugs the tweaked keys into their private data, and silently discovers which outputs belong to them. The trade-off is heavier scanning on the receiver side, but hardware acceleration and light-client proofs are improving quickly. Silent payments also sidestep jurisdictional concerns about OP_RETURN usage and keep the chain footprint minimal. Projects like Sparrow Wallet, Phoenix, and several <a href="privacy-tools.html">emerging privacy clients</a> now ship experimental support, signaling that BIP 352 is moving from research to production.</p>
+        <p>The receiver’s wallet scans new blocks, plugs the tweaked keys into their private data, and silently discovers which outputs belong to them. The trade-off is heavier scanning on the receiver side, but hardware acceleration and light-client proofs are improving quickly. Silent payments also sidestep jurisdictional concerns about OP_RETURN usage and keep the chain footprint minimal. Projects like Sparrow Wallet, Phoenix, and several <a href="index.html#privacy-tools">emerging privacy clients</a> now ship experimental support, signaling that BIP 352 is moving from research to production.</p>
         <h2 class="wp-block-heading" id="how-stealth-addresses-work">How Stealth Address Derivations Work</h2>
         <p>Every stealth scheme uses two essential ingredients: a publicly shared meta-address that bundles long-term public keys, and an interactive or pseudo-interactive protocol that turns those keys into one-time spendable outputs. The sender’s wallet handles the math, so the UX still feels like copying a donation address. Under the hood the workflow follows a repeatable pattern:</p>
         <ol>

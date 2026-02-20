@@ -318,7 +318,6 @@
 <li class="menu-item"><a class="nav-link" href="scam-lookup.html">Scam Lookup</a></li>
 <li class="menu-item"><a class="nav-link" href="letter-verify.html">Verify Guarrantee</a></li>
 <li class="menu-item"><a class="nav-link" href="aml-check.html">AML Checker</a></li>
-<li class="menu-item"><a class="nav-link" href="terms-and-conditions.html">Acceptable Use</a></li>
 <li class="menu-item"><a class="nav-link" href="early-history.html">Early History</a></li>
 <li class="menu-item"><a class="nav-link" href="mixer-privacy.html">Mixer Privacy</a></li>
 <li class="menu-item"><a class="nav-link" href="evolving-regulation.html">Evolving Regulation</a></li>
@@ -327,6 +326,7 @@
 <li class="menu-item"><a class="nav-link" href="aftermath.html">Aftermath</a></li>
 <li class="menu-item"><a class="nav-link" href="mixers-necessity.html">Why We Need Mixers</a></li>
 <li class="menu-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+<li class="menu-item"><a class="nav-link" href="terms-and-conditions.html">Acceptable Use</a></li>
 </ul>
 
     </nav>
@@ -382,157 +382,13 @@
           <li><strong>Silent payments (BIP352):</strong> One Taproot-style identifier that still results in unique on-chain outputs.</li>
           <li><strong>Lightning and LNURL:</strong> Tipping and recurring payments without exposing a static on-chain receive target.</li>
         </ul>
-        <p>For implementation details, continue to <a href="stealth-addresses.html">Stealth Addresses</a> and pair it with <a href="privacy-tools.html">Privacy Tools</a> so unlinkability survives beyond the receive step.</p>
+        <p>For implementation details, continue to <a href="stealth-addresses.html">Stealth Addresses</a> and pair it with <a href="index.html#privacy-tools">Privacy Tools</a> so unlinkability survives beyond the receive step.</p>
         <h2 class="wp-block-heading" id="businesses">Merchants, Payroll, and Exchanges</h2>
         <p>Business teams usually feel reuse damage first. Customers bookmark old invoice addresses, payroll staff reuse past templates, and support teams resend old QR codes for convenience. Those shortcuts eventually create a public relationship map between your customers, your treasury flows, and your exchange endpoints.</p>
         <p>Set policy that every invoice and every payroll cycle gets new addresses, enforce it in BTCPay or your payment API, and train staff that old deposit addresses are not "defaults." During reviews, maintain logs that prove unique addressing and show how funds moved through documented custody flows such as <a href="letter-verify.html">guarantee verification</a>. Without that evidence, compliance defense becomes harder than it needs to be.</p>
         <h2 class="wp-block-heading" id="recovering">Regaining Privacy After Reuse</h2>
         <p>If reuse already happened, treat those outputs as compromised metadata, then move methodically. Start with a clean HD account, split value into manageable UTXOs, and rebuild separation with tools that match your risk profile: <a href="enhanced-coinjoins.html">CoinJoin</a>, <a href="atomic-swaps.html">atomic swaps</a>, Lightning loops, or a temporary privacy rail through <a href="monero-privacy-alternative.html">Monero</a> before re-entry.</p>
         <p>Recovery is possible, but it is slower and more expensive than prevention. The durable rule is still the same: each payment gets a fresh address. If you need a static public identity, use PayNyms or silent payments instead of permanent reuse.</p>
-                <section id="privacy-tech-matrix" class="privacy-matrix">
-          <h2 class="wp-block-heading">Anonymization Technique Comparison</h2>
-          <p>Each column below maps to the most common privacy workflows. Swipe horizontally on mobile.</p>
-          <style>
-            #privacy-tech-matrix .scroll-wrap {
-              overflow-x: auto;
-            }
-            #privacy-tech-matrix table {
-              border-collapse: separate;
-              border-spacing: 0;
-              width: 100%;
-              min-width: 980px;
-              font-size: 14px;
-              border: 1px solid rgba(255,255,255,0.08);
-            }
-            #privacy-tech-matrix th,
-            #privacy-tech-matrix td {
-              padding: 12px 14px;
-              border-bottom: 1px solid rgba(255,255,255,0.08);
-              border-right: 1px solid rgba(255,255,255,0.06);
-              white-space: nowrap;
-            }
-            #privacy-tech-matrix th {
-              font-weight: 600;
-              background: rgba(12,12,12,0.9);
-              position: sticky;
-              top: 0;
-            }
-            #privacy-tech-matrix .rowhead {
-              font-weight: 600;
-              position: sticky;
-              left: 0;
-              background: rgba(5,5,5,0.85);
-              max-width: 230px;
-              z-index: 3;
-            }
-            #privacy-tech-matrix tbody tr:nth-child(even) .rowhead {
-              background: rgba(5,5,5,0.95);
-            }
-            #privacy-tech-matrix tbody tr:nth-child(even) td {
-              background: rgba(255,255,255,0.02);
-            }
-            #privacy-tech-matrix .badge {
-              display: inline-flex;
-              align-items: center;
-              gap: 6px;
-              padding: 4px 10px;
-              border-radius: 999px;
-              border: 1px solid rgba(255,255,255,0.12);
-              font-weight: 600;
-            }
-            #privacy-tech-matrix .dot {
-              width: 9px;
-              height: 9px;
-              border-radius: 50%;
-            }
-            #privacy-tech-matrix .yes .dot { background: #2ee9a6; }
-            #privacy-tech-matrix .no .dot { background: #ff5c7a; }
-            #privacy-tech-matrix .maybe .dot { background: #ffd15c; }
-            #privacy-tech-matrix .notes {
-              white-space: normal;
-              line-height: 1.35;
-            }
-          </style>
-          <div class="scroll-wrap" role="region" aria-label="Privacy technology comparison">
-            <table>
-              <thead>
-                <tr>
-                  <th class="rowhead">Capability</th>
-                  <th>Mixers</th>
-                  <th>CoinJoin</th>
-                  <th>Stealth Addresses / Silent Payments</th>
-                  <th>Monero</th>
-                  <th>Cross-Chain Bridges / Atomic Swaps</th>
-                  <th>Fresh Addresses</th>
-                  <th>Change Output Randomization</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="rowhead">Trusted third party?</td>
-                  <td><span class="badge maybe"><span class="dot"></span>Custodial risk</span></td>
-                  <td><span class="badge no"><span class="dot"></span>No</span></td>
-                  <td><span class="badge no"><span class="dot"></span>No</span></td>
-                  <td><span class="badge no"><span class="dot"></span>No</span></td>
-                  <td><span class="badge maybe"><span class="dot"></span>Route dependent</span></td>
-                  <td><span class="badge no"><span class="dot"></span>No</span></td>
-                  <td><span class="badge no"><span class="dot"></span>No</span></td>
-                </tr>
-                <tr>
-                  <td class="rowhead">Breaks input/output linkability</td>
-                  <td><span class="badge yes"><span class="dot"></span>Yes</span></td>
-                  <td><span class="badge yes"><span class="dot"></span>Yes</span></td>
-                  <td><span class="badge maybe"><span class="dot"></span>Receiver only</span></td>
-                  <td><span class="badge yes"><span class="dot"></span>Yes</span></td>
-                  <td><span class="badge yes"><span class="dot"></span>Yes (multi-hop)</span></td>
-                  <td><span class="badge maybe"><span class="dot"></span>Reduces reuse</span></td>
-                  <td><span class="badge maybe"><span class="dot"></span>Reduces heuristics</span></td>
-                </tr>
-                <tr>
-                  <td class="rowhead">Hides amounts</td>
-                  <td><span class="badge no"><span class="dot"></span>No</span></td>
-                  <td><span class="badge no"><span class="dot"></span>No</span></td>
-                  <td><span class="badge no"><span class="dot"></span>No</span></td>
-                  <td><span class="badge yes"><span class="dot"></span>Yes (RingCT)</span></td>
-                  <td><span class="badge maybe"><span class="dot"></span>Depends on chain</span></td>
-                  <td><span class="badge no"><span class="dot"></span>No</span></td>
-                  <td><span class="badge no"><span class="dot"></span>No</span></td>
-                </tr>
-                <tr>
-                  <td class="rowhead">Default privacy &amp; UX</td>
-                  <td><span class="badge maybe"><span class="dot"></span>Easy UX, fragile legality</span></td>
-                  <td><span class="badge maybe"><span class="dot"></span>DIY UX, resilient</span></td>
-                  <td><span class="badge maybe"><span class="dot"></span>Wallet support needed</span></td>
-                  <td><span class="badge yes"><span class="dot"></span>Always-on</span></td>
-                  <td><span class="badge maybe"><span class="dot"></span>Advanced routing</span></td>
-                  <td><span class="badge yes"><span class="dot"></span>Built-in for most wallets</span></td>
-                  <td><span class="badge maybe"><span class="dot"></span>Wallet dependent</span></td>
-                </tr>
-                <tr>
-                  <td class="rowhead">Best use case</td>
-                  <td class="notes">Fast BTC obfuscation when you accept custodial exposure.</td>
-                  <td class="notes">Self-hosted mixing that keeps BTC liquidity intact.</td>
-                  <td class="notes">Protecting reusable donation or invoice addresses.</td>
-                  <td class="notes">Long-term storage and cross-chain hops with default privacy.</td>
-                  <td class="notes">Re-entering BTC with a new graph after leaving the chain.</td>
-                  <td class="notes">Basic hygiene against address-reuse heuristics.</td>
-                  <td class="notes">Avoiding deterministic change outputs that leak ownership.</td>
-                </tr>
-                <tr>
-                  <td class="rowhead">Main page</td>
-                  <td><a href="faq.html">Mixers</a></td>
-                  <td><a href="enhanced-coinjoins.html">CoinJoin</a></td>
-                  <td><a href="stealth-addresses.html">Stealth addresses</a></td>
-                  <td><a href="monero-privacy-alternative.html">Monero</a></td>
-                  <td><a href="atomic-swaps.html">Bridges / swaps</a></td>
-                  <td><a href="address-reuse.html">Fresh addresses</a></td>
-                  <td><a href="change-addresses.html">Change addresses</a></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-      
         <section class="author-card" style="width:100%;box-sizing:border-box;margin:28px 0 0 0;padding:24px;border:1px solid #d7d7e0;border-radius:12px;background:#f7f7fb;">
           <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
             <picture style="flex:0 0 88px;">

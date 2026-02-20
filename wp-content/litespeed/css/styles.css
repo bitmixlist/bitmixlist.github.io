@@ -67,6 +67,16 @@ a:focus-visible {
 .footer div {
     font-size: 14px;
 }
+
+/* Keep footer alignment centered within the content area (excluding sidebar width) */
+.site-content-wrapper > .site-footer,
+.site-content-wrapper > .footer {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    margin-left: 0;
+    margin-right: 0;
+}
 .page-content, .entry-title {
     border-color: #333;
 }
