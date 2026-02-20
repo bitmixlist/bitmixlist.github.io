@@ -121,12 +121,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bitmixlist.org/cybercrime-cryptocurrency.html</loc>
-    <lastmod>2026-02-12T07:45:20Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://bitmixlist.org/decentralized-mixers.html</loc>
     <lastmod>2026-02-12T07:45:20Z</lastmod>
     <changefreq>weekly</changefreq>
@@ -135,12 +129,6 @@
   <url>
     <loc>https://bitmixlist.org/early-history.html</loc>
     <lastmod>2026-02-18T12:33:10Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://bitmixlist.org/educational-disclaimer-irony.html</loc>
-    <lastmod>2026-02-12T07:55:03Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -223,12 +211,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bitmixlist.org/introduction.html</loc>
-    <lastmod>2026-02-12T08:26:30Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://bitmixlist.org/jambler-mixer-service.html</loc>
     <lastmod>2026-02-12T07:45:19Z</lastmod>
     <changefreq>weekly</changefreq>
@@ -297,12 +279,6 @@
   <url>
     <loc>https://bitmixlist.org/privacy-coin-delistings.html</loc>
     <lastmod>2026-02-12T07:45:20Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://bitmixlist.org/privacy-tools.html</loc>
-    <lastmod>2026-02-14T07:46:19Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
