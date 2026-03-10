@@ -98,10 +98,20 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
           riskLabel.textContent = '';
           riskLabel.style.color = '#cbd5f5';
         }
+        const entityLabel = document.getElementById('amlEntityLabel');
+        if (entityLabel) {
+          entityLabel.textContent = '';
+          entityLabel.style.display = 'none';
+        }
+        const scoreFootnote = document.getElementById('amlScoreFootnote');
+        if (scoreFootnote) {
+          scoreFootnote.textContent = 'Results from MistTrack';
+        }
         const marker = document.getElementById('amlScoreMarker');
         if (marker) {
           marker.style.left = '0%';
         }
+        setCardVisibility('arkhamCard', true);
         const totals = document.getElementById('arkhamTotals');
         if (totals) {
           totals.innerHTML = `
@@ -122,6 +132,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         if (unknown) {
           unknown.textContent = 'No unknown counterparties reported.';
         }
+        setCardVisibility('chainabuseCard', true);
         const chainVal = document.getElementById('chainabuseValue');
         if (chainVal) {
           chainVal.textContent = '--';
@@ -144,6 +155,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         if (reportsList) {
           reportsList.innerHTML = '<div class="chainabuse-empty">No reports to show.</div>';
         }
+        setCardVisibility('sanctionsCard', true);
         const sanctionsStatus = document.getElementById('sanctionsStatus');
         if (sanctionsStatus) {
           sanctionsStatus.textContent = '--';
@@ -234,17 +246,69 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
           const num = Number(value);
           return Number.isFinite(num) ? num : null;
         };
+        const firstDefined = (...values) => values.find((value) => value !== undefined);
+        const firstNonEmptyString = (...values) => {
+          for (const value of values) {
+            if (typeof value === 'string' && value.trim()) {
+              return value.trim();
+            }
+          }
+          return null;
+        };
+        const normalizeStringArray = (value) =>
+          Array.isArray(value)
+            ? value
+                .filter((entry) => typeof entry === 'string')
+                .map((entry) => entry.trim())
+                .filter(Boolean)
+            : [];
 
-        const amlSource = raw.amlcrypto || raw.aml_crypto || raw.amlcrypto_result || raw.aml || {};
-        const scoreRaw = amlSource.score ?? amlSource.value ?? raw.amlcrypto_score ?? raw.score ?? null;
+        const mistTrackValue = firstDefined(raw.mist_track, raw.mistTrack, raw.misttrack);
+        const mistTrackSource =
+          mistTrackValue && typeof mistTrackValue === 'object'
+            ? mistTrackValue
+            : {};
+        const amlValue = firstDefined(raw.amlcrypto, raw.aml_crypto, raw.amlcrypto_result, raw.aml);
+        const amlSource =
+          amlValue && typeof amlValue === 'object'
+            ? amlValue
+            : {};
+        const scoreRaw =
+          mistTrackSource.score ??
+          amlSource.score ??
+          amlSource.value ??
+          raw.amlcrypto_score ??
+          raw.score ??
+          null;
         const amlScore = toNumber(scoreRaw);
-        const riskLabel = deriveRiskLabel(amlScore);
+        const mistTrackLabels = normalizeStringArray(mistTrackSource.labels);
+        const primaryLabel = firstNonEmptyString(
+          mistTrackSource.label,
+          amlSource.label,
+          mistTrackLabels[0]
+        );
+        const riskLabel =
+          firstNonEmptyString(
+            mistTrackSource.risk_level,
+            mistTrackSource.summary,
+            amlSource.risk_label
+          ) || deriveRiskLabel(amlScore);
+        const scoreSource = firstNonEmptyString(mistTrackSource.source, amlSource.source) || 'MistTrack';
+        const detailList = normalizeStringArray(
+          firstDefined(mistTrackSource.detail_list, amlSource.detail_list)
+        );
+        const labelType = firstNonEmptyString(mistTrackSource.label_type);
+        const hackingEvent = firstNonEmptyString(
+          mistTrackSource.hacking_event,
+          amlSource.hacking_event
+        );
 
+        const arkhamValue = firstDefined(raw.arkham_counterparties, raw.arkhamCounterparties, raw.arkham);
+        const hasArkhamSection = arkhamValue !== null && arkhamValue !== undefined;
         const arkhamSource =
-          raw.arkham_counterparties ||
-          raw.arkhamCounterparties ||
-          raw.arkham ||
-          {};
+          arkhamValue && typeof arkhamValue === 'object'
+            ? arkhamValue
+            : {};
         const normalizeArkhamEntity = (entry) => {
           if (!entry) return null;
           return {
@@ -312,7 +376,12 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
           arkhamUnknown.percentage = remaining || null;
         }
 
-        const chainSource = raw.chainabuse || raw.chain_abuse || raw.chainAbuse || {};
+        const chainValue = firstDefined(raw.chainabuse, raw.chain_abuse, raw.chainAbuse);
+        const hasChainabuseSection = chainValue !== null && chainValue !== undefined;
+        const chainSource =
+          chainValue && typeof chainValue === 'object'
+            ? chainValue
+            : {};
         const chainReports = toNumber(
           chainSource.scam_reports ?? chainSource.reports ?? chainSource.count
         );
@@ -331,7 +400,8 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
           }));
         const chainReportUrl = chainSource.view_url || null;
 
-        const sanctionsValue = raw.sanctions ?? raw.sanction ?? raw.ofac ?? raw.ofsi ?? null;
+        const sanctionsValue = firstDefined(raw.sanctions, raw.sanction, raw.ofac, raw.ofsi);
+        const hasSanctionsSection = sanctionsValue !== null && sanctionsValue !== undefined;
         let sanctioned = null;
         const interpretSanctionString = (text='') => {
           const normalized = text.trim().toLowerCase();
@@ -359,15 +429,31 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         return {
           amlScore,
           riskLabel,
+          primaryLabel,
+          scoreSource,
+          labelType,
+          mistTrackLabels,
+          detailList,
+          hackingEvent,
           arkhamEntities,
           arkhamUnknown,
           arkhamTotals,
+          hasArkhamSection,
           chainReports,
           chainReportDetails,
           chainReportUrl,
+          hasChainabuseSection,
           isSanctioned: sanctioned,
           sanctionsLabel,
+          hasSanctionsSection,
+          checksRemaining: toNumber(raw.checks_remaining),
         };
+      }
+
+      function setCardVisibility(cardId, visible) {
+        const card = document.getElementById(cardId);
+        if (!card) return;
+        card.style.display = visible ? 'flex' : 'none';
       }
 
       function renderLookupResult(result = {}) {
@@ -391,11 +477,25 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
           const formattedScore = formatScoreValue(summary.amlScore);
           scoreValue.textContent = formattedScore ? `${formattedScore}/100` : 'No score';
         }
+        const entityLabel = document.getElementById('amlEntityLabel');
+        if (entityLabel) {
+          if (summary.primaryLabel) {
+            entityLabel.textContent = summary.primaryLabel;
+            entityLabel.style.display = 'block';
+          } else {
+            entityLabel.textContent = '';
+            entityLabel.style.display = 'none';
+          }
+        }
         const riskLabel = document.getElementById('amlRiskLabel');
         const riskText = summary.riskLabel || '';
         if (riskLabel) {
           riskLabel.textContent = riskText;
-          riskLabel.style.color = getRiskColor(riskText);
+          riskLabel.style.color = getRiskColor(summary.riskLabel || riskText);
+        }
+        const scoreFootnote = document.getElementById('amlScoreFootnote');
+        if (scoreFootnote) {
+          scoreFootnote.textContent = `Results from ${summary.scoreSource}`;
         }
         const marker = document.getElementById('amlScoreMarker');
         if (marker) {
@@ -412,6 +512,8 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
       }
 
       function renderArkhamSection(summary) {
+        setCardVisibility('arkhamCard', summary.hasArkhamSection);
+        if (!summary.hasArkhamSection) return;
         const totalsEl = document.getElementById('arkhamTotals');
         const pieEl = document.getElementById('arkhamPie');
         const legendEl = document.getElementById('arkhamLegend');
@@ -501,6 +603,8 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
       }
 
       function renderChainabuseSection(summary) {
+        setCardVisibility('chainabuseCard', summary.hasChainabuseSection);
+        if (!summary.hasChainabuseSection) return;
         const valueEl = document.getElementById('chainabuseValue');
         const viewBtn = document.getElementById('chainabuseViewBtn');
         const viewLink = document.getElementById('chainabuseViewLink');
@@ -561,6 +665,8 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
       }
 
       function renderSanctionsSection(summary) {
+        setCardVisibility('sanctionsCard', summary.hasSanctionsSection);
+        if (!summary.hasSanctionsSection) return;
         const statusEl = document.getElementById('sanctionsStatus');
         if (!statusEl) return;
         statusEl.textContent = summary.sanctionsLabel;
@@ -584,78 +690,103 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
           lines.push('');
         }
         const formattedScore = formatScoreValue(lastLookupSummary.amlScore);
-        lines.push(`AMLCrypto Score: ${formattedScore ? `${formattedScore}/100` : 'No score data'}`);
+        lines.push(`${lastLookupSummary.scoreSource} Score: ${formattedScore ? `${formattedScore}/100` : 'No score data'}`);
+        if (lastLookupSummary.primaryLabel) {
+          lines.push(`Label: ${lastLookupSummary.primaryLabel}`);
+        }
         lines.push(`Risk: ${lastLookupSummary.riskLabel || 'Unknown'}`);
-        lines.push('');
-        lines.push('Arkham Counterparties:');
-        if (
-          !lastLookupSummary.arkhamEntities.length &&
-          !(
-            lastLookupSummary.arkhamUnknown &&
-            (Number.isFinite(lastLookupSummary.arkhamUnknown.totalBtc) ||
-              Number.isFinite(lastLookupSummary.arkhamUnknown.totalUsd))
-          )
-        ) {
-          lines.push('  None reported.');
-        } else {
-          lastLookupSummary.arkhamEntities.forEach((entry, idx) => {
-            const typeSuffix = entry.type ? ` (${entry.type})` : '';
-            const percentText = typeof entry.percentage === 'number' ? ` - ${formatPercent(entry.percentage)}` : '';
-            lines.push(
-              `  ${idx + 1}. ${entry.name}${typeSuffix}: ${formatBtcAmount(entry.totalBtc)} BTC ($${formatUsdAmount(
-                entry.totalUsd
-              )})${percentText}`
-            );
+        if (lastLookupSummary.labelType) {
+          lines.push(`Label type: ${lastLookupSummary.labelType}`);
+        }
+        if (lastLookupSummary.hackingEvent) {
+          lines.push(`Hacking event: ${lastLookupSummary.hackingEvent}`);
+        }
+        if (lastLookupSummary.detailList.length) {
+          lines.push('Details:');
+          lastLookupSummary.detailList.forEach((detail) => {
+            lines.push(`  - ${detail}`);
           });
+        }
+        if (typeof lastLookupSummary.checksRemaining === 'number') {
+          lines.push(`Checks remaining: ${lastLookupSummary.checksRemaining}`);
+        }
+        lines.push('');
+        if (lastLookupSummary.hasArkhamSection) {
+          lines.push('Arkham Counterparties:');
           if (
-            lastLookupSummary.arkhamUnknown &&
-            (Number.isFinite(lastLookupSummary.arkhamUnknown.totalBtc) ||
-              Number.isFinite(lastLookupSummary.arkhamUnknown.totalUsd))
+            !lastLookupSummary.arkhamEntities.length &&
+            !(
+              lastLookupSummary.arkhamUnknown &&
+              (Number.isFinite(lastLookupSummary.arkhamUnknown.totalBtc) ||
+                Number.isFinite(lastLookupSummary.arkhamUnknown.totalUsd))
+            )
           ) {
-            const percentText =
-              typeof lastLookupSummary.arkhamUnknown.percentage === 'number'
-                ? ` - ${formatPercent(lastLookupSummary.arkhamUnknown.percentage)}`
-                : '';
-            lines.push(
-              `  Unknown: ${formatBtcAmount(lastLookupSummary.arkhamUnknown.totalBtc)} BTC ($${formatUsdAmount(
-                lastLookupSummary.arkhamUnknown.totalUsd
-              )})${percentText}`
-            );
-          }
-        }
-        lines.push(
-          `  Totals: ${formatBtcAmount(lastLookupSummary.arkhamTotals.totalBtc)} BTC ($${formatUsdAmount(
-            lastLookupSummary.arkhamTotals.totalUsd
-          )})`
-        );
-        lines.push('');
-        lines.push(
-          `Chainabuse Scam Reports: ${
-            lastLookupSummary.chainReports === null ? 'N/A' : lastLookupSummary.chainReports
-          }`
-        );
-        if (lastLookupSummary.chainReportDetails.length) {
-          lastLookupSummary.chainReportDetails.forEach((item, idx) => {
-            const date = formatChainabuseDate(item.reportedAt);
-            const category = item.category ? item.category.replace(/_/g, ' ').toLowerCase() : 'unknown';
-            lines.push(
-              `  ${idx + 1}. ${category} - ${date}${
-                item.url ? ` (${item.url})` : ''
-              }`
-            );
-            if (item.description) {
-              const cleaned = item.description.replace(/\s+/g, ' ').trim();
-              const preview = cleaned.length > 140 ? `${cleaned.slice(0, 137)}...` : cleaned;
-              lines.push(`     "${preview}"`);
+            lines.push('  None reported.');
+          } else {
+            lastLookupSummary.arkhamEntities.forEach((entry, idx) => {
+              const typeSuffix = entry.type ? ` (${entry.type})` : '';
+              const percentText = typeof entry.percentage === 'number' ? ` - ${formatPercent(entry.percentage)}` : '';
+              lines.push(
+                `  ${idx + 1}. ${entry.name}${typeSuffix}: ${formatBtcAmount(entry.totalBtc)} BTC ($${formatUsdAmount(
+                  entry.totalUsd
+                )})${percentText}`
+              );
+            });
+            if (
+              lastLookupSummary.arkhamUnknown &&
+              (Number.isFinite(lastLookupSummary.arkhamUnknown.totalBtc) ||
+                Number.isFinite(lastLookupSummary.arkhamUnknown.totalUsd))
+            ) {
+              const percentText =
+                typeof lastLookupSummary.arkhamUnknown.percentage === 'number'
+                  ? ` - ${formatPercent(lastLookupSummary.arkhamUnknown.percentage)}`
+                  : '';
+              lines.push(
+                `  Unknown: ${formatBtcAmount(lastLookupSummary.arkhamUnknown.totalBtc)} BTC ($${formatUsdAmount(
+                  lastLookupSummary.arkhamUnknown.totalUsd
+                )})${percentText}`
+              );
             }
-          });
+          }
+          lines.push(
+            `  Totals: ${formatBtcAmount(lastLookupSummary.arkhamTotals.totalBtc)} BTC ($${formatUsdAmount(
+              lastLookupSummary.arkhamTotals.totalUsd
+            )})`
+          );
+          lines.push('');
         }
-        if (lastLookupSummary.chainReportUrl) {
-          lines.push(`  View reports: ${lastLookupSummary.chainReportUrl}`);
+        if (lastLookupSummary.hasChainabuseSection) {
+          lines.push(
+            `Chainabuse Scam Reports: ${
+              lastLookupSummary.chainReports === null ? 'N/A' : lastLookupSummary.chainReports
+            }`
+          );
+          if (lastLookupSummary.chainReportDetails.length) {
+            lastLookupSummary.chainReportDetails.forEach((item, idx) => {
+              const date = formatChainabuseDate(item.reportedAt);
+              const category = item.category ? item.category.replace(/_/g, ' ').toLowerCase() : 'unknown';
+              lines.push(
+                `  ${idx + 1}. ${category} - ${date}${
+                  item.url ? ` (${item.url})` : ''
+                }`
+              );
+              if (item.description) {
+                const cleaned = item.description.replace(/\s+/g, ' ').trim();
+                const preview = cleaned.length > 140 ? `${cleaned.slice(0, 137)}...` : cleaned;
+                lines.push(`     "${preview}"`);
+              }
+            });
+          }
+          if (lastLookupSummary.chainReportUrl) {
+            lines.push(`  View reports: ${lastLookupSummary.chainReportUrl}`);
+          }
+          lines.push('');
         }
-        lines.push(`Sanctions Status: ${lastLookupSummary.sanctionsLabel}`);
-        lines.push('Data from OFAC & OFSI');
-        lines.push('');
+        if (lastLookupSummary.hasSanctionsSection) {
+          lines.push(`Sanctions Status: ${lastLookupSummary.sanctionsLabel}`);
+          lines.push('Data from OFAC & OFSI');
+          lines.push('');
+        }
         lines.push('AML Checker by BitMixList.org');
         const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
@@ -714,6 +845,10 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         const metaParts = [`Job ID: ${job.id}`];
         if (job.attempts) {
           metaParts.push(`Attempts: ${job.attempts}`);
+        }
+        const checksRemaining = Number(job?.result?.checks_remaining);
+        if (Number.isFinite(checksRemaining)) {
+          metaParts.push(`Checks remaining: ${checksRemaining}`);
         }
         const metaText = metaParts.join(' · ');
         const displayTitle = statusRaw ? `Job ${statusRaw}` : 'Job status';

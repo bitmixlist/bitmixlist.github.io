@@ -39,9 +39,10 @@
 .address-checker-container .result-card{background:#0b021d;border:1px solid #27104b;border-radius:0.6rem;padding:1rem;min-height:150px;display:flex;flex-direction:column;justify-content:center;}
 .address-checker-container .result-card h4{margin:0 0 0.5rem;font-size:1rem;color:#cbd5f5;}
 .address-checker-container .aml-score-value{font-size:1.4rem;font-weight:700;}
+.address-checker-container .aml-entity-label{display:none;margin-top:0.3rem;font-size:0.98rem;font-weight:600;color:#f8fafc;}
 .address-checker-container .aml-score-bar{position:relative;height:12px;border-radius:999px;background:linear-gradient(90deg,#22c55e,#eab308,#f97316,#ef4444);margin-top:0.8rem;}
 .address-checker-container .aml-score-marker{position:absolute;top:-4px;width:2px;height:20px;background:#f8fafc;border-radius:999px;}
-.address-checker-container .aml-risk-label{margin-top:0.35rem;font-size:0.9rem;text-transform:capitalize;}
+.address-checker-container .aml-risk-label{margin-top:0.3rem;font-size:0.9rem;text-transform:capitalize;}
 .address-checker-container .arkham-summary{background:#0b021d;border-radius:0.6rem;padding:0.75rem 1rem;margin-bottom:0.75rem;}
 .address-checker-container .arkham-total-label{font-size:0.85rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.35rem;}
 .address-checker-container .arkham-total-value{font-size:1rem;font-weight:600;color:#f8fafc;margin-bottom:0.2rem;}
