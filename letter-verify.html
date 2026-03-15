@@ -158,28 +158,13 @@
     <meta name="msapplication-TileImage" content="wp-content/uploads/2023/12/cropped-favicon-2-270x270.png" />
     <link rel="preload" as="style" href="wp-content/litespeed/css/styles.css" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="wp-content/litespeed/css/styles.css"></noscript>
-    <script>
-      const endpoint = window.innerWidth < 768 ? 'https://tweety.bitmixlist.org/tweet/mobile' : 'https://tweety.bitmixlist.org/tweet/desktop';
-      fetch(endpoint).then(response => response.json()).then(data => {
-        const randomIndex = Math.floor(Math.random() * data.length);
-        const selectedAd = data[randomIndex];
-        const linkElementDesktop = document.createElement('a');
-        linkElementDesktop.href = selectedAd.link;
-        const imgElementDesktop = document.createElement('img');
-        imgElementDesktop.src = selectedAd.image;
-        imgElementDesktop.alt = 'Sponsored banner';
-        linkElementDesktop.appendChild(imgElementDesktop);
-        const desktopAdSlot = document.querySelector('.sylvester-top');
-        desktopAdSlot.appendChild(linkElementDesktop);
-        const linkElementMobile = document.createElement('a');
-        linkElementMobile.href = selectedAd.link;
-        const imgElementMobile = document.createElement('img');
-        imgElementMobile.src = selectedAd.image;
-        imgElementMobile.alt = 'Sponsored banner';
-        linkElementMobile.appendChild(imgElementMobile);
-        const mobileAdSlot = document.querySelector('.sylvester-top-mobile');
-        mobileAdSlot.appendChild(linkElementMobile);
-      }).catch(error => console.error('Error fetching ads:', error));
+    <script src="wp-content/litespeed/js/ad-loader.js"></script>
+<script>
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.bitmixlistLoadTopAd) {
+          window.bitmixlistLoadTopAd();
+        }
+      });
 
       // Mobile menu functionality
       document.addEventListener('DOMContentLoaded', function() {
@@ -357,8 +342,8 @@
         </div>
       </header>
 
-      <div class="sylvester-top" style="width:728px;height:90px;"><noscript><a href="https://r7promotions.com/go/bh8697"><img src="https://r7promotions.com/r7-asset/site-banners/post-top-728x90.gif"></a></noscript></div>
-      <div class="sylvester-top-mobile" style="width:350px;height:50px;"><noscript><a href="https://r7promotions.com/go/bh8697"><img src="https://r7promotions.com/r7-asset/site-banners/home-350x50-mobile.gif"></a></noscript></div>
+      <div class="sylvester-top" style="width:728px;height:90px;"><noscript><a href="https://bitmixlist-adserver-242473302317.us-central1.run.app/go?device-width=728" rel="sponsored noopener noreferrer"><img alt="Sponsored banner" src="https://bitmixlist-adserver-242473302317.us-central1.run.app/tweet?device-width=728"/></a></noscript></div>
+      <div class="sylvester-top-mobile" style="width:350px;height:50px;"><noscript><a href="https://bitmixlist-adserver-242473302317.us-central1.run.app/go?device-width=350" rel="sponsored noopener noreferrer"><img alt="Sponsored banner" src="https://bitmixlist-adserver-242473302317.us-central1.run.app/tweet?device-width=350"/></a></noscript></div>
       <div class="centered"><p>This is an ad. Ads are not endorsed by BitMixList.</p></div>
 
       <main id="content" class="site-main post-34 page type-page status-publish hentry">
