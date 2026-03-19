@@ -1,6 +1,5 @@
 (function () {
   const AD_SERVER_ORIGIN = 'https://bitmixlist-adserver-242473302317.us-central1.run.app';
-  const DIRECT_AD_URL = 'https://mixtum.io';
   const DESKTOP_BREAKPOINT = 768;
   let activeSlotType = null;
   let resizeHandlerBound = false;
@@ -19,7 +18,7 @@
 
   function createTrackedAd(width) {
     const link = document.createElement('a');
-    link.href = DIRECT_AD_URL;
+    link.href = `${AD_SERVER_ORIGIN}/go?device-width=${width}`;
     link.rel = 'sponsored noopener noreferrer';
 
     const image = document.createElement('img');
