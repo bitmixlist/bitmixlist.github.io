@@ -253,6 +253,35 @@ const keys = [
         6A==
         =2Abo
         -----END PGP PUBLIC KEY BLOCK-----
+        `),
+    cleanPGPKey(`
+        -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+        xsFNBGmCHxEBEACvCxQRaUvbZ0d0+eek1FNGuRtDLDAog1opGSRR1B6HBin7OFbA
+        QsasJqFe3rRRax+cihRFWDAcfxmt2201Rj9Wa+Kt53MKnf0YgPE+mooYQ4cljNUs
+        YXYAl7jsRgt5tpadeh8GwV3W3VTiTyb2ZpUxdZMbpF9NNmAFtJ4oB8STLr9l1+FW
+        W5ACUEW61w750lpWy7BJl6hWG9dhLy3W8TK47cwBebrjQE+4+Ki9CZBHnyyCVKwW
+        kMFuSdbkORBZrf+JloFLs3tE0UxnBycZkMzE4u2hvniZmbV193DpKKau/bbioKu0
+        /3fFWTsk5DPutxvrCWvoRMNTRQdicYg1ZtRmoRM2hQ8l3LbF/rUZgX71VJEvdo4s
+        EwYW0wfv/gwVTY1oiSwLcJYWVJbpdi2oFpLVazpqgKhBNSRdYvGxLXwIT4HeBqa4
+        sI9O+F+ZqGn5D79ZJvqXe0tY+PZm+wtCutWSJ7JxDCdaPMMSlIvbSvHMqmNVQZMh
+        kx9Z6q9E3M81InOdrAhxOdtDxtbPEfSvcia2nSlEAOkrQmpYl/6du+MtKplbos0+
+        G0j9A4edl/ZbdDtF8gsLKiWPmc9H8t3wDD0EHjkLvvbh8Bm6ozlpB2woWhVG1zbY
+        7HPe82gw2qolWnvQVYgUu9gQf4dvUldlxSlMU16yWRcNaX9dYvZJkXqnqQARAQAB
+        zRJiMWVYY2ggU2lnbmluZyBLZXnCwWYEEwEKABAFAmmCHxECGwMDFQoIAh4BAAoJ
+        EK00KUAgpU4rjBkP/3VKeetYrkf7Sqo6mKyTk4tcvnxVzUmQfNb9/LQkJ/vamPah
+        0rnseoMDQECvRlDeNzntH3w83Gaps4mx0DrXJDrVPnGWg0PdLVwAYxoGLi4Vh7Ug
+        6Br5SSN2foRPWB8m58RMnOKi1FgJ7fZ2fjfX6hE3XTRzGtpa1frzkgjijbDN22Ec
+        vU0HEX3QEL/Cq5pmsyA3HY0ze0w+5B7Y4ptOFSF8F+qZoZze6Lv+BIwYlPXflARv
+        hMs2tsE5wCcdnf7ctkxqUg+4eZXh/gQa3mYEdtIVIif8iU0qxGAgce1+g910WkgU
+        2cSbTRwgxokr/TElr5xHp3HtALTyBp4ouKF/DhPKvNrg0+c8ipIQdbCQcANe9Muc
+        2PDrQUziMh6FUlcbupbeuLD7/Fz9vG/7ykFvWnmKnk2fZY9OSzBNHmqSbosrCQjj
+        tYObAjK/6vCoJIksqeiOGfMFVRM5TobkBbmFUuoTF23AHT3INpH3SSLJHDtDx8U2
+        LpkjIpfplKmOMVuk3jIGnEudCnj2f9erfRaqZk1qTgcLwERHWPbRBcknGZThhuyQ
+        tdsRNG7drAxAyvq20bskebsTNO3ew3b7GVqVMPmJ0X73OdH0qVJp9hgVmN+r7G23
+        8bqct0Cw18icXVJ0HxzUnAuXxiY+tkJBFOukekSEvdHMUaUv482IHC9lRwZq
+        =IVph
+        -----END PGP PUBLIC KEY BLOCK-----
         `)
     // Add other keys or addresses as necessary
 ];
@@ -292,6 +321,7 @@ const mixerDetails = {
     'trustmixer.io': { type: 'pgp', keyIndex: 0 },
     'bmix.io': { type: 'pgp', keyIndex: 0 },
     'okmix.io': { type: 'pgp', keyIndex: 0 },
+    'b1exch.to': { type: 'pgp', keyIndex: 9 },
     'cointor.org': { type: 'pgp', keyIndex: 7 },
     'coinomize.biz': {
         type: 'bitcoin',
@@ -391,7 +421,7 @@ function replaceExceptFirst(str, search, replace) {
 // Event listener for the verification button
 document.getElementById('verifyButton').addEventListener('click', function() {
     try {
-        const selectedMixer = document.getElementById('mixerSelect').value;4
+        const selectedMixer = document.getElementById('mixerSelect').value;
         const mixerInfo = mixerDetails[selectedMixer];
         let message = document.getElementById('messageTextArea').value;
 
