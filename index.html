@@ -856,6 +856,12 @@
           .mirror-details { margin: 24px 0; font-size: 1.05rem; }
           .mirror-details summary { font-weight: 600; cursor: pointer; }
           .mirror-details ul { margin: 8px 0 0 20px; }
+          .alert { position: relative; padding: 1.25rem 1.5rem; margin: 1rem 0 1.5rem; border: 1px solid transparent; border-radius: 16px; }
+          .alert-warning { color: #4f3200; background: linear-gradient(180deg, #fff3cd 0%, #ffe28a 100%); border-color: #ffca2c; box-shadow: 0 14px 30px rgba(255, 193, 7, 0.22); }
+          .alert.prominent-warning { font-size: 1.1rem; line-height: 1.6; }
+          .alert.prominent-warning .alert-heading { margin: 0 0 0.35rem; font-size: 1.4rem; font-weight: 800; color: #3f2800; }
+          .alert.prominent-warning p { margin: 0; }
+          .alert.prominent-warning a { color: #6a3f00; font-weight: 700; text-decoration: underline; }
           .mixer-card-row { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0 24px; justify-content: flex-start; --mixer-from:#955ff5; --mixer-to:#3d005c; }
           .mixer-card { display: flex; flex-direction: column; align-items: center; width: 180px; background: #0f0b1c; border: 1px solid #2d2052; border-radius: 14px; padding: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.22); }
           .mixer-logo { width: 128px; height: 128px; border-radius: 10px; background: linear-gradient(135deg, var(--mixer-from, #955ff5), var(--mixer-to, #3d005c)); border: 2px solid #fff; object-fit: contain; /* padding: 6px; */ box-sizing: border-box; }
@@ -957,6 +963,10 @@
 </section>
 <h2 class="wp-block-heading" id="mixers">The List Of Bitcoin Mixers</h2>
 <p>Now including altcoin mixers. A mixer will never ask you for KYC. If you see a mixer that does, it's a scam.</p>
+<div class="alert alert-warning prominent-warning" role="alert">
+<h3 class="alert-heading">Caution</h3>
+<p>Always make small mixes. Up to $500 per mix is recommended. BitMixList tries to minimize scams, but a service can turn rogue overnight.</p>
+</div>
 <div aria-label="Mixer cards" class="mixer-card-row">
 <div class="mixer-card">
 <a class="mixer-logo-link" href="https://mixer.money" rel="noopener noreferrer">
@@ -1376,6 +1386,10 @@
 <p>Some of these mixers are powered by <a href="https://jambler.io">Jambler</a> (<a href="http://jamblery7zgxknhjtmj3mhfdajmyddqxbufrf6voa32h5w4otux3crqd.onion/">Tor mirror</a>). It makes creating a mixer easy.</p>
 <h2 class="wp-block-heading" id="neverkyc-exchanges">The List Of Never-KYC Exchanges</h2>
 <p>These are sites or services that specialize in XMR/BTC exchange pairs. Please do not use these services to exchange hacked or stolen coins.</p>
+<div class="alert alert-warning prominent-warning" role="alert">
+<h3 class="alert-heading">Caution</h3>
+<p>Always make small swaps. Up to $500 per swaps is recommended. BitMixList tries to minimize scams, but a service can turn rogue overnight.</p>
+</div>
 <div aria-label="XMR exchange cards" class="mixer-card-row">
 <div class="mixer-card">
 <a class="mixer-logo-link" href="https://b1exch.to/" rel="noopener noreferrer">
@@ -1578,6 +1592,10 @@
         section are covered by the <a href="https://orangefren.com" rel="noopener noreferrer">Orangefren Guarantee</a>, except for Trocador, which has its own guarantee
         system, and Chainswap. Guaranteed services link to Orangefren's site before redirecting you to the services. The actual URLs can be found in the dropdowns below.
         Terms and conditions apply. Check the Orangefren website for more details.</p>
+<div class="alert alert-warning prominent-warning" role="alert">
+<h3 class="alert-heading">Caution</h3>
+<p>Always check the maximum guarrantee at <a href="https://orangefren.com" rel="noopener noreferrer">orangefren.com</a> before initiating a swap.</p>
+</div>
 <div aria-label="Altcoin exchange cards" class="mixer-card-row">
 <div class="mixer-card">
 <a class="mixer-logo-link" href="https://orangefren.com/goto/quickex" rel="noopener noreferrer">
