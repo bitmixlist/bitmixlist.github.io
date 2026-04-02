@@ -321,6 +321,7 @@ const mixerDetails = {
     'trustmixer.io': { type: 'pgp', keyIndex: 0 },
     'bmix.io': { type: 'pgp', keyIndex: 0 },
     'okmix.io': { type: 'pgp', keyIndex: 0 },
+    'dreadpirate.io': { type: 'pgp', keyIndex: 0 },
     'b1exch.to': { type: 'pgp', keyIndex: 9 },
     'cointor.org': { type: 'pgp', keyIndex: 7 },
     'coinomize.biz': {
