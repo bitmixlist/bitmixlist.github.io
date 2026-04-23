@@ -22,6 +22,11 @@ function cleanPGPKey(rawKey) {
     return cleanedKey;
 }
 
+const VERIFYTOOL_IS_RU =
+    ((document.documentElement?.lang || '').toLowerCase().startsWith('ru')) ||
+    window.location.pathname.includes('/ru/');
+const verifyToolText = (en, ru) => (VERIFYTOOL_IS_RU ? ru : en);
+
 // Key or Bitcoin address data array
 const keys = [
     cleanPGPKey(`-----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -427,11 +432,11 @@ document.getElementById('verifyButton').addEventListener('click', function() {
         let message = document.getElementById('messageTextArea').value;
 
         if (!mixerInfo) {
-            alert('Please select a mixer.');
+            alert(verifyToolText('Please select a mixer.', 'Пожалуйста, выберите миксер.'));
             return;
         }
         else if (mixerInfo.type === 'none') {
-            alert('Verification for this mixer is not supported.');
+            alert(verifyToolText('Verification for this mixer is not supported.', 'Проверка для этого миксера не поддерживается.'));
             return;
         }
 
@@ -460,26 +465,32 @@ document.getElementById('verifyButton').addEventListener('click', function() {
             window.openpgp.verify(options).then(function(verified) {
                 validity = verified.signatures[0].valid; // true
                 if (validity) {
-                    alert('Genuine letter of guarantee. Fingerprint: ' + verified.signatures[0].keyid.toHex().toUpperCase());
+                    alert(
+                        verifyToolText('Genuine letter of guarantee. Fingerprint: ', 'Подлинное гарантийное письмо. Отпечаток: ') +
+                        verified.signatures[0].keyid.toHex().toUpperCase()
+                    );
                 }
                 else {
-                    alert('Invalid letter of guarantee!');
+                    alert(verifyToolText('Invalid letter of guarantee!', 'Недействительное гарантийное письмо!'));
                 }
             }).catch(error => {
                 console.error('An error occured during PGP verification:', error);
-                alert('an error occured during PGP verification.');
+                alert(verifyToolText('An error occurred during PGP verification.', 'Во время проверки PGP произошла ошибка.'));
             });
         } else if (mixerInfo.type === 'bitcoin') {
             const isValid = vrVerify(verificationData);
             if (isValid) {
-                alert('Genuine letter of guarantee. Address: ' + verificationData.address);
+                alert(
+                    verifyToolText('Genuine letter of guarantee. Address: ', 'Подлинное гарантийное письмо. Адрес: ') +
+                    verificationData.address
+                );
             } else {
-                alert('Invalid letter of guarantee!');
+                alert(verifyToolText('Invalid letter of guarantee!', 'Недействительное гарантийное письмо!'));
             }
         }
     }
     catch (error) {
         console.error('Verification failed:', error);
-        alert('Verification failed.');
+        alert(verifyToolText('Verification failed.', 'Проверка не удалась.'));
     }
 });

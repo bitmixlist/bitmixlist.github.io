@@ -1,4 +1,34 @@
 const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
+      const AML_CHECK_IS_RU =
+        ((document.documentElement?.lang || '').toLowerCase().startsWith('ru')) ||
+        window.location.pathname.includes('/ru/');
+      const amlCheckText = (en, ru) => (AML_CHECK_IS_RU ? ru : en);
+
+      function localizeRiskLabel(label = '') {
+        const normalized = (label || '').toLowerCase();
+        if (!AML_CHECK_IS_RU) return label;
+        if (normalized === 'low risk') return 'Низкий риск';
+        if (normalized === 'medium risk') return 'Средний риск';
+        if (normalized === 'high risk') return 'Высокий риск';
+        if (normalized === 'no score data') return 'Нет данных по оценке';
+        return label;
+      }
+
+      function localizeJobStatus(status = '') {
+        const normalized = (status || '').toLowerCase();
+        if (!AML_CHECK_IS_RU) return status;
+        if (normalized === 'queued') return 'в очереди';
+        if (normalized === 'waiting') return 'ожидание';
+        if (normalized === 'processing') return 'обработка';
+        if (normalized === 'completed') return 'завершено';
+        if (normalized === 'failed') return 'ошибка';
+        if (normalized === 'pending') return 'ожидает оплаты';
+        if (normalized === 'paid') return 'оплачено';
+        if (normalized === 'credited') return 'зачислено';
+        if (normalized === 'expired') return 'истекло';
+        if (normalized === 'status') return 'статус';
+        return status;
+      }
       let currentToken = '';
       let lookupPollHandle = null;
       let activeLookupJob = '';
@@ -36,7 +66,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         });
       }
 
-      function beginButtonLoading(button, text='Loading...') {
+      function beginButtonLoading(button, text=amlCheckText('Loading...', 'Загрузка...')) {
         if (!button) {
           return () => {};
         }
@@ -105,7 +135,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         }
         const scoreFootnote = document.getElementById('amlScoreFootnote');
         if (scoreFootnote) {
-          scoreFootnote.textContent = 'Results from MistTrack';
+          scoreFootnote.textContent = amlCheckText('Results from MistTrack', 'Результаты MistTrack');
         }
         const marker = document.getElementById('amlScoreMarker');
         if (marker) {
@@ -115,7 +145,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         const totals = document.getElementById('arkhamTotals');
         if (totals) {
           totals.innerHTML = `
-            <div class="arkham-total-label">Total Volume</div>
+            <div class="arkham-total-label">${amlCheckText('Total Volume', 'Общий объем')}</div>
             <div class="arkham-total-value">-- BTC</div>
             <div class="arkham-total-value">$--</div>
           `;
@@ -126,11 +156,11 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         }
         const legend = document.getElementById('arkhamLegend');
         if (legend) {
-          legend.innerHTML = '<div class="arkham-empty">No counterparties detected.</div>';
+          legend.innerHTML = `<div class="arkham-empty">${amlCheckText('No counterparties detected.', 'Контрагенты не обнаружены.')}</div>`;
         }
         const unknown = document.getElementById('arkhamUnknown');
         if (unknown) {
-          unknown.textContent = 'No unknown counterparties reported.';
+          unknown.textContent = amlCheckText('No unknown counterparties reported.', 'Неизвестные контрагенты не обнаружены.');
         }
         setCardVisibility('chainabuseCard', true);
         const chainVal = document.getElementById('chainabuseValue');
@@ -153,7 +183,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         }
         const reportsList = document.getElementById('chainabuseReportsList');
         if (reportsList) {
-          reportsList.innerHTML = '<div class="chainabuse-empty">No reports to show.</div>';
+          reportsList.innerHTML = `<div class="chainabuse-empty">${amlCheckText('No reports to show.', 'Отчетов нет.')}</div>`;
         }
         setCardVisibility('sanctionsCard', true);
         const sanctionsStatus = document.getElementById('sanctionsStatus');
@@ -187,9 +217,9 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
       }
 
       function formatChainabuseDate(value) {
-        if (!value) return 'Unknown date';
+        if (!value) return amlCheckText('Unknown date', 'Дата неизвестна');
         const date = new Date(value);
-        if (Number.isNaN(date.getTime())) return 'Unknown date';
+        if (Number.isNaN(date.getTime())) return amlCheckText('Unknown date', 'Дата неизвестна');
         return date.toLocaleDateString(undefined, {
           year: 'numeric',
           month: 'short',
@@ -227,10 +257,15 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
       function getRiskColor(label='') {
         if (!label) return '#cbd5f5';
         const normalized = label.toLowerCase();
-        if (normalized.includes('low')) return '#4ade80';
-        if (normalized.includes('medium')) return '#facc15';
+        if (normalized.includes('low') || normalized.includes('низ')) return '#4ade80';
+        if (normalized.includes('medium') || normalized.includes('сред')) return '#facc15';
         if (normalized.includes('elevated') || normalized.includes('watch')) return '#f97316';
-        if (normalized.includes('high') || normalized.includes('severe') || normalized.includes('critical')) return '#ef4444';
+        if (
+          normalized.includes('high') ||
+          normalized.includes('severe') ||
+          normalized.includes('critical') ||
+          normalized.includes('высок')
+        ) return '#ef4444';
         return '#cbd5f5';
       }
 
@@ -312,7 +347,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         const normalizeArkhamEntity = (entry) => {
           if (!entry) return null;
           return {
-            name: entry.name || entry.entity || 'Unknown entity',
+            name: entry.name || entry.entity || amlCheckText('Unknown entity', 'Неизвестный объект'),
             type: entry.type || null,
             totalBtc: toNumber(entry.total_btc ?? entry.totalBtc ?? entry.btc),
             totalUsd: toNumber(entry.total_usd ?? entry.totalUsd ?? entry.usd),
@@ -475,7 +510,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         const scoreValue = document.getElementById('amlScoreValue');
         if (scoreValue) {
           const formattedScore = formatScoreValue(summary.amlScore);
-          scoreValue.textContent = formattedScore ? `${formattedScore}/100` : 'No score';
+          scoreValue.textContent = formattedScore ? `${formattedScore}/100` : amlCheckText('No score', 'Нет оценки');
         }
         const entityLabel = document.getElementById('amlEntityLabel');
         if (entityLabel) {
@@ -488,14 +523,17 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
           }
         }
         const riskLabel = document.getElementById('amlRiskLabel');
-        const riskText = summary.riskLabel || '';
+        const riskText = localizeRiskLabel(summary.riskLabel || '');
         if (riskLabel) {
           riskLabel.textContent = riskText;
           riskLabel.style.color = getRiskColor(summary.riskLabel || riskText);
         }
         const scoreFootnote = document.getElementById('amlScoreFootnote');
         if (scoreFootnote) {
-          scoreFootnote.textContent = `Results from ${summary.scoreSource}`;
+          scoreFootnote.textContent = amlCheckText(
+            `Results from ${summary.scoreSource}`,
+            `Результаты ${summary.scoreSource}`
+          );
         }
         const marker = document.getElementById('amlScoreMarker');
         if (marker) {
@@ -522,7 +560,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         const totalBtc = formatBtcAmount(summary.arkhamTotals.totalBtc);
         const totalUsd = formatUsdAmount(summary.arkhamTotals.totalUsd);
         totalsEl.innerHTML = `
-          <div class="arkham-total-label">Total Volume</div>
+          <div class="arkham-total-label">${amlCheckText('Total Volume', 'Общий объем')}</div>
           <div class="arkham-total-value">${totalBtc} BTC</div>
           <div class="arkham-total-value">$${totalUsd}</div>
         `;
@@ -541,7 +579,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
               chartUsed += share;
             }
           }
-          const typeText = entry.type || 'Unknown';
+          const typeText = entry.type || amlCheckText('Unknown', 'Неизвестно');
           return `
             <div class="arkham-legend-item">
               <div class="arkham-legend-label">
@@ -569,7 +607,10 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
             typeof summary.arkhamUnknown.percentage === 'number'
               ? ` (${formatPercent(summary.arkhamUnknown.percentage)})`
               : '';
-          unknownEl.textContent = `Unknown counterparties: ${btc} BTC ($${usd})${percentText}.`;
+          unknownEl.textContent = amlCheckText(
+            `Unknown counterparties: ${btc} BTC ($${usd})${percentText}.`,
+            `Неизвестные контрагенты: ${btc} BTC ($${usd})${percentText}.`
+          );
           const unknownPercent =
             typeof summary.arkhamUnknown.percentage === 'number'
               ? Math.max(summary.arkhamUnknown.percentage, 0)
@@ -584,7 +625,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
             }
           }
         } else {
-          unknownEl.textContent = 'No unknown counterparties reported.';
+          unknownEl.textContent = amlCheckText('No unknown counterparties reported.', 'Неизвестные контрагенты не обнаружены.');
         }
 
         if (segments.length === 0) {
@@ -599,7 +640,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
 
         legendEl.innerHTML = legendItems.length
           ? legendItems.join('')
-          : '<div class="arkham-empty">No counterparties detected.</div>';
+          : `<div class="arkham-empty">${amlCheckText('No counterparties detected.', 'Контрагенты не обнаружены.')}</div>`;
       }
 
       function renderChainabuseSection(summary) {
@@ -613,7 +654,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         const hasReports = Array.isArray(summary.chainReportDetails) && summary.chainReportDetails.length > 0;
         if (valueEl) {
           if (summary.chainReports === null) {
-            valueEl.textContent = 'N/A';
+            valueEl.textContent = amlCheckText('N/A', 'Н/Д');
             valueEl.style.color = '#94a3b8';
           } else {
             valueEl.textContent = summary.chainReports;
@@ -640,11 +681,11 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
             reportsList.innerHTML = summary.chainReportDetails
               .map((item) => {
                 const dateLabel = formatChainabuseDate(item.reportedAt);
-                const category = item.category ? item.category.replace(/_/g, ' ').toLowerCase() : 'unknown';
+                const category = item.category ? item.category.replace(/_/g, ' ').toLowerCase() : amlCheckText('unknown', 'неизвестно');
                 const safeDescription = (item.description || '').trim();
                 const preview = safeDescription.length > 240 ? `${safeDescription.slice(0, 237)}...` : safeDescription;
                 const link = item.url
-                  ? `<a class="chainabuse-report-link" href="${item.url}" target="_blank" rel="noopener noreferrer">View report</a>`
+                  ? `<a class="chainabuse-report-link" href="${item.url}" target="_blank" rel="noopener noreferrer">${amlCheckText('View report', 'Открыть отчет')}</a>`
                   : '';
                 return `
                   <div class="chainabuse-report">
@@ -652,14 +693,14 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
                       <span class="chainabuse-report-category">${category}</span>
                       <span>${dateLabel}</span>
                     </div>
-                    <div class="chainabuse-report-body">${preview || 'No description provided.'}</div>
+                    <div class="chainabuse-report-body">${preview || amlCheckText('No description provided.', 'Описание отсутствует.')}</div>
                     ${link}
                   </div>
                 `;
               })
               .join('');
           } else {
-            reportsList.innerHTML = '<div class="chainabuse-empty">No reports to show.</div>';
+            reportsList.innerHTML = `<div class="chainabuse-empty">${amlCheckText('No reports to show.', 'Отчетов нет.')}</div>`;
           }
         }
       }
@@ -669,7 +710,10 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         if (!summary.hasSanctionsSection) return;
         const statusEl = document.getElementById('sanctionsStatus');
         if (!statusEl) return;
-        statusEl.textContent = summary.sanctionsLabel;
+        statusEl.textContent = amlCheckText(
+          summary.sanctionsLabel,
+          summary.isSanctioned === null ? 'Статус неизвестен' : (summary.isSanctioned ? 'Под санкциями' : 'Не под санкциями')
+        );
         if (summary.isSanctioned === null) {
           statusEl.style.color = '#94a3b8';
         } else {
@@ -690,29 +734,39 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
           lines.push('');
         }
         const formattedScore = formatScoreValue(lastLookupSummary.amlScore);
-        lines.push(`${lastLookupSummary.scoreSource} Score: ${formattedScore ? `${formattedScore}/100` : 'No score data'}`);
+        lines.push(
+          amlCheckText(
+            `${lastLookupSummary.scoreSource} Score: ${formattedScore ? `${formattedScore}/100` : 'No score data'}`,
+            `${lastLookupSummary.scoreSource} оценка: ${formattedScore ? `${formattedScore}/100` : 'Нет данных по оценке'}`
+          )
+        );
         if (lastLookupSummary.primaryLabel) {
-          lines.push(`Label: ${lastLookupSummary.primaryLabel}`);
+          lines.push(amlCheckText(`Label: ${lastLookupSummary.primaryLabel}`, `Метка: ${lastLookupSummary.primaryLabel}`));
         }
-        lines.push(`Risk: ${lastLookupSummary.riskLabel || 'Unknown'}`);
+        lines.push(
+          amlCheckText(
+            `Risk: ${lastLookupSummary.riskLabel || 'Unknown'}`,
+            `Риск: ${localizeRiskLabel(lastLookupSummary.riskLabel || 'Unknown')}`
+          )
+        );
         if (lastLookupSummary.labelType) {
-          lines.push(`Label type: ${lastLookupSummary.labelType}`);
+          lines.push(amlCheckText(`Label type: ${lastLookupSummary.labelType}`, `Тип метки: ${lastLookupSummary.labelType}`));
         }
         if (lastLookupSummary.hackingEvent) {
-          lines.push(`Hacking event: ${lastLookupSummary.hackingEvent}`);
+          lines.push(amlCheckText(`Hacking event: ${lastLookupSummary.hackingEvent}`, `Инцидент взлома: ${lastLookupSummary.hackingEvent}`));
         }
         if (lastLookupSummary.detailList.length) {
-          lines.push('Details:');
+          lines.push(amlCheckText('Details:', 'Детали:'));
           lastLookupSummary.detailList.forEach((detail) => {
             lines.push(`  - ${detail}`);
           });
         }
         if (typeof lastLookupSummary.checksRemaining === 'number') {
-          lines.push(`Checks remaining: ${lastLookupSummary.checksRemaining}`);
+          lines.push(amlCheckText(`Checks remaining: ${lastLookupSummary.checksRemaining}`, `Осталось проверок: ${lastLookupSummary.checksRemaining}`));
         }
         lines.push('');
         if (lastLookupSummary.hasArkhamSection) {
-          lines.push('Arkham Counterparties:');
+          lines.push(amlCheckText('Arkham Counterparties:', 'Контрагенты Arkham:'));
           if (
             !lastLookupSummary.arkhamEntities.length &&
             !(
@@ -721,7 +775,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
                 Number.isFinite(lastLookupSummary.arkhamUnknown.totalUsd))
             )
           ) {
-            lines.push('  None reported.');
+            lines.push(amlCheckText('  None reported.', '  Данных нет.'));
           } else {
             lastLookupSummary.arkhamEntities.forEach((entry, idx) => {
               const typeSuffix = entry.type ? ` (${entry.type})` : '';
@@ -742,29 +796,44 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
                   ? ` - ${formatPercent(lastLookupSummary.arkhamUnknown.percentage)}`
                   : '';
               lines.push(
-                `  Unknown: ${formatBtcAmount(lastLookupSummary.arkhamUnknown.totalBtc)} BTC ($${formatUsdAmount(
-                  lastLookupSummary.arkhamUnknown.totalUsd
-                )})${percentText}`
+                amlCheckText(
+                  `  Unknown: ${formatBtcAmount(lastLookupSummary.arkhamUnknown.totalBtc)} BTC ($${formatUsdAmount(
+                    lastLookupSummary.arkhamUnknown.totalUsd
+                  )})${percentText}`,
+                  `  Неизвестно: ${formatBtcAmount(lastLookupSummary.arkhamUnknown.totalBtc)} BTC ($${formatUsdAmount(
+                    lastLookupSummary.arkhamUnknown.totalUsd
+                  )})${percentText}`
+                )
               );
             }
           }
           lines.push(
-            `  Totals: ${formatBtcAmount(lastLookupSummary.arkhamTotals.totalBtc)} BTC ($${formatUsdAmount(
-              lastLookupSummary.arkhamTotals.totalUsd
-            )})`
+            amlCheckText(
+              `  Totals: ${formatBtcAmount(lastLookupSummary.arkhamTotals.totalBtc)} BTC ($${formatUsdAmount(
+                lastLookupSummary.arkhamTotals.totalUsd
+              )})`,
+              `  Итого: ${formatBtcAmount(lastLookupSummary.arkhamTotals.totalBtc)} BTC ($${formatUsdAmount(
+                lastLookupSummary.arkhamTotals.totalUsd
+              )})`
+            )
           );
           lines.push('');
         }
         if (lastLookupSummary.hasChainabuseSection) {
           lines.push(
-            `Chainabuse Scam Reports: ${
-              lastLookupSummary.chainReports === null ? 'N/A' : lastLookupSummary.chainReports
-            }`
+            amlCheckText(
+              `Chainabuse Scam Reports: ${
+                lastLookupSummary.chainReports === null ? 'N/A' : lastLookupSummary.chainReports
+              }`,
+              `Жалобы Chainabuse: ${
+                lastLookupSummary.chainReports === null ? 'Н/Д' : lastLookupSummary.chainReports
+              }`
+            )
           );
           if (lastLookupSummary.chainReportDetails.length) {
             lastLookupSummary.chainReportDetails.forEach((item, idx) => {
               const date = formatChainabuseDate(item.reportedAt);
-              const category = item.category ? item.category.replace(/_/g, ' ').toLowerCase() : 'unknown';
+              const category = item.category ? item.category.replace(/_/g, ' ').toLowerCase() : amlCheckText('unknown', 'неизвестно');
               lines.push(
                 `  ${idx + 1}. ${category} - ${date}${
                   item.url ? ` (${item.url})` : ''
@@ -778,16 +847,21 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
             });
           }
           if (lastLookupSummary.chainReportUrl) {
-            lines.push(`  View reports: ${lastLookupSummary.chainReportUrl}`);
+            lines.push(amlCheckText(`  View reports: ${lastLookupSummary.chainReportUrl}`, `  Открыть отчеты: ${lastLookupSummary.chainReportUrl}`));
           }
           lines.push('');
         }
         if (lastLookupSummary.hasSanctionsSection) {
-          lines.push(`Sanctions Status: ${lastLookupSummary.sanctionsLabel}`);
-          lines.push('Data from OFAC & OFSI');
+          lines.push(
+            amlCheckText(
+              `Sanctions Status: ${lastLookupSummary.sanctionsLabel}`,
+              `Статус санкций: ${lastLookupSummary.isSanctioned === null ? 'Статус неизвестен' : (lastLookupSummary.isSanctioned ? 'Под санкциями' : 'Не под санкциями')}`
+            )
+          );
+          lines.push(amlCheckText('Data from OFAC & OFSI', 'Данные OFAC и OFSI'));
           lines.push('');
         }
-        lines.push('AML Checker by BitMixList.org');
+        lines.push(amlCheckText('AML Checker by BitMixList.org', 'AML-чекер от BitMixList.org'));
         const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const anchor = document.createElement('a');
@@ -844,16 +918,18 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         const normalizedStatus = statusRaw.toLowerCase();
         const metaParts = [`Job ID: ${job.id}`];
         if (job.attempts) {
-          metaParts.push(`Attempts: ${job.attempts}`);
+          metaParts.push(amlCheckText(`Attempts: ${job.attempts}`, `Попытки: ${job.attempts}`));
         }
         const checksRemaining = Number(job?.result?.checks_remaining);
         if (Number.isFinite(checksRemaining)) {
-          metaParts.push(`Checks remaining: ${checksRemaining}`);
+          metaParts.push(amlCheckText(`Checks remaining: ${checksRemaining}`, `Осталось проверок: ${checksRemaining}`));
         }
         const metaText = metaParts.join(' · ');
-        const displayTitle = statusRaw ? `Job ${statusRaw}` : 'Job status';
+        const displayTitle = statusRaw
+          ? amlCheckText(`Job ${statusRaw}`, `Задача: ${localizeJobStatus(statusRaw)}`)
+          : amlCheckText('Job status', 'Статус задачи');
         setLookupStatus(
-          displayTitle.charAt(0).toUpperCase() + displayTitle.slice(1),
+          displayTitle,
           WAITING_STATES.has(normalizedStatus),
           metaText
         );
@@ -865,7 +941,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         }
         if (normalizedStatus === 'completed') {
           stopLookupPolling();
-          setLookupStatus('Job completed', false, metaText);
+          setLookupStatus(amlCheckText('Job completed', 'Задача завершена'), false, metaText);
           document.getElementById('lookupError').textContent = '';
           renderLookupResult(job.result || {});
           await refreshCurrentTokenDetails();
@@ -874,13 +950,13 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         }
         if (normalizedStatus === 'failed') {
           stopLookupPolling();
-          document.getElementById('lookupError').textContent = job.error || 'Lookup failed.';
-          setLookupStatus('Job failed', false, metaText);
+          document.getElementById('lookupError').textContent = job.error || amlCheckText('Lookup failed.', 'Проверка завершилась ошибкой.');
+          setLookupStatus(amlCheckText('Job failed', 'Задача завершилась ошибкой'), false, metaText);
           endJob();
           return;
         }
         stopLookupPolling();
-        setLookupStatus('Job status unavailable', false, metaText);
+        setLookupStatus(amlCheckText('Job status unavailable', 'Статус задачи недоступен'), false, metaText);
         endJob();
       }
 
@@ -892,7 +968,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         } catch (err) {
             stopLookupPolling();
             document.getElementById('lookupError').textContent = err.message;
-            setLookupStatus('Unable to fetch job status', false);
+            setLookupStatus(amlCheckText('Unable to fetch job status', 'Не удалось получить статус задачи'), false);
             endJob();
         }
       }
@@ -920,8 +996,8 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
 
       function renderTokenDetails(data) {
         document.getElementById('tokenDetails').innerHTML = `
-            <div class="info-card">Checks available: <strong>${data.checks}</strong></div>
-            <div class="info-card">Pending payments: <strong>${data.pending_payments}</strong></div>
+            <div class="info-card">${amlCheckText('Checks available', 'Доступно проверок')}: <strong>${data.checks}</strong></div>
+            <div class="info-card">${amlCheckText('Pending payments', 'Ожидающие платежи')}: <strong>${data.pending_payments}</strong></div>
           `;
       }
 
@@ -929,10 +1005,10 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         clearAllMessages(['tokenError']);
         const token = document.getElementById('tokenInput').value.trim();
         if (!token) {
-          document.getElementById('tokenError').textContent = 'Token required.';
+          document.getElementById('tokenError').textContent = amlCheckText('Token required.', 'Нужен токен.');
           return;
         }
-        const restore = beginButtonLoading(button, 'Loading...');
+        const restore = beginButtonLoading(button, amlCheckText('Loading...', 'Загрузка...'));
         try {
           const data = await api(`/tokens/${token}`);
           currentToken = token;
@@ -947,14 +1023,14 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
 
       async function generateToken(button) {
         clearAllMessages(['tokenError']);
-        const restore = beginButtonLoading(button, 'Generating...');
+        const restore = beginButtonLoading(button, amlCheckText('Generating...', 'Создание...'));
         try {
           const data = await api(`/tokens`, { method: 'POST' });
           currentToken = data.token;
           document.getElementById('tokenInput').value = data.token;
           renderTokenDetails(data);
           await refreshPayments();
-          document.getElementById('paymentMessage').textContent = 'Token created. Be sure to save it securely.';
+          document.getElementById('paymentMessage').textContent = amlCheckText('Token created. Be sure to save it securely.', 'Токен создан. Обязательно сохраните его в безопасном месте.');
         } catch (err) {
           document.getElementById('tokenError').textContent = err.message;
         } finally {
@@ -971,7 +1047,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         setLookupStatus('', false, '');
         clearLookupResult();
         if (!currentToken) {
-          document.getElementById('lookupError').textContent = 'Load a token first.';
+          document.getElementById('lookupError').textContent = amlCheckText('Load a token first.', 'Сначала загрузите токен.');
           return;
         }
         const isAdminToken = currentToken.startsWith('pmB-');
@@ -984,11 +1060,11 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         const chain = document.getElementById('chainSelect').value;
         const address = document.getElementById('addressInput').value.trim();
         if (!address) {
-          document.getElementById('lookupError').textContent = 'Address is required.';
+          document.getElementById('lookupError').textContent = amlCheckText('Address is required.', 'Введите адрес.');
           return;
         }
         if (!validateBitcoinAddress(address)) {
-          document.getElementById('lookupError').textContent = 'Please enter a valid Bitcoin address.';
+          document.getElementById('lookupError').textContent = amlCheckText('Please enter a valid Bitcoin address.', 'Введите корректный биткойн-адрес.');
           return;
         }
         lastLookupContext = { chain, address };
@@ -998,7 +1074,11 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
             method: 'POST',
           });
           const note = job.note ? `${job.note} · ` : '';
-          setLookupStatus('Job queued', true, `${note}Job ID: ${job.job_id}`);
+          setLookupStatus(
+            amlCheckText('Job queued', 'Задача поставлена в очередь'),
+            true,
+            `${note}${amlCheckText(`Job ID: ${job.job_id}`, `ID задачи: ${job.job_id}`)}`
+          );
           startLookupPolling(job.job_id);
         } catch (err) {
           setLookupStatus('', false, '');
@@ -1013,14 +1093,14 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         setLookupStatus('', false, '');
         clearLookupResult();
         if (!currentToken) {
-          document.getElementById('lookupError').textContent = 'Load a token first.';
+          document.getElementById('lookupError').textContent = amlCheckText('Load a token first.', 'Сначала загрузите токен.');
           return;
         }
         beginJob();
         try {
           const job = await api(`/tokens/${currentToken}/jobs/latest`);
           if (!job || !job.id) {
-            document.getElementById('lookupError').textContent = 'No previous job found.';
+            document.getElementById('lookupError').textContent = amlCheckText('No previous job found.', 'Предыдущая задача не найдена.');
             endJob();
             return;
           }
@@ -1047,7 +1127,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
       async function createPayment() {
         clearAllMessages(['paymentMessage']);
         if (!currentToken) {
-          document.getElementById('paymentMessage').textContent = 'Load a token first.';
+          document.getElementById('paymentMessage').textContent = amlCheckText('Load a token first.', 'Сначала загрузите токен.');
           return;
         }
         const button = document.getElementById('createPaymentBtn');
@@ -1056,7 +1136,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         const originalText = button ? button.textContent : '';
         if (button) {
           button.disabled = true;
-          button.textContent = 'Creating...';
+          button.textContent = amlCheckText('Creating...', 'Создание...');
         }
         try {
           const payment = await api(`/tokens/${currentToken}/payments`, {
@@ -1064,21 +1144,24 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
             body: JSON.stringify({ checks: selectedChecks }),
           });
           document.getElementById('paymentMessage').textContent =
-            `Created ${payment.checks}-check payment for ${payment.amount_btc} BTC (expires ${new Date(payment.expires_at*1000).toLocaleString()}).`;
+            amlCheckText(
+              `Created ${payment.checks}-check payment for ${payment.amount_btc} BTC (expires ${new Date(payment.expires_at*1000).toLocaleString()}).`,
+              `Создан платеж на ${payment.checks} проверок за ${payment.amount_btc} BTC (истекает ${new Date(payment.expires_at*1000).toLocaleString()}).`
+            );
           await refreshPayments();
         } catch (err) {
           document.getElementById('paymentMessage').textContent = parseErrorMessage(err);
         } finally {
           if (button) {
             button.disabled = false;
-            button.textContent = originalText || 'Buy checks';
+            button.textContent = originalText || amlCheckText('Buy checks', 'Купить проверки');
           }
         }
       }
 
       async function refreshPaymentsClick(button) {
         clearAllMessages(['paymentMessage']);
-        const restore = beginButtonLoading(button, 'Refreshing...');
+        const restore = beginButtonLoading(button, amlCheckText('Refreshing...', 'Обновление...'));
         try {
           await refreshPayments();
         } finally {
@@ -1093,7 +1176,10 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         try {
           const result = await api(`/tokens/${currentToken}/payments/refresh`, { method: 'POST' });
           if (result && result.credited) {
-            paymentMsgEl.textContent = `Automatically credited ${result.credited} payment(s).`;
+            paymentMsgEl.textContent = amlCheckText(
+              `Automatically credited ${result.credited} payment(s).`,
+              `Автоматически зачислено платежей: ${result.credited}.`
+            );
           }
         } catch (err) {
           paymentMsgEl.textContent = parseErrorMessage(err);
@@ -1101,25 +1187,25 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         try {
           const payments = await api(`/tokens/${currentToken}/payments`);
           if (!payments.length) {
-            document.getElementById('paymentsTable').textContent = 'No payments yet.';
+            document.getElementById('paymentsTable').textContent = amlCheckText('No payments yet.', 'Платежей пока нет.');
             await refreshTokenDetailsOnly();
             return;
           }
           const rows = payments.map(p => `
             <tr>
               <td>${p.id}</td>
-              <td>${p.checks ? `${p.checks} checks` : '—'}</td>
+              <td>${p.checks ? amlCheckText(`${p.checks} checks`, `${p.checks} проверок`) : '—'}</td>
               <td>${p.amount_btc}</td>
-              <td><span class="status-pill status-${p.status}">${p.status}</span></td>
+              <td><span class="status-pill status-${p.status}">${localizeJobStatus(p.status)}</span></td>
               <td>${new Date(p.created_at*1000).toLocaleString()}</td>
               <td>${new Date(p.expires_at*1000).toLocaleString()}</td>
-              <td>${p.trocador_url && p.status === 'pending' ? `<a href="${p.trocador_url}" target="_blank">Pay</a>` : ''}</td>
+              <td>${p.trocador_url && p.status === 'pending' ? `<a href="${p.trocador_url}" target="_blank">${amlCheckText('Pay', 'Оплатить')}</a>` : ''}</td>
             </tr>
           `).join('');
           document.getElementById('paymentsTable').innerHTML = `
             <table>
               <thead>
-                <tr><th>ID</th><th>Package</th><th>Amount</th><th>Status</th><th>Created</th><th>Expires</th><th>Link</th></tr>
+                <tr><th>ID</th><th>${amlCheckText('Package', 'Пакет')}</th><th>${amlCheckText('Amount', 'Сумма')}</th><th>${amlCheckText('Status', 'Статус')}</th><th>${amlCheckText('Created', 'Создан')}</th><th>${amlCheckText('Expires', 'Истекает')}</th><th>${amlCheckText('Link', 'Ссылка')}</th></tr>
               </thead>
               <tbody>${rows}</tbody>
             </table>`;
@@ -1138,7 +1224,7 @@ const API_BASE = 'https://bitmixlist-aml-242473302317.us-central1.run.app';
         } catch (_) {
           /* ignore */
         }
-        return err.message || 'Unexpected error';
+        return err.message || amlCheckText('Unexpected error', 'Непредвиденная ошибка');
       }
 
       function validateBitcoinAddress(address) {

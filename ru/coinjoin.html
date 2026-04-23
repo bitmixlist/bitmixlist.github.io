@@ -1,0 +1,403 @@
+<!doctype html>
+<html dir="ltr" lang="ru" prefix="og: https://ogp.me/ns#">
+<head>
+<meta charset="utf-8"/>
+<link as="style" data-optimized="2" href="../wp-content/litespeed/css/d4d1cd3e2db3bf373348bdfd89958038.css" onload="this.onload=null;this.rel='stylesheet'" rel="preload"/>
+<noscript><link data-optimized="2" href="../wp-content/litespeed/css/d4d1cd3e2db3bf373348bdfd89958038.css" rel="stylesheet"/></noscript>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<link href="https://gmpg.org/xfn/11" rel="profile"/>
+<meta content="NotATether" name="author"/>
+<title>Объяснение CoinJoin-миксинга – BitMixList</title>
+<meta content="Объяснение CoinJoin: как совместные биткойн-транзакции улучшают приватность, где они дают сбой и почему биржи и аналитические компании до сих пор помечают результаты." name="description">
+<meta content="max-image-preview:large" name="robots">
+<link href="https://bitmixlist.org/ru/coinjoin/" rel="canonical"/>
+<meta content="All in One SEO (AIOSEO) 4.5.1.1" name="generator">
+<meta content="ru_RU" property="og:locale"/>
+<meta content="BitMixList -" property="og:site_name"/>
+<meta content="article" property="og:type"/>
+<meta content="Объяснение CoinJoin-миксинга – BitMixList" property="og:title"/>
+<meta content="Объяснение CoinJoin: как совместные биткойн-транзакции улучшают приватность, где они дают сбой и почему биржи и аналитические компании до сих пор помечают результаты." property="og:description"/>
+<meta content="https://bitmixlist.org/ru/coinjoin/" property="og:url"/>
+<meta content="../wp-content/uploads/2023/12/logo-1-e1701782109696.png" property="og:image"/>
+<meta content="../wp-content/uploads/2023/12/logo-1-e1701782109696.png" property="og:image:secure_url"/>
+<meta content="350" property="og:image:width"/>
+<meta content="105" property="og:image:height"/>
+<meta content="2025-02-12T00:00:00+00:00" property="article:published_time"/>
+<meta content="2026-02-19T00:00:00+00:00" property="article:modified_time"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Объяснение CoinJoin-миксинга – BitMixList" name="twitter:title"/>
+<meta content="Объяснение CoinJoin: как совместные биткойн-транзакции улучшают приватность, где они дают сбой и почему биржи и аналитические компании до сих пор помечают результаты." name="twitter:description"/>
+<meta content="../wp-content/uploads/2023/12/logo-1-e1701782109696.png" name="twitter:image"/>
+<script class="aioseo-schema" type="application/ld+json">
+      {
+        "@context": "https:\/\/schema.org",
+        "@graph": [{
+          "@type": "BreadcrumbList",
+          "@id": "https:\/\/bitmixlist.org\/#breadcrumblist",
+          "itemListElement": [{
+            "@type": "ListItem",
+            "@id": "https:\/\/bitmixlist.org\/#listItem",
+            "position": 1,
+            "name": "Главная"
+          }]
+        }, {
+          "@type": "Person",
+          "@id": "https:\/\/bitmixlist.org\/#person",
+          "name": "bitmixlist.org",
+          "image": {
+            "@type": "ImageObject",
+            "@id": "https:\/\/bitmixlist.org\/#personImage",
+            "url": "https:\/\/secure.gravatar.com\/avatar\/375a4b3532702afbb83421c32840388b?s=96&d=mm&r=g",
+            "width": 96,
+            "height": 96,
+            "caption": "bitmixlist.org"
+          }
+        }, {
+          "@type": "WebPage",
+          "@id": "https:\/\/bitmixlist.org\/#webpage",
+          "url": "https:\/\/bitmixlist.org\/",
+          "name": "Список биткойн-миксеров — лучшие надежные приватные сервисы",
+          "description": "Список биткойн-миксеров: уделяйте приоритетное внимание конфиденциальности в криптовалютных транзакциях и выбирайте проверенные сервисы.",
+          "inLanguage": "ru-RU",
+          "isPartOf": {
+            "@id": "https:\/\/bitmixlist.org\/#website"
+          },
+          "breadcrumb": {
+            "@id": "https:\/\/bitmixlist.org\/#breadcrumblist"
+          },
+          "datePublished": "2023-12-05T04:40:14+00:00",
+          "dateModified": "2023-12-11T14:45:15+00:00"
+        }, {
+          "@type": "WebSite",
+          "@id": "https:\/\/bitmixlist.org\/#website",
+          "url": "https:\/\/bitmixlist.org\/",
+          "name": "bitmixlist.org",
+          "inLanguage": "ru-RU",
+          "publisher": {
+            "@id": "https:\/\/bitmixlist.org\/#person"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https:\/\/bitmixlist.org\/?s={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        }]
+      }
+    </script>
+<script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "@id": "https://bitmixlist.org/ru/coinjoin/#article",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://bitmixlist.org/ru/coinjoin/"
+        },
+        "headline": "Объяснение CoinJoin-миксинга – BitMixList",
+        "description": "Объяснение CoinJoin: как совместные биткойн-транзакции улучшают приватность, где они дают сбой и почему биржи и аналитические компании до сих пор помечают результаты.",
+        "datePublished": "2025-02-12T00:00:00+00:00",
+        "dateModified": "2026-02-19T00:00:00+00:00",
+        "author": {
+          "@type": "Person",
+          "name": "NotATether",
+          "url": "https://bitcointalk.org/index.php?action=profile;u=2739424"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "BitMixList",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://bitmixlist.org/wp-content/uploads/2023/12/logo-1-e1701782109696.png",
+            "width": 350,
+            "height": 105
+          }
+        },
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "Биткойн-миксеры"
+          },
+          {
+            "@type": "Thing",
+            "name": "Конфиденциальность криптовалют"
+          }
+        ]
+      }
+    </script>
+<link href="feed/index.html" rel="alternate" title="BitMixList » Feed" type="application/rss+xml"/>
+<link href="wp-json/index.html" rel="https://api.w.org/"/>
+<link href="wp-json/wp/v2/pages/34" rel="alternate" type="application/json"/>
+<link href="xmlrpc.php%3Frsd" rel="EditURI" title="RSD" type="application/rsd+xml"/>
+<meta content="WordPress 6.4.2" name="generator"/>
+<link href="index.html" rel="shortlink"/>
+<link href="wp-json/oembed/1.0/embed%3Furl=https:%252F%252Fbitmixlist.org%252F" rel="alternate" type="application/json+oembed"/>
+<link href="wp-json/oembed/1.0/embed%3Furl=https:%252F%252Fbitmixlist.org%252F&amp;format=xml" rel="alternate" type="text/xml+oembed"/>
+<meta content="Performance Lab 2.7.0; modules: images/dominant-color-images, images/webp-support, images/webp-uploads" name="generator"/>
+<link href="../wp-content/uploads/2023/12/cropped-favicon-2-32x32.png" rel="icon" sizes="32x32"/>
+<link href="../wp-content/uploads/2023/12/cropped-favicon-2-192x192.png" rel="icon" sizes="192x192"/>
+<link href="../wp-content/uploads/2023/12/cropped-favicon-2-180x180.png" rel="apple-touch-icon"/>
+<meta content="../wp-content/uploads/2023/12/cropped-favicon-2-270x270.png" name="msapplication-TileImage">
+<link as="style" href="../wp-content/litespeed/css/styles.css" onload="this.onload=null;this.rel='stylesheet'" rel="preload"/>
+<noscript><link href="../wp-content/litespeed/css/styles.css" rel="stylesheet"/></noscript>
+<script src="../wp-content/litespeed/js/ad-loader.js"></script>
+<script>
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.bitmixlistLoadTopAd) {
+          window.bitmixlistLoadTopAd();
+        }
+      });
+
+      // Mobile menu functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.querySelector('.mobile-menu-toggle');
+        const sidebarToggle = document.querySelector('.sidebar-menu-toggle');
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        const navLinks = document.querySelectorAll('.nav-menu .nav-link');
+        const sections = document.querySelectorAll('section[id]');
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function syncOverlay() {
+          if (!overlay) {
+            return;
+          }
+
+          const shouldShow = !!(sidebar && sidebar.classList.contains('active') && window.innerWidth <= 1024);
+
+          if (shouldShow) {
+            overlay.classList.add('active');
+          } else {
+            overlay.classList.remove('active');
+          }
+        }
+
+        function toggleSidebar() {
+          if (!sidebar) {
+            return;
+          }
+          sidebar.classList.toggle('active');
+          syncOverlay();
+        }
+
+        function closeSidebar() {
+          if (!sidebar) {
+            return;
+          }
+          sidebar.classList.remove('active');
+          syncOverlay();
+        }
+
+        if (menuToggle && sidebar) {
+          menuToggle.addEventListener('click', function(event) {
+            event.stopPropagation();
+            toggleSidebar();
+          });
+        }
+
+        if (sidebarToggle && sidebar) {
+          sidebarToggle.addEventListener('click', function(event) {
+            event.stopPropagation();
+            toggleSidebar();
+          });
+        }
+
+        if (overlay) {
+          overlay.addEventListener('click', closeSidebar);
+        }
+
+        if (sidebar) {
+          sidebar.addEventListener('touchstart', function(event) {
+            touchStartX = event.touches[0].clientX;
+            touchEndX = touchStartX;
+          }, { passive: true });
+
+          sidebar.addEventListener('touchmove', function(event) {
+            touchEndX = event.touches[0].clientX;
+          }, { passive: true });
+
+          sidebar.addEventListener('touchend', function() {
+            const swipeDistance = touchStartX - touchEndX;
+            if (swipeDistance > 50 && window.innerWidth <= 1024) {
+              closeSidebar();
+            }
+          });
+        }
+
+        navLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            if (window.innerWidth <= 1024) {
+              setTimeout(closeSidebar, 150);
+            }
+          });
+        });
+
+        document.addEventListener('click', function(event) {
+          if (!sidebar || !sidebar.classList.contains('active')) {
+            return;
+          }
+
+          const clickedToggle = (menuToggle && menuToggle.contains(event.target)) ||
+                                (sidebarToggle && sidebarToggle.contains(event.target));
+
+          if (!sidebar.contains(event.target) && !clickedToggle) {
+            closeSidebar();
+          }
+        });
+
+        window.addEventListener('resize', syncOverlay);
+
+        function highlightCurrentSection() {
+          if (!sections.length) {
+            return;
+          }
+
+          const scrollY = window.scrollY;
+
+          sections.forEach(section => {
+            const sectionTop = section.offsetTop - 100;
+            const sectionBottom = sectionTop + section.offsetHeight;
+
+            if (scrollY >= sectionTop && scrollY < sectionBottom) {
+              navLinks.forEach(link => {
+                if (link.getAttribute('href') === '#' + section.id) {
+                  link.classList.add('active');
+                } else {
+                  link.classList.remove('active');
+                }
+              });
+            }
+          });
+        }
+
+        window.addEventListener('scroll', highlightCurrentSection);
+        highlightCurrentSection();
+        syncOverlay();
+      });
+    </script>
+</meta></meta></link></meta></meta></head>
+<body class="home page-template-default page page-id-34 wp-custom-logo">
+<a class="skip-link screen-reader-text" href="#content">Перейти к содержимому</a>
+<!-- Sidebar Navigation -->
+<nav class="sidebar">
+<div class="logo-container">
+<button aria-label="Свернуть меню навигации" class="sidebar-menu-toggle">☰</button>
+<a aria-current="page" class="custom-logo-link" href="index.html" rel="home">
+<picture>
+<source srcset="../wp-content/uploads/2023/12/logo-2-e1702276596201.webp" type="image/webp"/>
+<img alt="BitMixList - Bitcoin Mixer List" class="custom-logo has-transparency" data-dominant-color="955ff5" data-has-transparency="true" decoding="async" fetchpriority="high" src="../wp-content/uploads/2023/12/logo-2-e1702276596201.jpg" width="200"/>
+</picture>
+</a>
+</div>
+<ul class="nav-menu">
+<li class="menu-item"><a class="nav-link" href="index.html#mixers">Миксеры</a></li>
+<li class="menu-item"><a class="nav-link" href="index.html#neverkyc-exchanges">Биржи без KYC</a></li>
+<li class="menu-item"><a class="nav-link" href="index.html#altcoin-exchanges">Альткоин-биржи</a></li>
+<li class="menu-item"><a class="nav-link" href="index.html#p2pmarket">P2P-торговые площадки</a></li>
+<li class="menu-item"><a class="nav-link" href="index.html#coordinators">Координаторы</a></li>
+<li class="menu-item"><a class="nav-link" href="scam-lookup.html">Проверка на скам</a></li>
+<li class="menu-item"><a class="nav-link" href="letter-verify.html">Верифицировать гарантию</a></li>
+<li class="menu-item"><a class="nav-link" href="aml-check.html">AML-чекер</a></li>
+<li class="menu-item"><a class="nav-link" href="early-history.html">Ранняя история</a></li>
+<li class="menu-item"><a class="nav-link" href="mixer-privacy.html">Конфиденциальность миксеров</a></li>
+<li class="menu-item"><a class="nav-link" href="evolving-regulation.html">Эволюция регулирования</a></li>
+<li class="menu-item"><a class="nav-link" href="crime.html">Преступность</a></li>
+<li class="menu-item"><a class="nav-link" href="crackdown.html">Регуляторное давление</a></li>
+<li class="menu-item"><a class="nav-link" href="aftermath.html">Последствия</a></li>
+<li class="menu-item"><a class="nav-link" href="mixers-necessity.html">Зачем нам нужны миксеры</a></li>
+<li class="menu-item"><a class="nav-link" href="faq.html">Часто задаваемые вопросы</a></li>
+<li class="menu-item"><a class="nav-link" href="terms-and-conditions.html">Допустимое использование</a></li>
+</ul>
+</nav>
+<div aria-hidden="true" class="sidebar-overlay"></div>
+<div class="site-content-wrapper">
+<header class="site-header" id="site-header" role="banner">
+<div class="header-inner">
+<button aria-label="Открыть меню навигации" class="mobile-menu-toggle">☰</button>
+<h4>Объяснение CoinJoin</h4>
+<div aria-label="Выбор языка" class="lang-switcher">
+<a class="lang-link" href="../coinjoin.html" hreflang="en" lang="en">
+<img alt="EN flag" height="10" src="../wp-content/uploads/2023/12/flag-en.svg" width="14"/>
+<span>EN</span>
+</a>
+<span aria-current="true" class="lang-link is-active">
+<img alt="RU flag" height="10" src="../wp-content/uploads/2023/12/flag-ru.svg" width="14"/>
+<span>RU</span>
+</span>
+</div>
+</div>
+</header>
+<div class="sylvester-top" style="width:728px;height:90px;"><noscript><a href="https://r7promotions.com/go/bh8697"><img src="https://r7promotions.com/r7-asset/site-banners/post-top-728x90.gif"/></a></noscript></div>
+<div class="sylvester-top-mobile" style="width:350px;height:50px;"><noscript><a href="https://r7promotions.com/go/bh8697"><img src="https://r7promotions.com/r7-asset/site-banners/home-350x50-mobile.gif"/></a></noscript></div>
+<div class="centered"><p>Это реклама. Реклама не одобрена BitMixList.</p></div>
+<main class="site-main post-34 page type-page status-publish hentry" id="content">
+<header class="page-header">
+<h1 class="entry-title">Объяснение CoinJoin-миксинга</h1>
+</header>
+<div class="page-content">
+<p>CoinJoin — один из самых практичных инструментов конфиденциальности, доступных пользователям Биткоина, которые хотят улучшить несвязываемость транзакций, не передавая контроль над средствами третьей стороне. Основная идея проста: несколько пользователей совместно создают одну транзакцию, так что внешние наблюдатели видят перемещение средств, но не могут надёжно сопоставить каждый вход с конкретным выходом. Первоначальное предложение Грега Максвелла 2013 года по-прежнему точно отражает эту логику, и большинство современных реализаций в кошельках являются развитием той же концепции.</p>
+<p>В 2026 году важность CoinJoin заключается не в новизне, а в его повторяемости. Его можно запускать регулярно, интегрировать в обычную работу кошелька и сочетать с другими мерами — такими как правильная работа с адресами сдачи, задержки при расходовании средств и разделение маршрутов транзакций. Это не даёт идеальной анонимности, но для многих пользователей представляет лучший баланс между самокастодиальным хранением и практической конфиденциальностью.</p>
+<h2 class="wp-block-heading">Как работает CoinJoin</h2>
+<p>На высоком уровне процесс выглядит так: участники регистрируют входы, согласовывают стандартизированную структуру выходов, подписывают общий PSBT и публикуют одну итоговую транзакцию. Если раунд организован корректно и пользователи избегают ошибок сразу после миксинга, аналитики теряют ту чистую связь «один к одному», на которой основана детерминированная кластеризация.</p>
+<p>Сложность заключается не в математике, а в координации. Раундам нужно достаточное количество участников, достаточная ликвидность и достаточная операционная дисциплина, чтобы выходы позже не были легко повторно связаны. Именно поэтому такие фреймворки, как ZeroLink уделяют большое внимание дизайну номиналов, обработке сдачи и правилам комиссий, а не только криптографии.</p>
+<p>Разные реализации используют разные модели доверия. Модель Chaumian в Wasabi применяет слепые подписи, чтобы уменьшить видимость для координатора, JoinMarket использует рыночную ликвидность по модели maker/taker, а системы в стиле Whirlpool опираются на инфраструктуру координатора с контролем на стороне клиента. Каждая из этих моделей предполагает компромисс между удобством, риском цензуры и глубиной ликвидности.</p>
+<h2 class="wp-block-heading">Внедрение и текущие исследования</h2>
+<p>Исследования и отраслевые данные показывают, что активность CoinJoin обычно возрастает, когда кастодиальные решения становятся недоступными или подвергаются давлению. Работы, такие как исследование Stütz и соавторов (2021), а также более поздние исследования по эвристикам связывания выходов, демонстрируют одну и ту же закономерность: инструменты конфиденциальности совершенствуются, аналитика догоняет, кошельки адаптируются — и цикл продолжается.</p>
+<p>Именно поэтому операционное поведение по-прежнему важнее лозунгов. Команды разработчиков кошельков теперь делают акцент на управлении монетами (coin control), повторных раундах миксинга, вариативности задержек и аккуратной изоляции сдачи, потому что такие практики снижают эффективность новых метрик сходства. Хорошим примером давления, которое стимулирует эти обновления дизайна, является исследование 2025 года о связывании отправителей.</p>
+<p>Регуляторы и компании, занимающиеся аналитикой блокчейна, по-прежнему объединяют CoinJoin с другими анонимизирующими потоками средств во многих моделях оценки риска. Отчёт Chainalysis за 2022 год — наглядный пример такого подхода, и он помогает понять, почему отношение бирж может оставаться жёстким даже к законопослушным пользователям, которые просто стремятся к обычной конфиденциальности.</p>
+<h2 class="wp-block-heading">Когда одного CoinJoin недостаточно</h2>
+<p>CoinJoin работает лучше всего, когда вы сохраняете контроль над средствами до и после раунда, избегаете объединения перемиксованных выходов со старыми помеченными монетами и не отправляете смешанные средства сразу в потоки бирж с высоким уровнем наблюдения. Он работает хуже, когда пользователи сами нивелируют выигрыш в конфиденциальности из-за поспешной консолидации или предсказуемого поведения после миксинга. На практике его стоит рассматривать как один слой в более широкой системе, которая может также включать конфиденциальность получателя, маршруты через свопы и продуманное взаимодействие с биржами.</p>
+<h2 class="wp-block-heading">Ключевые источники</h2>
+<ul>
+<li>Грег Максвелл представляет CoinJoin (2013)</li>
+<li>Фреймворк взаимозаменяемости ZeroLink (2017)</li>
+<li>Внедрение и фактическая конфиденциальность CoinJoin (2021)</li>
+<li>Отчёт Chainalysis об использовании миксеров (2022)</li>
+<li>Связывание отправителей выходов CoinJoin (2025)</li>
+</ul>
+<p>Смешивайте только те средства, которые принадлежат вам, и соблюдайте требования законодательства, действующие в вашей юрисдикции.</p>
+</div>
+<section class="author-card" style="width:100%;box-sizing:border-box;margin:28px 0 0 0;padding:24px;border:1px solid #d7d7e0;border-radius:12px;background:#f7f7fb;">
+<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+<picture style="flex:0 0 88px;">
+<source srcset="../wp-content/uploads/2023/12/cropped-favicon-2-88x88.webp" type="image/webp"/>
+<img alt="Фото автора" height="88" src="../wp-content/uploads/2023/12/cropped-favicon-2-88x88.jpg" style="border:1px solid #bdbdc7;border-radius:50%;object-fit:cover;display:block;" width="88"/>
+</picture>
+<div style="min-width:220px;flex:1;">
+<p style="margin:0 0 6px 0;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#666;">Автор</p>
+<h3 style="margin:0 0 8px 0;color:#333;">NotATether</h3>
+<p style="margin:0;color:#333;">Исследователь приватности Биткойна и автор BitMixList. Пишет о развитии миксеров, правоприменительной практике и рабочих сценариях, которые помогают пользователям сохранять финансовую конфиденциальность в разных юрисдикциях.</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+<footer class="site-footer" id="site-footer" role="contentinfo"></footer>
+<div class="footer">
+<div>© 2023-2026. <strong><a href="https://bitcointalk.org/index.php?action=profile;u=2739424">NotATether</a></strong>.</div>
+<div>Контакт: администратор [at] notatether [точка] com</div>
+<div><em>Отказ от ответственности:</em></div>
+<div>Смешивайте только те средства, которые вы получили законным путем.</div>
+<div>Не используйте BitMixList для отмывания денег!</div>
+<div style="font-size: 12px;">TOR: mixlistihakx3uexhl3wv7xxpnso75pl2fxxupulqz3gpoybum62puid.onion</div>
+<hr/>
+<div>Пожертвовать (нажмите, чтобы получить адреса)</div>
+<div class="donate">
+<div><a href="bitcoin:bc1q6sac2xn46fwtv3jqtn606pewz8w6r7hlnwzgvp?amount=0.0001"><picture>
+<source srcset="../wp-content/uploads/2023/12/bitcoin.webp" type="image/webp">
+<img src="../wp-content/uploads/2023/12/bitcoin.jpg" title="Пожертвовать в Bitcoin" width="150px">
+</img></source></picture></a></div>
+<div><a href="monero:89m7X1HMSiY1jy175wSmsrZ6Bzmeo1DUPgVsxP2d9qcDMScoB9YgJmKBLWhQy72E4fiEysHY1rMuQUP965vsAwrU3ktAN1E?tx_amount=0.050000000000"><picture>
+<source srcset="../wp-content/uploads/2023/12/monero.webp" type="image/webp">
+<img src="../wp-content/uploads/2023/12/monero.jpg" title="Пожертвовать в Monero" width="150px">
+</img></source></picture></a></div>
+</div>
+</div>
+<script data-optimized="1" defer="" src="../wp-content/litespeed/js/1d034a87d61ff5f30ca39d179529e895.js"></script>
+</body>
+</html>
+<!-- Page optimized by LiteSpeed Cache @2023-12-12 10:30:01 -->
+<!-- Page cached by LiteSpeed Cache 5.7.0.1 on 2023-12-12 10:30:01 -->
