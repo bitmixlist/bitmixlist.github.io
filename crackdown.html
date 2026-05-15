@@ -149,6 +149,8 @@
       .interactive-timeline::before { content:""; position:absolute; left: 12px; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,.25); }
       .timeline-event { position: relative; margin: 20px 0; border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 16px 18px 18px 20px; background: rgba(255,255,255,.04); transition: transform .12s ease, background .12s ease; }
       .timeline-event:hover { transform: translateY(-1px); background: rgba(255,255,255,.07); }
+      .timeline-event-target { background: rgba(242,200,107,.10); border-color: rgba(242,200,107,.36); }
+      .timeline-anchor-target { display:block; position:relative; top:-90px; height:0; overflow:hidden; }
       .timeline-event::before { content:""; position:absolute; left:-28px; top: 18px; width:14px; height:14px; border-radius:50%; background:#0c0c0f; border:2px solid #f2c86b; box-shadow:0 0 0 4px rgba(242,200,107,.25); }
       .timeline-row { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
       .timeline-date { color: rgba(255,255,255,.6); font-size:.9rem; letter-spacing:.08em; text-transform:uppercase; }
@@ -372,6 +374,8 @@
           <p class="timeline-intro">Since 2019 governments have moved from stern warnings to coordinated arrests, sanctions, and infrastructure seizures targeting Bitcoin privacy. This index keeps every crackdown story we have published in one place.</p>
           <p class="timeline-intro">Click an entry to see the summary and open the full report.</p>
 
+          <span id="eu-outlaw-attempt" class="timeline-anchor-target" aria-hidden="true"></span>
+          <span id="us-government-advisory" class="timeline-anchor-target" aria-hidden="true"></span>
           <div id="crackdownTimeline" class="interactive-timeline" aria-label="Timeline of crackdowns"></div>
         </div>
       </div>
@@ -410,9 +414,9 @@
       { date: '2022-05-06', title: 'Blender.io Sanctioned', tag: 'Sanctions', body: 'OFAC sanctions Blender.io — the first-ever mixer designation — after tying it to DPRK laundering. Investigators later allege the operators rebranded as Sinbad.', link: 'blender-sanctions.html' },
       { date: '2023-03-15', title: 'ChipMixer Seizure', tag: 'European Union', body: 'Europol and the German BKA seize ChipMixer infrastructure, confiscating 1,909 BTC and indicting operator Minh Quoc Nguyen.', link: 'chipmixer-seizure.html' },
       { date: '2023-11-29', title: 'OFAC Sanctions & Seizure of Sinbad.io', tag: 'Sanctions', body: 'US Treasury sanctions Sinbad.io (widely believed to be Blender rebrand) for laundering DPRK funds; same day Dutch FIOD and partners seize servers in Netherlands and Finland.', link: 'sinbad-sanctions.html' },
-      { date: '2024-03-14', title: 'EU Ban Attempt (MiCA / AML Package)', tag: 'European Union', body: 'Parliament debates €1,000 cap on anonymous self-custody transfers; clause ultimately withdrawn after community backlash.', link: 'eu-p2p-ban-attempt.html' },
+      { id: 'eu-outlaw-attempt', date: '2024-03-14', title: 'EU Ban Attempt (MiCA / AML Package)', tag: 'European Union', body: 'Parliament debates €1,000 cap on anonymous self-custody transfers; clause ultimately withdrawn after community backlash.', link: 'eu-p2p-ban-attempt.html' },
       { date: '2024-04-24', title: 'FBI Seizes Samourai Wallet', tag: 'United States', body: 'Agents seize Samourai infrastructure and arrest Keonne Rodriguez and William Hill, alleging Whirlpool mixed $2B in illicit funds.', link: 'samourai-wallet-case.html' },
-      { date: '2024-04-25', title: 'FBI PSA on Non-KYC Wallets', tag: 'United States', body: 'IC3 urges banks to file SARs on customers interacting with non-custodial wallets or mixers, prompting exchanges to freeze CoinJoin withdrawals.', link: 'fbi-non-custodial-warning.html' },
+      { id: 'us-government-advisory', date: '2024-04-25', title: 'FBI PSA on Non-KYC Wallets', tag: 'United States', body: 'IC3 urges banks to file SARs on customers interacting with non-custodial wallets or mixers, prompting exchanges to freeze CoinJoin withdrawals.', link: 'fbi-non-custodial-warning.html' },
       { date: '2024-04-27', title: 'Wallets Block US Users', tag: 'Compliance', body: 'Phoenix, Wasabi, and other projects geoblock US IPs or shut down coordinators in response to the arrests and FBI guidance.', link: 'wallets-block-us.html' },
       { date: '2024-05-03', title: 'Edward Snowden Final Warning', tag: 'Advocacy', body: 'Snowden urges developers to prioritise base-layer privacy after LocalMonero and Agoradesk announce wind-down.', link: 'edward-snowden-warning.html' },
       { date: '2024-05-07', title: 'LocalMonero / Agoradesk Exit', tag: 'Peer-to-Peer', body: 'Long-running P2P desks wind down, citing regulatory headwinds and the cost of complying with Travel Rule demands.', link: 'localmonero-agoradesk-exit.html' },
@@ -433,7 +437,7 @@
 
     events.sort((a,b)=> new Date(a.date) - new Date(b.date));
     timeline.innerHTML = events.map((event)=>`
-      <div class="timeline-event">
+      <div class="timeline-event"${event.id ? ` data-event-id="${event.id}"` : ''}>
         <div class="timeline-row">
           <div class="timeline-date">${fmtDate(event.date)}</div>
           <div class="timeline-title">${event.title}</div>
@@ -445,6 +449,15 @@
         </div>
       </div>
     `).join('');
+
+    const targetId = decodeURIComponent(window.location.hash.slice(1));
+    if (targetId) {
+      const target = Array.from(timeline.querySelectorAll('[data-event-id]')).find((event)=>event.dataset.eventId === targetId);
+      if (target) {
+        target.classList.add('timeline-event-target');
+        target.scrollIntoView({ block: 'start' });
+      }
+    }
   })();
 </script>
 </body>

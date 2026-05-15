@@ -49,6 +49,12 @@ a:focus-visible {
     text-decoration: underline;
 }
 
+.page-content a:not(.mixer-logo-link):not(.mixer-name):not(.reg-link):not(.scenario-link):not(.timeline-link):not(.tool__name) {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.16em;
+}
+
 .header, .footer {
     background-color: #2c2c2c;
 }

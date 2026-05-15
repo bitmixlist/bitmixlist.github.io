@@ -346,7 +346,7 @@
       </header>
       <div class="page-content">
         <p>Cryptocurrency regulations evolve quickly, and a single investigation can reshape entire markets. This tracker consolidates public data from sources such as the <a href="https://www.atlanticcouncil.org/programs/geoeconomics-center/cryptoregulationtracker" target="_blank" rel="noopener">Atlantic Council Crypto Regulation Tracker</a>, the <a href="https://en.wikipedia.org/wiki/Legality_of_cryptocurrency_by_country_or_territory" target="_blank" rel="noopener">global legality index</a>, and policy updates cited throughout BitMixList. Key themes for February 2026 include the EU’s <a href="mica-privacy-rules.html">MiCA rollout</a>, expanded enforcement of the <a href="fatf-travel-rule.html">FATF Travel Rule</a>, new U.S. stablecoin rules under the GENIUS Act, and national licensing regimes aimed at VASPs, mixers, and stablecoin issuers.</p>
-        <p>The cards below group countries by region. Each row lists current legality, landmark statutes, licensing models, taxation highlights, and whether stablecoins or Travel Rule obligations apply. Use the arrow button on each row to open the referenced regulation or BitMixList explainer.</p>
+        <p>The cards below group countries by region. Each row lists current legality, landmark statutes, licensing models, taxation highlights, and whether stablecoins or Travel Rule obligations apply. Use the Source button on each row to open the referenced regulation or BitMixList explainer.</p>
         <style>
           .reg-note { color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 18px; }
           .reg-section { margin-bottom: 36px; }
@@ -358,8 +358,9 @@
           .reg-list { list-style: none; margin: 0; padding: 0; }
           .reg-item { display: grid; grid-template-columns: 44px 1fr auto auto; gap: 14px; padding: 16px 18px; border-top: 1px solid rgba(255,255,255,0.08); align-items: center; position: relative; }
           .reg-item:first-child { border-top: none; }
-          .reg-item::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(147,124,255,0.12), rgba(56,208,255,0.08)); opacity: 0; transition: opacity 0.15s ease; }
+          .reg-item::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(147,124,255,0.12), rgba(56,208,255,0.08)); opacity: 0; transition: opacity 0.15s ease; pointer-events: none; }
           .reg-item:hover::before { opacity: 1; }
+          .reg-item > * { position: relative; z-index: 1; }
           .reg-icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); display: grid; place-items: center; font-weight: 600; color: rgba(255,255,255,0.9); }
           .reg-main { min-width: 0; }
           .reg-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
@@ -370,8 +371,9 @@
           .badge--good { color: rgba(140,255,196,0.95); border-color: rgba(140,255,196,0.3); background: rgba(140,255,196,0.08); }
           .badge--warn { color: rgba(255,215,140,0.95); border-color: rgba(255,215,140,0.25); background: rgba(255,215,140,0.08); }
           .badge--neutral { color: rgba(186,201,255,0.95); border-color: rgba(186,201,255,0.25); background: rgba(186,201,255,0.08); }
-          .reg-link { width: 34px; height: 34px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); display: grid; place-items: center; color: rgba(255,255,255,0.75); background: rgba(255,255,255,0.04); text-decoration: none; }
-          .reg-link:hover { background: rgba(255,255,255,0.1); }
+          .reg-link { width: auto; min-height: 34px; padding: 0 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); display: inline-flex; align-items: center; justify-content: center; gap: 6px; color: rgba(255,255,255,0.82); background: rgba(255,255,255,0.04); text-decoration: none; font-size: 12px; font-weight: 600; white-space: nowrap; }
+          .reg-link::after { content: "Source"; }
+          .reg-link:hover, .reg-link:focus-visible { background: rgba(255,255,255,0.1); text-decoration: none; }
           @media (max-width: 900px) { .reg-item { grid-template-columns: 40px 1fr; } .reg-badge, .reg-link { margin-top: 8px; }
           }
         </style>

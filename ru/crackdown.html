@@ -147,6 +147,8 @@
       .interactive-timeline::before { content:""; position:absolute; left: 12px; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,.25); }
       .timeline-event { position: relative; margin: 20px 0; border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 16px 18px 18px 20px; background: rgba(255,255,255,.04); transition: transform .12s ease, background .12s ease; }
       .timeline-event:hover { transform: translateY(-1px); background: rgba(255,255,255,.07); }
+      .timeline-event-target { background: rgba(242,200,107,.10); border-color: rgba(242,200,107,.36); }
+      .timeline-anchor-target { display:block; position:relative; top:-90px; height:0; overflow:hidden; }
       .timeline-event::before { content:""; position:absolute; left:-28px; top: 18px; width:14px; height:14px; border-radius:50%; background:#0c0c0f; border:2px solid #f2c86b; box-shadow:0 0 0 4px rgba(242,200,107,.25); }
       .timeline-row { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
       .timeline-date { color: rgba(255,255,255,.6); font-size:.9rem; letter-spacing:.08em; text-transform:uppercase; }
@@ -300,7 +302,7 @@
     </script>
 </meta></meta></head>
 <body class="home page-template-default page page-id-34 wp-custom-logo">
-<a class="skip-link screen-reader-text" href="#content">Перейти к содержимому</a>
+<a class="skip-link screen-reader-text" href="#content">К содержанию</a>
 <!-- Sidebar Navigation -->
 <nav class="sidebar">
 <div class="logo-container">
@@ -308,7 +310,7 @@
 <a aria-current="page" class="custom-logo-link" href="index.html" rel="home">
 <picture>
 <source srcset="../wp-content/uploads/2023/12/logo-2-e1702276596201.webp" type="image/webp"/>
-<img alt="BitMixList - Bitcoin Mixer List" class="custom-logo has-transparency" data-dominant-color="955ff5" data-has-transparency="true" decoding="async" fetchpriority="high" src="../wp-content/uploads/2023/12/logo-2-e1702276596201.jpg" width="200"/>
+<img alt="BitMixList — список Биткоин-миксеров" class="custom-logo has-transparency" data-dominant-color="955ff5" data-has-transparency="true" decoding="async" fetchpriority="high" src="../wp-content/uploads/2023/12/logo-2-e1702276596201.jpg" width="200"/>
 </picture>
 </a>
 </div>
@@ -340,11 +342,11 @@
 <h4>Глобальное давление</h4>
 <div aria-label="Выбор языка" class="lang-switcher">
 <a class="lang-link" href="../crackdown.html" hreflang="en" lang="en">
-<img alt="EN flag" height="10" src="../wp-content/uploads/2023/12/flag-en.svg" width="14"/>
+<img alt="Флаг EN" height="10" src="../wp-content/uploads/2023/12/flag-en.svg" width="14"/>
 <span>EN</span>
 </a>
 <span aria-current="true" class="lang-link is-active">
-<img alt="RU flag" height="10" src="../wp-content/uploads/2023/12/flag-ru.svg" width="14"/>
+<img alt="Флаг RU" height="10" src="../wp-content/uploads/2023/12/flag-ru.svg" width="14"/>
 <span>RU</span>
 </span>
 </div>
@@ -359,8 +361,10 @@
 </header>
 <div class="page-content">
 <div class="timeline-wrap">
-<p class="timeline-intro">С 2019 года правительства перешли от строгих предупреждений к скоординированным арестам, санкциям и конфискации инфраструктуры, нацеленной на инструменты конфиденциальности Биткоина. В этом разделе собраны все материалы по ключевым ударам по экосистеме приватности.</p>
+<p class="timeline-intro">С 2019 года правительства перешли от строгих предупреждений к скоординированным арестам, санкциям и конфискации инфраструктуры, нацеленной на инструменты конфиденциальности Биткоина. В этом разделе собраны все материалы о таких действиях, которые мы публиковали.</p>
 <p class="timeline-intro">Нажмите на нужный пункт, чтобы увидеть краткое описание и открыть полный отчёт.</p>
+<span aria-hidden="true" class="timeline-anchor-target" id="eu-outlaw-attempt"></span>
+<span aria-hidden="true" class="timeline-anchor-target" id="us-government-advisory"></span>
 <div aria-label="Хронология репрессий" class="interactive-timeline" id="crackdownTimeline"></div>
 </div>
 </div>
@@ -399,12 +403,12 @@
       { date: '2022-05-06', title: 'Санкции против Blender.io', tag: 'Санкции', body: 'OFAC вводит санкции против Blender.io — это первое санкционное решение США в отношении миксера. Позже следствие заявляет, что операторы перезапустили сервис под брендом Sinbad.', link: 'blender-sanctions.html' },
       { date: '2023-03-15', title: 'Изъятие ChipMixer', tag: 'Евросоюз', body: 'Europol и немецкое BKA изымают инфраструктуру ChipMixer, конфискуют 1 909 BTC и выдвигают обвинения оператору Minh Quoc Nguyen.', link: 'chipmixer-seizure.html' },
       { date: '2023-11-29', title: 'Санкции OFAC и изъятие Sinbad.io', tag: 'Санкции', body: 'Казначейство США вводит санкции против Sinbad.io (который часто считают ребрендингом Blender); в тот же день нидерландская FIOD с партнёрами изымает серверы в Нидерландах и Финляндии.', link: 'sinbad-sanctions.html' },
-      { date: '2024-03-14', title: 'Попытка запрета в ЕС (MiCA / пакет AML)', tag: 'Евросоюз', body: 'В парламенте обсуждают лимит €1 000 на анонимные переводы на самокастодиальные кошельки; в итоге норму отзывают после резкой реакции сообщества.', link: 'eu-p2p-ban-attempt.html' },
+      { id: 'eu-outlaw-attempt', date: '2024-03-14', title: 'Попытка запрета в ЕС (MiCA / пакет AML)', tag: 'Евросоюз', body: 'В парламенте обсуждают лимит €1 000 на анонимные переводы на самокастодиальные кошельки; в итоге норму отзывают после резкой реакции сообщества.', link: 'eu-p2p-ban-attempt.html' },
       { date: '2024-04-24', title: 'ФБР изымает Samourai Wallet', tag: 'США', body: 'Агенты изымают инфраструктуру Samourai и арестовывают Keonne Rodriguez и William Hill, заявляя, что через Whirlpool прошло $2 млрд незаконных средств.', link: 'samourai-wallet-case.html' },
-      { date: '2024-04-25', title: 'Предупреждение ФБР о кошельках без KYC', tag: 'США', body: 'IC3 призывает банки подавать SAR по клиентам, взаимодействующим с некастодиальными кошельками и миксерами; после этого биржи начинают замораживать выводы CoinJoin.', link: 'fbi-non-custodial-warning.html' },
+      { id: 'us-government-advisory', date: '2024-04-25', title: 'Предупреждение ФБР о кошельках без KYC', tag: 'США', body: 'IC3 призывает банки подавать SAR по клиентам, взаимодействующим с некастодиальными кошельками и миксерами; после этого биржи начинают замораживать выводы CoinJoin.', link: 'fbi-non-custodial-warning.html' },
       { date: '2024-04-27', title: 'Кошельки блокируют пользователей из США', tag: 'Комплаенс', body: 'Phoenix, Wasabi и другие проекты блокируют IP-адреса США или отключают координаторы на фоне арестов и позиции ФБР.', link: 'wallets-block-us.html' },
       { date: '2024-05-03', title: 'Финальное предупреждение Эдварда Сноудена', tag: 'Публичные заявления', body: 'Сноуден призывает разработчиков сделать базовую приватность приоритетом после объявления о закрытии LocalMonero и Agoradesk.', link: 'edward-snowden-warning.html' },
-      { date: '2024-05-07', title: 'Уход LocalMonero / Agoradesk', tag: 'P2P', body: 'Два крупных P2P-сервиса сворачивают работу, ссылаясь на регуляторное давление и высокую стоимость соответствия требованиям Travel Rule.', link: 'localmonero-agoradesk-exit.html' },
+      { date: '2024-05-07', title: 'Уход LocalMonero / Agoradesk', tag: 'P2P', body: 'Два крупных сервиса P2P сворачивают работу, ссылаясь на регуляторное давление и высокую стоимость соответствия требованиям Travel Rule.', link: 'localmonero-agoradesk-exit.html' },
       { date: '2024-08-01', title: 'Процесс Roman Storm / Tornado Cash', tag: 'США', body: 'Прокуратура США проверяет, можно ли привлекать разработчиков Tornado Cash с открытым исходным кодом к ответственности за некастодиальный протокол.', link: 'roman-storm-case.html' },
       { date: '2025-04-30', title: 'Изъятие eXch и последствия взлома Bybit', tag: 'Евросоюз', body: 'Немецкое BKA закрывает eXch после обработки сотен миллионов, связанных со взломом Bybit; изъято активов на €34 млн.', link: 'exch-seizure.html' },
       { date: '2025-05-20', title: 'Меморандум Секретной службы США по миксерам', tag: 'США', body: 'Секретная служба США публикует общенациональные рекомендации: банкам предлагают считать потоки через миксеры подозрительными и усиливать AML-контроль.', link: 'secret-service-mixer-advisory.html' },
@@ -422,7 +426,7 @@
 
     events.sort((a,b)=> new Date(a.date) - new Date(b.date));
     timeline.innerHTML = events.map((event)=>`
-      <div class="timeline-event">
+      <div class="timeline-event"${event.id ? ` data-event-id="${event.id}"` : ''}>
         <div class="timeline-row">
           <div class="timeline-date">${fmtDate(event.date)}</div>
           <div class="timeline-title">${event.title}</div>
@@ -434,6 +438,15 @@
         </div>
       </div>
     `).join('');
+
+    const targetId = decodeURIComponent(window.location.hash.slice(1));
+    if (targetId) {
+      const target = Array.from(timeline.querySelectorAll('[data-event-id]')).find((event)=>event.dataset.eventId === targetId);
+      if (target) {
+        target.classList.add('timeline-event-target');
+        target.scrollIntoView({ block: 'start' });
+      }
+    }
   })();
 </script>
 </div></body>
