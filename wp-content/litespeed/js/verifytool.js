@@ -287,6 +287,72 @@ const keys = [
         8bqct0Cw18icXVJ0HxzUnAuXxiY+tkJBFOukekSEvdHMUaUv482IHC9lRwZq
         =IVph
         -----END PGP PUBLIC KEY BLOCK-----
+        `),
+    cleanPGPKey(`
+        -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+        mQINBGng5IEBEAC2DaaNCu/3CWcsEeLFij1B8onrRphB7m+Mz3J4jS7QBcPHaFTY
+        kxxGp59tJSUmH0BAzxd8F4dLrL7ilylN/xPJf936OQxS590qhsoUjdrGpl0jhWcU
+        OIwPrutnwrvzmXtyCOxcOqHHecbS898qjCWVdETkTJHDpLOmUiDeNXBrt7poC3h4
+        7dzaQZkp0S+lX1xAE5ZBbxa0ibc5GAJ794zvG9XyElUe3NW39MSEwdPfXqyoxaK9
+        bij7jiHCNbjKPD2hHi3bRdwb24U+Mg1lO0ssMIfrkRqgKj3wQuqW+XLKUe7k7CD7
+        esaVe7gaQ2t3pGox5NBmmKVsh62GcKXIsPOm2J2FBLLfiZqJG2+QEo6nBZyrXe88
+        JeQRIhvogDNK6rOqi/0yAPidIl6Mp49p5o5fdj+EgEPg2R79yl7T1VatCcZ6Ia0p
+        rjLKygL3H5xixMJBxv/ymB2talP9alOM/iL3mz46Gm74yyn4B7tCP1A/hmFC5adr
+        0gQ8fnJ8X1ZqEn7v+Ac15eS1t+LGN0kHegww4sh+aMGr0OTZeN/8onurxs8mrJOw
+        nlB70NRXVvk7iwIUuh4U9L863a6lTI1Y4GcmxlhFlMNe2o2ciuSZmo1EVfu9uIJq
+        M4VeYmlRW7BYqfOsj8eiZ5+1kuChuPrL9dTCe2xHrArwank6HxyHTRvkBQARAQAB
+        tDNPcmlnaW4gRXhjaGFuZ2UgU2lnbmluZyBLZXkgPHNlY3VyaXR5QG9yaWdpbi5s
+        b2NhbD6JAlcEEwEKAEEWIQQhbz2Z1/qrWfZfvhe5Y4dGT9drPAUCaeDkgQIbAwUJ
+        BaOagAULCQgHAgIiAgYVCgkICwIEFgIDAQIeBwIXgAAKCRC5Y4dGT9drPMfvD/4w
+        s6bUr4raV0DZPdbmOSyq4I1W8anw7y8XMgD16jchfiYFlf6BDhu56TAevSKPPjej
+        mb9BZ9Blw1opfPy8C801YYdyQscsV4PF0SBqLG/Ke20MTQliV1ErJ3UzDlbGLZ2Y
+        aJ+Pa7gX2/N66nkdiyv+yQkIpmu/FXl+OnAHq63Myozj2r5cIk2euOpU5tk/fL3Y
+        SIN4L6psTGYQhKxqyHmcfl4JEnWMG2lBHmZMhYMa79N+bgysxdaLGtZ4ef2f7nmm
+        OnC9KQzjBqTarmYfVi8RAyhdRlVCmRZVzzqOJj37FDGJnc4kZShybPsnhXUqQkrC
+        46V8Ne9kZvdSNtlkIea5uQzyw5hAdLMHXsOM6KkmpyYeioCy2S4E5SxFqLJYs7NP
+        gOP9eai73o41ZnMPEeRRNyPZtX7Ofu4cKQ3oi2daTcdnivsDwPN+zLpZVNMhQ9e+
+        9snHcFWY1DZsTTngqqixEZWB5IFQtLCygVGRKWd9aYGhZVTNE7Gh93pdwbBGgO0s
+        eGy0CvqNBM4V5PjeaT10JqY8V9gyz/Uy/i7eQ8zbFeI2OMH8L4kpXC1ubUJyA6jy
+        VsUNmg7h77b6JkOEj+ZrnigBu5p6nBsxlp2Bf7IhG/fNibScZAAHIkugCc0aZN1U
+        CyuvFoDtX5zH/84KwNGd1n654zapkDRF3XuRVILY9g==
+        =eRO8
+        -----END PGP PUBLIC KEY BLOCK-----
+        `),
+    cleanPGPKey(`
+        -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+        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
+        dd5sZD6PoEPLEIEevZk=
+        =33yx
+        -----END PGP PUBLIC KEY BLOCK-----
         `)
     // Add other keys or addresses as necessary
 ];
@@ -368,6 +434,8 @@ const mixerDetails = {
     },
     'reumix.io': { type: 'none' },
     'zeusmix.to': { type: 'pgp', keyIndex: 8 },
+    'mixer.black': { type: 'pgp', keyIndex: 10 },
+    'mixtwix.io': { type: 'pgp', keyIndex: 11 },
 };
 
 function vrVerify(vrMsg) {

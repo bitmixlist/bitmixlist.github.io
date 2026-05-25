@@ -129,7 +129,7 @@
           "@id": "https://bitmixlist.org/#bitcoin-mixer-list",
           "name": "Bitcoin Mixer List",
           "itemListOrder": "http://schema.org/ItemListOrderAscending",
-          "numberOfItems": 11,
+          "numberOfItems": 12,
           "description": "Comparison of active custodial Bitcoin mixers, including their launch year, supported coins, and published fees.",
           "itemListElement": [{
             "@type": "ListItem",
@@ -415,6 +415,32 @@
                 "@type": "PropertyValue",
                 "name": "Mixing fee",
                 "value": "1.9%"
+              }]
+            }
+          }, {
+            "@type": "ListItem",
+            "position": 12,
+            "item": {
+              "@type": "Service",
+              "name": "MixTwix",
+              "url": "https://mixtwix.io",
+              "description": "BTC mixer with AML-cleaning claims, a 2% service fee plus 0.0007 BTC, and a 0.005 BTC minimum.",
+              "provider": {
+                "@type": "Organization",
+                "name": "MixTwix"
+              },
+              "additionalProperty": [{
+                "@type": "PropertyValue",
+                "name": "Founded",
+                "value": "2026"
+              }, {
+                "@type": "PropertyValue",
+                "name": "Supported coins",
+                "value": "BTC"
+              }, {
+                "@type": "PropertyValue",
+                "name": "Mixing fee",
+                "value": "2% + 0.0007 BTC"
               }]
             }
           }]
@@ -1015,7 +1041,7 @@
 <section class="update-log">
 <h2 class="wp-block-heading">Recent Updates</h2>
 <ul>
-<li><strong>May 2026:</strong> Added Mixer.Black to the mixer list and Tomboi.io to the Never-KYC exchange list.</li>
+<li><strong>May 2026:</strong> Added MixTwix.io and Mixer.Black to the mixer list and Tomboi.io to the Never-KYC exchange list.</li>
 <li><strong>April 2026:</strong> Added Dex.fo to the Never-KYC exchange list, refreshed card assets, and cleaned up stretched contact links in the mixer table.</li>
 <li><strong>March 2026:</strong> Expanded exchange and mixer listing maintenance, refreshed mirrors and contact details, and tightened table formatting across the page.</li>
 <li><strong>February 2026:</strong> Created many new explainer pages and added consistent author metadata/cards on guides.</li>
@@ -1208,6 +1234,16 @@
 </a>
 <a class="mixer-name" href="https://mixer.black/" rel="noopener noreferrer">Mixer.Black</a>
 <div class="mixer-fee">Mixing fee: 1.9%</div>
+</div>
+<div class="mixer-card">
+<a class="mixer-logo-link" href="https://mixtwix.io/" rel="noopener noreferrer">
+<picture>
+<source srcset="wp-content/uploads/2023/12/mixtwix.webp" type="image/webp"/>
+<img alt="MixTwix logo" class="mixer-logo" src="wp-content/uploads/2023/12/mixtwix.jpg"/>
+</picture>
+</a>
+<a class="mixer-name" href="https://mixtwix.io/" rel="noopener noreferrer">MixTwix</a>
+<div class="mixer-fee">Mixing fee: 2% + 0.0007 BTC</div>
 </div>
 </div>
 <figure class="wp-block-table">
@@ -1480,6 +1516,20 @@
 <td>Variable</td>
 <td>No</td>
 <td><a href="https://mixer.black/en/chat" rel="noopener noreferrer">Chat</a> / <a href="https://mixer.black/en/pgp" rel="noopener noreferrer">PGP</a></td>
+</tr>
+<tr>
+<td>MixTwix</td>
+<td><a href="https://mixtwix.io/" rel="noopener noreferrer" title="mixtwix.io">mixtwix.io</a></td>
+<td>Not published</td>
+<td>2026</td>
+<td>BTC</td>
+<td></td>
+<td>2%</td>
+<td>0.0007₿</td>
+<td>0.005₿</td>
+<td>Not stated</td>
+<td>No</td>
+<td><a href="https://t.me/mixtwix_service" rel="noopener noreferrer">@mixtwix_service</a> / <a href="xmpp:mixtwix@conversations.im" rel="noopener noreferrer">mixtwix@conversations.im</a> / <a href="https://mixtwix.io/wp-content/themes/mixtwix/assets/pgp/pgp-key.txt" rel="noopener noreferrer">PGP</a></td>
 </tr>
 </tbody>
 </table>
