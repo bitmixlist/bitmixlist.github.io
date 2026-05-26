@@ -70,13 +70,21 @@ a:focus-visible {
     text-align: center;
 }
 
+.footer {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .footer div {
     font-size: 14px;
 }
 
-/* Keep footer alignment centered within the content area (excluding sidebar width) */
-.site-content-wrapper > .site-footer,
-.site-content-wrapper > .footer {
+.site-content-wrapper .site-footer,
+.site-content-wrapper .footer {
     width: 100%;
     box-sizing: border-box;
     text-align: center;
@@ -94,6 +102,136 @@ table {
 
 th, td {
     border: 1px solid #444;
+}
+
+.vg-verify {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    color: #e0e0e0;
+    background: #1a1a1a;
+    border: 1px solid #2d2d2d;
+    border-radius: 8px;
+    box-shadow: none;
+}
+
+.vg-verify h2 {
+    margin-top: 0;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #f1f1f1;
+    letter-spacing: 0;
+}
+
+.vg-verify input[type="text"],
+.vg-verify select,
+.vg-verify textarea {
+    width: 100%;
+    min-height: 44px;
+    margin-top: 0.65rem;
+    margin-bottom: 0.85rem;
+    padding: 0.65rem 0.75rem;
+    color: #f4f4f4;
+    background: #121212;
+    border: 1px solid #3a3a3a;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.vg-verify textarea {
+    min-height: 220px;
+    resize: vertical;
+}
+
+.vg-verify input[type="text"]:focus,
+.vg-verify select:focus,
+.vg-verify textarea:focus {
+    outline: none;
+    border-color: #bb86fc;
+    box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.18);
+}
+
+.vg-verify form {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.vg-verify br {
+    display: none;
+}
+
+.vg-verify button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    max-width: 100%;
+    margin-top: 0;
+    padding: 0.55rem 0.9rem;
+    color: #f4f4f4;
+    background: #2d2d2d;
+    border: 1px solid #454545;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    text-transform: none;
+    letter-spacing: 0;
+    white-space: normal;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.vg-verify button:hover,
+.vg-verify button:focus-visible,
+.vg-verify button:focus,
+.vg-verify button:active {
+    color: #ffffff;
+    background: #383838;
+    border-color: #bb86fc;
+    box-shadow: none;
+    transform: none;
+    outline: none;
+}
+
+.vg-status {
+    margin-top: 1rem;
+    padding: 0.75rem 0.85rem;
+    color: #e8e8e8;
+    background: #202020;
+    border: 1px solid #3a3a3a;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    line-height: 1.45;
+}
+
+.vg-status[hidden] {
+    display: none;
+}
+
+.vg-status--success {
+    color: #dff8e9;
+    background: #16351f;
+    border-color: #2c7042;
+}
+
+.vg-status--warning {
+    color: #fff1cf;
+    background: #3b2c10;
+    border-color: #826222;
+}
+
+.vg-status--error {
+    color: #ffe1e1;
+    background: #3a1616;
+    border-color: #7e2e2e;
+}
+
+.vg-status--info {
+    color: #e8e8e8;
+    background: #202020;
+    border-color: #3a3a3a;
 }
 
 /* Header styles */
@@ -482,6 +620,29 @@ scroll-padding-top: 50px; /* Alternative approach for browsers that don't suppor
     .site-content-wrapper {
         width: auto;
         padding: 0 2rem;
+        overflow-x: visible;
+    }
+
+    .site-content-wrapper .site-footer,
+    .site-content-wrapper .footer {
+        position: relative !important;
+        left: -2rem !important;
+        width: calc(100% + 4rem) !important;
+        max-width: none !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        transform: none !important;
+    }
+
+    .sidebar ~ .site-footer,
+    .sidebar ~ .footer {
+        position: relative !important;
+        left: auto !important;
+        width: calc(100% - 280px) !important;
+        max-width: calc(100% - 280px) !important;
+        margin-left: 280px !important;
+        margin-right: 0 !important;
+        transform: none !important;
     }
 }
 
@@ -566,5 +727,13 @@ figcaption {
     .lang-link {
         padding: 2px 5px;
         font-size: 10px;
+    }
+
+    .vg-verify {
+        padding: 1rem;
+    }
+
+    .vg-verify button {
+        width: 100%;
     }
 }

@@ -5,7 +5,6 @@
 <meta charset="utf-8"/>
 <link as="style" data-optimized="2" href="../wp-content/litespeed/css/d4d1cd3e2db3bf373348bdfd89958038.css" onload="this.onload=null;this.rel='stylesheet'" rel="preload"/>
 <noscript><link data-optimized="2" href="../wp-content/litespeed/css/d4d1cd3e2db3bf373348bdfd89958038.css" rel="stylesheet"/></noscript>
-<link href="../wp-content/litespeed/css/aml-check.css" rel="stylesheet"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <link href="https://gmpg.org/xfn/11" rel="profile"/>
 <title>Проверка AML-рейтинга анонимного адреса – BitMixList</title>
@@ -30,15 +29,8 @@
 <meta content="Проверьте AML-рейтинг биткоин-адреса анонимно перед отправкой средств на регулируемые биржи и платёжные шлюзы." name="twitter:description"/>
 <meta content="../wp-content/uploads/2023/12/logo-1-e1701782109696.png" name="twitter:image"/>
 <style>
-      body { background: #060012; color: #f8edff; }
-      .centered { text-align: center; margin: 1rem 0; color: #b0a4d4; }
-      .token-action-buttons,
-      .action-buttons { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
-      .lookup-row { display: flex; flex-direction: column; gap: 0.85rem; }
-      .lookup-button-container { display: flex; }
-      .address-checker-container .aml-widget .bitmix-button { margin-top: 0; padding: 10px 24px; font-size: 0.9rem; border-radius: 999px; border: 1px solid rgba(244,114,255,0.6); background: linear-gradient(120deg, #6d28d9, #f472ff); color: #fff; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease; }
-      .address-checker-container .aml-widget .bitmix-button:hover,
-      .address-checker-container .aml-widget .bitmix-button:focus { transform: translateY(-1px); box-shadow: 0 12px 25px rgba(244,114,255,0.35); outline: none; }
+      body { background: #121212; color: #e0e0e0; }
+      .centered { text-align: center; margin: 1rem 0; color: #888; }
     </style>
 <script class="aioseo-schema" type="application/ld+json">
       {
@@ -152,6 +144,7 @@
 <meta content="../wp-content/uploads/2023/12/cropped-favicon-2-270x270.png" name="msapplication-TileImage"/>
 <link as="style" href="../wp-content/litespeed/css/styles.css" onload="this.onload=null;this.rel='stylesheet'" rel="preload"/>
 <noscript><link href="../wp-content/litespeed/css/styles.css" rel="stylesheet"/></noscript>
+<link href="../wp-content/litespeed/css/aml-check.css" rel="stylesheet"/>
 <script src="../wp-content/litespeed/js/ad-loader.js"></script>
 <script>
       document.addEventListener('DOMContentLoaded', function() {
@@ -384,10 +377,10 @@
 <button class="bitmix-button" onclick="generateToken(this)">Создать токен</button>
 </div>
 <div class="error" id="tokenError"></div>
-<div id="tokenDetails" style="margin-top:1rem"></div>
+<div class="token-details" id="tokenDetails"></div>
 </div>
 <div class="actions-section">
-<label>Действия</label>
+<label>Покупка проверок</label>
 <div style="margin-bottom:0.5rem">
 <select id="checkPackageSelect">
 <option selected="" value="100">Пакет на 100 проверок</option>
@@ -401,8 +394,8 @@
 <div class="error" id="paymentMessage" style="margin-top:0.5rem"></div>
 </div>
 </div>
-<div style="margin-top:1rem">
-<label>AML-проверка</label>
+<div class="lookup-section">
+<label>Проверка адреса</label>
 <div class="lookup-row">
 <div>
 <select id="chainSelect">
@@ -414,7 +407,7 @@
 </div>
 <div class="lookup-button-container">
 <button class="bitmix-button" id="runButton" onclick="runLookup()">Запустить проверку AML</button>
-<button class="bitmix-button" onclick="loadLastJob()" style="margin-left:0.6rem">Загрузить последнюю проверку</button>
+<button class="bitmix-button" onclick="loadLastJob()">Загрузить последнюю проверку</button>
 </div>
 </div>
 <div class="error" id="lookupMaintenanceNote"></div>
@@ -481,7 +474,7 @@
 <button class="bitmix-button" id="exportResultBtn" onclick="exportLookupResult()">Экспортировать как текст</button>
 </div>
 </div>
-<div style="margin-top:1.5rem">
+<div class="payment-section">
 <h3>Платежные запросы</h3>
 <div id="paymentsTable">Платежей пока нет.</div>
 </div>

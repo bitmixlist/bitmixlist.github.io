@@ -492,19 +492,66 @@ function replaceExceptFirst(str, search, replace) {
     return beforeFirst + afterFirstReplaced;
 }
 
+function getVerifyStatusElement() {
+    const root = document.getElementById('letter-verify');
+    if (!root) return null;
+
+    let status = document.getElementById('verifyStatus');
+    if (!status) {
+        status = document.createElement('div');
+        status.id = 'verifyStatus';
+        status.className = 'vg-status';
+        status.setAttribute('role', 'status');
+        status.setAttribute('aria-live', 'polite');
+
+        const button = document.getElementById('verifyButton');
+        if (button && button.parentNode) {
+            button.insertAdjacentElement('afterend', status);
+        } else {
+            root.appendChild(status);
+        }
+    }
+
+    return status;
+}
+
+function setVerifyStatus(message, type = 'info') {
+    const status = getVerifyStatusElement();
+    if (!status) return;
+
+    status.textContent = message;
+    status.className = `vg-status vg-status--${type}`;
+    status.setAttribute('role', type === 'error' ? 'alert' : 'status');
+    status.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
+    status.hidden = false;
+}
+
+function clearVerifyStatus() {
+    const status = getVerifyStatusElement();
+    if (!status) return;
+
+    status.textContent = '';
+    status.hidden = true;
+}
+
 // Event listener for the verification button
 document.getElementById('verifyButton').addEventListener('click', function() {
     try {
+        clearVerifyStatus();
+
         const selectedMixer = document.getElementById('mixerSelect').value;
         const mixerInfo = mixerDetails[selectedMixer];
         let message = document.getElementById('messageTextArea').value;
 
         if (!mixerInfo) {
-            alert(verifyToolText('Please select a mixer.', 'Пожалуйста, выберите миксер.'));
+            setVerifyStatus(verifyToolText('Please select a mixer.', 'Пожалуйста, выберите миксер.'), 'error');
             return;
         }
         else if (mixerInfo.type === 'none') {
-            alert(verifyToolText('Verification for this mixer is not supported.', 'Проверка для этого миксера не поддерживается.'));
+            setVerifyStatus(
+                verifyToolText('Verification for this mixer is not supported.', 'Проверка для этого миксера не поддерживается.'),
+                'error'
+            );
             return;
         }
 
@@ -525,40 +572,47 @@ document.getElementById('verifyButton').addEventListener('click', function() {
 
         if (mixerInfo.type === 'pgp') {
             const publicKey = keys[mixerInfo.keyIndex];
-            
-            options = {
+
+            setVerifyStatus(verifyToolText('Verifying letter...', 'Проверка письма...'), 'info');
+
+            const options = {
                 message: window.openpgp.cleartext.readArmored(verificationData.body), // parse armored message
                 publicKeys: window.openpgp.key.readArmored(publicKey).keys   // for verification
             };
             window.openpgp.verify(options).then(function(verified) {
-                validity = verified.signatures[0].valid; // true
+                const validity = verified.signatures[0].valid; // true
                 if (validity) {
-                    alert(
+                    setVerifyStatus(
                         verifyToolText('Genuine letter of guarantee. Fingerprint: ', 'Подлинное гарантийное письмо. Отпечаток: ') +
-                        verified.signatures[0].keyid.toHex().toUpperCase()
+                        verified.signatures[0].keyid.toHex().toUpperCase(),
+                        'success'
                     );
                 }
                 else {
-                    alert(verifyToolText('Invalid letter of guarantee!', 'Недействительное гарантийное письмо!'));
+                    setVerifyStatus(verifyToolText('Invalid letter of guarantee!', 'Недействительное гарантийное письмо!'), 'error');
                 }
             }).catch(error => {
                 console.error('An error occured during PGP verification:', error);
-                alert(verifyToolText('An error occurred during PGP verification.', 'Во время проверки PGP произошла ошибка.'));
+                setVerifyStatus(
+                    verifyToolText('An error occurred during PGP verification.', 'Во время проверки PGP произошла ошибка.'),
+                    'error'
+                );
             });
         } else if (mixerInfo.type === 'bitcoin') {
             const isValid = vrVerify(verificationData);
             if (isValid) {
-                alert(
+                setVerifyStatus(
                     verifyToolText('Genuine letter of guarantee. Address: ', 'Подлинное гарантийное письмо. Адрес: ') +
-                    verificationData.address
+                    verificationData.address,
+                    'success'
                 );
             } else {
-                alert(verifyToolText('Invalid letter of guarantee!', 'Недействительное гарантийное письмо!'));
+                setVerifyStatus(verifyToolText('Invalid letter of guarantee!', 'Недействительное гарантийное письмо!'), 'error');
             }
         }
     }
     catch (error) {
         console.error('Verification failed:', error);
-        alert(verifyToolText('Verification failed.', 'Проверка не удалась.'));
+        setVerifyStatus(verifyToolText('Verification failed.', 'Проверка не удалась.'), 'error');
     }
 });
