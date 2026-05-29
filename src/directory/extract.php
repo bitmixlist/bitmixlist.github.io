@@ -262,7 +262,7 @@ function directory_extract_tools(DOMXPath $xpath, string $categorySlug, string $
     foreach ($xpath->query($query) ?: [] as $tool) {
         $nameNode = directory_first($xpath, './/a[' . directory_xpath_class('tool__name') . ']', $tool);
         $visitNode = directory_first($xpath, './/a[' . directory_xpath_class('tool-visit') . ']', $tool);
-        $descNode = directory_first($xpath, './/p[' . directory_xpath_class('tool__desc') . ']', $tool);
+        $descNode = directory_first($xpath, './/*[' . directory_xpath_class('tool__desc') . ']', $tool);
         $name = directory_text($nameNode);
         if ($name === '') {
             continue;
