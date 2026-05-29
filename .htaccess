@@ -1,0 +1,10 @@
+# Build-time source paths are not public site content.
+Options -Indexes
+
+<IfModule mod_alias.c>
+RedirectMatch 404 ^/(src|tools)(/|$)
+</IfModule>
+
+<FilesMatch "^\.">
+Require all denied
+</FilesMatch>

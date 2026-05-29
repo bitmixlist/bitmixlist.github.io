@@ -10,7 +10,7 @@
   background: #1a1a1a;
   border: 1px solid #2d2d2d;
   border-radius: 8px;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--bitmixlist-font-sans, "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif);
 }
 
 .address-checker-container .aml-widget h2,

@@ -129,7 +129,7 @@
           "@id": "https://bitmixlist.org/#bitcoin-mixer-list",
           "name": "Bitcoin Mixer List",
           "itemListOrder": "http://schema.org/ItemListOrderAscending",
-          "numberOfItems": 12,
+          "numberOfItems": 13,
           "description": "Comparison of active custodial Bitcoin mixers, including their launch year, supported coins, and published fees.",
           "itemListElement": [{
             "@type": "ListItem",
@@ -441,6 +441,32 @@
                 "@type": "PropertyValue",
                 "name": "Mixing fee",
                 "value": "2% + 0.0007 BTC"
+              }]
+            }
+          }, {
+            "@type": "ListItem",
+            "position": 13,
+            "item": {
+              "@type": "Service",
+              "name": "Bitxer",
+              "url": "https://www.bitxer.io",
+              "description": "BTC mixer with Tor access, PGP-signed letters of guarantee, 4-5% fees, and a 0.003 BTC minimum.",
+              "provider": {
+                "@type": "Organization",
+                "name": "Bitxer"
+              },
+              "additionalProperty": [{
+                "@type": "PropertyValue",
+                "name": "Founded",
+                "value": "2026"
+              }, {
+                "@type": "PropertyValue",
+                "name": "Supported coins",
+                "value": "BTC"
+              }, {
+                "@type": "PropertyValue",
+                "name": "Mixing fee",
+                "value": "4-5%"
               }]
             }
           }]
@@ -808,6 +834,7 @@
 <link rel="stylesheet" href="wp-content/litespeed/css/styles.css"/>
 <link rel="stylesheet" href="wp-content/litespeed/css/tool-registry.css"/>
 <script src="wp-content/litespeed/js/ad-loader.js"></script>
+<script src="wp-content/litespeed/js/site-search.js" defer></script>
 <script>
       document.addEventListener('DOMContentLoaded', function() {
         if (window.bitmixlistLoadTopAd) {
@@ -942,6 +969,9 @@
           .mixer-logo-text { display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.6rem; color: #fff; }
           .mixer-name { margin-top: 10px; font-weight: 700; color: #f6f2ff; text-decoration: none; text-align: center; }
           .mixer-name:hover, .mixer-name:focus { text-decoration: underline; }
+          .mixer-visit, .tool-visit { margin-top: 6px; padding: 4px 8px; border: 1px solid #7a61f6; border-radius: 6px; color: #e8ddff; background: #1a1234; font-size: 0.82rem; line-height: 1.2; text-decoration: none; }
+          .mixer-visit:hover, .mixer-visit:focus, .tool-visit:hover, .tool-visit:focus { background: #27184d; color: #fff; text-decoration: none; }
+          .directory-link { font-weight: 700; color: #f6f2ff; }
           .mixer-fee { margin-top: 4px; color: #c7b8ff; font-size: 0.95rem; }
           .config-button { margin-top: 8px; padding: 6px 10px; border-radius: 8px; border: 1px solid #7a61f6; background: #1a1234; color: #e8ddff; cursor: pointer; }
           .config-button:hover, .config-button:focus { background: #27184d; outline: none; }
@@ -951,9 +981,6 @@
           .config-close:hover, .config-close:focus { background: #27184d; outline: none; }
           .config-popover ul { padding-left: 18px; margin: 8px 0 0; }
           .config-popover li { margin-bottom: 4px; }
-          .update-log { margin: 1.5rem 0; padding: 1rem 1.5rem; background: radial-gradient(circle at top, rgba(122,69,255,0.2), rgba(12,0,24,0.95)); border: 1px solid rgba(155,86,255,0.45); border-radius: 16px; box-shadow: 0 20px 45px rgba(54,14,107,0.4); }
-          .update-log ul { margin: 0; padding-left: 1.2rem; }
-          .update-log li { margin-bottom: 0.4rem; }
           .last-reviewed-badge { display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 6px; padding: 0.15rem 0.65rem; font-size: 0.72rem; font-weight: 600; color: #f5f3ff; background: #201047; border: 1px solid #7c3aed; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.02em; }
 
 
@@ -979,11 +1006,6 @@
 </a>
 </div>
 <ul class="nav-menu">
-<li class="menu-item"><a class="nav-link" href="/#mixers">Mixers</a></li>
-<li class="menu-item"><a class="nav-link" href="/#neverkyc-exchanges">Never-KYC Exchanges</a></li>
-<li class="menu-item"><a class="nav-link" href="/#altcoin-exchanges">Altcoin Exchanges</a></li>
-<li class="menu-item"><a class="nav-link" href="/#p2pmarket">P2P Marketplaces</a></li>
-<li class="menu-item"><a class="nav-link" href="/#coordinators">Coordinators</a></li>
 <li class="menu-item"><a class="nav-link" href="scam-lookup.html">Scam Lookup</a></li>
 <li class="menu-item"><a class="nav-link" href="letter-verify.html">Verify Guarrantee</a></li>
 <li class="menu-item"><a class="nav-link" href="aml-check.html">AML Checker</a></li>
@@ -996,6 +1018,7 @@
 <li class="menu-item"><a class="nav-link" href="mixers-necessity.html">Why We Need Mixers</a></li>
 <li class="menu-item"><a class="nav-link" href="faq.html">FAQ</a></li>
 <li class="menu-item"><a class="nav-link" href="terms-and-conditions.html">Acceptable Use</a></li>
+<li class="menu-item"><a class="nav-link" href="changelog.html">Changelog</a></li>
 </ul>
 </nav>
 <div aria-hidden="true" class="sidebar-overlay"></div>
@@ -1038,16 +1061,7 @@
 <p>Bitcoin mixers play a crucial role in enhancing transaction privacy. They allow users to mix their coins with others, making it difficult to trace the origins of the funds. Below you can find a bitcoin mixer list that has links to the current safe and private mixer websites. If you care about your privacy, then you should be prioritizing the confidentiality of your transactions over mindless airdrops and giveaways, so this page will definitely be useful to you. In case you are going to use a mixer that is not on this list, then you should thoroughly research it for your own financial safety. You should bookmark this page so that you can always see the list of current, reputable bitcoin mixers.</p>
 <p>While I have done my best to vouch all websites listed here with the wider Bitcoin community, <strong><mark style="background-color:#b91c1c;color:#fff;">I will not be responsible for damages if you get scammed by any website from this list.</mark></strong></p>
 <p>This page was last updated in May 2026.</p>
-<section class="update-log">
-<h2 class="wp-block-heading">Recent Updates</h2>
-<ul>
-<li><strong>May 2026:</strong> Added MixTwix.io and Mixer.Black to the mixer list and Tomboi.io to the Never-KYC exchange list.</li>
-<li><strong>April 2026:</strong> Added Dex.fo to the Never-KYC exchange list, refreshed card assets, and cleaned up stretched contact links in the mixer table.</li>
-<li><strong>March 2026:</strong> Expanded exchange and mixer listing maintenance, refreshed mirrors and contact details, and tightened table formatting across the page.</li>
-<li><strong>February 2026:</strong> Created many new explainer pages and added consistent author metadata/cards on guides.</li>
-<li><strong>January 2026:</strong> Added dedicated tool pages (Scam Lookup, Letter Verifier, AML checker) and refreshed every mixer entry.</li>
-</ul>
-</section>
+<p>For a chronological list of listing and page updates, see the <a href="changelog.html">BitMixList changelog</a>.</p>
 <h2 class="wp-block-heading" id="mixers">The List Of Bitcoin Mixers</h2>
 <p>Now including altcoin mixers. A mixer will never ask you for KYC. If you see a mixer that does, it's a scam.</p>
 <div class="alert alert-warning prominent-warning" role="alert">
@@ -1056,194 +1070,221 @@
 </div>
 <div aria-label="Mixer cards" class="mixer-card-row">
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://mixer.money" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/mixer-money.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/mixer-money.webp" type="image/webp"/>
 <img alt="Mixer.money logo" class="mixer-logo" src="wp-content/uploads/2023/12/mixer-money.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://mixer.money" rel="noopener noreferrer">Mixer.money</a>
+<a class="mixer-name" href="mixers/mixer-money.html" rel="noopener noreferrer">Mixer.money</a>
+<a class="mixer-visit" href="https://mixer.money" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 4-5%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://mixtum.io" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/mixtum.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/mixtum.webp" type="image/webp"/>
 <img alt="Mixtum logo" class="mixer-logo" src="wp-content/uploads/2023/12/mixtum.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://mixtum.io" rel="noopener noreferrer">Mixtum</a>
+<a class="mixer-name" href="mixers/mixtum.html" rel="noopener noreferrer">Mixtum</a>
+<a class="mixer-visit" href="https://mixtum.io" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 4-5%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://coinomize.biz/ref/716869674" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/coinomize.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/coinomize.webp" type="image/webp"/>
 <img alt="Coinomize logo" class="mixer-logo" src="wp-content/uploads/2023/12/coinomize.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://coinomize.biz/ref/716869674" rel="noopener noreferrer">Coinomize</a>
+<a class="mixer-name" href="mixers/coinomize.html" rel="noopener noreferrer">Coinomize</a>
+<a class="mixer-visit" href="https://coinomize.biz/ref/716869674" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 1-5%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://anonymixer.com" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/anonymixer.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/anonymixer.webp" type="image/webp"/>
 <img alt="Anonymixer logo" class="mixer-logo" src="wp-content/uploads/2023/12/anonymixer.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://anonymixer.com" rel="noopener noreferrer">Anonymixer</a>
+<a class="mixer-name" href="mixers/anonymixer.html" rel="noopener noreferrer">Anonymixer</a>
+<a class="mixer-visit" href="https://anonymixer.com" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 1-2%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://webmixer.io" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/webmixer.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/webmixer.webp" type="image/webp"/>
 <img alt="Webmixer logo" class="mixer-logo" src="wp-content/uploads/2023/12/webmixer.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://webmixer.io" rel="noopener noreferrer">Webmixer</a>
+<a class="mixer-name" href="mixers/webmixer.html" rel="noopener noreferrer">Webmixer</a>
+<a class="mixer-visit" href="https://webmixer.io" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 5%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://mixtura.money" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/mixtura-money.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/mixtura-money.webp" type="image/webp"/>
 <img alt="Mixtura.money logo" class="mixer-logo" src="wp-content/uploads/2023/12/mixtura-money.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://mixtura.money" rel="noopener noreferrer">Mixtura.money</a>
+<a class="mixer-name" href="mixers/mixtura-money.html" rel="noopener noreferrer">Mixtura.money</a>
+<a class="mixer-visit" href="https://mixtura.money" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: up to 5%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://mixero.io/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/mixero.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/mixero.webp" type="image/webp"/>
 <img alt="Mixero logo" class="mixer-logo" src="wp-content/uploads/2023/12/mixero.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://mixero.io/" rel="noopener noreferrer">Mixero</a>
+<a class="mixer-name" href="mixers/mixero.html" rel="noopener noreferrer">Mixero</a>
+<a class="mixer-visit" href="https://mixero.io/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 0.7%-4.7%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://mixy.money" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/mixy-money.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/mixy-money.webp" type="image/webp"/>
 <img alt="Mixy.money logo" class="mixer-logo" src="wp-content/uploads/2023/12/mixy-money.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://mixy.money" rel="noopener noreferrer">Mixy.money</a>
+<a class="mixer-name" href="mixers/mixy-money.html" rel="noopener noreferrer">Mixy.money</a>
+<a class="mixer-visit" href="https://mixy.money" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 3-5%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://mixerdream.com" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/dreammixer.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/dreammixer.webp" type="image/webp"/>
 <img alt="DreamMixer logo" class="mixer-logo" src="wp-content/uploads/2023/12/dreammixer.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://mixerdream.com" rel="noopener noreferrer">DreamMixer</a>
+<a class="mixer-name" href="mixers/dreammixer.html" rel="noopener noreferrer">DreamMixer</a>
+<a class="mixer-visit" href="https://mixerdream.com" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 3.5%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://thormixer.io/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/thormixer.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/thormixer.webp" type="image/webp"/>
 <img alt="Thormixer logo" class="mixer-logo" src="wp-content/uploads/2023/12/thormixer.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://thormixer.io/" rel="noopener noreferrer">Thormixer</a>
+<a class="mixer-name" href="mixers/thormixer.html" rel="noopener noreferrer">Thormixer</a>
+<a class="mixer-visit" href="https://thormixer.io/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 4%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://jokermix.to/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/jokermix.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/jokermix.webp" type="image/webp"/>
 <img alt="JokerMix logo" class="mixer-logo" src="wp-content/uploads/2023/12/jokermix.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://jokermix.to/" rel="noopener noreferrer">JokerMix</a>
+<a class="mixer-name" href="mixers/jokermix.html" rel="noopener noreferrer">JokerMix</a>
+<a class="mixer-visit" href="https://jokermix.to/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 1-150 sats/vB</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://genesismix.cx/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/genesismix.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/genesismix.webp" type="image/webp"/>
 <img alt="GenesisMix logo" class="mixer-logo" src="wp-content/uploads/2023/12/genesismix.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://genesismix.cx/" rel="noopener noreferrer">GenesisMix</a>
+<a class="mixer-name" href="mixers/genesismix.html" rel="noopener noreferrer">GenesisMix</a>
+<a class="mixer-visit" href="https://genesismix.cx/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 0.7-4.7%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://okmix.io" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/okmix.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/okmix.webp" type="image/webp"/>
 <img alt="Okmix logo" class="mixer-logo" src="wp-content/uploads/2023/12/okmix.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://okmix.io" rel="noopener noreferrer">Okmix</a>
+<a class="mixer-name" href="mixers/okmix.html" rel="noopener noreferrer">Okmix</a>
+<a class="mixer-visit" href="https://okmix.io" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 5%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://zeusmix.to/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/zeusmix.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/zeusmix.webp" type="image/webp"/>
 <img alt="Zeusmix logo" class="mixer-logo" src="wp-content/uploads/2023/12/zeusmix.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://zeusmix.to/" rel="noopener noreferrer">Zeusmix</a>
+<a class="mixer-name" href="mixers/zeusmix.html" rel="noopener noreferrer">Zeusmix</a>
+<a class="mixer-visit" href="https://zeusmix.to/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 2-6%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://trustmixer.io" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/trustmixer.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/trustmixer.webp" type="image/webp"/>
 <img alt="TrustMixer logo" class="mixer-logo" src="wp-content/uploads/2023/12/trustmixer.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://trustmixer.io" rel="noopener noreferrer">TrustMixer</a>
+<a class="mixer-name" href="mixers/trustmixer.html" rel="noopener noreferrer">TrustMixer</a>
+<a class="mixer-visit" href="https://trustmixer.io" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 5%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://bmix.io/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/bmix.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/bmix.webp" type="image/webp"/>
 <img alt="Bmix logo" class="mixer-logo" src="wp-content/uploads/2023/12/bmix.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://bmix.io/" rel="noopener noreferrer">Bmix</a>
+<a class="mixer-name" href="mixers/bmix.html" rel="noopener noreferrer">Bmix</a>
+<a class="mixer-visit" href="https://bmix.io/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 5%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://dreadpirate.io/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/dreadpirate.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/dreadpirate.webp" type="image/webp"/>
 <img alt="DreadPirate logo" class="mixer-logo" src="wp-content/uploads/2023/12/dreadpirate.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://dreadpirate.io/" rel="noopener noreferrer">DreadPirate</a>
+<a class="mixer-name" href="mixers/dreadpirate.html" rel="noopener noreferrer">DreadPirate</a>
+<a class="mixer-visit" href="https://dreadpirate.io/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 5%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://mixer.black/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/mixer-black.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/mixerblack.webp" type="image/webp"/>
 <img alt="Mixer.Black logo" class="mixer-logo" src="wp-content/uploads/2023/12/mixerblack.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://mixer.black/" rel="noopener noreferrer">Mixer.Black</a>
+<a class="mixer-name" href="mixers/mixer-black.html" rel="noopener noreferrer">Mixer.Black</a>
+<a class="mixer-visit" href="https://mixer.black/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 1.9%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://mixtwix.io/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="mixers/mixtwix.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/mixtwix.webp" type="image/webp"/>
 <img alt="MixTwix logo" class="mixer-logo" src="wp-content/uploads/2023/12/mixtwix.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://mixtwix.io/" rel="noopener noreferrer">MixTwix</a>
+<a class="mixer-name" href="mixers/mixtwix.html" rel="noopener noreferrer">MixTwix</a>
+<a class="mixer-visit" href="https://mixtwix.io/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Mixing fee: 2% + 0.0007 BTC</div>
+</div>
+<div class="mixer-card">
+<a class="mixer-logo-link" href="mixers/bitxer.html" rel="noopener noreferrer">
+<div aria-label="Bitxer logo" class="mixer-logo mixer-logo-text">Bitxer</div>
+</a>
+<a class="mixer-name" href="mixers/bitxer.html" rel="noopener noreferrer">Bitxer</a>
+<a class="mixer-visit" href="https://www.bitxer.io/" rel="noopener noreferrer" target="_blank">Visit site</a>
+<div class="mixer-fee">Mixing fee: 4-5%</div>
 </div>
 </div>
 <figure class="wp-block-table">
@@ -1266,7 +1307,7 @@
 </thead>
 <tbody>
 <tr>
-<td>Mixer.money</td>
+<td><a class="directory-link" href="mixers/mixer-money.html">Mixer.money</a></td>
 <td><a href="https://mixer.money" rel="noopener noreferrer" title="mixer.money">mixer.money</a></td>
 <td><a href="http://mixermo4pgkgep3k3qr4fz7dhijavxnh6lwgu7gf5qeltpy4unjed2yd.onion" title="Yes">Yes</a></td>
 <td>2016</td>
@@ -1280,7 +1321,7 @@
 <td></td>
 </tr>
 <tr>
-<td>Mixtum</td>
+<td><a class="directory-link" href="mixers/mixtum.html">Mixtum</a></td>
 <td><a href="https://mixtum.io" rel="noopener noreferrer" title="mixtum.io">mixtum.io</a></td>
 <td><a href="http://mixtumjzn2tsiusfkdhutntamspsg43kgt764qbdaxjebce4h6fcfiad.onion" title="Yes">Yes</a></td>
 <td>2018</td>
@@ -1294,7 +1335,7 @@
 <td></td>
 </tr>
 <tr>
-<td>Coinomize</td>
+<td><a class="directory-link" href="mixers/coinomize.html">Coinomize</a></td>
 <td><a href="https://coinomize.biz/ref/716869674" rel="noopener noreferrer" title="coinomize.biz">coinomize.biz</a></td>
 <td><a href="http://coino2q64k4fg3lkjsnhjeydzwykw22a56u5nf2rdfzkjuy3jbwvypqd.onion/ref/716869674" title="Yes">Yes</a></td>
 <td>2019</td>
@@ -1308,7 +1349,7 @@
 <td></td>
 </tr>
 <tr>
-<td>Anonymixer</td>
+<td><a class="directory-link" href="mixers/anonymixer.html">Anonymixer</a></td>
 <td><a href="https://anonymixer.com" rel="noopener noreferrer" title="anonymixer.com">anonymixer.com</a></td>
 <td><a href="http://btcmixer2e3pkn64eb5m65un5nypat4mje27er4ymltzshkmujmxlmyd.onion" title="Yes">Yes</a></td>
 <td>2020</td>
@@ -1322,7 +1363,7 @@
 <td></td>
 </tr>
 <tr>
-<td>Webmixer</td>
+<td><a class="directory-link" href="mixers/webmixer.html">Webmixer</a></td>
 <td><a href="https://webmixer.io" rel="noopener noreferrer" title="webmixer.io">webmixer.io</a></td>
 <td><a href="http://webmix2nwd6qpq6tjkqshfivt3qqjoutl535xk2z32tgapqfn52z62yd.onion" title="Yes">Yes</a></td>
 <td>2020</td>
@@ -1336,7 +1377,7 @@
 <td></td>
 </tr>
 <tr>
-<td>Mixtura.money</td>
+<td><a class="directory-link" href="mixers/mixtura-money.html">Mixtura.money</a></td>
 <td><a href="https://mixtura.money" rel="noopener noreferrer" title="mixtura.money">mixtura.money</a></td>
 <td><a href="http://3lqpiyzlqudwxiizx6uecc6z5zr6vvxidyi6inuducc7lilsdem2mlqd.onion/" title="Yes">Yes</a></td>
 <td>2021</td>
@@ -1350,7 +1391,7 @@
 <td></td>
 </tr>
 <tr>
-<td>Mixero</td>
+<td><a class="directory-link" href="mixers/mixero.html">Mixero</a></td>
 <td><a href="https://mixero.io/" rel="noopener noreferrer" title="mixero.io">mixero.io</a></td>
 <td><a href="http://mixeroyubx5g5yxaucsxcd767vn2lnujuuz2dh53quwabukhrok2ekid.onion" title="Yes">Yes</a></td>
 <td>2022</td>
@@ -1364,7 +1405,7 @@
 <td></td>
 </tr>
 <tr>
-<td>Mixy.money</td>
+<td><a class="directory-link" href="mixers/mixy-money.html">Mixy.money</a></td>
 <td><a href="https://mixy.money" rel="noopener noreferrer" title="mixy.money">mixy.money</a></td>
 <td><a href="http://nlljgev5y27bajfoq7os2t6qv27y24hzpnvkmfjevhz4eg5ddbrciyid.onion" title="Yes">Yes</a></td>
 <td>2022</td>
@@ -1378,7 +1419,7 @@
 <td></td>
 </tr>
 <tr>
-<td>DreamMixer</td>
+<td><a class="directory-link" href="mixers/dreammixer.html">DreamMixer</a></td>
 <td><a href="https://mixerdream.com" rel="noopener noreferrer" title="mixerdream.com">mixerdream.com</a></td>
 <td><a href="http://ipyg3uxi25nxq3qvo7we26o5s6irencdkndv7orbxibzgbuhjmgnafad.onion" title="Yes">Yes</a></td>
 <td>2022</td>
@@ -1392,7 +1433,7 @@
 <td></td>
 </tr>
 <tr>
-<td>Thormixer</td>
+<td><a class="directory-link" href="mixers/thormixer.html">Thormixer</a></td>
 <td><a href="https://thormixer.io/" rel="noopener noreferrer" title="www.thormixer.io">thormixer.io</a></td>
 <td><a href="http://63tcvr7j5gju24emo3ygbxmezqmg7z2zyby27n647jmu4uzcosiduzid.onion" title="Yes">Yes</a></td>
 <td>2023</td>
@@ -1406,7 +1447,7 @@
 <td></td>
 </tr>
 <tr>
-<td>JokerMix</td>
+<td><a class="directory-link" href="mixers/jokermix.html">JokerMix</a></td>
 <td><a href="https://jokermix.to/" rel="noopener noreferrer" title="jokermix.to">jokermix.to</a></td>
 <td><a href="http://joker63ocoymt26jh5i3dmf2bx4khgg5uahgjk34wffpk422mswg5hid.onion/" title="Yes">Yes</a></td>
 <td>2024</td>
@@ -1420,7 +1461,7 @@
 <td><a href="mailto:jokermix.to@proton.me" rel="noopener noreferrer">jokermix.to@proton.me</a></td>
 </tr>
 <tr>
-<td>GenesisMix</td>
+<td><a class="directory-link" href="mixers/genesismix.html">GenesisMix</a></td>
 <td><a href="https://genesismix.cx/" rel="noopener noreferrer" title="genesismix.cx">genesismix.cx</a></td>
 <td><a href="http://genesislakkmzosj47snwmjbz2ugsuoyfznfbswgpy543exhwrd2rjyd.onion/" title="Yes">Yes</a></td>
 <td>2025</td>
@@ -1434,7 +1475,7 @@
 <td></td>
 </tr>
 <tr>
-<td>Okmix</td>
+<td><a class="directory-link" href="mixers/okmix.html">Okmix</a></td>
 <td><a href="https://okmix.io" rel="noopener noreferrer" title="okmix.io">okmix.io</a></td>
 <td><a href="http://wqa7jejlascugfwyrbb3shvwgaczxlkconthjyuqdb52sdn6kx57tpqd.onion/" title="Yes">Yes</a></td>
 <td>2025</td>
@@ -1448,7 +1489,7 @@
 <td></td>
 </tr>
 <tr>
-<td>Zeusmix</td>
+<td><a class="directory-link" href="mixers/zeusmix.html">Zeusmix</a></td>
 <td><a href="https://zeusmix.to/" rel="noopener noreferrer" title="zeusmix.to">zeusmix.to</a></td>
 <td><a href="http://zeus2bl7i7ojs2qpkmi2razhkqnnw6zjztezazke2vijky2xbppotqid.onion/" title="Yes">Yes</a></td>
 <td>2025</td>
@@ -1462,7 +1503,7 @@
 <td><a href="https://t.me/zeusmixto" rel="noopener noreferrer" target="_blank">zeusmixto</a></td>
 </tr>
 <tr>
-<td>TrustMixer</td>
+<td><a class="directory-link" href="mixers/trustmixer.html">TrustMixer</a></td>
 <td><a href="https://trustmixer.io" rel="noopener noreferrer" title="trustmixer.io">trustmixer.io</a></td>
 <td><a href="http://syucyrzphe2rgbdjqkk2weznaf2p2vfmo7iw3vpnt3afx4lxykts6hyd.onion" title="Yes">Yes</a></td>
 <td>2025</td>
@@ -1476,7 +1517,7 @@
 <td><a href="mailto:info@trustmixer.io" rel="noopener noreferrer">info@trustmixer.io</a> / <a href="https://t.me/trustmixer" rel="noopener noreferrer">t.me/trustmixer</a></td>
 </tr>
 <tr>
-<td>Bmix</td>
+<td><a class="directory-link" href="mixers/bmix.html">Bmix</a></td>
 <td><a href="https://bmix.io/" rel="noopener noreferrer" title="bmix.io">bmix.io</a></td>
 <td><a href="http://ih2ejacqgcjcma2wsj2zs5qktqb5cr6wl4agccsyg7rjcr6avlahl3yd.onion/" title="Yes">Yes</a></td>
 <td>2025</td>
@@ -1490,7 +1531,7 @@
 <td><a href="https://t.me/bMixIoSupport" rel="noreferrer">@bMixIoSupport</a> / <a href="mailto:bmixio@proton.me" rel="noreferrer">bmixio@proton.me</a></td>
 </tr>
 <tr>
-<td>DreadPirate</td>
+<td><a class="directory-link" href="mixers/dreadpirate.html">DreadPirate</a></td>
 <td><a href="https://dreadpirate.io/" rel="noopener noreferrer" title="dreadpirate.io">dreadpirate.io</a></td>
 <td><a href="http://dreadpirate.uf64coiynj4s7on3dus6ww5ap25vnih6ha3iug7ex7odmkaqikubigqd.onion/" title="Yes">Yes</a></td>
 <td>2026</td>
@@ -1504,7 +1545,7 @@
 <td><a href="https://dreadpirate.io/pgp" rel="noopener noreferrer">PGP</a> / Jabber: DreadPirate@exploit.im / TOX: <a href="tox:100ED03114B7DF7AA7FD477FFE97A1AF6D4807A24C9998333157B8EB144B3A4D4BF8E6FB00B1" title="100ED03114B7DF7AA7FD477FFE97A1AF6D4807A24C9998333157B8EB144B3A4D4BF8E6FB00B1">Add contact</a></td>
 </tr>
 <tr>
-<td>Mixer.Black</td>
+<td><a class="directory-link" href="mixers/mixer-black.html">Mixer.Black</a></td>
 <td><a href="https://mixer.black/" rel="noopener noreferrer" title="Mixer.Black">Mixer.Black</a></td>
 <td><a href="http://mixer5fii4sxzzqviqyrahmbpadyp55njukts253qxwl3ol63qjjhxid.onion/" title="Yes">Yes</a></td>
 <td>2026</td>
@@ -1518,7 +1559,7 @@
 <td><a href="https://mixer.black/en/chat" rel="noopener noreferrer">Chat</a> / <a href="https://mixer.black/en/pgp" rel="noopener noreferrer">PGP</a></td>
 </tr>
 <tr>
-<td>MixTwix</td>
+<td><a class="directory-link" href="mixers/mixtwix.html">MixTwix</a></td>
 <td><a href="https://mixtwix.io/" rel="noopener noreferrer" title="mixtwix.io">mixtwix.io</a></td>
 <td>No</td>
 <td>2026</td>
@@ -1531,6 +1572,20 @@
 <td>No</td>
 <td><a href="https://t.me/mixtwix_service" rel="noopener noreferrer">@mixtwix_service</a> / <a href="xmpp:mixtwix@conversations.im" rel="noopener noreferrer">mixtwix@conversations.im</a> / <a href="https://mixtwix.io/wp-content/themes/mixtwix/assets/pgp/pgp-key.txt" rel="noopener noreferrer">PGP</a></td>
 </tr>
+<tr>
+<td><a class="directory-link" href="mixers/bitxer.html">Bitxer</a></td>
+<td><a href="https://www.bitxer.io/" rel="noopener noreferrer" title="bitxer.io">bitxer.io</a></td>
+<td><a href="http://diqv32nkt3npxxhmb32wm3halrynjvuyp7f2mom6nsogds6ws2tkxbqd.onion/" title="Yes">Yes</a></td>
+<td>2026</td>
+<td>BTC</td>
+<td></td>
+<td>4-5%</td>
+<td>Not stated</td>
+<td>0.003₿</td>
+<td>50₿</td>
+<td><a href="https://t.me/bitxerbot" rel="noopener noreferrer" title="Yes">Yes</a></td>
+<td><a href="mailto:bitxer.io@protonmail.com" rel="noopener noreferrer">bitxer.io@protonmail.com</a> / <a href="https://www.bitxer.io/files/pgp/en/pgp-key.txt" rel="noopener noreferrer">PGP</a> / <a href="https://bitlist.co/service/bitxer/verify-pgp" rel="noopener noreferrer">PGP checker</a></td>
+</tr>
 </tbody>
 </table>
 </figure>
@@ -1540,6 +1595,7 @@
 <li><strong>Coinomize</strong>: <a href="https://coinomize.is" rel="noopener noreferrer" target="_blank">coinomize.is</a>, <a href="https://coinomize.co" rel="noopener noreferrer" target="_blank">coinomize.co</a></li>
 <li><strong>Okmix</strong>: <a href="https://okmix.me" rel="noopener noreferrer" target="_blank">okmix.me</a>, <a href="https://okmix.cc" rel="noopener noreferrer" target="_blank">okmix.cc</a>, <a href="https://okmix.co" rel="noopener noreferrer" target="_blank">okmix.co</a>, <a href="https://okmix.pw" rel="noopener noreferrer" target="_blank">okmix.pw</a>, <a href="https://okmix.vip" rel="noopener noreferrer" target="_blank">okmix.vip</a>, <a href="https://okmix.biz" rel="noopener noreferrer" target="_blank">okmix.biz</a>, <a href="https://okmix.top" rel="noopener noreferrer" target="_blank">okmix.top</a>, <a href="https://okmix.org" rel="noopener noreferrer" target="_blank">okmix.org</a></li>
 <li><strong>Mixer.Black</strong>: <a href="https://mixer.black/" rel="noopener noreferrer" target="_blank">Mixer.Black</a>, <a href="http://mixer5fii4sxzzqviqyrahmbpadyp55njukts253qxwl3ol63qjjhxid.onion/" rel="noopener noreferrer" target="_blank">mixer5fii4sxzzqviqyrahmbpadyp55njukts253qxwl3ol63qjjhxid.onion</a></li>
+<li><strong>Bitxer</strong>: <a href="https://www.bitxer.io/" rel="noopener noreferrer" target="_blank">bitxer.io</a>, <a href="http://diqv32nkt3npxxhmb32wm3halrynjvuyp7f2mom6nsogds6ws2tkxbqd.onion/" rel="noopener noreferrer" target="_blank">diqv32nkt3npxxhmb32wm3halrynjvuyp7f2mom6nsogds6ws2tkxbqd.onion</a></li>
 </ul>
 </details>
 <p>Mixers are sorted by creation year. Be very careful to save any letters of guarantee you receive and to verify them here, so that you can get a refund in case of a problem. Note that <strong>a mixer can shut down and run away with your coins even if you have a letter of guarantee.</strong> If you do not trust any of these mixers enough, consider using a coordinator instead.</p>
@@ -1552,113 +1608,124 @@
 </div>
 <div aria-label="XMR exchange cards" class="mixer-card-row">
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://b1exch.to/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="neverkyc-exchanges/b1exch.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/b1exch.webp" type="image/webp"/>
 <img alt="B1eXch logo" class="mixer-logo" src="wp-content/uploads/2023/12/b1exch.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://b1exch.to/" rel="noopener noreferrer">B1eXch</a>
+<a class="mixer-name" href="neverkyc-exchanges/b1exch.html" rel="noopener noreferrer">B1eXch</a>
+<a class="mixer-visit" href="https://b1exch.to/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: 1%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://crp.is/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="neverkyc-exchanges/crypton.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/crypton.webp" type="image/webp"/>
 <img alt="Crypton logo" class="mixer-logo" src="wp-content/uploads/2023/12/crypton.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://crp.is/" rel="noopener noreferrer">Crypton</a>
+<a class="mixer-name" href="neverkyc-exchanges/crypton.html" rel="noopener noreferrer">Crypton</a>
+<a class="mixer-visit" href="https://crp.is/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: 0.1%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://dex.fo/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="neverkyc-exchanges/dex-fo.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/dexfo.webp" type="image/webp"/>
 <img alt="Dex.fo logo" class="mixer-logo" src="wp-content/uploads/2023/12/dexfo.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://dex.fo/" rel="noopener noreferrer">Dex.fo</a>
+<a class="mixer-name" href="neverkyc-exchanges/dex-fo.html" rel="noopener noreferrer">Dex.fo</a>
+<a class="mixer-visit" href="https://dex.fo/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: 0.8-1.5%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://tomboi.io/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="neverkyc-exchanges/tomboi-io.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/mixerblack.webp" type="image/webp"/>
 <img alt="Tomboi.io logo" class="mixer-logo" src="wp-content/uploads/2023/12/mixerblack.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://tomboi.io/" rel="noopener noreferrer">Tomboi.io</a>
+<a class="mixer-name" href="neverkyc-exchanges/tomboi-io.html" rel="noopener noreferrer">Tomboi.io</a>
+<a class="mixer-visit" href="https://tomboi.io/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: 0.9%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://thorchain.org" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="neverkyc-exchanges/thorchainswap.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/thorchainswap.webp" type="image/webp"/>
 <img alt="THORChainSwap logo" class="mixer-logo" src="wp-content/uploads/2023/12/thorchainswap.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://thorchain.org" rel="noopener noreferrer">THORChainSwap</a>
+<a class="mixer-name" href="neverkyc-exchanges/thorchainswap.html" rel="noopener noreferrer">THORChainSwap</a>
+<a class="mixer-visit" href="https://thorchain.org" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: None</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://bridgoro.com/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="neverkyc-exchanges/bridgoro.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/bridgoro.webp" type="image/webp"/>
 <img alt="Bridgoro logo" class="mixer-logo" src="wp-content/uploads/2023/12/bridgoro.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://bridgoro.com/" rel="noopener noreferrer">Bridgoro</a>
+<a class="mixer-name" href="neverkyc-exchanges/bridgoro.html" rel="noopener noreferrer">Bridgoro</a>
+<a class="mixer-visit" href="https://bridgoro.com/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: None</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://sageswap.io/?utm_source=62IR1pxGbV" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="neverkyc-exchanges/sageswap.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/sageswap.webp" type="image/webp"/>
 <img alt="Sageswap logo" class="mixer-logo" src="wp-content/uploads/2023/12/sageswap.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://sageswap.io/?utm_source=62IR1pxGbV" rel="noopener noreferrer">Sageswap</a>
+<a class="mixer-name" href="neverkyc-exchanges/sageswap.html" rel="noopener noreferrer">Sageswap</a>
+<a class="mixer-visit" href="https://sageswap.io/?utm_source=62IR1pxGbV" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: 1-6%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://splash.tf/?ref=3zdjXY3XC" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="neverkyc-exchanges/splash-tf.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/splash.webp" type="image/webp"/>
 <img alt="Splash.tf logo" class="mixer-logo" src="wp-content/uploads/2023/12/splash.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://splash.tf/?ref=3zdjXY3XC" rel="noopener noreferrer">Splash.tf</a>
+<a class="mixer-name" href="neverkyc-exchanges/splash-tf.html" rel="noopener noreferrer">Splash.tf</a>
+<a class="mixer-visit" href="https://splash.tf/?ref=3zdjXY3XC" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: None</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://eigenwallet.org/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="neverkyc-exchanges/eigenwallet.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/eigenwallet.webp" type="image/webp"/>
 <img alt="Eigenwallet logo" class="mixer-logo" src="wp-content/uploads/2023/12/eigenwallet.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://eigenwallet.org/" rel="noopener noreferrer">Eigenwallet</a>
+<a class="mixer-name" href="neverkyc-exchanges/eigenwallet.html" rel="noopener noreferrer">Eigenwallet</a>
+<a class="mixer-visit" href="https://eigenwallet.org/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: None</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://basicswapdex.com/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="neverkyc-exchanges/basicswap-beta.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/basicswap.webp" type="image/webp"/>
 <img alt="Basicswap Beta logo" class="mixer-logo" src="wp-content/uploads/2023/12/basicswap.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://basicswapdex.com/" rel="noopener noreferrer">Basicswap Beta</a>
+<a class="mixer-name" href="neverkyc-exchanges/basicswap-beta.html" rel="noopener noreferrer">Basicswap Beta</a>
+<a class="mixer-visit" href="https://basicswapdex.com/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: 0%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://bitcointalk.org/index.php?topic=5539912.0" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="neverkyc-exchanges/trevoid.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/trevoid.webp" type="image/webp"/>
 <img alt="Trêvoid logo" class="mixer-logo" src="wp-content/uploads/2023/12/trevoid.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://bitcointalk.org/index.php?topic=5539912.0" rel="noopener noreferrer">Trêvoid</a>
+<a class="mixer-name" href="neverkyc-exchanges/trevoid.html" rel="noopener noreferrer">Trêvoid</a>
+<a class="mixer-visit" href="https://bitcointalk.org/index.php?topic=5539912.0" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: 5%</div>
 </div>
 </div>
@@ -1675,77 +1742,77 @@
 </thead>
 <tbody>
 <tr>
-<td>B1eXch</td>
+<td><a class="directory-link" href="neverkyc-exchanges/b1exch.html">B1eXch</a></td>
 <td><a href="https://b1exch.to/" rel="noopener noreferrer" title="b1exch.to">b1exch.to</a></td>
 <td><a href="http://blckexcrpdmau6y7teqxmf6yiyg7xn7qlphjeaxgyimxokz623w4tmqd.onion/" title="Yes">Yes</a></td>
 <td>2025</td>
 <td>1%</td>
 </tr>
 <tr>
-<td>Crypton</td>
+<td><a class="directory-link" href="neverkyc-exchanges/crypton.html">Crypton</a></td>
 <td><a href="https://crp.is/" rel="noopener noreferrer" title="crp.is">crp.is</a></td>
 <td>No</td>
 <td>2023</td>
 <td>0.1%</td>
 </tr>
 <tr>
-<td>Dex.fo</td>
+<td><a class="directory-link" href="neverkyc-exchanges/dex-fo.html">Dex.fo</a></td>
 <td><a href="https://dex.fo/" rel="noopener noreferrer" title="dex.fo">dex.fo</a></td>
 <td><a href="http://kz2k3m4r27u4gbcds4jmudzr7nf7etlkws27zimjdtwirnrj5m6ajgad.onion/" title="Yes">Yes</a></td>
 <td>2025</td>
 <td>0.8-1.5%</td>
 </tr>
 <tr>
-<td>Tomboi.io</td>
+<td><a class="directory-link" href="neverkyc-exchanges/tomboi-io.html">Tomboi.io</a></td>
 <td><a href="https://tomboi.io/" rel="noopener noreferrer" title="tomboi.io">tomboi.io</a></td>
 <td><a href="http://5etomc53dwpiwsm65klymy5sd3ouy7h63ljfcclgdl4q6nufhuhjpgid.onion/" title="Yes">Yes</a></td>
 <td>2026</td>
 <td>0.9%</td>
 </tr>
 <tr>
-<td>THORChainSwap</td>
+<td><a class="directory-link" href="neverkyc-exchanges/thorchainswap.html">THORChainSwap</a></td>
 <td><a href="https://thorchain.org" rel="noopener noreferrer" title="thorchain.org">thorchain.org</a></td>
 <td>No</td>
 <td>2018</td>
 <td>None</td>
 </tr>
 <tr>
-<td>Sageswap</td>
+<td><a class="directory-link" href="neverkyc-exchanges/sageswap.html">Sageswap</a></td>
 <td><a href="https://sageswap.io/?utm_source=62IR1pxGbV" rel="noopener noreferrer" title="sageswap.io">sageswap.io</a></td>
 <td><a href="http://SageSwap4ygi7k5e5gbnvhz2ldbprrelkkuourlp5vx6flfeypk4hvqd.onion/?utm_source=62IR1pxGbV" title="Yes">Yes</a></td>
 <td>2025</td>
 <td>1-6%</td>
 </tr>
 <tr>
-<td>Splash.tf</td>
+<td><a class="directory-link" href="neverkyc-exchanges/splash-tf.html">Splash.tf</a></td>
 <td><a href="https://splash.tf/?ref=3zdjXY3XC" rel="noopener noreferrer" title="splash.tf">splash.tf</a></td>
 <td><a href="http://ekrdgp4j5y3o66urb4t5kzf3erdu6ewvk6zhu33m3m7wp2iflplk6jid.onion/?ref=3zdjXY3XC" title="Yes">Yes</a></td>
 <td>2025</td>
 <td>None</td>
 </tr>
 <tr>
-<td>Eigenwallet**</td>
+<td><a class="directory-link" href="neverkyc-exchanges/eigenwallet.html">Eigenwallet**</a></td>
 <td><a href="https://eigenwallet.org/" rel="noopener noreferrer" title="eigenwallet.org">eigenwallet.org</a></td>
 <td>No</td>
 <td>2021</td>
 <td>None</td>
 </tr>
 <tr>
-<td>Basicswap Beta</td>
+<td><a class="directory-link" href="neverkyc-exchanges/basicswap-beta.html">Basicswap Beta</a></td>
 <td><a href="https://basicswapdex.com/" rel="noopener noreferrer" title="basicswapdex.com">basicswapdex.com</a></td>
 <td><a href="http://basicswapof6d23whqtxpdpkkr7uoafivwl22m37pypnw2deisxkdaid.onion/" title="Yes">Yes</a></td>
 <td>2022</td>
 <td>0%</td>
 </tr>
 <tr>
-<td>Trêvoid*</td>
+<td><a class="directory-link" href="neverkyc-exchanges/trevoid.html">Trêvoid*</a></td>
 <td><a href="https://bitcointalk.org/index.php?topic=5539912.0" rel="noopener noreferrer" title="Bitcointalk topic">Bitcointalk topic</a></td>
 <td>No</td>
 <td>2025</td>
 <td>5%</td>
 </tr>
 <tr>
-<td>Bridgoro</td>
+<td><a class="directory-link" href="neverkyc-exchanges/bridgoro.html">Bridgoro</a></td>
 <td><a href="https://bridgoro.com/" rel="noopener noreferrer" title="bridgoro.com">bridgoro.com</a></td>
 <td>No</td>
 <td>2025</td>
@@ -1777,83 +1844,91 @@
 </div>
 <div aria-label="Altcoin exchange cards" class="mixer-card-row">
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://orangefren.com/goto/quickex" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="instant-exchanges/quickex.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/quickex.webp" type="image/webp"/>
 <img alt="Quickex logo" class="mixer-logo" src="wp-content/uploads/2023/12/quickex.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://orangefren.com/goto/quickex" rel="noopener noreferrer">Quickex</a>
+<a class="mixer-name" href="instant-exchanges/quickex.html" rel="noopener noreferrer">Quickex</a>
+<a class="mixer-visit" href="https://orangefren.com/goto/quickex" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: 0.5%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://cce.cash?ref=KJxgqaOV" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="instant-exchanges/cce-cash.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/cce-cash.webp" type="image/webp"/>
 <img alt="CCE.cash logo" class="mixer-logo" src="wp-content/uploads/2023/12/cce-cash.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://cce.cash?ref=KJxgqaOV" rel="noopener noreferrer">CCE.cash</a>
+<a class="mixer-name" href="instant-exchanges/cce-cash.html" rel="noopener noreferrer">CCE.cash</a>
+<a class="mixer-visit" href="https://cce.cash?ref=KJxgqaOV" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: Variable</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://orangefren.com/goto/wizardswap" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="instant-exchanges/wizardswap.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/wizardswap.webp" type="image/webp"/>
 <img alt="Wizardswap logo" class="mixer-logo" src="wp-content/uploads/2023/12/wizardswap.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://orangefren.com/goto/wizardswap" rel="noopener noreferrer">Wizardswap</a>
+<a class="mixer-name" href="instant-exchanges/wizardswap.html" rel="noopener noreferrer">Wizardswap</a>
+<a class="mixer-visit" href="https://orangefren.com/goto/wizardswap" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: 2.2%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://trocador.app/?ref=M7uvgXV2HR" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="instant-exchanges/trocador.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/trocador.webp" type="image/webp"/>
 <img alt="Trocador logo" class="mixer-logo" src="wp-content/uploads/2023/12/trocador.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://trocador.app/?ref=M7uvgXV2HR" rel="noopener noreferrer">Trocador</a>
+<a class="mixer-name" href="instant-exchanges/trocador.html" rel="noopener noreferrer">Trocador</a>
+<a class="mixer-visit" href="https://trocador.app/?ref=M7uvgXV2HR" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: Variable</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://chainswap.io/?ref=74AW8Ubn3y" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="instant-exchanges/chainswap.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/chainswap.webp" type="image/webp"/>
 <img alt="ChainSwap logo" class="mixer-logo" src="wp-content/uploads/2023/12/chainswap.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://chainswap.io/?ref=74AW8Ubn3y" rel="noopener noreferrer">ChainSwap</a>
+<a class="mixer-name" href="instant-exchanges/chainswap.html" rel="noopener noreferrer">ChainSwap</a>
+<a class="mixer-visit" href="https://chainswap.io/?ref=74AW8Ubn3y" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: Variable</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://orangefren.com/goto/pegasusswap" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="instant-exchanges/pegasusswap.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/pegasusswap.webp" type="image/webp"/>
 <img alt="PegasusSwap logo" class="mixer-logo" src="wp-content/uploads/2023/12/pegasusswap.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://orangefren.com/goto/pegasusswap" rel="noopener noreferrer">PegasusSwap</a>
+<a class="mixer-name" href="instant-exchanges/pegasusswap.html" rel="noopener noreferrer">PegasusSwap</a>
+<a class="mixer-visit" href="https://orangefren.com/goto/pegasusswap" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: None</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://orangefren.com/goto/exolix" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="instant-exchanges/exolix.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/exolix.webp" type="image/webp"/>
 <img alt="Exolix logo" class="mixer-logo" src="wp-content/uploads/2023/12/exolix.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://orangefren.com/goto/exolix" rel="noopener noreferrer">Exolix</a>
+<a class="mixer-name" href="instant-exchanges/exolix.html" rel="noopener noreferrer">Exolix</a>
+<a class="mixer-visit" href="https://orangefren.com/goto/exolix" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: None</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://orangefren.com/goto/bitcoinvn" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="instant-exchanges/bitcoinvn.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/bitcoinvn.webp" type="image/webp"/>
 <img alt="BitcoinVN logo" class="mixer-logo" src="wp-content/uploads/2023/12/bitcoinvn.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://orangefren.com/goto/bitcoinvn" rel="noopener noreferrer">BitcoinVN</a>
+<a class="mixer-name" href="instant-exchanges/bitcoinvn.html" rel="noopener noreferrer">BitcoinVN</a>
+<a class="mixer-visit" href="https://orangefren.com/goto/bitcoinvn" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fee: Variable</div>
 </div>
 </div>
@@ -1870,56 +1945,56 @@
 </thead>
 <tbody>
 <tr>
-<td>Quickex</td>
+<td><a class="directory-link" href="instant-exchanges/quickex.html">Quickex</a></td>
 <td><a href="https://orangefren.com/goto/quickex" rel="noopener noreferrer" title="quickex.io">quickex.io</a></td>
 <td><a href="https://rnwis2whetqcj4oknksnc5l24jbh33nflunifff3xtjjonnoxu3ld6id.onion/goto/quickex" title="Yes">Yes</a></td>
 <td>2018</td>
 <td>0.5%</td>
 </tr>
 <tr>
-<td>CCE.cash</td>
+<td><a class="directory-link" href="instant-exchanges/cce-cash.html">CCE.cash</a></td>
 <td><a href="https://cce.cash?ref=KJxgqaOV" rel="noopener noreferrer" title="cce.cash">cce.cash</a></td>
 <td>No</td>
 <td>2024</td>
 <td>Variable</td>
 </tr>
 <tr>
-<td>Wizardswap</td>
+<td><a class="directory-link" href="instant-exchanges/wizardswap.html">Wizardswap</a></td>
 <td><a href="https://orangefren.com/goto/wizardswap" rel="noopener noreferrer" title="wizardswap.io">wizardswap.io</a></td>
 <td><a href="http://rnwis2whetqcj4oknksnc5l24jbh33nflunifff3xtjjonnoxu3ld6id.onion/goto/wizardswap" title="Yes">Yes</a></td>
 <td>2020</td>
 <td>2.2%</td>
 </tr>
 <tr>
-<td>Trocador*</td>
+<td><a class="directory-link" href="instant-exchanges/trocador.html">Trocador*</a></td>
 <td><a href="https://trocador.app/?ref=M7uvgXV2HR" rel="noopener noreferrer" title="trocador.app">trocador.app</a></td>
 <td><a href="http://qkiw4pl4qlxui26nsbjnxei323x7ptqcf765a6koxlzcox35udmihsid.onion/en/?ref=M7uvgXV2HR" title="Yes">Yes</a></td>
 <td>2022</td>
 <td>Variable</td>
 </tr>
 <tr>
-<td>ChainSwap</td>
+<td><a class="directory-link" href="instant-exchanges/chainswap.html">ChainSwap</a></td>
 <td><a href="https://chainswap.io/?ref=74AW8Ubn3y" rel="noopener noreferrer" title="chainswap.io">chainswap.io</a></td>
 <td>No</td>
 <td>2024</td>
 <td>Variable</td>
 </tr>
 <tr>
-<td>PegasusSwap</td>
+<td><a class="directory-link" href="instant-exchanges/pegasusswap.html">PegasusSwap</a></td>
 <td><a href="https://orangefren.com/goto/pegasusswap" rel="noopener noreferrer" title="pegasusswap.com">pegasusswap.com</a></td>
 <td>No</td>
 <td>2024</td>
 <td>None</td>
 </tr>
 <tr>
-<td>Exolix</td>
+<td><a class="directory-link" href="instant-exchanges/exolix.html">Exolix</a></td>
 <td><a href="https://orangefren.com/goto/exolix" rel="noopener noreferrer" title="exolix.com">exolix.com</a></td>
 <td>No</td>
 <td>2018</td>
 <td>None</td>
 </tr>
 <tr>
-<td>BitcoinVN</td>
+<td><a class="directory-link" href="instant-exchanges/bitcoinvn.html">BitcoinVN</a></td>
 <td><a href="https://orangefren.com/goto/bitcoinvn" rel="noopener noreferrer" title="bitcoinvn.io">bitcoinvn.io</a></td>
 <td>No</td>
 <td>2014</td>
@@ -1946,93 +2021,102 @@
 <p>Keep in mind that P2P marketplaces may require KYC to trade large quantities of crypto.</p>
 <div aria-label="P2P marketplace cards" class="mixer-card-row">
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://localcoinswap.com/?rc=A46F666A" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="p2p-markets/localcoinswap.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/localcoinswap.webp" type="image/webp"/>
 <img alt="LocalCoinSwap logo" class="mixer-logo" src="wp-content/uploads/2023/12/localcoinswap.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://localcoinswap.com/?rc=A46F666A" rel="noopener noreferrer">LocalCoinSwap</a>
+<a class="mixer-name" href="p2p-markets/localcoinswap.html" rel="noopener noreferrer">LocalCoinSwap</a>
+<a class="mixer-visit" href="https://localcoinswap.com/?rc=A46F666A" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Crypto: Many</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://hodlhodl.com/join/EMLR2" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="p2p-markets/hodlhodl.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/hodlhodl.webp" type="image/webp"/>
 <img alt="HodlHodl logo" class="mixer-logo" src="wp-content/uploads/2023/12/hodlhodl.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://hodlhodl.com/join/EMLR2" rel="noopener noreferrer">HodlHodl</a>
+<a class="mixer-name" href="p2p-markets/hodlhodl.html" rel="noopener noreferrer">HodlHodl</a>
+<a class="mixer-visit" href="https://hodlhodl.com/join/EMLR2" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Crypto: Many</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://noones.com/?r=VividImpala709" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="p2p-markets/noones.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/noones.webp" type="image/webp"/>
 <img alt="Noones logo" class="mixer-logo" src="wp-content/uploads/2023/12/noones.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://noones.com/?r=VividImpala709" rel="noopener noreferrer">Noones</a>
+<a class="mixer-name" href="p2p-markets/noones.html" rel="noopener noreferrer">Noones</a>
+<a class="mixer-visit" href="https://noones.com/?r=VividImpala709" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Crypto: Many</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://peachbitcoin.com/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="p2p-markets/peach-bitcoin.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/peach-bitcoin.webp" type="image/webp"/>
 <img alt="Peach Bitcoin logo" class="mixer-logo" src="wp-content/uploads/2023/12/peach-bitcoin.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://peachbitcoin.com/" rel="noopener noreferrer">Peach Bitcoin</a>
+<a class="mixer-name" href="p2p-markets/peach-bitcoin.html" rel="noopener noreferrer">Peach Bitcoin</a>
+<a class="mixer-visit" href="https://peachbitcoin.com/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Crypto: BTC</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://robosats.com/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="p2p-markets/robosats.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/robosats.webp" type="image/webp"/>
 <img alt="Robosats logo" class="mixer-logo" src="wp-content/uploads/2023/12/robosats.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://robosats.com/" rel="noopener noreferrer">Robosats</a>
+<a class="mixer-name" href="p2p-markets/robosats.html" rel="noopener noreferrer">Robosats</a>
+<a class="mixer-visit" href="https://robosats.com/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Crypto: LN-BTC</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://bisq.network/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="p2p-markets/bisq.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/bisq.webp" type="image/webp"/>
 <img alt="Bisq logo" class="mixer-logo" src="wp-content/uploads/2023/12/bisq.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://bisq.network/" rel="noopener noreferrer">Bisq</a>
+<a class="mixer-name" href="p2p-markets/bisq.html" rel="noopener noreferrer">Bisq</a>
+<a class="mixer-visit" href="https://bisq.network/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Crypto: Many</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://nonkyc.io?ref=67515cb8572aa49b681cfc9b&amp;campaign=bitmxlist&amp;source=bitmixlist.org" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="p2p-markets/nonkyc.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/nonkyc.webp" type="image/webp"/>
 <img alt="Nonkyc logo" class="mixer-logo" src="wp-content/uploads/2023/12/nonkyc.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://nonkyc.io?ref=67515cb8572aa49b681cfc9b&amp;campaign=bitmxlist&amp;source=bitmixlist.org" rel="noopener noreferrer">Nonkyc</a>
+<a class="mixer-name" href="p2p-markets/nonkyc.html" rel="noopener noreferrer">Nonkyc</a>
+<a class="mixer-visit" href="https://nonkyc.io?ref=67515cb8572aa49b681cfc9b&amp;campaign=bitmxlist&amp;source=bitmixlist.org" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Crypto: Many</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://lnp2pbot.com" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="p2p-markets/lnp2pbot.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/lnp2pbot.webp" type="image/webp"/>
 <img alt="lnp2pbot logo" class="mixer-logo" src="wp-content/uploads/2023/12/lnp2pbot.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://lnp2pbot.com" rel="noopener noreferrer">lnp2pbot</a>
+<a class="mixer-name" href="p2p-markets/lnp2pbot.html" rel="noopener noreferrer">lnp2pbot</a>
+<a class="mixer-visit" href="https://lnp2pbot.com" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Crypto: LN-BTC</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://retoswap.com" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="p2p-markets/retoswap.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/retoswap.webp" type="image/webp"/>
 <img alt="Retoswap logo" class="mixer-logo" src="wp-content/uploads/2023/12/retoswap.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://retoswap.com" rel="noopener noreferrer">Retoswap</a>
+<a class="mixer-name" href="p2p-markets/retoswap.html" rel="noopener noreferrer">Retoswap</a>
+<a class="mixer-visit" href="https://retoswap.com" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Crypto: XMR</div>
 </div>
 </div>
@@ -2049,63 +2133,63 @@
 </thead>
 <tbody>
 <tr>
-<td>LocalCoinSwap</td>
+<td><a class="directory-link" href="p2p-markets/localcoinswap.html">LocalCoinSwap</a></td>
 <td><a href="https://localcoinswap.com/?rc=A46F666A" rel="noopener noreferrer" title="localcoinswap.com">localcoinswap.com</a></td>
 <td>No</td>
 <td>2019</td>
 <td>Many</td>
 </tr>
 <tr>
-<td>HodlHodl</td>
+<td><a class="directory-link" href="p2p-markets/hodlhodl.html">HodlHodl</a></td>
 <td><a href="https://hodlhodl.com/join/EMLR2" rel="noopener noreferrer" title="hodlhodl.com">hodlhodl.com</a></td>
 <td>No</td>
 <td>2016</td>
 <td>Many</td>
 </tr>
 <tr>
-<td>Noones</td>
+<td><a class="directory-link" href="p2p-markets/noones.html">Noones</a></td>
 <td><a href="https://noones.com/?r=VividImpala709" rel="noopener noreferrer" title="noones.com">noones.com</a></td>
 <td>No</td>
 <td>2023</td>
 <td>Many</td>
 </tr>
 <tr>
-<td>Peach Bitcoin</td>
+<td><a class="directory-link" href="p2p-markets/peach-bitcoin.html">Peach Bitcoin</a></td>
 <td><a href="https://peachbitcoin.com/" rel="noopener noreferrer" title="peachbitcoin.com">peachbitcoin.com</a></td>
 <td>No</td>
 <td>2022</td>
 <td>BTC</td>
 </tr>
 <tr>
-<td>Robosats</td>
+<td><a class="directory-link" href="p2p-markets/robosats.html">Robosats</a></td>
 <td><a href="https://robosats.com/" rel="noopener noreferrer" title="robosats.com">robosats.com</a></td>
 <td><a href="http://robosats6tkf3eva7x2voqso3a5wcorsnw34jveyxfqi2fu7oyheasid.onion" title="Yes">Yes</a></td>
 <td>2022</td>
 <td>LN-BTC</td>
 </tr>
 <tr>
-<td>Bisq</td>
+<td><a class="directory-link" href="p2p-markets/bisq.html">Bisq</a></td>
 <td><a href="https://bisq.network/" rel="noopener noreferrer" title="bisq.network">bisq.network</a></td>
 <td>No</td>
 <td>2017</td>
 <td>Many</td>
 </tr>
 <tr>
-<td>Nonkyc</td>
+<td><a class="directory-link" href="p2p-markets/nonkyc.html">Nonkyc</a></td>
 <td><a href="https://nonkyc.io?ref=67515cb8572aa49b681cfc9b&amp;campaign=bitmxlist&amp;source=bitmixlist.org" rel="noopener noreferrer" title="nonkyc.io">nonkyc.io</a></td>
 <td>No</td>
 <td>2023</td>
 <td>Many</td>
 </tr>
 <tr>
-<td>lnp2pbot</td>
+<td><a class="directory-link" href="p2p-markets/lnp2pbot.html">lnp2pbot</a></td>
 <td><a href="https://lnp2pbot.com" rel="noopener noreferrer" title="lnp2pbot.com">lnp2pbot.com</a></td>
 <td>No</td>
 <td>2018</td>
 <td>LN-BTC</td>
 </tr>
 <tr>
-<td>Retoswap</td>
+<td><a class="directory-link" href="p2p-markets/retoswap.html">Retoswap</a></td>
 <td><a href="https://retoswap.com" rel="noopener noreferrer" title="retoswap.com">retoswap.com</a></td>
 <td>No</td>
 <td>2024</td>
@@ -2118,33 +2202,36 @@
 <p>A coordinator, by design, is supposed to be anonymous. Beware of coordinators that perform blockchain analysis on your inputs.</p>
 <div aria-label="Wasabi coordinator cards" class="mixer-card-row">
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://coinjoin.kruw.io/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="coordinators/kruw.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/kruw.webp" type="image/webp"/>
 <img alt="Kruw logo" class="mixer-logo" src="wp-content/uploads/2023/12/kruw.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://coinjoin.kruw.io/" rel="noopener noreferrer">Kruw</a>
+<a class="mixer-name" href="coordinators/kruw.html" rel="noopener noreferrer">Kruw</a>
+<a class="mixer-visit" href="https://coinjoin.kruw.io/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fees: 0%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://api.gingerwallet.io/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="coordinators/ginger-wallet.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/ginger-wallet.webp" type="image/webp"/>
 <img alt="Ginger Wallet logo" class="mixer-logo" src="wp-content/uploads/2023/12/ginger-wallet.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://api.gingerwallet.io/" rel="noopener noreferrer">Ginger Wallet</a>
+<a class="mixer-name" href="coordinators/ginger-wallet.html" rel="noopener noreferrer">Ginger Wallet</a>
+<a class="mixer-visit" href="https://api.gingerwallet.io/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fees: 0% below 0.03 BTC, then 0.3%</div>
 </div>
 <div class="mixer-card">
-<a class="mixer-logo-link" href="https://api.opencoordinator.org/" rel="noopener noreferrer">
+<a class="mixer-logo-link" href="coordinators/opencoordinator.html" rel="noopener noreferrer">
 <picture>
 <source srcset="wp-content/uploads/2023/12/open-coordinator.webp" type="image/webp"/>
 <img alt="OpenCoordinator logo" class="mixer-logo" src="wp-content/uploads/2023/12/open-coordinator.jpg"/>
 </picture>
 </a>
-<a class="mixer-name" href="https://api.opencoordinator.org/" rel="noopener noreferrer">OpenCoordinator</a>
+<a class="mixer-name" href="coordinators/opencoordinator.html" rel="noopener noreferrer">OpenCoordinator</a>
+<a class="mixer-visit" href="https://api.opencoordinator.org/" rel="noopener noreferrer" target="_blank">Visit site</a>
 <div class="mixer-fee">Fees: 0%</div>
 </div>
 </div>
@@ -2163,7 +2250,7 @@
 </thead>
 <tbody>
 <tr>
-<td>Kruw</td>
+<td><a class="directory-link" href="coordinators/kruw.html">Kruw</a></td>
 <td><a href="https://coinjoin.kruw.io/" rel="noopener noreferrer" title="coinjoin.kruw.io">coinjoin.kruw.io</a></td>
 <td>0%</td>
 <td>2023</td>
@@ -2187,7 +2274,7 @@
 </td>
 </tr>
 <tr>
-<td>Ginger Wallet</td>
+<td><a class="directory-link" href="coordinators/ginger-wallet.html">Ginger Wallet</a></td>
 <td><a href="https://api.gingerwallet.io/" rel="noopener noreferrer" title="api.gingerwallet.io">api.gingerwallet.io</a></td>
 <td>0% below 0.03 BTC; 0.3% at/above 0.03 BTC</td>
 <td>2024</td>
@@ -2211,7 +2298,7 @@
 </td>
 </tr>
 <tr>
-<td>OpenCoordinator</td>
+<td><a class="directory-link" href="coordinators/opencoordinator.html">OpenCoordinator</a></td>
 <td><a href="https://api.opencoordinator.org/" rel="noopener noreferrer" title="api.opencoordinator.org">api.opencoordinator.org</a></td>
 <td>0%</td>
 <td>2024</td>
@@ -2247,107 +2334,128 @@
 </header>
 <ul class="tool-list" id="toolList" role="list">
 <li class="tool" data-tags="bitcoin wallet coin-control payjoin bip47 whirlpool">
-<a class="tool__name" href="https://github.com/sparrowwallet/sparrow" rel="noreferrer" target="_blank">Sparrow Wallet</a>
+<a class="tool__name" href="privacy-tools/sparrow-wallet.html">Sparrow Wallet</a>
+<a class="tool-visit" href="https://github.com/sparrowwallet/sparrow" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Desktop wallet with coin control, labels, Whirlpool/Wasabi support, and BIP47/PayJoin flows.</p>
 <div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">Wallet</span><span class="pill">Coin control</span></div>
 </li>
 <li class="tool" data-tags="bitcoin coinjoin wasabi wabisabi wallet">
-<a class="tool__name" href="https://github.com/WalletWasabi/WalletWasabi" rel="noreferrer" target="_blank">Wasabi Wallet</a>
+<a class="tool__name" href="privacy-tools/wasabi-wallet.html">Wasabi Wallet</a>
+<a class="tool-visit" href="https://github.com/WalletWasabi/WalletWasabi" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">WabiSabi CoinJoin + cross-platform GUI.</p>
 <div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">CoinJoin</span></div>
 </li>
 <li class="tool" data-tags="bitcoin coinjoin joinmarket maker taker">
-<a class="tool__name" href="https://github.com/JoinMarket-Org/joinmarket-clientserver" rel="noreferrer" target="_blank">JoinMarket</a>
+<a class="tool__name" href="privacy-tools/joinmarket.html">JoinMarket</a>
+<a class="tool-visit" href="https://github.com/JoinMarket-Org/joinmarket-clientserver" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Incentive-based CoinJoin marketplace with maker/taker liquidity.</p>
 <div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">CoinJoin</span><span class="pill">P2P</span></div>
 </li>
 <li class="tool" data-tags="bitcoin backend node tor dojo samourai">
-<a class="tool__name" href="https://github.com/Samourai-Wallet/samourai-dojo" rel="noreferrer" target="_blank">Samourai Dojo</a>
+<a class="tool__name" href="privacy-tools/samourai-dojo.html">Samourai Dojo</a>
+<a class="tool-visit" href="https://github.com/Samourai-Wallet/samourai-dojo" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Self-hosted Bitcoin backend for powering Samourai features (Cahoots, Whirlpool) via Tor.</p>
 <div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">Backend</span></div>
 </li>
 <li class="tool" data-tags="bitcoin coinjoin whirlpool cli samourai">
-<a class="tool__name" href="https://github.com/Samourai-Wallet/whirlpool-client-cli" rel="noreferrer" target="_blank">Whirlpool CLI</a>
+<a class="tool__name" href="privacy-tools/whirlpool-cli.html">Whirlpool CLI</a>
+<a class="tool-visit" href="https://github.com/Samourai-Wallet/whirlpool-client-cli" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Command-line Whirlpool client so you can mix UTXOs on your own node with deterministic fees.</p>
 <div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">CoinJoin</span><span class="pill">CLI</span></div>
 </li>
 <li class="tool" data-tags="bitcoin wallet ios whirlpool tor paynym">
-<a class="tool__name" href="https://github.com/chaincase-app/chaincase" rel="noreferrer" target="_blank">Chaincase</a>
+<a class="tool__name" href="privacy-tools/chaincase.html">Chaincase</a>
+<a class="tool-visit" href="https://github.com/chaincase-app/chaincase" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">iOS wallet focused on Whirlpool mixing, PayNym contacts, PayJoin, and Tor networking.</p>
 <div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">Wallet</span><span class="pill">Mobile</span></div>
 </li>
 <li class="tool" data-tags="monero wallet tor i2p desktop">
-<a class="tool__name" href="https://github.com/feather-wallet/feather" rel="noreferrer" target="_blank">Feather Wallet</a>
+<a class="tool__name" href="privacy-tools/feather-wallet.html">Feather Wallet</a>
+<a class="tool-visit" href="https://github.com/feather-wallet/feather" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Modern Monero desktop wallet with Tor/I2P transport, coin control, and hardware wallet support.</p>
 <div class="tool__meta"><span class="pill">Monero</span><span class="pill">Wallet</span></div>
 </li>
 <li class="tool" data-tags="monero node wallet cli rpc">
-<a class="tool__name" href="https://github.com/monero-project/monero" rel="noreferrer" target="_blank">Monero CLI</a>
+<a class="tool__name" href="privacy-tools/monero-cli.html">Monero CLI</a>
+<a class="tool-visit" href="https://github.com/monero-project/monero" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Reference Monero node and wallet CLI with ring signatures, view-only modes, and RPC APIs.</p>
 <div class="tool__meta"><span class="pill">Monero</span><span class="pill">Node</span></div>
 </li>
 <li class="tool" data-tags="monero wallet gui desktop qt">
-<a class="tool__name" href="https://github.com/monero-project/monero-gui" rel="noreferrer" target="_blank">Monero GUI</a>
+<a class="tool__name" href="privacy-tools/monero-gui.html">Monero GUI</a>
+<a class="tool-visit" href="https://github.com/monero-project/monero-gui" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Official Qt-based GUI wallet bundling hardware support, node management, and Ledger/Trezor flows.</p>
 <div class="tool__meta"><span class="pill">Monero</span><span class="pill">Wallet</span><span class="pill">Desktop</span></div>
 </li>
 <li class="tool" data-tags="monero wallet android tor i2p">
-<a class="tool__name" href="https://github.com/m2049r/xmrwallet" rel="noreferrer" target="_blank">Monerujo</a>
+<a class="tool__name" href="privacy-tools/monerujo.html">Monerujo</a>
+<a class="tool-visit" href="https://github.com/m2049r/xmrwallet" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Android Monero wallet (Monerujo) with coin control, Tor/I2P networking, and QR/PayCode tools.</p>
 <div class="tool__meta"><span class="pill">Monero</span><span class="pill">Wallet</span><span class="pill">Mobile</span></div>
 </li>
 <li class="tool" data-tags="monero wallet mobile tor exchange">
-<a class="tool__name" href="https://github.com/cake-tech/cake_wallet" rel="noreferrer" target="_blank">Cake Wallet</a>
+<a class="tool__name" href="privacy-tools/cake-wallet.html">Cake Wallet</a>
+<a class="tool-visit" href="https://github.com/cake-tech/cake_wallet" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Open-source iOS/Android wallet for Monero &amp; BTC with Tor routing and in-app swap bridges.</p>
 <div class="tool__meta"><span class="pill">Monero</span><span class="pill">Wallet</span><span class="pill">Mobile</span></div>
 </li>
 <li class="tool" data-tags="monero bitcoin atomic-swap tor desktop eigenwallet">
-<a class="tool__name" href="https://eigenwallet.org/" rel="noreferrer" target="_blank">EigenWallet</a>
+<a class="tool__name" href="privacy-tools/eigenwallet.html">EigenWallet</a>
+<a class="tool-visit" href="https://eigenwallet.org/" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Cross-platform wallet with built-in Tor routing and peer-to-peer BTC ↔ XMR atomic swaps.</p>
 <div class="tool__meta"><span class="pill">Monero</span><span class="pill">Atomic swap</span></div>
 </li>
 <li class="tool" data-tags="bitcoin utxo analysis simulator explorer litecoin">
-<a class="tool__name" href="https://bitcointalk.org/index.php?topic=5573042.0" rel="noreferrer" target="_blank">Gliese.io</a>
+<a class="tool__name" href="privacy-tools/gliese-io.html">Gliese.io</a>
+<a class="tool-visit" href="https://bitcointalk.org/index.php?topic=5573042.0" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Non-custodial UTXO analysis + transaction simulator built on Bitcoin/Litecoin full nodes.</p>
 <div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">UTXO</span><span class="pill">Analysis</span></div>
 </li>
 <li class="tool" data-tags="bitcoin cross-chain swaps thorchain dex bridge">
-<a class="tool__name" href="https://thorchain.org/" rel="noreferrer" target="_blank">THORChain</a>
+<a class="tool__name" href="privacy-tools/thorchain.html">THORChain</a>
+<a class="tool-visit" href="https://thorchain.org/" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Non-custodial cross-chain DEX for native BTC and other L1 assets, using node-bonded liquidity pools instead of wrapped tokens.</p>
 <div class="tool__meta"><span class="pill">Cross-chain</span><span class="pill">DEX</span></div>
 </li>
 <li class="tool" data-tags="bitcoin privacy audit guides watchlist">
-<a class="tool__name" href="https://privacy.watch/" rel="noreferrer" target="_blank">Privacy Watch</a>
+<a class="tool__name" href="privacy-tools/privacy-watch.html">Privacy Watch</a>
+<a class="tool-visit" href="https://privacy.watch/" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Catalog of Bitcoin privacy best practices and service audits highlighting deanonymization risks.</p>
 <div class="tool__meta"><span class="pill">Research</span><span class="pill">Guides</span></div>
 </li>
 <li class="tool" data-tags="monero dex p2p haveno tor">
-<a class="tool__name" href="https://haveno.exchange/" rel="noreferrer" target="_blank">Haveno DEX</a>
+<a class="tool__name" href="privacy-tools/haveno-dex.html">Haveno DEX</a>
+<a class="tool-visit" href="https://haveno.exchange/" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Non-custodial Tor-based DEX for fiat ↔ Monero trades; open-source Java stack with multisig escrows.</p>
 <div class="tool__meta"><span class="pill">Monero</span><span class="pill">P2P</span></div>
 </li>
 <li class="tool" data-tags="monero dex retoswap tor haveno fork">
-<a class="tool__name" href="https://retoswap.com/" rel="noreferrer" target="_blank">RetoSwap</a>
+<a class="tool__name" href="privacy-tools/retoswap.html">RetoSwap</a>
+<a class="tool-visit" href="https://retoswap.com/" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Desktop client built on Haveno offering Tor-native Monero swaps with fiat/crypto payment rails.</p>
 <div class="tool__meta"><span class="pill">Monero</span><span class="pill">P2P</span></div>
 </li>
 <li class="tool" data-tags="bitcoin monero atomic-swap basicswap particl tor">
-<a class="tool__name" href="https://basicswapdex.com/" rel="noreferrer" target="_blank">BasicSwap DEX</a>
+<a class="tool__name" href="privacy-tools/basicswap-dex.html">BasicSwap DEX</a>
+<a class="tool-visit" href="https://basicswapdex.com/" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Particl-powered atomic swap DEX for BTC, XMR, FIRO, and other privacy coins over Tor/I2P.</p>
 <div class="tool__meta"><span class="pill">Cross-chain</span><span class="pill">Atomic swap</span></div>
 </li>
 <li class="tool" data-tags="bitcoin p2p tor dex multisig">
-<a class="tool__name" href="https://github.com/bisq-network/bisq" rel="noreferrer" target="_blank">Bisq</a>
+<a class="tool__name" href="privacy-tools/bisq.html">Bisq</a>
+<a class="tool-visit" href="https://github.com/bisq-network/bisq" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Tor-based desktop DEX for fiat ↔ BTC trades secured by bonded multisig escrows.</p>
 <div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">P2P</span></div>
 </li>
 <li class="tool" data-tags="bitcoin p2p tor lightning exchange robosats">
-<a class="tool__name" href="https://robosats.com/" rel="noreferrer" target="_blank">RoboSats</a>
+<a class="tool__name" href="privacy-tools/robosats.html">RoboSats</a>
+<a class="tool-visit" href="https://robosats.com/" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Tor-native Lightning P2P exchange with robot avatars, escrowed orders, and no account persistence.</p>
 <div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">P2P</span><span class="pill">Tor</span></div>
 </li>
 <li class="tool" data-tags="bitcoin p2p telegram bot cash trades lnp2pbot">
-<a class="tool__name" href="https://lnp2pbot.com/" rel="noreferrer" target="_blank">Lnp2pBot</a>
+<a class="tool__name" href="privacy-tools/lnp2pbot.html">Lnp2pBot</a>
+<a class="tool-visit" href="https://lnp2pbot.com/" rel="noreferrer" target="_blank">Visit project</a>
 <p class="tool__desc">Telegram-native escrow bot coordinating BTC trades via Lightning invoices or on-chain holds.</p>
 <div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">P2P</span><span class="pill">Bot</span></div>
 </li>
