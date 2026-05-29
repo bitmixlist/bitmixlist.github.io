@@ -12,7 +12,10 @@ const GENERATED_DIR_MARKER = '.bitmixlist-generated';
 $root = dirname(__DIR__);
 $checkOnly = in_array('--check', $argv, true);
 $skipIndex = in_array('--skip-index', $argv, true);
-$data = directory_extract_all($root);
+$data = directory_extract_all($root, [
+    'wabisator_config' => directory_fetch_wabisator_config(),
+    'wabisator_volume_history' => directory_fetch_wabisator_volume_history(),
+]);
 $errors = directory_validate_data($data, $root, $checkOnly);
 
 if ($errors !== []) {
@@ -85,7 +88,7 @@ function rewrite_index(string $path, string $locale, array $data): void
         throw new RuntimeException("Unable to read {$path}");
     }
 
-    $html = ensure_index_styles($html);
+    $html = ensure_index_header_meta_nav(ensure_index_styles($html), $locale, $data['categories']);
     $entries = $data['entries'];
     $serviceByName = [];
     $toolByName = [];
@@ -118,9 +121,9 @@ function rewrite_index(string $path, string $locale, array $data): void
         $block = preg_replace('~(<a class="mixer-name" href=")[^"]+(")~u', '$1' . directory_attr($internal) . '$2', $block, 1) ?? $block;
 
         if (str_contains($block, 'class="mixer-visit"')) {
-            $block = preg_replace('~<a class="mixer-visit" href="[^"]*"[^>]*>.*?</a>~su', '<a class="mixer-visit" href="' . directory_attr($external) . '" rel="noopener noreferrer" target="_blank">' . directory_escape($visitLabel) . '</a>', $block, 1) ?? $block;
+            $block = preg_replace('~<a class="mixer-visit" href="[^"]*"[^>]*>.*?</a>~su', '<a class="mixer-visit" href="' . directory_attr($external) . '" rel="noopener noreferrer" target="_blank">' . directory_icon_label('external-link', $visitLabel) . '</a>', $block, 1) ?? $block;
         } else {
-            $block = preg_replace('~(<a class="mixer-name"[^>]*>.*?</a>)~su', '$1' . "\n" . '<a class="mixer-visit" href="' . directory_attr($external) . '" rel="noopener noreferrer" target="_blank">' . directory_escape($visitLabel) . '</a>', $block, 1) ?? $block;
+            $block = preg_replace('~(<a class="mixer-name"[^>]*>.*?</a>)~su', '$1' . "\n" . '<a class="mixer-visit" href="' . directory_attr($external) . '" rel="noopener noreferrer" target="_blank">' . directory_icon_label('external-link', $visitLabel) . '</a>', $block, 1) ?? $block;
         }
 
         return $block;
@@ -141,13 +144,19 @@ function rewrite_index(string $path, string $locale, array $data): void
         $internal = $entry['index_paths'][$locale];
         $external = $entry['links']['clearnet'] ?? '';
         $visitLabel = $locale === 'ru' ? 'Открыть проект' : 'Visit project';
+        $visitButton = directory_external_icon_button($external, $visitLabel, 'tool-visit');
         $nameText = directory_escape($name);
 
         $block = preg_replace('~<a class="tool__name"[^>]*>.*?</a>~su', '<a class="tool__name" href="' . directory_attr($internal) . '">' . $nameText . '</a>', $block, 1) ?? $block;
-        if (str_contains($block, 'class="tool-visit"')) {
-            $block = preg_replace('~<a class="tool-visit" href="[^"]*"[^>]*>.*?</a>~su', '<a class="tool-visit" href="' . directory_attr($external) . '" rel="noreferrer" target="_blank">' . directory_escape($visitLabel) . '</a>', $block, 1) ?? $block;
+        if (preg_match('~<a\b[^>]*class="[^"]*\btool-visit\b[^"]*"[^>]*>.*?</a>~su', $block) === 1) {
+            $block = preg_replace_callback(
+                '~<a\b[^>]*class="[^"]*\btool-visit\b[^"]*"[^>]*>.*?</a>~su',
+                static fn (): string => $visitButton,
+                $block,
+                1
+            ) ?? $block;
         } else {
-            $block = preg_replace('~(<a class="tool__name"[^>]*>.*?</a>)~su', '$1' . "\n" . '<a class="tool-visit" href="' . directory_attr($external) . '" rel="noreferrer" target="_blank">' . directory_escape($visitLabel) . '</a>', $block, 1) ?? $block;
+            $block = preg_replace('~(<a class="tool__name"[^>]*>.*?</a>)~su', '$1' . "\n" . $visitButton, $block, 1) ?? $block;
         }
 
         return $block;
@@ -171,11 +180,15 @@ function rewrite_index(string $path, string $locale, array $data): void
 
 function ensure_index_styles(string $html): string
 {
+    $html = directory_normalize_table_wrap_style_rules($html);
+    $html = directory_normalize_coin_style_rules($html);
+    $html = directory_normalize_sort_style_rules($html);
+
     if (!str_contains($html, '.mixer-visit')) {
         $needle = '          .mixer-name:hover, .mixer-name:focus { text-decoration: underline; }' . "\n";
         $insert = $needle
-            . '          .mixer-visit, .tool-visit { margin-top: 6px; padding: 4px 8px; border: 1px solid #7a61f6; border-radius: 6px; color: #e8ddff; background: #1a1234; font-size: 0.82rem; line-height: 1.2; text-decoration: none; }' . "\n"
-            . '          .mixer-visit:hover, .mixer-visit:focus, .tool-visit:hover, .tool-visit:focus { background: #27184d; color: #fff; text-decoration: none; }' . "\n"
+            . '          .mixer-visit { margin-top: 6px; padding: 4px 8px; border: 1px solid #7a61f6; border-radius: 6px; color: #e8ddff; background: #1a1234; font-size: 0.82rem; line-height: 1.2; text-decoration: none; }' . "\n"
+            . '          .mixer-visit:hover, .mixer-visit:focus { background: #27184d; color: #fff; text-decoration: none; }' . "\n"
             . '          .directory-link { font-weight: 700; color: #f6f2ff; }' . "\n";
         $html = str_replace($needle, $insert, $html);
     }
@@ -189,30 +202,53 @@ function ensure_index_styles(string $html): string
             . '          .homepage-directory .directory-section h3 { margin: 22px 0 10px; font-size: 1.08rem; letter-spacing: 0; }' . "\n"
             . '          .directory-section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }' . "\n"
             . '          .directory-section-link { flex: 0 0 auto; color: #d8ccff; font-size: 0.92rem; text-decoration: underline; text-underline-offset: 0.18em; }' . "\n"
-            . '          .homepage-directory .directory-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; justify-content: stretch; }' . "\n"
-            . '          .homepage-directory .directory-list-card { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: start; min-width: 0; width: auto; padding: 14px; border: 1px solid #3a2e55; border-radius: 8px; background: #181222; box-shadow: none; }' . "\n"
-            . '          .homepage-directory .directory-list-card .directory-logo { width: 64px; height: 64px; border-radius: 8px; object-fit: contain; }' . "\n"
-            . '          .homepage-directory .directory-list-card .directory-logo--text { font-size: 1.15rem; }' . "\n"
+            . directory_icon_styles('          ')
+            . '          .homepage-directory .directory-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; justify-content: stretch; }' . "\n"
+            . '          .homepage-directory .directory-list-card { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 14px; align-items: start; min-width: 0; width: auto; padding: 14px; border: 1px solid #3a2e55; border-radius: 8px; background: #181222; box-shadow: none; }' . "\n"
+            . '          .homepage-directory .directory-list-card .directory-logo { width: 128px; height: 128px; border-radius: 10px; object-fit: contain; }' . "\n"
+            . '          .homepage-directory .directory-list-card .directory-logo--text { font-size: 1.8rem; }' . "\n"
             . '          .homepage-directory .directory-list-title { margin: 0 0 4px; font-size: 1.05rem; line-height: 1.25; font-weight: 700; }' . "\n"
             . '          .homepage-directory .directory-list-title a { color: #f6f2ff; text-decoration: none; }' . "\n"
             . '          .homepage-directory .directory-list-title a:hover, .homepage-directory .directory-list-title a:focus { text-decoration: underline; }' . "\n"
             . '          .homepage-directory .directory-list-summary { margin: 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }' . "\n"
-            . '          .homepage-directory .directory-list-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }' . "\n"
+            . directory_coin_styles('          ')
+            . '          .homepage-directory .directory-list-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }' . "\n"
             . '          .homepage-directory .directory-button { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; margin-top: 0; padding: 0 10px; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; text-decoration: none; font-size: 0.9rem; font-weight: 650; line-height: 1.2; }' . "\n"
             . '          .homepage-directory .directory-button:hover, .homepage-directory .directory-button:focus { background: #27184d; color: #fff; text-decoration: none; }' . "\n"
+            . '          .homepage-directory .directory-icon-button { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 34px; height: 34px; min-height: 34px; margin-top: 0; margin-left: auto; padding: 0; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; text-decoration: none !important; box-sizing: border-box; }' . "\n"
+            . '          .homepage-directory .directory-icon-button:hover, .homepage-directory .directory-icon-button:focus { background: #27184d; color: #fff; text-decoration: none !important; }' . "\n"
+            . '          .homepage-directory .directory-icon-button svg { width: 17px; height: 17px; }' . "\n"
             . '          .homepage-directory .directory-table-wrap { margin: 0; overflow-x: auto; }' . "\n"
             . '          .homepage-directory .directory-facts { width: 100%; border-collapse: collapse; table-layout: fixed; }' . "\n"
             . '          .homepage-directory .homepage-comparison-table { table-layout: auto; min-width: 1040px; }' . "\n"
             . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table { min-width: 1380px; }' . "\n"
+            . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell { width: 12rem; max-width: 12rem; }' . "\n"
+            . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell .coin-list { max-width: 12rem; }' . "\n"
             . '          .homepage-directory-section[data-category="coordinators"] .homepage-comparison-table { min-width: 960px; }' . "\n"
-            . '          .homepage-directory .directory-facts th, .homepage-directory .directory-facts td { vertical-align: top; padding: 12px; overflow-wrap: anywhere; word-break: normal; }' . "\n"
+            . '          .homepage-directory .directory-facts th, .homepage-directory .directory-facts td { vertical-align: top; padding: 12px; overflow-wrap: normal; word-break: normal; hyphens: none; }' . "\n"
             . '          .homepage-directory .directory-facts th { color: #f6f2ff; text-align: left; background: #282238; }' . "\n"
             . '          .homepage-directory .directory-facts td { background: #1c1728; }' . "\n"
+            . '          .homepage-directory .directory-facts .directory-nowrap { white-space: nowrap; overflow-wrap: normal; word-break: normal; }' . "\n"
+            . directory_sort_styles('          ')
             . '          .homepage-directory .tool-registry { max-width: none; margin: 28px 0 0; padding: 0; }' . "\n"
-            . '          .homepage-directory .tool { border-radius: 8px; }' . "\n"
+            . '          .homepage-directory .tool-registry .tool-registry__header h2 { margin: 0 0 10px; font-size: 2rem; letter-spacing: 0; }' . "\n"
+            . '          .homepage-directory .tool-registry .tool-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }' . "\n"
+            . '          .homepage-directory .tool-registry .tool { border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 14px 14px 12px; }' . "\n"
+            . '          .homepage-directory .tool-registry .tool__header { display: flex; align-items: center; gap: 12px; }' . "\n"
+            . '          .homepage-directory .tool-registry .tool__header .tool__name { flex: 1 1 auto; min-width: 0; }' . "\n"
+            . '          .homepage-directory .tool-registry .tool__meta { margin-top: 0; }' . "\n"
+            . '          .homepage-section-notes { margin-top: 18px; padding-top: 14px; border-top: 1px solid #3a2e55; }' . "\n"
+            . '          .homepage-section-notes > h3 { margin-top: 0; }' . "\n"
             . '          .homepage-notes { border-top: 1px solid #3a2e55; padding-top: 24px; }' . "\n"
-            . '          @media (max-width: 700px) { .homepage-directory { padding: 22px 14px 36px; } .homepage-directory .directory-list { grid-template-columns: 1fr; } .homepage-directory .directory-section-heading { align-items: flex-start; flex-direction: column; gap: 2px; } .homepage-directory .homepage-comparison-table { min-width: 0; } .homepage-directory .directory-facts, .homepage-directory .directory-facts tbody, .homepage-directory .directory-facts tr, .homepage-directory .directory-facts th, .homepage-directory .directory-facts td { display: block; width: 100%; box-sizing: border-box; } }' . "\n";
+            . '          @media (max-width: 700px) { .homepage-directory { padding: 22px 14px 36px; } .homepage-directory .directory-list { grid-template-columns: 1fr; } .homepage-directory .directory-section-heading { align-items: flex-start; flex-direction: column; gap: 2px; } .homepage-directory .homepage-comparison-table { min-width: 0; } .homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell { width: 100%; max-width: none; } .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell .coin-list { max-width: 100%; } .homepage-directory .directory-facts, .homepage-directory .directory-facts tbody, .homepage-directory .directory-facts tr, .homepage-directory .directory-facts th, .homepage-directory .directory-facts td { display: block; width: 100%; box-sizing: border-box; } }' . "\n";
         $html = str_replace($needle, $insert, $html);
+    }
+
+    if (!str_contains($html, '.directory-heading-icon {')) {
+        $needle = '          .directory-section-link { flex: 0 0 auto; color: #d8ccff; font-size: 0.92rem; text-decoration: underline; text-underline-offset: 0.18em; }' . "\n";
+        if (str_contains($html, $needle)) {
+            $html = str_replace($needle, $needle . directory_icon_styles('          '), $html);
+        }
     }
 
     if (!str_contains($html, '.homepage-directory .homepage-comparison-table')) {
@@ -220,15 +256,152 @@ function ensure_index_styles(string $html): string
         $insert = $needle
             . '          .homepage-directory .homepage-comparison-table { table-layout: auto; min-width: 1040px; }' . "\n"
             . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table { min-width: 1380px; }' . "\n"
+            . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell { width: 12rem; max-width: 12rem; }' . "\n"
+            . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell .coin-list { max-width: 12rem; }' . "\n"
             . '          .homepage-directory-section[data-category="coordinators"] .homepage-comparison-table { min-width: 960px; }' . "\n";
         $html = str_replace($needle, $insert, $html);
 
         $needle = '          @media (max-width: 700px) { .homepage-directory { padding: 22px 14px 36px; } .homepage-directory .directory-list { grid-template-columns: 1fr; } .homepage-directory .directory-section-heading { align-items: flex-start; flex-direction: column; gap: 2px; } .homepage-directory .directory-facts, .homepage-directory .directory-facts tbody, .homepage-directory .directory-facts tr, .homepage-directory .directory-facts th, .homepage-directory .directory-facts td { display: block; width: 100%; box-sizing: border-box; } }' . "\n";
-        $insert = '          @media (max-width: 700px) { .homepage-directory { padding: 22px 14px 36px; } .homepage-directory .directory-list { grid-template-columns: 1fr; } .homepage-directory .directory-section-heading { align-items: flex-start; flex-direction: column; gap: 2px; } .homepage-directory .homepage-comparison-table { min-width: 0; } .homepage-directory .directory-facts, .homepage-directory .directory-facts tbody, .homepage-directory .directory-facts tr, .homepage-directory .directory-facts th, .homepage-directory .directory-facts td { display: block; width: 100%; box-sizing: border-box; } }' . "\n";
+        $insert = '          @media (max-width: 700px) { .homepage-directory { padding: 22px 14px 36px; } .homepage-directory .directory-list { grid-template-columns: 1fr; } .homepage-directory .directory-section-heading { align-items: flex-start; flex-direction: column; gap: 2px; } .homepage-directory .homepage-comparison-table { min-width: 0; } .homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell { width: 100%; max-width: none; } .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell .coin-list { max-width: 100%; } .homepage-directory .directory-facts, .homepage-directory .directory-facts tbody, .homepage-directory .directory-facts tr, .homepage-directory .directory-facts th, .homepage-directory .directory-facts td { display: block; width: 100%; box-sizing: border-box; } }' . "\n";
+        $html = str_replace($needle, $insert, $html);
+    }
+
+    $html = str_replace(
+        [
+            '          .homepage-directory .directory-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; justify-content: stretch; }' . "\n",
+            '          .homepage-directory .directory-list-card { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: start; min-width: 0; width: auto; padding: 14px; border: 1px solid #3a2e55; border-radius: 8px; background: #181222; box-shadow: none; }' . "\n",
+            '          .homepage-directory .directory-list-card .directory-logo { width: 64px; height: 64px; border-radius: 8px; object-fit: contain; }' . "\n",
+            '          .homepage-directory .directory-list-card .directory-logo--text { font-size: 1.15rem; }' . "\n",
+        ],
+        [
+            '          .homepage-directory .directory-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; justify-content: stretch; }' . "\n",
+            '          .homepage-directory .directory-list-card { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 14px; align-items: start; min-width: 0; width: auto; padding: 14px; border: 1px solid #3a2e55; border-radius: 8px; background: #181222; box-shadow: none; }' . "\n",
+            '          .homepage-directory .directory-list-card .directory-logo { width: 128px; height: 128px; border-radius: 10px; object-fit: contain; }' . "\n",
+            '          .homepage-directory .directory-list-card .directory-logo--text { font-size: 1.8rem; }' . "\n",
+        ],
+        $html
+    );
+
+    if (!str_contains($html, '.homepage-directory .directory-facts .directory-nowrap')) {
+        $needle = '          .homepage-directory .directory-facts td { background: #1c1728; }' . "\n";
+        $html = str_replace(
+            $needle,
+            $needle . '          .homepage-directory .directory-facts .directory-nowrap { white-space: nowrap; overflow-wrap: normal; word-break: normal; }' . "\n",
+            $html
+        );
+    }
+
+    if (!str_contains($html, '.directory-sort-button')) {
+        $needle = '          .homepage-directory .directory-facts .directory-nowrap { white-space: nowrap; overflow-wrap: normal; word-break: normal; }' . "\n";
+        $html = str_replace($needle, $needle . directory_sort_styles('          '), $html);
+    }
+
+    if (!str_contains($html, '.coin-badge')) {
+        $needle = '          .homepage-directory .directory-list-summary { margin: 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }' . "\n";
+        $html = str_replace($needle, $needle . directory_coin_styles('          '), $html);
+    }
+
+    $html = str_replace(
+        '          .homepage-directory .tool-registry { max-width: 980px; margin: 28px auto 0; padding: 28px 18px; }' . "\n",
+        '          .homepage-directory .tool-registry { max-width: none; margin: 28px 0 0; padding: 0; }' . "\n",
+        $html
+    );
+
+    $html = str_replace(
+        '          .homepage-directory .tool-registry { max-width: none; margin: 28px 0 0; padding: 0; }' . "\n"
+        . '          .homepage-directory .tool { border-radius: 8px; }' . "\n",
+        '          .homepage-directory .tool-registry { max-width: none; margin: 28px 0 0; padding: 0; }' . "\n"
+        . '          .homepage-directory .tool-registry .tool-registry__header h2 { margin: 0 0 10px; font-size: 2rem; letter-spacing: 0; }' . "\n"
+        . '          .homepage-directory .tool-registry .tool-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }' . "\n"
+        . '          .homepage-directory .tool-registry .tool { border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 14px 14px 12px; }' . "\n"
+        . '          .homepage-directory .tool-registry .tool__meta { margin-top: 0; }' . "\n",
+        $html
+    );
+
+    return ensure_index_header_nav_styles(ensure_index_mixer_coin_cap_styles($html));
+}
+
+function ensure_index_mixer_coin_cap_styles(string $html): string
+{
+    if (!str_contains($html, '.homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell')) {
+        $needle = '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table { min-width: 1380px; }' . "\n";
+        $insert = $needle
+            . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell { width: 12rem; max-width: 12rem; }' . "\n"
+            . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell .coin-list { max-width: 12rem; }' . "\n";
+        $html = str_replace($needle, $insert, $html);
+    }
+
+    if (!str_contains($html, '.homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell { width: 100%; max-width: none; }')) {
+        $needle = '.homepage-directory .homepage-comparison-table { min-width: 0; } ';
+        $insert = $needle
+            . '.homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell { width: 100%; max-width: none; } '
+            . '.homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell .coin-list { max-width: 100%; } ';
         $html = str_replace($needle, $insert, $html);
     }
 
     return $html;
+}
+
+function index_header_nav_styles(): string
+{
+    return '          .home .site-header { display: block; min-height: 108px; padding-top: 1rem; padding-bottom: 0.95rem; }' . "\n"
+        . '          .home .site-content-wrapper { padding-top: 124px; }' . "\n"
+        . '          .home .header-inner { gap: 12px; min-height: 42px; align-items: center; position: relative; padding-right: 8rem; }' . "\n"
+        . '          .home .header-inner h4 { flex: 1 1 0; min-width: 0; line-height: 1.2; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }' . "\n"
+        . '          .home .mobile-menu-toggle { flex: 0 0 auto; }' . "\n"
+        . '          .home .lang-switcher { position: absolute; top: 50%; right: 2rem; transform: translateY(-50%); margin-left: 0; flex: 0 0 auto; }' . "\n"
+        . '          .home .sylvester-top, .home .sylvester-top-mobile { margin-top: 1rem !important; }' . "\n"
+        . '          .directory-meta-nav { display: flex; justify-content: center; gap: 22px; width: 100%; margin: 0.45rem 0 0; padding: 0 1.5rem 0.15rem; overflow-x: auto; scrollbar-width: thin; box-sizing: border-box; }' . "\n"
+        . '          .directory-meta-link { flex: 0 0 auto; padding: 0 0 3px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: transparent; color: #d7d0e6; font-size: 0.9rem; line-height: 1.25; text-decoration: none; white-space: nowrap; }' . "\n"
+        . '          .directory-meta-link:hover, .directory-meta-link:focus { border-bottom-color: rgba(187, 134, 252, 0.6); background: transparent; color: #fff; text-decoration: none; }' . "\n"
+        . '          .directory-meta-link.is-active { border-bottom-color: #bb86fc; background: transparent; color: #fff; }' . "\n"
+        . '          @media (max-width: 700px) { .home .site-header { min-height: 96px; padding-top: 0.65rem; padding-bottom: 0.55rem; } .home .site-content-wrapper { padding-top: 104px; } .home .header-inner { gap: 8px; min-height: 38px; padding-left: 0.5rem; padding-right: 4.25rem; } .home .lang-switcher { right: 0.5rem; gap: 4px; } .home .lang-link { gap: 0; padding: 3px 5px; } .home .lang-link span { display: none; } .directory-meta-nav { justify-content: flex-start; gap: 16px; margin-top: 0.35rem; padding-left: 0.75rem; padding-right: 0.75rem; } .directory-meta-link { font-size: 0.84rem; } }' . "\n";
+}
+
+function ensure_index_header_nav_styles(string $html): string
+{
+    if (str_contains($html, '.home .site-header { display: block;')) {
+        return $html;
+    }
+
+    $needle = '          .home .page-header .entry-title { text-align: center; }' . "\n";
+    if (str_contains($html, $needle)) {
+        return str_replace($needle, $needle . index_header_nav_styles(), $html);
+    }
+
+    $needle = '          .homepage-directory { max-width: 1080px; margin: 0 auto; padding: 28px 20px 44px; }' . "\n";
+    if (!str_contains($html, $needle)) {
+        throw new RuntimeException('Unable to locate index header nav style insertion point');
+    }
+
+    return str_replace($needle, index_header_nav_styles() . $needle, $html);
+}
+
+function ensure_index_header_meta_nav(string $html, string $locale, array $categories): string
+{
+    $fromPath = $locale === 'ru' ? 'ru/index.html' : 'index.html';
+    $nav = directory_render_meta_nav($categories, $locale, '', $fromPath);
+    $headerStart = strpos($html, '<header class="site-header"');
+    if ($headerStart === false) {
+        throw new RuntimeException('Unable to locate index header');
+    }
+
+    $headerEnd = strpos($html, '</header>', $headerStart);
+    if ($headerEnd === false) {
+        throw new RuntimeException('Unable to locate index header end');
+    }
+
+    $headerEnd += strlen('</header>');
+    $header = substr($html, $headerStart, $headerEnd - $headerStart);
+    $header = preg_replace('~\n<nav class="directory-meta-nav" aria-label="[^"]+">\n.*?\n</nav>(?=\n</header>)~su', '', $header) ?? $header;
+    $needle = "</div>\n</header>";
+    if (!str_contains($header, $needle)) {
+        throw new RuntimeException('Unable to locate index header nav insertion point');
+    }
+
+    $header = str_replace($needle, "</div>\n" . $nav . "\n</header>", $header);
+
+    return substr($html, 0, $headerStart) . $header . substr($html, $headerEnd);
 }
 
 function write_sitemap(string $root, array $data): void

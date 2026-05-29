@@ -11,6 +11,7 @@
 <link href="../../wp-content/litespeed/css/styles.css" rel="stylesheet"/>
 <script src="../../wp-content/litespeed/js/ad-loader.js"></script>
 <script src="../../wp-content/litespeed/js/site-search.js" defer></script>
+<script src="../../wp-content/litespeed/js/directory-filter.js" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   if (window.bitmixlistLoadTopAd) {
@@ -18,13 +19,14 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 </script>
+
 <style>
 .directory-page .site-header { display: block; min-height: 108px; padding-top: 1rem; padding-bottom: 0.95rem; }
 .directory-page .site-content-wrapper { padding-top: 124px; }
 .directory-page .header-inner { gap: 12px; min-height: 42px; align-items: center; position: relative; padding-right: 8rem; }
 .directory-page .header-inner h4 { flex: 1 1 0; min-width: 0; font-size: var(--directory-header-title-size, 1.5rem); line-height: 1.2; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .directory-page .lang-switcher { position: absolute; top: 50%; right: 2rem; transform: translateY(-50%); margin-left: 0; flex: 0 0 auto; }
-.directory-page .sidebar .nav-menu a { font-size: 0.95rem; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.directory-page .sidebar .nav-menu a { font-size: 1rem; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .directory-page .mobile-menu-toggle { flex: 0 0 auto; }
 .directory-page .sylvester-top, .directory-page .sylvester-top-mobile { margin-top: 1rem !important; }
 .directory-meta-nav { display: flex; justify-content: center; gap: 22px; width: 100%; margin: 0.45rem 0 0; padding: 0 1.5rem 0.15rem; overflow-x: auto; scrollbar-width: thin; box-sizing: border-box; }
@@ -45,18 +47,97 @@ document.addEventListener('DOMContentLoaded', function () {
 .directory-button:hover, .directory-button:focus { background: #27184d; color: #fff; text-decoration: none; }
 .directory-section { margin-top: 28px; }
 .directory-section h2 { margin: 0 0 12px; font-size: 1.35rem; letter-spacing: 0; }
+.directory-table-wrap { margin: 0; overflow-x: auto; }
 .directory-facts { width: 100%; border-collapse: collapse; table-layout: fixed; }
-.directory-facts th, .directory-facts td { vertical-align: top; padding: 12px; overflow-wrap: anywhere; word-break: normal; }
-.directory-facts th { width: 30%; color: #f6f2ff; text-align: left; background: #282238; }
+.directory-facts th, .directory-facts td { vertical-align: top; padding: 12px; overflow-wrap: normal; word-break: normal; hyphens: none; }
+.directory-facts th { color: #f6f2ff; text-align: left; background: #282238; }
 .directory-facts td { background: #1c1728; }
+.directory-facts .directory-nowrap { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+.directory-entry-table { table-layout: auto; min-width: 620px; }
+.directory-entry-table th:first-child, .directory-entry-table td:first-child { width: 34%; }
+.directory-entry-table tbody td:first-child { color: #f6f2ff; font-weight: 650; }
+.directory-entry-table thead th { font-size: 0.88rem; }
+.directory-facts thead th[data-sortable-column] { cursor: pointer; user-select: none; }
+.directory-sort-button { all: unset; display: inline-flex; align-items: center; justify-content: flex-start; gap: 6px; max-width: 100%; color: inherit; font: inherit; font-weight: inherit; line-height: inherit; cursor: pointer; }
+.directory-sort-label { min-width: 0; }
+.directory-sort-button:focus-visible { outline: 2px solid #bb86fc; outline-offset: 3px; border-radius: 4px; }
+.directory-sort-indicator { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 0.8em; color: #c7b8ff; font-size: 0.78em; line-height: 1; text-align: center; }
+
+.coin-list { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
+.coin-badge { display: inline-flex; align-items: center; gap: 5px; min-height: 26px; padding: 2px 7px 2px 4px; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 999px; background: #121018; color: #f6f2ff; font-size: 0.82rem; font-weight: 650; line-height: 1; white-space: nowrap; }
+.coin-badge img { display: block; flex: 0 0 20px; width: 20px; height: 20px; }
+.directory-facts th.directory-coins-cell { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+.directory-facts td.directory-coins-cell { white-space: normal; overflow-wrap: normal; word-break: normal; }
+.directory-facts td.directory-coins-cell .coin-list { max-width: 100%; }
+.directory-list-summary .coin-list { display: inline-flex; margin-left: 4px; vertical-align: middle; }
+
 .directory-note { margin: 0; padding: 14px 16px; border: 1px solid #4a3a70; border-radius: 8px; background: #181222; line-height: 1.55; }
+.directory-note > :first-child { margin-top: 0; }
+.directory-note > :last-child { margin-bottom: 0; }
+.directory-config { margin: 0; padding: 16px 18px; border: 1px solid #3a2e55; border-radius: 8px; background: #181222; line-height: 1.55; }
+.directory-config > :first-child { margin-top: 0; }
+.directory-config > :last-child { margin-bottom: 0; }
+.directory-config ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 8px 18px; margin: 0; padding-left: 1.2rem; }
+.directory-config li { margin: 0; }
+	.directory-config-source { margin: 0 0 10px; color: #c9c3d8; font-size: 0.92rem; line-height: 1.45; }
+	.directory-config-json { margin: 0; max-height: 540px; overflow: auto; padding: 14px 16px; border: 1px solid #3a2e55; border-radius: 8px; background: #0f0d16; color: #f6f2ff; line-height: 1.55; white-space: pre; }
+	.directory-config-json code { font: 0.92rem/1.55 "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+	.directory-volume { padding: 16px 18px; border: 1px solid #2d2d2d; border-radius: 8px; background: #1a1a1a; color: #e0e0e0; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); }
+	.directory-volume-source { margin: 0 0 12px; color: #cfcfcf; font-size: 0.92rem; line-height: 1.45; }
+	.directory-volume-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 0 0 14px; }
+	.directory-volume-stat { padding: 10px 12px; border: 1px solid #333; border-radius: 7px; background: #121212; }
+	.directory-volume-stat dt { margin: 0 0 4px; color: #bdbdbd; font-size: 0.78rem; font-weight: 650; text-transform: uppercase; letter-spacing: 0.04em; }
+	.directory-volume-stat dd { margin: 0; color: #f4f4f4; font-weight: 700; line-height: 1.3; }
+	.directory-volume-stat small { display: block; margin-top: 2px; color: #bdbdbd; font-weight: 500; }
+	.directory-volume-chart { width: 100%; height: auto; margin: 2px 0 16px; border: 1px solid #333; border-radius: 7px; background: #101010; overflow: hidden; }
+	.directory-volume-chart svg { display: block; width: 100%; height: auto; }
+	.directory-volume-table-wrap { margin: 0; overflow-x: auto; }
+	.directory-volume-table { width: 100%; border-collapse: collapse; }
+	.directory-volume-table th, .directory-volume-table td { padding: 9px 10px; border-top: 1px solid #303030; text-align: left; white-space: nowrap; }
+	.directory-volume-table th { color: #f1f1f1; background: #202020; font-size: 0.85rem; }
+	.directory-volume-table td { background: #161616; }
+	.directory-tool-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
+.directory-verification-tool { flex: 1 1 calc(50% - 6px); }
+.directory-tool-grid > .directory-verification-tool:only-child { flex-basis: 100%; }
+.directory-inline-tool { min-width: 0; padding: 16px; border: 1px solid #2d2d2d; border-radius: 8px; background: #1a1a1a; color: #e0e0e0; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); }
+.directory-inline-tool h3 { margin: 0 0 8px; color: #f1f1f1; font-size: 1.05rem; font-weight: 650; letter-spacing: 0; }
+.directory-inline-tool p { margin: 0 0 12px; color: #cfcfcf; line-height: 1.5; }
+.directory-inline-tool label { display: block; margin: 0 0 6px; color: #d6d6d6; font-size: 0.9rem; font-weight: 650; }
+.directory-inline-tool input, .directory-inline-tool textarea { width: 100%; box-sizing: border-box; border: 1px solid #3a3a3a; border-radius: 6px; background: #121212; color: #f4f4f4; padding: 10px 12px; font: inherit; }
+.directory-inline-tool textarea { min-height: 168px; resize: vertical; font-family: var(--bitmixlist-font-mono, "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace); font-size: 0.9rem; line-height: 1.45; }
+.directory-inline-tool input:focus, .directory-inline-tool textarea:focus { border-color: #bb86fc; outline: 2px solid rgba(187, 134, 252, 0.18); outline-offset: 0; }
+.directory-inline-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 10px; }
+.directory-inline-tool button { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: 0 12px; border: 1px solid #454545; border-radius: 6px; background: #2d2d2d; color: #f4f4f4; font-size: 0.9rem; font-weight: 650; line-height: 1.2; cursor: pointer; }
+.directory-inline-tool button:hover, .directory-inline-tool button:focus { border-color: #bb86fc; background: #383838; color: #fff; outline: none; }
+.directory-inline-tool .vg-status { margin: 0; padding: 10px 12px; border: 1px solid #3a3a3a; border-radius: 6px; background: #181818; color: #e5e5e5; line-height: 1.45; }
+.directory-inline-tool .vg-status[hidden] { display: none; }
+.directory-inline-tool .vg-status--success { border-color: #2f7d48; background: #14251b; color: #b8f7c8; }
+.directory-inline-tool .vg-status--error { border-color: #8b2f36; background: #2a1417; color: #ffc4c8; }
+.directory-inline-tool .vg-status--warning { border-color: #80652a; background: #261f12; color: #ffe4a3; }
+.directory-inline-tool .vg-status--info { border-color: #3a3a3a; background: #181818; color: #e5e5e5; }
+.directory-pgp-key { flex: 1 1 100%; grid-column: 1 / -1; }
+.directory-pgp-key pre { max-height: 360px; margin: 0; padding: 12px; overflow: auto; border: 1px solid #303030; border-radius: 6px; background: #121212; color: #f4f4f4; font-family: var(--bitmixlist-font-mono, "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace); font-size: 0.82rem; line-height: 1.42; white-space: pre-wrap; overflow-wrap: anywhere; }
+.directory-icon { display: inline-block; flex: 0 0 auto; width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.14em; }
+.directory-heading-icon { color: #bb86fc; margin-right: 0.42rem; }
+.directory-meta-link { display: inline-flex; align-items: center; gap: 0.38rem; }
+.directory-meta-link .directory-icon { width: 0.95rem; height: 0.95rem; color: #bb86fc; }
+.directory-button { gap: 0.42rem; }
+.directory-button .directory-icon { width: 1rem; height: 1rem; }
+.directory-icon-button .directory-icon { width: 17px; height: 17px; }
+.directory-section-link { display: inline-flex; align-items: center; gap: 0.35rem; }
+.directory-section-link .directory-icon { width: 0.95rem; height: 0.95rem; }
+.directory-filter-label .directory-icon { margin-right: 0.35rem; color: #bb86fc; }
+.directory-inline-tool h3 { display: flex; align-items: center; gap: 0.45rem; }
+.directory-inline-tool h3 .directory-icon { color: #bb86fc; }
+.directory-inline-tool button { gap: 0.42rem; }
+
 .directory-footer-spacer { margin-top: 34px; }
 @media (max-width: 700px) {
   .directory-page .site-header { min-height: 96px; padding-top: 0.65rem; padding-bottom: 0.55rem; }
   .directory-page .site-content-wrapper { padding-top: 104px; }
   .directory-page .header-inner { gap: 8px; min-height: 38px; padding-left: 0.5rem; padding-right: 4.25rem; }
   .directory-page .header-inner h4 { font-size: var(--directory-header-title-mobile-size, 1.15rem); }
-  .directory-page .sidebar .nav-menu a { font-size: 0.9rem; }
+  .directory-page .sidebar .nav-menu a { font-size: 1rem; }
   .directory-page .lang-switcher { right: 0.5rem; gap: 4px; }
   .directory-page .lang-link { gap: 0; padding: 3px 5px; }
   .directory-page .lang-link span { display: none; }
@@ -65,7 +146,10 @@ document.addEventListener('DOMContentLoaded', function () {
   .directory-detail h1 { font-size: 2rem; }
   .directory-detail { padding: 22px 14px 36px; }
   .directory-hero { grid-template-columns: 1fr; }
-  .directory-logo { width: 112px; height: 112px; }
+  .directory-logo { width: 128px; height: 128px; }
+  .directory-verification-tool, .directory-pgp-key { flex-basis: 100%; }
+  .directory-table-wrap { overflow-x: visible; }
+  .directory-entry-table { min-width: 0; }
   .directory-facts, .directory-facts tbody, .directory-facts tr, .directory-facts th, .directory-facts td { display: block; width: 100%; box-sizing: border-box; }
   .directory-facts th { border-bottom: 0; }
 }
@@ -120,12 +204,12 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 </div>
 <nav class="directory-meta-nav" aria-label="Разделы каталога">
-<a class="directory-meta-link" href="../mixers/">Миксеры</a>
-<a class="directory-meta-link" href="../neverkyc-exchanges/">Обмен без KYC</a>
-<a class="directory-meta-link" href="../instant-exchanges/">Обмен мгновенный</a>
-<a class="directory-meta-link" href="../p2p-markets/">P2P-площадки</a>
-<a class="directory-meta-link" href="../coordinators/">Координаторы</a>
-<a class="directory-meta-link is-active" href="./" aria-current="true">Инструменты приватности</a>
+<a class="directory-meta-link" href="../mixers/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="m15 15 6 6"></path><path d="M4 4l5 5"></path></svg><span>Миксеры</span></a>
+<a class="directory-meta-link" href="../neverkyc-exchanges/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg><span>Обмен без KYC</span></a>
+<a class="directory-meta-link" href="../instant-exchanges/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"></path></svg><span>Обмен мгновенный</span></a>
+<a class="directory-meta-link" href="../p2p-markets/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="4"></circle><path d="M2 21a7 7 0 0 1 14 0"></path><path d="M17 11a4 4 0 0 0 0-6"></path><path d="M22 21a7 7 0 0 0-5-6.7"></path></svg><span>P2P-площадки</span></a>
+<a class="directory-meta-link" href="../coordinators/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><circle cx="12" cy="18" r="3"></circle><path d="m8.4 8.1 3.2 7.8"></path><path d="m15.6 8.1-3.2 7.8"></path><path d="M9 6h6"></path></svg><span>Координаторы</span></a>
+<a class="directory-meta-link is-active" href="./" aria-current="true"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span>Инструменты приватности</span></a>
 </nav>
 </header>
 <div class="sylvester-top" style="width:728px;height:90px;">
@@ -145,35 +229,42 @@ document.addEventListener('DOMContentLoaded', function () {
 <h1>Haveno DEX</h1>
 <p class="directory-summary">Haveno DEX: Некастодиальный Tor-based DEX для фиат ↔ Monero с multisig-эскроу, open-source Java стек.. Страница параметров BitMixList для категории &quot;Инструмент приватности&quot;.</p>
 <div class="directory-actions">
-<a class="directory-button" href="https://haveno.exchange/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
-<a class="directory-button" href="../../privacy-tools/haveno-dex.html">English</a>
-</div>
-</div>
-</section>
-<section class="directory-section">
-<h2>Ссылки</h2>
-<table class="directory-facts">
+	<a class="directory-button" href="https://haveno.exchange/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
+	</div>
+	</div>
+	</section>
+	<section class="directory-section">
+	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3c3 3 3 15 0 18"></path><path d="M12 3c-3 3-3 15 0 18"></path></svg><span>Ссылки</span></h2>
+	<figure class="wp-block-table directory-table-wrap">
+	<table class="directory-facts directory-entry-table">
+	<thead><tr><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Параметр</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Значение</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th></tr></thead>
 <tbody>
-<tr><th>Официальный сайт</th><td><a href="https://haveno.exchange/" rel="noopener noreferrer" target="_blank">https://haveno.exchange/</a></td></tr>
-<tr><th>Tor-сайт</th><td>No</td></tr>
+<tr><td class="directory-nowrap">Официальный сайт</td><td class="directory-nowrap"><a href="https://haveno.exchange/" rel="noopener noreferrer" target="_blank">https://haveno.exchange/</a></td></tr>
+<tr><td class="directory-nowrap">Tor-сайт</td><td class="directory-nowrap">No</td></tr>
 
 
 </tbody>
 </table>
-</section>
-<section class="directory-section">
-<h2>Параметры</h2>
-<table class="directory-facts">
+	</figure>
+	</section>
+	<section class="directory-section">
+	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h10"></path><path d="M18 6h2"></path><circle cx="16" cy="6" r="2"></circle><path d="M4 12h3"></path><path d="M11 12h9"></path><circle cx="9" cy="12" r="2"></circle><path d="M4 18h12"></path><path d="M20 18h.01"></path><circle cx="18" cy="18" r="2"></circle></svg><span>Параметры</span></h2>
+	<figure class="wp-block-table directory-table-wrap">
+	<table class="directory-facts directory-entry-table">
+	<thead><tr><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Параметр</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Значение</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th></tr></thead>
 <tbody>
-<tr><th>Категории</th><td>Monero, P2P</td></tr>
-<tr><th>Ссылка проекта</th><td>https://haveno.exchange/</td></tr>
+<tr><td>Категории</td><td>Monero, P2P</td></tr>
+<tr><td>Ссылка проекта</td><td>https://haveno.exchange/</td></tr>
 
 </tbody>
 </table>
+	</figure>
 </section>
+
 <section class="directory-section">
-<h2>Проверка</h2>
+<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg><span>Проверка</span></h2>
 <p class="directory-note">Проверяйте официальный домен и любые гарантийные условия перед отправкой средств.</p>
+
 </section>
 <div class="directory-footer-spacer"></div>
 </article>
@@ -181,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <footer class="site-footer" id="site-footer" role="contentinfo"></footer>
 <div class="footer">
 <div>Copyright © 2023-2026 <strong><a href="https://bitcointalk.org/index.php?action=profile;u=2739424">NotATether</a></strong>.</div>
-<div>Contact: admin [at] notatether [dot] com</div>
+        <div>Contact: admin [at] bitmixlist [dot] org</div>
 <div><em>Disclaimers:</em></div>
 <div>Only mix funds you have obtained lawfully.</div>
 <div>Do not use BitMixList for money laundering!</div>

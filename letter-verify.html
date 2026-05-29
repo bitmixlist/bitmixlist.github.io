@@ -346,15 +346,10 @@
       <header class="page-header">
         <h1 class="entry-title">Verify Mixer Letter of Guarantee</h1>
       </header>
-        <p>Legitimate custodial mixers issue a signed letter of guarantee for every deposit. If there is ever a dispute, that letter is the only proof that ties your deposit address to the operator. Use this tool to verify the signature locally before you send any follow-up messages.</p>
-        <p>The verifier runs completely in your browser using OpenPGP. Paste the mixer's letter, pick the service you used, and click verify. If the signature is invalid, stop immediately and contact the operator through their official support channels before proceeding.</p>
-        <p>After verifying, store the letter offline together with the transaction ID so you can prove ownership if the mixer ever needs to investigate.</p>
+        <p>Legitimate custodial mixers issue a signed letter of guarantee for every deposit. If there is ever a dispute, that letter is the only proof tying your deposit address to the operator, so verify it locally with this OpenPGP-powered tool before sending follow-up messages or relying on a refund.</p>
+        <p>Paste the letter, pick the service you used, and click verify. The verifier runs in your browser, does not use external APIs, and can be run offline; if the signature is invalid, stop immediately and contact the operator through official support channels. After verifying, store the letter offline together with the transaction ID.</p>
         <div class="vg-verify">
           <div id="letter-verify">
-            <h2>Verify Letter of Guarantee</h2>
-            <p>This tool allows you to verify the letter of guarantee that you receive from any mixer, without installing special software. It requires Javascript to work.</p>
-            <p>It is <strong>very important</strong> that you authenticate your letter of guarrantee to avoid getting scammed, as the letter acts as a legally-binding contract between you and mixer, and insures you from potential loss.</strong> It is the only way you can get customer support or a refund if something goes wrong during a mix.</p>
-            <p>This verification tool runs locally on your browser and does not use browser APIs or fetch data or scripts from other servers. You can even run it offline.</p>
             <select id="mixerSelect">
                 <option value="">Select a mixer</option>
                 <option value="mixer.money">Mixer.money</option>
@@ -389,7 +384,7 @@
     <footer class="site-footer" id="site-footer" role="contentinfo"></footer>
 <div class="footer">
 <div>Copyright © 2023-2026 <strong><a href="https://bitcointalk.org/index.php?action=profile;u=2739424">NotATether</a></strong>.</div>
-<div>Contact: admin [at] notatether [dot] com</div>
+<div>Contact: admin [at] bitmixlist [dot] org</div>
 <div><em>Disclaimers:</em></div>
 <div>Only mix funds you have obtained lawfully.</div>
 <div>Do not use BitMixList for money laundering!</div>

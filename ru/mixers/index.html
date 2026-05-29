@@ -11,6 +11,7 @@
 <link href="../../wp-content/litespeed/css/styles.css" rel="stylesheet"/>
 <script src="../../wp-content/litespeed/js/ad-loader.js"></script>
 <script src="../../wp-content/litespeed/js/site-search.js" defer></script>
+<script src="../../wp-content/litespeed/js/directory-filter.js" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   if (window.bitmixlistLoadTopAd) {
@@ -24,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
 .directory-page .header-inner { gap: 12px; min-height: 42px; align-items: center; position: relative; padding-right: 8rem; }
 .directory-page .header-inner h4 { flex: 1 1 0; min-width: 0; font-size: var(--directory-header-title-size, 1.5rem); line-height: 1.2; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .directory-page .lang-switcher { position: absolute; top: 50%; right: 2rem; transform: translateY(-50%); margin-left: 0; flex: 0 0 auto; }
-.directory-page .sidebar .nav-menu a { font-size: 0.95rem; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.directory-page .sidebar .nav-menu a { font-size: 1rem; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .directory-page .mobile-menu-toggle { flex: 0 0 auto; }
 .directory-page .sylvester-top, .directory-page .sylvester-top-mobile { margin-top: 1rem !important; }
 .directory-meta-nav { display: flex; justify-content: center; gap: 22px; width: 100%; margin: 0.45rem 0 0; padding: 0 1.5rem 0.15rem; overflow-x: auto; scrollbar-width: thin; box-sizing: border-box; }
@@ -38,35 +39,132 @@ document.addEventListener('DOMContentLoaded', function () {
 .directory-summary { margin: 0; color: #e8e1f5; line-height: 1.55; max-width: 760px; }
 .directory-section { margin-top: 28px; }
 .directory-section h2 { margin: 0 0 12px; font-size: 1.35rem; letter-spacing: 0; }
-.directory-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
-.directory-list-card { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; min-width: 0; padding: 14px; border: 1px solid #3a2e55; border-radius: 8px; background: #181222; }
-.directory-list-card .directory-logo { width: 64px; height: 64px; border-radius: 8px; object-fit: contain; }
-.directory-list-card .directory-logo--text { font-size: 1.15rem; }
+.directory-filter { margin: 22px 0 0; max-width: 560px; }
+.directory-filter-label { display: block; margin: 0 0 6px; color: #f6f2ff; font-size: 0.95rem; font-weight: 650; }
+.directory-filter-input { width: 100%; min-height: 40px; box-sizing: border-box; border: 1px solid #4a3a70; border-radius: 7px; background: #121018; color: #f6f2ff; padding: 0 12px; font: inherit; }
+.directory-filter-input:focus { border-color: #8a6cff; outline: 2px solid rgba(138, 108, 255, 0.24); outline-offset: 2px; }
+.directory-filter-empty { margin: 10px 0 0; color: #c9c3d8; }
+.directory-pair-filter { padding: 16px 18px; border: 1px solid #2d2d2d; border-radius: 8px; background: #1a1a1a; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); }
+.directory-pair-filter h2 { margin-bottom: 14px; }
+.directory-pair-filter__controls { display: grid; grid-template-columns: repeat(2, minmax(220px, 1fr)) auto; gap: 12px; align-items: start; }
+.directory-pair-filter__control { display: grid; gap: 6px; color: #f6f2ff; font-size: 0.92rem; font-weight: 650; }
+.directory-pair-filter__select { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.directory-pair-filter__select:focus { border-color: #8a6cff; outline: 2px solid rgba(138, 108, 255, 0.24); outline-offset: 2px; }
+.directory-pair-filter__coin-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.directory-pair-filter__coin { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 36px; padding: 5px 8px; border: 1px solid #4a3a70; border-radius: 7px; background: #121018; color: #f6f2ff; font: inherit; font-size: 0.84rem; font-weight: 650; line-height: 1.15; cursor: pointer; }
+.directory-pair-filter__coin:hover, .directory-pair-filter__coin:focus { border-color: #8a6cff; background: #1b1428; color: #fff; outline: none; }
+.directory-pair-filter__coin.is-selected { border-color: #bb86fc; background: #2a1c41; color: #fff; }
+.directory-pair-filter__coin img { display: block; flex: 0 0 20px; width: 20px; height: 20px; }
+.directory-pair-filter__reset { min-height: 40px; padding: 0 13px; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; font: inherit; font-size: 0.9rem; font-weight: 650; cursor: pointer; }
+.directory-pair-filter__reset:hover, .directory-pair-filter__reset:focus { background: #27184d; color: #fff; }
+.directory-pair-filter__status, .directory-pair-filter__empty { margin: 12px 0 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }
+.directory-pair-filter__empty { color: #ffcfdf; }
+.directory-fee-filter { padding: 16px 18px; border: 1px solid #2d2d2d; border-radius: 8px; background: #1a1a1a; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); }
+.directory-fee-filter h2 { margin-bottom: 14px; }
+.directory-fee-filter__controls { display: grid; grid-template-columns: minmax(220px, 1fr) auto; gap: 12px; align-items: end; }
+.directory-fee-filter__control { display: grid; gap: 8px; color: #f6f2ff; font-size: 0.92rem; font-weight: 650; }
+.directory-fee-filter__label-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.directory-fee-filter__value { color: #c7b8ff; font-weight: 750; white-space: nowrap; }
+.directory-fee-filter__range { width: 100%; accent-color: #bb86fc; }
+.directory-fee-filter__reset { min-height: 40px; padding: 0 13px; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; font: inherit; font-size: 0.9rem; font-weight: 650; cursor: pointer; }
+.directory-fee-filter__reset:hover, .directory-fee-filter__reset:focus { background: #27184d; color: #fff; }
+.directory-fee-filter__status, .directory-fee-filter__empty { margin: 12px 0 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }
+.directory-fee-filter__empty { color: #ffcfdf; }
+.directory-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px; }
+.directory-list-card { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 14px; min-width: 0; padding: 14px; border: 1px solid #3a2e55; border-radius: 8px; background: #181222; }
+.directory-list-card .directory-logo { width: 128px; height: 128px; border-radius: 10px; object-fit: contain; }
+.directory-list-card .directory-logo--text { font-size: 1.8rem; }
 .directory-list-title { margin: 0 0 4px; font-size: 1.05rem; line-height: 1.25; font-weight: 700; }
 .directory-list-title a { color: #f6f2ff; text-decoration: none; }
 .directory-list-title a:hover, .directory-list-title a:focus { text-decoration: underline; }
 .directory-list-summary { margin: 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }
+.coin-list { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
+.coin-badge { display: inline-flex; align-items: center; gap: 5px; min-height: 26px; padding: 2px 7px 2px 4px; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 999px; background: #121018; color: #f6f2ff; font-size: 0.82rem; font-weight: 650; line-height: 1; white-space: nowrap; }
+.coin-badge img { display: block; flex: 0 0 20px; width: 20px; height: 20px; }
+.directory-facts th.directory-coins-cell { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+.directory-facts td.directory-coins-cell { white-space: normal; overflow-wrap: normal; word-break: normal; }
+.directory-facts td.directory-coins-cell .coin-list { max-width: 100%; }
+.directory-list-summary .coin-list { display: inline-flex; margin-left: 4px; vertical-align: middle; }
+
 .directory-list-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .directory-button { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; padding: 0 10px; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; text-decoration: none; font-size: 0.9rem; font-weight: 650; }
 .directory-button:hover, .directory-button:focus { background: #27184d; color: #fff; text-decoration: none; }
+.directory-icon-button { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 34px; height: 34px; min-height: 34px; margin-top: 0; margin-left: auto; padding: 0; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; text-decoration: none !important; box-sizing: border-box; }
+.directory-icon-button:hover, .directory-icon-button:focus { background: #27184d; color: #fff; text-decoration: none !important; }
+.directory-icon-button svg { width: 17px; height: 17px; }
+.tool-registry { max-width: none; margin: 28px 0 0; padding: 0; }
+.tool-registry__header h2 { margin: 0 0 10px; font-size: 2rem; letter-spacing: 0; }
+.tool-registry .muted { margin: 0 0 16px; color: #d8d0e8; line-height: 1.45; }
+.tool-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.tool { border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 14px 14px 12px; }
+.tool__header { display: flex; align-items: center; gap: 12px; }
+.tool__header .tool__name { flex: 1 1 auto; min-width: 0; }
+.tool__name { color: #f6f2ff; font-size: 1.05rem; font-weight: 700; text-decoration: none; }
+.tool__name:hover, .tool__name:focus { color: #fff; text-decoration: underline; }
+.tool__desc { margin: 8px 0 10px; color: #d8d0e8; line-height: 1.45; }
+.tool__meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0; }
+.pill { padding: 4px 10px; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 999px; color: #e7def6; font-size: 0.82rem; line-height: 1.25; }
+.directory-table-wrap { margin: 0; overflow-x: auto; }
 .directory-facts { width: 100%; border-collapse: collapse; table-layout: fixed; }
-.directory-facts th, .directory-facts td { vertical-align: top; padding: 12px; overflow-wrap: anywhere; word-break: normal; }
+.directory-facts th, .directory-facts td { vertical-align: top; padding: 12px; overflow-wrap: normal; word-break: normal; hyphens: none; }
 .directory-facts th { color: #f6f2ff; text-align: left; background: #282238; }
 .directory-facts td { background: #1c1728; }
+.directory-facts .directory-nowrap { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+.directory-comparison-table { table-layout: auto; min-width: 1040px; }
+.directory-comparison-table--mixers { min-width: 1380px; }
+.directory-comparison-table--mixers th.directory-coins-cell,
+.directory-comparison-table--mixers td.directory-coins-cell { width: 12rem; max-width: 12rem; }
+.directory-comparison-table--mixers td.directory-coins-cell .coin-list { max-width: 12rem; }
+.directory-comparison-table--coordinators { min-width: 960px; }
+.directory-facts thead th[data-sortable-column] { cursor: pointer; user-select: none; }
+.directory-sort-button { all: unset; display: inline-flex; align-items: center; justify-content: flex-start; gap: 6px; max-width: 100%; color: inherit; font: inherit; font-weight: inherit; line-height: inherit; cursor: pointer; }
+.directory-sort-label { min-width: 0; }
+.directory-sort-button:focus-visible { outline: 2px solid #bb86fc; outline-offset: 3px; border-radius: 4px; }
+.directory-sort-indicator { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 0.8em; color: #c7b8ff; font-size: 0.78em; line-height: 1; text-align: center; }
+
+.directory-section-cautions { margin-top: 22px; }
+.directory-caution { margin: 0; padding: 16px 18px; border: 1px solid #2d2d2d; border-radius: 8px; background: #1a1a1a; color: #e0e0e0; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); line-height: 1.55; }
+.directory-caution + .directory-caution { margin-top: 12px; }
+.directory-caution h3 { margin: 0 0 8px; color: #f2ecff; font-size: 1rem; letter-spacing: 0; }
+.directory-caution p { margin: 0; }
+.directory-caution a { color: #bb86fc; font-weight: 700; text-decoration: underline; text-underline-offset: 0.16em; }
+.directory-icon { display: inline-block; flex: 0 0 auto; width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.14em; }
+.directory-heading-icon { color: #bb86fc; margin-right: 0.42rem; }
+.directory-meta-link { display: inline-flex; align-items: center; gap: 0.38rem; }
+.directory-meta-link .directory-icon { width: 0.95rem; height: 0.95rem; color: #bb86fc; }
+.directory-button { gap: 0.42rem; }
+.directory-button .directory-icon { width: 1rem; height: 1rem; }
+.directory-icon-button .directory-icon { width: 17px; height: 17px; }
+.directory-section-link { display: inline-flex; align-items: center; gap: 0.35rem; }
+.directory-section-link .directory-icon { width: 0.95rem; height: 0.95rem; }
+.directory-filter-label .directory-icon { margin-right: 0.35rem; color: #bb86fc; }
+.directory-inline-tool h3 { display: flex; align-items: center; gap: 0.45rem; }
+.directory-inline-tool h3 .directory-icon { color: #bb86fc; }
+.directory-inline-tool button { gap: 0.42rem; }
+
 @media (max-width: 700px) {
   .directory-page .site-header { min-height: 96px; padding-top: 0.65rem; padding-bottom: 0.55rem; }
   .directory-page .site-content-wrapper { padding-top: 104px; }
   .directory-page .header-inner { gap: 8px; min-height: 38px; padding-left: 0.5rem; padding-right: 4.25rem; }
   .directory-page .header-inner h4 { font-size: var(--directory-header-title-mobile-size, 1.15rem); }
-  .directory-page .sidebar .nav-menu a { font-size: 0.9rem; }
-  .directory-page .lang-switcher { right: 0.5rem; gap: 4px; }
-  .directory-page .lang-link { gap: 0; padding: 3px 5px; }
-  .directory-page .lang-link span { display: none; }
-  .directory-meta-nav { justify-content: flex-start; gap: 16px; margin-top: 0.35rem; padding-left: 0.75rem; padding-right: 0.75rem; }
-  .directory-meta-link { font-size: 0.84rem; }
-  .directory-detail { padding: 22px 14px 36px; }
-  .directory-detail h1 { font-size: 2rem; }
-  .directory-list { grid-template-columns: 1fr; }
+  .directory-page .sidebar .nav-menu a { font-size: 1rem; }
+	  .directory-page .lang-switcher { right: 0.5rem; gap: 4px; }
+	  .directory-page .lang-link { gap: 0; padding: 3px 5px; }
+	  .directory-page .lang-link span { display: none; }
+	  .directory-meta-nav { justify-content: flex-start; gap: 16px; margin-top: 0.35rem; padding-left: 0.75rem; padding-right: 0.75rem; }
+	  .directory-meta-link { font-size: 0.84rem; }
+	  .directory-detail { padding: 22px 14px 36px; }
+	  .directory-detail h1 { font-size: 2rem; }
+	  .directory-fee-filter__controls { grid-template-columns: 1fr; }
+	  .directory-fee-filter__reset { width: 100%; }
+	  .directory-pair-filter__controls { grid-template-columns: 1fr; }
+	  .directory-pair-filter__reset { width: 100%; }
+	  .directory-list { grid-template-columns: 1fr; }
+  .directory-table-wrap { overflow-x: visible; }
+  .directory-comparison-table { min-width: 0; }
+  .directory-comparison-table--mixers th.directory-coins-cell,
+  .directory-comparison-table--mixers td.directory-coins-cell { width: 100%; max-width: none; }
+  .directory-comparison-table--mixers td.directory-coins-cell .coin-list { max-width: 100%; }
   .directory-facts, .directory-facts tbody, .directory-facts tr, .directory-facts th, .directory-facts td { display: block; width: 100%; box-sizing: border-box; }
 }
 </style>
@@ -117,12 +215,12 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 </div>
 <nav class="directory-meta-nav" aria-label="Разделы каталога">
-<a class="directory-meta-link is-active" href="./" aria-current="true">Миксеры</a>
-<a class="directory-meta-link" href="../neverkyc-exchanges/">Обмен без KYC</a>
-<a class="directory-meta-link" href="../instant-exchanges/">Обмен мгновенный</a>
-<a class="directory-meta-link" href="../p2p-markets/">P2P-площадки</a>
-<a class="directory-meta-link" href="../coordinators/">Координаторы</a>
-<a class="directory-meta-link" href="../privacy-tools/">Инструменты приватности</a>
+<a class="directory-meta-link is-active" href="./" aria-current="true"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="m15 15 6 6"></path><path d="M4 4l5 5"></path></svg><span>Миксеры</span></a>
+<a class="directory-meta-link" href="../neverkyc-exchanges/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg><span>Обмен без KYC</span></a>
+<a class="directory-meta-link" href="../instant-exchanges/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"></path></svg><span>Обмен мгновенный</span></a>
+<a class="directory-meta-link" href="../p2p-markets/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="4"></circle><path d="M2 21a7 7 0 0 1 14 0"></path><path d="M17 11a4 4 0 0 0 0-6"></path><path d="M22 21a7 7 0 0 0-5-6.7"></path></svg><span>P2P-площадки</span></a>
+<a class="directory-meta-link" href="../coordinators/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><circle cx="12" cy="18" r="3"></circle><path d="m8.4 8.1 3.2 7.8"></path><path d="m15.6 8.1-3.2 7.8"></path><path d="M9 6h6"></path></svg><span>Координаторы</span></a>
+<a class="directory-meta-link" href="../privacy-tools/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span>Инструменты приватности</span></a>
 </nav>
 </header>
 <div class="sylvester-top" style="width:728px;height:90px;">
@@ -133,270 +231,297 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 <div class="centered"><p>Это реклама. Реклама не одобрена BitMixList.</p></div>
 <main class="site-main post-34 page type-page status-publish hentry" id="content">
-<article class="page-content directory-detail">
-<nav class="directory-breadcrumb"><a href="../index.html">Главная</a> / Биткоин-миксеры</nav>
-<h1>Биткоин-миксеры</h1>
-<p class="directory-summary">Раздел BitMixList для категории &quot;Биткоин-миксеры&quot; с отдельными страницами записей, ссылками и параметрами.</p>
-<section class="directory-section">
-<h2>Записи</h2>
-<div class="directory-list">
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/mixer-money.webp" type="image/webp"/><img alt="Mixer.money logo" class="directory-logo" src="../../wp-content/uploads/2023/12/mixer-money.jpg"/></picture></div>
-<div>
+<article class="page-content directory-detail" data-directory-filter-scope data-directory-pair-scope>
+		<nav class="directory-breadcrumb"><a href="../index.html">Главная</a> / Биткоин-миксеры</nav>
+		<h1>Биткоин-миксеры</h1>
+		<p class="directory-summary">Раздел BitMixList для категории &quot;Биткоин-миксеры&quot; с отдельными страницами записей, ссылками и параметрами.</p>
+<section class="directory-section directory-section-cautions">
+<div class="directory-caution" role="note">
+<h3>Осторожно</h3>
+<p>Всегда делайте небольшие миксы. Рекомендуемая сумма — до $500 за один микс. BitMixList старается минимизировать число скамов, но любой сервис может внезапно стать мошенническим.</p>
+</div>
+</section>
+<section class="directory-section directory-fee-filter" data-directory-fee-count-prefix="Подходящих миксеров:" data-directory-fee-default-label="Любая комиссия" data-directory-fee-filter data-directory-fee-value-template="≤ {value}%">
+	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h10"></path><path d="M18 6h2"></path><circle cx="16" cy="6" r="2"></circle><path d="M4 12h3"></path><path d="M11 12h9"></path><circle cx="9" cy="12" r="2"></circle><path d="M4 18h12"></path><path d="M20 18h.01"></path><circle cx="18" cy="18" r="2"></circle></svg><span>Фильтр комиссии</span></h2>
+	<div class="directory-fee-filter__controls">
+	<label class="directory-fee-filter__control" for="directory-fee-filter-mixers-ru"><span class="directory-fee-filter__label-row"><span>Максимальная процентная комиссия</span><output class="directory-fee-filter__value" data-directory-fee-output for="directory-fee-filter-mixers-ru">Любая комиссия</output></span><input class="directory-fee-filter__range" data-directory-fee-default="6" data-directory-fee-input id="directory-fee-filter-mixers-ru" max="6" min="0" step="0.1" type="range" value="6"/></label>
+	<button class="directory-fee-filter__reset" data-directory-fee-reset type="button">Сбросить</button>
+	</div>
+	<p class="directory-fee-filter__status" data-directory-fee-status hidden></p>
+	<p class="directory-fee-filter__empty" data-directory-fee-empty hidden>Нет миксеров с такой комиссией или ниже.</p>
+	</section>
+<div class="directory-filter">
+	<label class="directory-filter-label" for="directory-filter-mixers"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><span>Фильтр сервисов</span></label>
+	<input autocomplete="off" class="directory-filter-input" data-directory-filter-input id="directory-filter-mixers" placeholder="Название, домен, параметр..." type="search"/>
+<p class="directory-filter-empty" data-directory-filter-empty hidden>Нет совпадающих записей.</p>
+</div>
+	<section class="directory-section">
+	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg><span>Записи</span></h2>
+	<div class="directory-list">
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Mixer.money Комиссия за смешивание: 4-5% + 0.0007₿ https://mixer.money http://mixermo4pgkgep3k3qr4fz7dhijavxnh6lwgu7gf5qeltpy4unjed2yd.onion Основан 2016 Монеты BTC Реселл Jambler Плата за миксинг 4-5% + 0.0007₿ Минимум 0.003₿ Максимум 50₿ Телеграм-бот Да" data-directory-fee-max="5">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/mixer-money.webp" type="image/webp"/><img alt="Mixer.money logo" class="directory-logo" src="../../wp-content/uploads/2023/12/mixer-money.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="mixer-money.html">Mixer.money</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 4-5%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="mixer-money.html">Параметры</a>
-<a class="directory-button" href="https://mixer.money" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 4-5% + 0.0007₿</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="mixer-money.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://mixer.money" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/mixtum.webp" type="image/webp"/><img alt="Mixtum logo" class="directory-logo" src="../../wp-content/uploads/2023/12/mixtum.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Mixtum Комиссия за смешивание: 4-5% + 0.0007₿ https://mixtum.io http://mixtumjzn2tsiusfkdhutntamspsg43kgt764qbdaxjebce4h6fcfiad.onion Основан 2018 Монеты BTC Реселл Jambler Плата за миксинг 4-5% + 0.0007₿ Минимум 0.005₿ Максимум 50₿ Телеграм-бот Да" data-directory-fee-max="5">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/mixtum.webp" type="image/webp"/><img alt="Mixtum logo" class="directory-logo" src="../../wp-content/uploads/2023/12/mixtum.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="mixtum.html">Mixtum</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 4-5%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="mixtum.html">Параметры</a>
-<a class="directory-button" href="https://mixtum.io" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 4-5% + 0.0007₿</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="mixtum.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://mixtum.io" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/coinomize.webp" type="image/webp"/><img alt="Coinomize logo" class="directory-logo" src="../../wp-content/uploads/2023/12/coinomize.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Coinomize Комиссия за смешивание: 1-5% + 0.0003₿ https://coinomize.biz/ref/716869674 http://coino2q64k4fg3lkjsnhjeydzwykw22a56u5nf2rdfzkjuy3jbwvypqd.onion/ref/716869674 Основан 2019 Монеты BTC Плата за миксинг 1-5% + 0.0003₿ Минимум 0.003₿ Максимум Не указано Телеграм-бот Нет" data-directory-fee-max="5">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/coinomize.webp" type="image/webp"/><img alt="Coinomize logo" class="directory-logo" src="../../wp-content/uploads/2023/12/coinomize.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="coinomize.html">Coinomize</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 1-5%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="coinomize.html">Параметры</a>
-<a class="directory-button" href="https://coinomize.biz/ref/716869674" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 1-5% + 0.0003₿</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="coinomize.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://coinomize.biz/ref/716869674" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/anonymixer.webp" type="image/webp"/><img alt="Anonymixer logo" class="directory-logo" src="../../wp-content/uploads/2023/12/anonymixer.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Anonymixer Комиссия за смешивание: 1-2% + Переменная https://anonymixer.com http://btcmixer2e3pkn64eb5m65un5nypat4mje27er4ymltzshkmujmxlmyd.onion Основан 2020 Монеты BTC Плата за миксинг 1-2% + Переменная Минимум 0.001₿ Максимум 1.5₿ Телеграм-бот Нет" data-directory-fee-max="2">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/anonymixer.webp" type="image/webp"/><img alt="Anonymixer logo" class="directory-logo" src="../../wp-content/uploads/2023/12/anonymixer.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="anonymixer.html">Anonymixer</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 1-2%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="anonymixer.html">Параметры</a>
-<a class="directory-button" href="https://anonymixer.com" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 1-2% + Переменная</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="anonymixer.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://anonymixer.com" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/webmixer.webp" type="image/webp"/><img alt="Webmixer logo" class="directory-logo" src="../../wp-content/uploads/2023/12/webmixer.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Webmixer Комиссия за смешивание: 5% + Переменная https://webmixer.io http://webmix2nwd6qpq6tjkqshfivt3qqjoutl535xk2z32tgapqfn52z62yd.onion Основан 2020 Монеты BTC Реселл Jambler Плата за миксинг 5% + Переменная Минимум 0.001₿ Максимум 50₿ Телеграм-бот Да" data-directory-fee-max="5">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/webmixer.webp" type="image/webp"/><img alt="Webmixer logo" class="directory-logo" src="../../wp-content/uploads/2023/12/webmixer.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="webmixer.html">Webmixer</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 1-5%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="webmixer.html">Параметры</a>
-<a class="directory-button" href="https://webmixer.io" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 5% + Переменная</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="webmixer.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://webmixer.io" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/mixtura-money.webp" type="image/webp"/><img alt="Mixtura.money logo" class="directory-logo" src="../../wp-content/uploads/2023/12/mixtura-money.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Mixtura.money Комиссия за смешивание: до 5% + 0.0007₿ https://mixtura.money http://3lqpiyzlqudwxiizx6uecc6z5zr6vvxidyi6inuducc7lilsdem2mlqd.onion/ Основан 2021 Монеты BTC Реселл Jambler Плата за миксинг до 5% + 0.0007₿ Минимум Переменная Максимум 50₿ Телеграм-бот Нет" data-directory-fee-max="5">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/mixtura-money.webp" type="image/webp"/><img alt="Mixtura.money logo" class="directory-logo" src="../../wp-content/uploads/2023/12/mixtura-money.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="mixtura-money.html">Mixtura.money</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: до 5%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="mixtura-money.html">Параметры</a>
-<a class="directory-button" href="https://mixtura.money" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: до 5% + 0.0007₿</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="mixtura-money.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://mixtura.money" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/mixero.webp" type="image/webp"/><img alt="Mixero logo" class="directory-logo" src="../../wp-content/uploads/2023/12/mixero.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Mixero Комиссия за смешивание: 0,7%-4,7% + 0.0003₿ https://mixero.io/ http://mixeroyubx5g5yxaucsxcd767vn2lnujuuz2dh53quwabukhrok2ekid.onion Основан 2022 Монеты BTC Плата за миксинг 0,7%-4,7% + 0.0003₿ Минимум 0.002₿ Максимум 2₿ Телеграм-бот Нет" data-directory-fee-max="4.7">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/mixero.webp" type="image/webp"/><img alt="Mixero logo" class="directory-logo" src="../../wp-content/uploads/2023/12/mixero.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="mixero.html">Mixero</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 0,7%-4,7%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="mixero.html">Параметры</a>
-<a class="directory-button" href="https://mixero.io/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 0,7%-4,7% + 0.0003₿</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="mixero.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://mixero.io/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/mixy-money.webp" type="image/webp"/><img alt="Mixy.money logo" class="directory-logo" src="../../wp-content/uploads/2023/12/mixy-money.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Mixy.money Комиссия за смешивание: 3-5% + 0.0007₿ https://mixy.money http://nlljgev5y27bajfoq7os2t6qv27y24hzpnvkmfjevhz4eg5ddbrciyid.onion Основан 2022 Монеты BTC Реселл Jambler Плата за миксинг 3-5% + 0.0007₿ Минимум 0.002₿ Максимум 50₿ Телеграм-бот Нет" data-directory-fee-max="5">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/mixy-money.webp" type="image/webp"/><img alt="Mixy.money logo" class="directory-logo" src="../../wp-content/uploads/2023/12/mixy-money.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="mixy-money.html">Mixy.money</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 3-5%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="mixy-money.html">Параметры</a>
-<a class="directory-button" href="https://mixy.money" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 3-5% + 0.0007₿</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="mixy-money.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://mixy.money" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/dreammixer.webp" type="image/webp"/><img alt="DreamMixer logo" class="directory-logo" src="../../wp-content/uploads/2023/12/dreammixer.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="DreamMixer Комиссия за смешивание: 3,5% + 0.0007₿ https://mixerdream.com http://ipyg3uxi25nxq3qvo7we26o5s6irencdkndv7orbxibzgbuhjmgnafad.onion Основан 2022 Монеты BTC Реселл Jambler Плата за миксинг 3,5% + 0.0007₿ Минимум 0.005₿ Максимум 50₿ Телеграм-бот Нет" data-directory-fee-max="3.5">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/dreammixer.webp" type="image/webp"/><img alt="DreamMixer logo" class="directory-logo" src="../../wp-content/uploads/2023/12/dreammixer.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="dreammixer.html">DreamMixer</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 3,5%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="dreammixer.html">Параметры</a>
-<a class="directory-button" href="https://mixerdream.com" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 3,5% + 0.0007₿</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="dreammixer.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://mixerdream.com" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/thormixer.webp" type="image/webp"/><img alt="Thormixer logo" class="directory-logo" src="../../wp-content/uploads/2023/12/thormixer.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Thormixer Плата за смешивание: 4% + 0.0007₿ https://thormixer.io/ http://63tcvr7j5gju24emo3ygbxmezqmg7z2zyby27n647jmu4uzcosiduzid.onion Основан 2023 Монеты BTC Реселл Jambler Плата за миксинг 4% + 0.0007₿ Минимум 0.003₿ Максимум 50₿ Телеграм-бот Нет" data-directory-fee-max="4">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/thormixer.webp" type="image/webp"/><img alt="Thormixer logo" class="directory-logo" src="../../wp-content/uploads/2023/12/thormixer.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="thormixer.html">Thormixer</a></h3>
-<p class="directory-list-summary">Плата за смешивание: 4%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="thormixer.html">Параметры</a>
-<a class="directory-button" href="https://thormixer.io/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Плата за смешивание: 4% + 0.0007₿</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="thormixer.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://thormixer.io/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/jokermix.webp" type="image/webp"/><img alt="JokerMix logo" class="directory-logo" src="../../wp-content/uploads/2023/12/jokermix.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="JokerMix Комиссия за смешивание: 1-150 сат/ВБ https://jokermix.to/ http://joker63ocoymt26jh5i3dmf2bx4khgg5uahgjk34wffpk422mswg5hid.onion/ Основан 2024 Монеты BTC Плата за миксинг 1-150 сат/ВБ Минимум 0.001₿ Максимум 18₿ Телеграм-бот Нет" data-directory-fee-max="">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/jokermix.webp" type="image/webp"/><img alt="JokerMix logo" class="directory-logo" src="../../wp-content/uploads/2023/12/jokermix.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="jokermix.html">JokerMix</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 1-150 сат/вБ</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="jokermix.html">Параметры</a>
-<a class="directory-button" href="https://jokermix.to/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 1-150 сат/ВБ</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="jokermix.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://jokermix.to/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/genesismix.webp" type="image/webp"/><img alt="GenesisMix logo" class="directory-logo" src="../../wp-content/uploads/2023/12/genesismix.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="GenesisMix Комиссия за смешивание: 0,7-4,7% https://genesismix.cx/ http://genesislakkmzosj47snwmjbz2ugsuoyfznfbswgpy543exhwrd2rjyd.onion/ Основан 2025 Монеты BTC Плата за миксинг 0,7-4,7% Минимум 0.0015₿ Максимум 250₿ Телеграм-бот Нет" data-directory-fee-max="4.7">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/genesismix.webp" type="image/webp"/><img alt="GenesisMix logo" class="directory-logo" src="../../wp-content/uploads/2023/12/genesismix.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="genesismix.html">GenesisMix</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 0,7-4,7%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="genesismix.html">Параметры</a>
-<a class="directory-button" href="https://genesismix.cx/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 0,7-4,7%</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="genesismix.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://genesismix.cx/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/okmix.webp" type="image/webp"/><img alt="Okmix logo" class="directory-logo" src="../../wp-content/uploads/2023/12/okmix.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Okmix Комиссия за смешивание: 5% + 0.0007₿ https://okmix.io http://wqa7jejlascugfwyrbb3shvwgaczxlkconthjyuqdb52sdn6kx57tpqd.onion/ Основан 2025 Монеты BTC Реселл Jambler Плата за миксинг 5% + 0.0007₿ Минимум 0.001₿ Максимум 50₿ Телеграм-бот Да" data-directory-fee-max="5">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/okmix.webp" type="image/webp"/><img alt="Okmix logo" class="directory-logo" src="../../wp-content/uploads/2023/12/okmix.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="okmix.html">Okmix</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 3,5%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="okmix.html">Параметры</a>
-<a class="directory-button" href="https://okmix.io" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 5% + 0.0007₿</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="okmix.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://okmix.io" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/zeusmix.webp" type="image/webp"/><img alt="Zeusmix logo" class="directory-logo" src="../../wp-content/uploads/2023/12/zeusmix.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Zeusmix Комиссия за смешивание: 2-6% https://zeusmix.to/ http://zeus2bl7i7ojs2qpkmi2razhkqnnw6zjztezazke2vijky2xbppotqid.onion/ Основан 2025 Монеты ETH, LTC, TRX, SOL, USDT Плата за миксинг 2-6% Минимум Переменная Максимум Переменная Телеграм-бот Нет" data-directory-fee-max="6">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/zeusmix.webp" type="image/webp"/><img alt="Zeusmix logo" class="directory-logo" src="../../wp-content/uploads/2023/12/zeusmix.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="zeusmix.html">Zeusmix</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 2-6%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="zeusmix.html">Параметры</a>
-<a class="directory-button" href="https://zeusmix.to/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 2-6%</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="zeusmix.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://zeusmix.to/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/trustmixer.webp" type="image/webp"/><img alt="TrustMixer logo" class="directory-logo" src="../../wp-content/uploads/2023/12/trustmixer.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="TrustMixer Комиссия за смешивание: 5% + 0.0007₿ https://trustmixer.io http://syucyrzphe2rgbdjqkk2weznaf2p2vfmo7iw3vpnt3afx4lxykts6hyd.onion Основан 2025 Монеты BTC Реселл Jambler Плата за миксинг 5% + 0.0007₿ Минимум 0.001₿ Максимум 50₿ Телеграм-бот Нет" data-directory-fee-max="5">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/trustmixer.webp" type="image/webp"/><img alt="TrustMixer logo" class="directory-logo" src="../../wp-content/uploads/2023/12/trustmixer.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="trustmixer.html">TrustMixer</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 0%-4%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="trustmixer.html">Параметры</a>
-<a class="directory-button" href="https://trustmixer.io" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 5% + 0.0007₿</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="trustmixer.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://trustmixer.io" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/bmix.webp" type="image/webp"/><img alt="Bmix logo" class="directory-logo" src="../../wp-content/uploads/2023/12/bmix.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Bmix Комиссия за смешивание: 5% + 0.0007₿ https://bmix.io/ http://ih2ejacqgcjcma2wsj2zs5qktqb5cr6wl4agccsyg7rjcr6avlahl3yd.onion/ Основан 2025 Монеты BTC Реселл Jambler Плата за миксинг 5% + 0.0007₿ Минимум 0.001₿ Максимум 50₿ Телеграм-бот Да" data-directory-fee-max="5">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/bmix.webp" type="image/webp"/><img alt="Bmix logo" class="directory-logo" src="../../wp-content/uploads/2023/12/bmix.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="bmix.html">Bmix</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 5%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="bmix.html">Параметры</a>
-<a class="directory-button" href="https://bmix.io/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 5% + 0.0007₿</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="bmix.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://bmix.io/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/dreadpirate.webp" type="image/webp"/><img alt="DreadPirate logo" class="directory-logo" src="../../wp-content/uploads/2023/12/dreadpirate.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="DreadPirate Комиссия за смешивание: 5% + 0.0007₿ https://dreadpirate.io/ http://dreadpirate.uf64coiynj4s7on3dus6ww5ap25vnih6ha3iug7ex7odmkaqikubigqd.onion/ Основан 2026 Монеты BTC Реселл Jambler Плата за миксинг 5% + 0.0007₿ Минимум 0.01₿ Максимум 10₿ Телеграм-бот Нет" data-directory-fee-max="5">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/dreadpirate.webp" type="image/webp"/><img alt="DreadPirate logo" class="directory-logo" src="../../wp-content/uploads/2023/12/dreadpirate.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="dreadpirate.html">DreadPirate</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 5%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="dreadpirate.html">Параметры</a>
-<a class="directory-button" href="https://dreadpirate.io/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 5% + 0.0007₿</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="dreadpirate.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://dreadpirate.io/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/mixerblack.webp" type="image/webp"/><img alt="Mixer.Black logo" class="directory-logo" src="../../wp-content/uploads/2023/12/mixerblack.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Mixer.Black Комиссия за смешивание: 1,9% https://mixer.black/ http://mixer5fii4sxzzqviqyrahmbpadyp55njukts253qxwl3ol63qjjhxid.onion/ Основан 2026 Монеты BTC, ETH, LTC, BNB, TRX, USDT, USDC Плата за миксинг 1,9% Минимум эквивалент $1000 Максимум Переменная Телеграм-бот Нет" data-directory-fee-max="1.9">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/mixerblack.webp" type="image/webp"/><img alt="Mixer.Black logo" class="directory-logo" src="../../wp-content/uploads/2023/12/mixerblack.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="mixer-black.html">Mixer.Black</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 1,9%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="mixer-black.html">Параметры</a>
-<a class="directory-button" href="https://mixer.black/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 1,9%</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="mixer-black.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://mixer.black/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/mixtwix.webp" type="image/webp"/><img alt="MixTwix logo" class="directory-logo" src="../../wp-content/uploads/2023/12/mixtwix.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="MixTwix Комиссия за смешивание: 2% + 0.0007₿ https://mixtwix.io/ No Основан 2026 Монеты BTC Плата за миксинг 2% + 0.0007₿ Минимум 0.005₿ Максимум Не указано Телеграм-бот Нет" data-directory-fee-max="2">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/mixtwix.webp" type="image/webp"/><img alt="MixTwix logo" class="directory-logo" src="../../wp-content/uploads/2023/12/mixtwix.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="mixtwix.html">MixTwix</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 2% + 0.0007 BTC</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="mixtwix.html">Параметры</a>
-<a class="directory-button" href="https://mixtwix.io/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 2% + 0.0007₿</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="mixtwix.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://mixtwix.io/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><div aria-label="Bitxer logo" class="directory-logo directory-logo--text">B</div></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Bitxer Комиссия за смешивание: 4-5% https://www.bitxer.io/ http://diqv32nkt3npxxhmb32wm3halrynjvuyp7f2mom6nsogds6ws2tkxbqd.onion/ Основан 2026 Монеты BTC Плата за миксинг 4-5% Минимум 0.003₿ Максимум 50₿ Телеграм-бот Да" data-directory-fee-max="5">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/bitxer.webp" type="image/webp"/><img alt="Bitxer logo" class="directory-logo" src="../../wp-content/uploads/2023/12/bitxer.png"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="bitxer.html">Bitxer</a></h3>
-<p class="directory-list-summary">Комиссия за смешивание: 4-5%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="bitxer.html">Параметры</a>
-<a class="directory-button" href="https://www.bitxer.io/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия за смешивание: 4-5%</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="bitxer.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://www.bitxer.io/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
 
 </div>
 </section>
-<section class="directory-section">
-<h2>Сравнение</h2>
-<table class="directory-facts">
-<thead><tr><th>Название</th><th>Официальный сайт</th><th>Tor-сайт</th><th>Кратко</th></tr></thead>
-<tbody>
-<tr><td><a href="mixer-money.html">Mixer.money</a></td><td><a href="https://mixer.money" rel="noopener noreferrer" target="_blank">https://mixer.money</a></td><td><a href="http://mixermo4pgkgep3k3qr4fz7dhijavxnh6lwgu7gf5qeltpy4unjed2yd.onion" rel="noopener noreferrer" target="_blank">http://mixermo4pgkgep3k3qr4fz7dhijavxnh6lwgu7gf5qeltpy4unjed2yd.onion</a></td><td>Комиссия за смешивание: 4-5%</td></tr>
-<tr><td><a href="mixtum.html">Mixtum</a></td><td><a href="https://mixtum.io" rel="noopener noreferrer" target="_blank">https://mixtum.io</a></td><td><a href="http://mixtumjzn2tsiusfkdhutntamspsg43kgt764qbdaxjebce4h6fcfiad.onion" rel="noopener noreferrer" target="_blank">http://mixtumjzn2tsiusfkdhutntamspsg43kgt764qbdaxjebce4h6fcfiad.onion</a></td><td>Комиссия за смешивание: 4-5%</td></tr>
-<tr><td><a href="coinomize.html">Coinomize</a></td><td><a href="https://coinomize.biz/ref/716869674" rel="noopener noreferrer" target="_blank">https://coinomize.biz/ref/716869674</a></td><td><a href="http://coino2q64k4fg3lkjsnhjeydzwykw22a56u5nf2rdfzkjuy3jbwvypqd.onion/ref/716869674" rel="noopener noreferrer" target="_blank">http://coino2q64k4fg3lkjsnhjeydzwykw22a56u5nf2rdfzkjuy3jbwvypqd.onion/ref/716869674</a></td><td>Комиссия за смешивание: 1-5%</td></tr>
-<tr><td><a href="anonymixer.html">Anonymixer</a></td><td><a href="https://anonymixer.com" rel="noopener noreferrer" target="_blank">https://anonymixer.com</a></td><td><a href="http://btcmixer2e3pkn64eb5m65un5nypat4mje27er4ymltzshkmujmxlmyd.onion" rel="noopener noreferrer" target="_blank">http://btcmixer2e3pkn64eb5m65un5nypat4mje27er4ymltzshkmujmxlmyd.onion</a></td><td>Комиссия за смешивание: 1-2%</td></tr>
-<tr><td><a href="webmixer.html">Webmixer</a></td><td><a href="https://webmixer.io" rel="noopener noreferrer" target="_blank">https://webmixer.io</a></td><td><a href="http://webmix2nwd6qpq6tjkqshfivt3qqjoutl535xk2z32tgapqfn52z62yd.onion" rel="noopener noreferrer" target="_blank">http://webmix2nwd6qpq6tjkqshfivt3qqjoutl535xk2z32tgapqfn52z62yd.onion</a></td><td>Комиссия за смешивание: 1-5%</td></tr>
-<tr><td><a href="mixtura-money.html">Mixtura.money</a></td><td><a href="https://mixtura.money" rel="noopener noreferrer" target="_blank">https://mixtura.money</a></td><td><a href="http://3lqpiyzlqudwxiizx6uecc6z5zr6vvxidyi6inuducc7lilsdem2mlqd.onion/" rel="noopener noreferrer" target="_blank">http://3lqpiyzlqudwxiizx6uecc6z5zr6vvxidyi6inuducc7lilsdem2mlqd.onion/</a></td><td>Комиссия за смешивание: до 5%</td></tr>
-<tr><td><a href="mixero.html">Mixero</a></td><td><a href="https://mixero.io/" rel="noopener noreferrer" target="_blank">https://mixero.io/</a></td><td><a href="http://mixeroyubx5g5yxaucsxcd767vn2lnujuuz2dh53quwabukhrok2ekid.onion" rel="noopener noreferrer" target="_blank">http://mixeroyubx5g5yxaucsxcd767vn2lnujuuz2dh53quwabukhrok2ekid.onion</a></td><td>Комиссия за смешивание: 0,7%-4,7%</td></tr>
-<tr><td><a href="mixy-money.html">Mixy.money</a></td><td><a href="https://mixy.money" rel="noopener noreferrer" target="_blank">https://mixy.money</a></td><td><a href="http://nlljgev5y27bajfoq7os2t6qv27y24hzpnvkmfjevhz4eg5ddbrciyid.onion" rel="noopener noreferrer" target="_blank">http://nlljgev5y27bajfoq7os2t6qv27y24hzpnvkmfjevhz4eg5ddbrciyid.onion</a></td><td>Комиссия за смешивание: 3-5%</td></tr>
-<tr><td><a href="dreammixer.html">DreamMixer</a></td><td><a href="https://mixerdream.com" rel="noopener noreferrer" target="_blank">https://mixerdream.com</a></td><td><a href="http://ipyg3uxi25nxq3qvo7we26o5s6irencdkndv7orbxibzgbuhjmgnafad.onion" rel="noopener noreferrer" target="_blank">http://ipyg3uxi25nxq3qvo7we26o5s6irencdkndv7orbxibzgbuhjmgnafad.onion</a></td><td>Комиссия за смешивание: 3,5%</td></tr>
-<tr><td><a href="thormixer.html">Thormixer</a></td><td><a href="https://thormixer.io/" rel="noopener noreferrer" target="_blank">https://thormixer.io/</a></td><td><a href="http://63tcvr7j5gju24emo3ygbxmezqmg7z2zyby27n647jmu4uzcosiduzid.onion" rel="noopener noreferrer" target="_blank">http://63tcvr7j5gju24emo3ygbxmezqmg7z2zyby27n647jmu4uzcosiduzid.onion</a></td><td>Плата за смешивание: 4%</td></tr>
-<tr><td><a href="jokermix.html">JokerMix</a></td><td><a href="https://jokermix.to/" rel="noopener noreferrer" target="_blank">https://jokermix.to/</a></td><td><a href="http://joker63ocoymt26jh5i3dmf2bx4khgg5uahgjk34wffpk422mswg5hid.onion/" rel="noopener noreferrer" target="_blank">http://joker63ocoymt26jh5i3dmf2bx4khgg5uahgjk34wffpk422mswg5hid.onion/</a></td><td>Комиссия за смешивание: 1-150 сат/вБ</td></tr>
-<tr><td><a href="genesismix.html">GenesisMix</a></td><td><a href="https://genesismix.cx/" rel="noopener noreferrer" target="_blank">https://genesismix.cx/</a></td><td><a href="http://genesislakkmzosj47snwmjbz2ugsuoyfznfbswgpy543exhwrd2rjyd.onion/" rel="noopener noreferrer" target="_blank">http://genesislakkmzosj47snwmjbz2ugsuoyfznfbswgpy543exhwrd2rjyd.onion/</a></td><td>Комиссия за смешивание: 0,7-4,7%</td></tr>
-<tr><td><a href="okmix.html">Okmix</a></td><td><a href="https://okmix.io" rel="noopener noreferrer" target="_blank">https://okmix.io</a></td><td><a href="http://wqa7jejlascugfwyrbb3shvwgaczxlkconthjyuqdb52sdn6kx57tpqd.onion/" rel="noopener noreferrer" target="_blank">http://wqa7jejlascugfwyrbb3shvwgaczxlkconthjyuqdb52sdn6kx57tpqd.onion/</a></td><td>Комиссия за смешивание: 3,5%</td></tr>
-<tr><td><a href="zeusmix.html">Zeusmix</a></td><td><a href="https://zeusmix.to/" rel="noopener noreferrer" target="_blank">https://zeusmix.to/</a></td><td><a href="http://zeus2bl7i7ojs2qpkmi2razhkqnnw6zjztezazke2vijky2xbppotqid.onion/" rel="noopener noreferrer" target="_blank">http://zeus2bl7i7ojs2qpkmi2razhkqnnw6zjztezazke2vijky2xbppotqid.onion/</a></td><td>Комиссия за смешивание: 2-6%</td></tr>
-<tr><td><a href="trustmixer.html">TrustMixer</a></td><td><a href="https://trustmixer.io" rel="noopener noreferrer" target="_blank">https://trustmixer.io</a></td><td><a href="http://syucyrzphe2rgbdjqkk2weznaf2p2vfmo7iw3vpnt3afx4lxykts6hyd.onion" rel="noopener noreferrer" target="_blank">http://syucyrzphe2rgbdjqkk2weznaf2p2vfmo7iw3vpnt3afx4lxykts6hyd.onion</a></td><td>Комиссия за смешивание: 0%-4%</td></tr>
-<tr><td><a href="bmix.html">Bmix</a></td><td><a href="https://bmix.io/" rel="noopener noreferrer" target="_blank">https://bmix.io/</a></td><td><a href="http://ih2ejacqgcjcma2wsj2zs5qktqb5cr6wl4agccsyg7rjcr6avlahl3yd.onion/" rel="noopener noreferrer" target="_blank">http://ih2ejacqgcjcma2wsj2zs5qktqb5cr6wl4agccsyg7rjcr6avlahl3yd.onion/</a></td><td>Комиссия за смешивание: 5%</td></tr>
-<tr><td><a href="dreadpirate.html">DreadPirate</a></td><td><a href="https://dreadpirate.io/" rel="noopener noreferrer" target="_blank">https://dreadpirate.io/</a></td><td><a href="http://dreadpirate.uf64coiynj4s7on3dus6ww5ap25vnih6ha3iug7ex7odmkaqikubigqd.onion/" rel="noopener noreferrer" target="_blank">http://dreadpirate.uf64coiynj4s7on3dus6ww5ap25vnih6ha3iug7ex7odmkaqikubigqd.onion/</a></td><td>Комиссия за смешивание: 5%</td></tr>
-<tr><td><a href="mixer-black.html">Mixer.Black</a></td><td><a href="https://mixer.black/" rel="noopener noreferrer" target="_blank">https://mixer.black/</a></td><td><a href="http://mixer5fii4sxzzqviqyrahmbpadyp55njukts253qxwl3ol63qjjhxid.onion/" rel="noopener noreferrer" target="_blank">http://mixer5fii4sxzzqviqyrahmbpadyp55njukts253qxwl3ol63qjjhxid.onion/</a></td><td>Комиссия за смешивание: 1,9%</td></tr>
-<tr><td><a href="mixtwix.html">MixTwix</a></td><td><a href="https://mixtwix.io/" rel="noopener noreferrer" target="_blank">https://mixtwix.io/</a></td><td>No</td><td>Комиссия за смешивание: 2% + 0.0007 BTC</td></tr>
-<tr><td><a href="bitxer.html">Bitxer</a></td><td><a href="https://www.bitxer.io/" rel="noopener noreferrer" target="_blank">https://www.bitxer.io/</a></td><td><a href="http://diqv32nkt3npxxhmb32wm3halrynjvuyp7f2mom6nsogds6ws2tkxbqd.onion/" rel="noopener noreferrer" target="_blank">http://diqv32nkt3npxxhmb32wm3halrynjvuyp7f2mom6nsogds6ws2tkxbqd.onion/</a></td><td>Комиссия за смешивание: 4-5%</td></tr>
+	<section class="directory-section" data-directory-filter-scope>
+	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 10h18"></path><path d="M9 4v16"></path><path d="M15 4v16"></path></svg><span>Таблица данных</span></h2>
+	<div class="directory-filter">
+	<label class="directory-filter-label" for="directory-data-sheet-filter-mixers-ru"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><span>Фильтр таблицы</span></label>
+	<input autocomplete="off" class="directory-filter-input" data-directory-filter-input id="directory-data-sheet-filter-mixers-ru" placeholder="Название, домен, параметр..." type="search"/>
+	<p class="directory-filter-empty" data-directory-filter-empty hidden>Нет совпадающих строк.</p>
+		</div>
+<figure class="wp-block-table directory-table-wrap">
+	<table class="directory-facts directory-comparison-table directory-comparison-table--mixers">
+	<thead><tr><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Название</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Веб-сайт</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Tor-сайт</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Основан</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th class="directory-coins-cell" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Монеты</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Плата за миксинг</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Минимум</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Максимум</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Телеграм-бот</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th></tr></thead>
+	<tbody>
+	<tr data-directory-filter-item data-directory-filter-text="Mixer.money Комиссия за смешивание: 4-5% + 0.0007₿ https://mixer.money http://mixermo4pgkgep3k3qr4fz7dhijavxnh6lwgu7gf5qeltpy4unjed2yd.onion Основан 2016 Монеты BTC Реселл Jambler Плата за миксинг 4-5% + 0.0007₿ Минимум 0.003₿ Максимум 50₿ Телеграм-бот Да" data-directory-fee-max="5"><td class="directory-nowrap"><a class="directory-link" href="mixer-money.html">Mixer.money</a></td><td class="directory-nowrap"><a href="https://mixer.money" rel="noopener noreferrer" target="_blank">mixer.money</a></td><td class="directory-nowrap"><a href="http://mixermo4pgkgep3k3qr4fz7dhijavxnh6lwgu7gf5qeltpy4unjed2yd.onion" rel="noopener noreferrer" target="_blank" title="mixermo4pgkgep3k3qr4fz7dhijavxnh6lwgu7gf5qeltpy4unjed2yd.onion">Yes</a></td><td class="directory-nowrap">2016</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>4-5% + 0.0007₿</td><td class="directory-nowrap">0.003₿</td><td class="directory-nowrap">50₿</td><td><a href="https://t.me/mm5btc_bot" rel="noopener noreferrer" title="Да" target="_blank">Да</a></td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Mixtum Комиссия за смешивание: 4-5% + 0.0007₿ https://mixtum.io http://mixtumjzn2tsiusfkdhutntamspsg43kgt764qbdaxjebce4h6fcfiad.onion Основан 2018 Монеты BTC Реселл Jambler Плата за миксинг 4-5% + 0.0007₿ Минимум 0.005₿ Максимум 50₿ Телеграм-бот Да" data-directory-fee-max="5"><td class="directory-nowrap"><a class="directory-link" href="mixtum.html">Mixtum</a></td><td class="directory-nowrap"><a href="https://mixtum.io" rel="noopener noreferrer" target="_blank">mixtum.io</a></td><td class="directory-nowrap"><a href="http://mixtumjzn2tsiusfkdhutntamspsg43kgt764qbdaxjebce4h6fcfiad.onion" rel="noopener noreferrer" target="_blank" title="mixtumjzn2tsiusfkdhutntamspsg43kgt764qbdaxjebce4h6fcfiad.onion">Yes</a></td><td class="directory-nowrap">2018</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>4-5% + 0.0007₿</td><td class="directory-nowrap">0.005₿</td><td class="directory-nowrap">50₿</td><td><a href="https://t.me/mixtum_bot" rel="noopener noreferrer" title="Да" target="_blank">Да</a></td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Coinomize Комиссия за смешивание: 1-5% + 0.0003₿ https://coinomize.biz/ref/716869674 http://coino2q64k4fg3lkjsnhjeydzwykw22a56u5nf2rdfzkjuy3jbwvypqd.onion/ref/716869674 Основан 2019 Монеты BTC Плата за миксинг 1-5% + 0.0003₿ Минимум 0.003₿ Максимум Не указано Телеграм-бот Нет" data-directory-fee-max="5"><td class="directory-nowrap"><a class="directory-link" href="coinomize.html">Coinomize</a></td><td class="directory-nowrap"><a href="https://coinomize.biz/ref/716869674" rel="noopener noreferrer" target="_blank">coinomize.biz</a></td><td class="directory-nowrap"><a href="http://coino2q64k4fg3lkjsnhjeydzwykw22a56u5nf2rdfzkjuy3jbwvypqd.onion/ref/716869674" rel="noopener noreferrer" target="_blank" title="coino2q64k4fg3lkjsnhjeydzwykw22a56u5nf2rdfzkjuy3jbwvypqd.onion">Yes</a></td><td class="directory-nowrap">2019</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>1-5% + 0.0003₿</td><td class="directory-nowrap">0.003₿</td><td class="directory-nowrap">Не указано</td><td>Нет</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Anonymixer Комиссия за смешивание: 1-2% + Переменная https://anonymixer.com http://btcmixer2e3pkn64eb5m65un5nypat4mje27er4ymltzshkmujmxlmyd.onion Основан 2020 Монеты BTC Плата за миксинг 1-2% + Переменная Минимум 0.001₿ Максимум 1.5₿ Телеграм-бот Нет" data-directory-fee-max="2"><td class="directory-nowrap"><a class="directory-link" href="anonymixer.html">Anonymixer</a></td><td class="directory-nowrap"><a href="https://anonymixer.com" rel="noopener noreferrer" target="_blank">anonymixer.com</a></td><td class="directory-nowrap"><a href="http://btcmixer2e3pkn64eb5m65un5nypat4mje27er4ymltzshkmujmxlmyd.onion" rel="noopener noreferrer" target="_blank" title="btcmixer2e3pkn64eb5m65un5nypat4mje27er4ymltzshkmujmxlmyd.onion">Yes</a></td><td class="directory-nowrap">2020</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>1-2% + Переменная</td><td class="directory-nowrap">0.001₿</td><td class="directory-nowrap">1.5₿</td><td>Нет</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Webmixer Комиссия за смешивание: 5% + Переменная https://webmixer.io http://webmix2nwd6qpq6tjkqshfivt3qqjoutl535xk2z32tgapqfn52z62yd.onion Основан 2020 Монеты BTC Реселл Jambler Плата за миксинг 5% + Переменная Минимум 0.001₿ Максимум 50₿ Телеграм-бот Да" data-directory-fee-max="5"><td class="directory-nowrap"><a class="directory-link" href="webmixer.html">Webmixer</a></td><td class="directory-nowrap"><a href="https://webmixer.io" rel="noopener noreferrer" target="_blank">webmixer.io</a></td><td class="directory-nowrap"><a href="http://webmix2nwd6qpq6tjkqshfivt3qqjoutl535xk2z32tgapqfn52z62yd.onion" rel="noopener noreferrer" target="_blank" title="webmix2nwd6qpq6tjkqshfivt3qqjoutl535xk2z32tgapqfn52z62yd.onion">Yes</a></td><td class="directory-nowrap">2020</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>5% + Переменная</td><td class="directory-nowrap">0.001₿</td><td class="directory-nowrap">50₿</td><td><a href="https://t.me/webm1xer_bot" rel="noopener noreferrer" title="Да" target="_blank">Да</a></td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Mixtura.money Комиссия за смешивание: до 5% + 0.0007₿ https://mixtura.money http://3lqpiyzlqudwxiizx6uecc6z5zr6vvxidyi6inuducc7lilsdem2mlqd.onion/ Основан 2021 Монеты BTC Реселл Jambler Плата за миксинг до 5% + 0.0007₿ Минимум Переменная Максимум 50₿ Телеграм-бот Нет" data-directory-fee-max="5"><td class="directory-nowrap"><a class="directory-link" href="mixtura-money.html">Mixtura.money</a></td><td class="directory-nowrap"><a href="https://mixtura.money" rel="noopener noreferrer" target="_blank">mixtura.money</a></td><td class="directory-nowrap"><a href="http://3lqpiyzlqudwxiizx6uecc6z5zr6vvxidyi6inuducc7lilsdem2mlqd.onion/" rel="noopener noreferrer" target="_blank" title="3lqpiyzlqudwxiizx6uecc6z5zr6vvxidyi6inuducc7lilsdem2mlqd.onion">Yes</a></td><td class="directory-nowrap">2021</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>до 5% + 0.0007₿</td><td class="directory-nowrap">Переменная</td><td class="directory-nowrap">50₿</td><td>Нет</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Mixero Комиссия за смешивание: 0,7%-4,7% + 0.0003₿ https://mixero.io/ http://mixeroyubx5g5yxaucsxcd767vn2lnujuuz2dh53quwabukhrok2ekid.onion Основан 2022 Монеты BTC Плата за миксинг 0,7%-4,7% + 0.0003₿ Минимум 0.002₿ Максимум 2₿ Телеграм-бот Нет" data-directory-fee-max="4.7"><td class="directory-nowrap"><a class="directory-link" href="mixero.html">Mixero</a></td><td class="directory-nowrap"><a href="https://mixero.io/" rel="noopener noreferrer" target="_blank">mixero.io</a></td><td class="directory-nowrap"><a href="http://mixeroyubx5g5yxaucsxcd767vn2lnujuuz2dh53quwabukhrok2ekid.onion" rel="noopener noreferrer" target="_blank" title="mixeroyubx5g5yxaucsxcd767vn2lnujuuz2dh53quwabukhrok2ekid.onion">Yes</a></td><td class="directory-nowrap">2022</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>0,7%-4,7% + 0.0003₿</td><td class="directory-nowrap">0.002₿</td><td class="directory-nowrap">2₿</td><td>Нет</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Mixy.money Комиссия за смешивание: 3-5% + 0.0007₿ https://mixy.money http://nlljgev5y27bajfoq7os2t6qv27y24hzpnvkmfjevhz4eg5ddbrciyid.onion Основан 2022 Монеты BTC Реселл Jambler Плата за миксинг 3-5% + 0.0007₿ Минимум 0.002₿ Максимум 50₿ Телеграм-бот Нет" data-directory-fee-max="5"><td class="directory-nowrap"><a class="directory-link" href="mixy-money.html">Mixy.money</a></td><td class="directory-nowrap"><a href="https://mixy.money" rel="noopener noreferrer" target="_blank">mixy.money</a></td><td class="directory-nowrap"><a href="http://nlljgev5y27bajfoq7os2t6qv27y24hzpnvkmfjevhz4eg5ddbrciyid.onion" rel="noopener noreferrer" target="_blank" title="nlljgev5y27bajfoq7os2t6qv27y24hzpnvkmfjevhz4eg5ddbrciyid.onion">Yes</a></td><td class="directory-nowrap">2022</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>3-5% + 0.0007₿</td><td class="directory-nowrap">0.002₿</td><td class="directory-nowrap">50₿</td><td>Нет</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="DreamMixer Комиссия за смешивание: 3,5% + 0.0007₿ https://mixerdream.com http://ipyg3uxi25nxq3qvo7we26o5s6irencdkndv7orbxibzgbuhjmgnafad.onion Основан 2022 Монеты BTC Реселл Jambler Плата за миксинг 3,5% + 0.0007₿ Минимум 0.005₿ Максимум 50₿ Телеграм-бот Нет" data-directory-fee-max="3.5"><td class="directory-nowrap"><a class="directory-link" href="dreammixer.html">DreamMixer</a></td><td class="directory-nowrap"><a href="https://mixerdream.com" rel="noopener noreferrer" target="_blank">mixerdream.com</a></td><td class="directory-nowrap"><a href="http://ipyg3uxi25nxq3qvo7we26o5s6irencdkndv7orbxibzgbuhjmgnafad.onion" rel="noopener noreferrer" target="_blank" title="ipyg3uxi25nxq3qvo7we26o5s6irencdkndv7orbxibzgbuhjmgnafad.onion">Yes</a></td><td class="directory-nowrap">2022</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>3,5% + 0.0007₿</td><td class="directory-nowrap">0.005₿</td><td class="directory-nowrap">50₿</td><td>Нет</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Thormixer Плата за смешивание: 4% + 0.0007₿ https://thormixer.io/ http://63tcvr7j5gju24emo3ygbxmezqmg7z2zyby27n647jmu4uzcosiduzid.onion Основан 2023 Монеты BTC Реселл Jambler Плата за миксинг 4% + 0.0007₿ Минимум 0.003₿ Максимум 50₿ Телеграм-бот Нет" data-directory-fee-max="4"><td class="directory-nowrap"><a class="directory-link" href="thormixer.html">Thormixer</a></td><td class="directory-nowrap"><a href="https://thormixer.io/" rel="noopener noreferrer" target="_blank">thormixer.io</a></td><td class="directory-nowrap"><a href="http://63tcvr7j5gju24emo3ygbxmezqmg7z2zyby27n647jmu4uzcosiduzid.onion" rel="noopener noreferrer" target="_blank" title="63tcvr7j5gju24emo3ygbxmezqmg7z2zyby27n647jmu4uzcosiduzid.onion">Yes</a></td><td class="directory-nowrap">2023</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>4% + 0.0007₿</td><td class="directory-nowrap">0.003₿</td><td class="directory-nowrap">50₿</td><td>Нет</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="JokerMix Комиссия за смешивание: 1-150 сат/ВБ https://jokermix.to/ http://joker63ocoymt26jh5i3dmf2bx4khgg5uahgjk34wffpk422mswg5hid.onion/ Основан 2024 Монеты BTC Плата за миксинг 1-150 сат/ВБ Минимум 0.001₿ Максимум 18₿ Телеграм-бот Нет" data-directory-fee-max=""><td class="directory-nowrap"><a class="directory-link" href="jokermix.html">JokerMix</a></td><td class="directory-nowrap"><a href="https://jokermix.to/" rel="noopener noreferrer" target="_blank">jokermix.to</a></td><td class="directory-nowrap"><a href="http://joker63ocoymt26jh5i3dmf2bx4khgg5uahgjk34wffpk422mswg5hid.onion/" rel="noopener noreferrer" target="_blank" title="joker63ocoymt26jh5i3dmf2bx4khgg5uahgjk34wffpk422mswg5hid.onion">Yes</a></td><td class="directory-nowrap">2024</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>1-150 сат/ВБ</td><td class="directory-nowrap">0.001₿</td><td class="directory-nowrap">18₿</td><td>Нет</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="GenesisMix Комиссия за смешивание: 0,7-4,7% https://genesismix.cx/ http://genesislakkmzosj47snwmjbz2ugsuoyfznfbswgpy543exhwrd2rjyd.onion/ Основан 2025 Монеты BTC Плата за миксинг 0,7-4,7% Минимум 0.0015₿ Максимум 250₿ Телеграм-бот Нет" data-directory-fee-max="4.7"><td class="directory-nowrap"><a class="directory-link" href="genesismix.html">GenesisMix</a></td><td class="directory-nowrap"><a href="https://genesismix.cx/" rel="noopener noreferrer" target="_blank">genesismix.cx</a></td><td class="directory-nowrap"><a href="http://genesislakkmzosj47snwmjbz2ugsuoyfznfbswgpy543exhwrd2rjyd.onion/" rel="noopener noreferrer" target="_blank" title="genesislakkmzosj47snwmjbz2ugsuoyfznfbswgpy543exhwrd2rjyd.onion">Yes</a></td><td class="directory-nowrap">2025</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>0,7-4,7%</td><td class="directory-nowrap">0.0015₿</td><td class="directory-nowrap">250₿</td><td>Нет</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Okmix Комиссия за смешивание: 5% + 0.0007₿ https://okmix.io http://wqa7jejlascugfwyrbb3shvwgaczxlkconthjyuqdb52sdn6kx57tpqd.onion/ Основан 2025 Монеты BTC Реселл Jambler Плата за миксинг 5% + 0.0007₿ Минимум 0.001₿ Максимум 50₿ Телеграм-бот Да" data-directory-fee-max="5"><td class="directory-nowrap"><a class="directory-link" href="okmix.html">Okmix</a></td><td class="directory-nowrap"><a href="https://okmix.io" rel="noopener noreferrer" target="_blank">okmix.io</a></td><td class="directory-nowrap"><a href="http://wqa7jejlascugfwyrbb3shvwgaczxlkconthjyuqdb52sdn6kx57tpqd.onion/" rel="noopener noreferrer" target="_blank" title="wqa7jejlascugfwyrbb3shvwgaczxlkconthjyuqdb52sdn6kx57tpqd.onion">Yes</a></td><td class="directory-nowrap">2025</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>5% + 0.0007₿</td><td class="directory-nowrap">0.001₿</td><td class="directory-nowrap">50₿</td><td><a href="https://t.me/Okmixer_bot" rel="noopener noreferrer" title="Да" target="_blank">Да</a></td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Zeusmix Комиссия за смешивание: 2-6% https://zeusmix.to/ http://zeus2bl7i7ojs2qpkmi2razhkqnnw6zjztezazke2vijky2xbppotqid.onion/ Основан 2025 Монеты ETH, LTC, TRX, SOL, USDT Плата за миксинг 2-6% Минимум Переменная Максимум Переменная Телеграм-бот Нет" data-directory-fee-max="6"><td class="directory-nowrap"><a class="directory-link" href="zeusmix.html">Zeusmix</a></td><td class="directory-nowrap"><a href="https://zeusmix.to/" rel="noopener noreferrer" target="_blank">zeusmix.to</a></td><td class="directory-nowrap"><a href="http://zeus2bl7i7ojs2qpkmi2razhkqnnw6zjztezazke2vijky2xbppotqid.onion/" rel="noopener noreferrer" target="_blank" title="zeus2bl7i7ojs2qpkmi2razhkqnnw6zjztezazke2vijky2xbppotqid.onion">Yes</a></td><td class="directory-nowrap">2025</td><td class="directory-coins-cell"><span class="coin-list" aria-label="ETH, LTC, TRX, SOL, USDT"><span class="coin-badge" title="Ethereum (ETH)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/eth.svg"/><span class="coin-label">ETH</span></span><span class="coin-badge" title="Litecoin (LTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/ltc.svg"/><span class="coin-label">LTC</span></span><span class="coin-badge" title="TRON (TRX)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/trx.svg"/><span class="coin-label">TRX</span></span><span class="coin-badge" title="Solana (SOL)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/sol.svg"/><span class="coin-label">SOL</span></span><span class="coin-badge" title="Tether (USDT)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/usdt.svg"/><span class="coin-label">USDT</span></span></span></td><td>2-6%</td><td class="directory-nowrap">Переменная</td><td class="directory-nowrap">Переменная</td><td>Нет</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="TrustMixer Комиссия за смешивание: 5% + 0.0007₿ https://trustmixer.io http://syucyrzphe2rgbdjqkk2weznaf2p2vfmo7iw3vpnt3afx4lxykts6hyd.onion Основан 2025 Монеты BTC Реселл Jambler Плата за миксинг 5% + 0.0007₿ Минимум 0.001₿ Максимум 50₿ Телеграм-бот Нет" data-directory-fee-max="5"><td class="directory-nowrap"><a class="directory-link" href="trustmixer.html">TrustMixer</a></td><td class="directory-nowrap"><a href="https://trustmixer.io" rel="noopener noreferrer" target="_blank">trustmixer.io</a></td><td class="directory-nowrap"><a href="http://syucyrzphe2rgbdjqkk2weznaf2p2vfmo7iw3vpnt3afx4lxykts6hyd.onion" rel="noopener noreferrer" target="_blank" title="syucyrzphe2rgbdjqkk2weznaf2p2vfmo7iw3vpnt3afx4lxykts6hyd.onion">Yes</a></td><td class="directory-nowrap">2025</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>5% + 0.0007₿</td><td class="directory-nowrap">0.001₿</td><td class="directory-nowrap">50₿</td><td>Нет</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Bmix Комиссия за смешивание: 5% + 0.0007₿ https://bmix.io/ http://ih2ejacqgcjcma2wsj2zs5qktqb5cr6wl4agccsyg7rjcr6avlahl3yd.onion/ Основан 2025 Монеты BTC Реселл Jambler Плата за миксинг 5% + 0.0007₿ Минимум 0.001₿ Максимум 50₿ Телеграм-бот Да" data-directory-fee-max="5"><td class="directory-nowrap"><a class="directory-link" href="bmix.html">Bmix</a></td><td class="directory-nowrap"><a href="https://bmix.io/" rel="noopener noreferrer" target="_blank">bmix.io</a></td><td class="directory-nowrap"><a href="http://ih2ejacqgcjcma2wsj2zs5qktqb5cr6wl4agccsyg7rjcr6avlahl3yd.onion/" rel="noopener noreferrer" target="_blank" title="ih2ejacqgcjcma2wsj2zs5qktqb5cr6wl4agccsyg7rjcr6avlahl3yd.onion">Yes</a></td><td class="directory-nowrap">2025</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>5% + 0.0007₿</td><td class="directory-nowrap">0.001₿</td><td class="directory-nowrap">50₿</td><td><a href="https://t.me/bMixIoBot?start=s-0" rel="noopener noreferrer" title="Да" target="_blank">Да</a></td></tr>
+<tr data-directory-filter-item data-directory-filter-text="DreadPirate Комиссия за смешивание: 5% + 0.0007₿ https://dreadpirate.io/ http://dreadpirate.uf64coiynj4s7on3dus6ww5ap25vnih6ha3iug7ex7odmkaqikubigqd.onion/ Основан 2026 Монеты BTC Реселл Jambler Плата за миксинг 5% + 0.0007₿ Минимум 0.01₿ Максимум 10₿ Телеграм-бот Нет" data-directory-fee-max="5"><td class="directory-nowrap"><a class="directory-link" href="dreadpirate.html">DreadPirate</a></td><td class="directory-nowrap"><a href="https://dreadpirate.io/" rel="noopener noreferrer" target="_blank">dreadpirate.io</a></td><td class="directory-nowrap"><a href="http://dreadpirate.uf64coiynj4s7on3dus6ww5ap25vnih6ha3iug7ex7odmkaqikubigqd.onion/" rel="noopener noreferrer" target="_blank" title="dreadpirate.uf64coiynj4s7on3dus6ww5ap25vnih6ha3iug7ex7odmkaqikubigqd.onion">Yes</a></td><td class="directory-nowrap">2026</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>5% + 0.0007₿</td><td class="directory-nowrap">0.01₿</td><td class="directory-nowrap">10₿</td><td>Нет</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Mixer.Black Комиссия за смешивание: 1,9% https://mixer.black/ http://mixer5fii4sxzzqviqyrahmbpadyp55njukts253qxwl3ol63qjjhxid.onion/ Основан 2026 Монеты BTC, ETH, LTC, BNB, TRX, USDT, USDC Плата за миксинг 1,9% Минимум эквивалент $1000 Максимум Переменная Телеграм-бот Нет" data-directory-fee-max="1.9"><td class="directory-nowrap"><a class="directory-link" href="mixer-black.html">Mixer.Black</a></td><td class="directory-nowrap"><a href="https://mixer.black/" rel="noopener noreferrer" target="_blank">mixer.black</a></td><td class="directory-nowrap"><a href="http://mixer5fii4sxzzqviqyrahmbpadyp55njukts253qxwl3ol63qjjhxid.onion/" rel="noopener noreferrer" target="_blank" title="mixer5fii4sxzzqviqyrahmbpadyp55njukts253qxwl3ol63qjjhxid.onion">Yes</a></td><td class="directory-nowrap">2026</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC, ETH, LTC, BNB, TRX, USDT, USDC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span><span class="coin-badge" title="Ethereum (ETH)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/eth.svg"/><span class="coin-label">ETH</span></span><span class="coin-badge" title="Litecoin (LTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/ltc.svg"/><span class="coin-label">LTC</span></span><span class="coin-badge" title="BNB (BNB)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/bnb.svg"/><span class="coin-label">BNB</span></span><span class="coin-badge" title="TRON (TRX)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/trx.svg"/><span class="coin-label">TRX</span></span><span class="coin-badge" title="Tether (USDT)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/usdt.svg"/><span class="coin-label">USDT</span></span><span class="coin-badge" title="USD Coin (USDC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/usdc.svg"/><span class="coin-label">USDC</span></span></span></td><td>1,9%</td><td class="directory-nowrap">эквивалент $1000</td><td class="directory-nowrap">Переменная</td><td>Нет</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="MixTwix Комиссия за смешивание: 2% + 0.0007₿ https://mixtwix.io/ No Основан 2026 Монеты BTC Плата за миксинг 2% + 0.0007₿ Минимум 0.005₿ Максимум Не указано Телеграм-бот Нет" data-directory-fee-max="2"><td class="directory-nowrap"><a class="directory-link" href="mixtwix.html">MixTwix</a></td><td class="directory-nowrap"><a href="https://mixtwix.io/" rel="noopener noreferrer" target="_blank">mixtwix.io</a></td><td class="directory-nowrap">No</td><td class="directory-nowrap">2026</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>2% + 0.0007₿</td><td class="directory-nowrap">0.005₿</td><td class="directory-nowrap">Не указано</td><td>Нет</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Bitxer Комиссия за смешивание: 4-5% https://www.bitxer.io/ http://diqv32nkt3npxxhmb32wm3halrynjvuyp7f2mom6nsogds6ws2tkxbqd.onion/ Основан 2026 Монеты BTC Плата за миксинг 4-5% Минимум 0.003₿ Максимум 50₿ Телеграм-бот Да" data-directory-fee-max="5"><td class="directory-nowrap"><a class="directory-link" href="bitxer.html">Bitxer</a></td><td class="directory-nowrap"><a href="https://www.bitxer.io/" rel="noopener noreferrer" target="_blank">bitxer.io</a></td><td class="directory-nowrap"><a href="http://diqv32nkt3npxxhmb32wm3halrynjvuyp7f2mom6nsogds6ws2tkxbqd.onion/" rel="noopener noreferrer" target="_blank" title="diqv32nkt3npxxhmb32wm3halrynjvuyp7f2mom6nsogds6ws2tkxbqd.onion">Yes</a></td><td class="directory-nowrap">2026</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td><td>4-5%</td><td class="directory-nowrap">0.003₿</td><td class="directory-nowrap">50₿</td><td><a href="https://t.me/bitxerbot" rel="noopener noreferrer" title="Да" target="_blank">Да</a></td></tr>
 </tbody>
-</table>
+	</table>
+</figure>
 </section>
 </article>
 </main>
 <footer class="site-footer" id="site-footer" role="contentinfo"></footer>
 <div class="footer">
 <div>Copyright © 2023-2026 <strong><a href="https://bitcointalk.org/index.php?action=profile;u=2739424">NotATether</a></strong>.</div>
-<div>Contact: admin [at] notatether [dot] com</div>
+        <div>Contact: admin [at] bitmixlist [dot] org</div>
 <div><em>Disclaimers:</em></div>
 <div>Only mix funds you have obtained lawfully.</div>
 <div>Do not use BitMixList for money laundering!</div>

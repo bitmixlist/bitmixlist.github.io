@@ -143,7 +143,7 @@ function bitmixlist_search_section(string $relative, string $heading, string $lo
     $segment = explode('/', $path)[0] ?? '';
     $labels = [
         'mixers' => ['en' => 'Mixers', 'ru' => 'Миксеры'],
-        'neverkyc-exchanges' => ['en' => 'Exchange KYC-Free', 'ru' => 'Обмен без KYC'],
+        'neverkyc-exchanges' => ['en' => 'Exchange Never-KYC', 'ru' => 'Обмен без KYC'],
         'instant-exchanges' => ['en' => 'Exchange Instant', 'ru' => 'Обмен мгновенный'],
         'p2p-markets' => ['en' => 'P2P Marketplaces', 'ru' => 'P2P-площадки'],
         'coordinators' => ['en' => 'Coordinators', 'ru' => 'Координаторы'],
@@ -167,6 +167,26 @@ function bitmixlist_search_clean_title(string $title, string $heading): string
 
 function bitmixlist_search_body_text(DOMDocument $dom): string
 {
+    $xpath = new DOMXPath($dom);
+    $excluded = [];
+    foreach ($xpath->query('//*[@data-search-exclude]') ?: [] as $node) {
+        $excluded[] = $node;
+    }
+    foreach ($excluded as $node) {
+        $node->parentNode?->removeChild($node);
+    }
+
+    foreach ($xpath->query('//*[contains(concat(" ", normalize-space(@class), " "), " coin-list ")][@aria-label]') ?: [] as $node) {
+        if (!$node instanceof DOMElement) {
+            continue;
+        }
+
+        while ($node->firstChild) {
+            $node->removeChild($node->firstChild);
+        }
+        $node->appendChild($dom->createTextNode(' ' . $node->getAttribute('aria-label') . ' '));
+    }
+
     foreach (['script', 'style', 'noscript', 'nav', 'header', 'footer', 'svg'] as $tag) {
         $nodes = [];
         foreach ($dom->getElementsByTagName($tag) as $node) {

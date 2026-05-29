@@ -11,6 +11,7 @@
 <link href="../../wp-content/litespeed/css/styles.css" rel="stylesheet"/>
 <script src="../../wp-content/litespeed/js/ad-loader.js"></script>
 <script src="../../wp-content/litespeed/js/site-search.js" defer></script>
+<script src="../../wp-content/litespeed/js/directory-filter.js" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   if (window.bitmixlistLoadTopAd) {
@@ -18,13 +19,14 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 </script>
+<script src="../../wp-content/litespeed/js/scamwhammer.js" defer></script>
 <style>
 .directory-page .site-header { display: block; min-height: 108px; padding-top: 1rem; padding-bottom: 0.95rem; }
 .directory-page .site-content-wrapper { padding-top: 124px; }
 .directory-page .header-inner { gap: 12px; min-height: 42px; align-items: center; position: relative; padding-right: 8rem; }
 .directory-page .header-inner h4 { flex: 1 1 0; min-width: 0; font-size: var(--directory-header-title-size, 1.5rem); line-height: 1.2; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .directory-page .lang-switcher { position: absolute; top: 50%; right: 2rem; transform: translateY(-50%); margin-left: 0; flex: 0 0 auto; }
-.directory-page .sidebar .nav-menu a { font-size: 0.95rem; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.directory-page .sidebar .nav-menu a { font-size: 1rem; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .directory-page .mobile-menu-toggle { flex: 0 0 auto; }
 .directory-page .sylvester-top, .directory-page .sylvester-top-mobile { margin-top: 1rem !important; }
 .directory-meta-nav { display: flex; justify-content: center; gap: 22px; width: 100%; margin: 0.45rem 0 0; padding: 0 1.5rem 0.15rem; overflow-x: auto; scrollbar-width: thin; box-sizing: border-box; }
@@ -45,18 +47,97 @@ document.addEventListener('DOMContentLoaded', function () {
 .directory-button:hover, .directory-button:focus { background: #27184d; color: #fff; text-decoration: none; }
 .directory-section { margin-top: 28px; }
 .directory-section h2 { margin: 0 0 12px; font-size: 1.35rem; letter-spacing: 0; }
+.directory-table-wrap { margin: 0; overflow-x: auto; }
 .directory-facts { width: 100%; border-collapse: collapse; table-layout: fixed; }
-.directory-facts th, .directory-facts td { vertical-align: top; padding: 12px; overflow-wrap: anywhere; word-break: normal; }
-.directory-facts th { width: 30%; color: #f6f2ff; text-align: left; background: #282238; }
+.directory-facts th, .directory-facts td { vertical-align: top; padding: 12px; overflow-wrap: normal; word-break: normal; hyphens: none; }
+.directory-facts th { color: #f6f2ff; text-align: left; background: #282238; }
 .directory-facts td { background: #1c1728; }
+.directory-facts .directory-nowrap { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+.directory-entry-table { table-layout: auto; min-width: 620px; }
+.directory-entry-table th:first-child, .directory-entry-table td:first-child { width: 34%; }
+.directory-entry-table tbody td:first-child { color: #f6f2ff; font-weight: 650; }
+.directory-entry-table thead th { font-size: 0.88rem; }
+.directory-facts thead th[data-sortable-column] { cursor: pointer; user-select: none; }
+.directory-sort-button { all: unset; display: inline-flex; align-items: center; justify-content: flex-start; gap: 6px; max-width: 100%; color: inherit; font: inherit; font-weight: inherit; line-height: inherit; cursor: pointer; }
+.directory-sort-label { min-width: 0; }
+.directory-sort-button:focus-visible { outline: 2px solid #bb86fc; outline-offset: 3px; border-radius: 4px; }
+.directory-sort-indicator { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 0.8em; color: #c7b8ff; font-size: 0.78em; line-height: 1; text-align: center; }
+
+.coin-list { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
+.coin-badge { display: inline-flex; align-items: center; gap: 5px; min-height: 26px; padding: 2px 7px 2px 4px; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 999px; background: #121018; color: #f6f2ff; font-size: 0.82rem; font-weight: 650; line-height: 1; white-space: nowrap; }
+.coin-badge img { display: block; flex: 0 0 20px; width: 20px; height: 20px; }
+.directory-facts th.directory-coins-cell { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+.directory-facts td.directory-coins-cell { white-space: normal; overflow-wrap: normal; word-break: normal; }
+.directory-facts td.directory-coins-cell .coin-list { max-width: 100%; }
+.directory-list-summary .coin-list { display: inline-flex; margin-left: 4px; vertical-align: middle; }
+
 .directory-note { margin: 0; padding: 14px 16px; border: 1px solid #4a3a70; border-radius: 8px; background: #181222; line-height: 1.55; }
+.directory-note > :first-child { margin-top: 0; }
+.directory-note > :last-child { margin-bottom: 0; }
+.directory-config { margin: 0; padding: 16px 18px; border: 1px solid #3a2e55; border-radius: 8px; background: #181222; line-height: 1.55; }
+.directory-config > :first-child { margin-top: 0; }
+.directory-config > :last-child { margin-bottom: 0; }
+.directory-config ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 8px 18px; margin: 0; padding-left: 1.2rem; }
+.directory-config li { margin: 0; }
+	.directory-config-source { margin: 0 0 10px; color: #c9c3d8; font-size: 0.92rem; line-height: 1.45; }
+	.directory-config-json { margin: 0; max-height: 540px; overflow: auto; padding: 14px 16px; border: 1px solid #3a2e55; border-radius: 8px; background: #0f0d16; color: #f6f2ff; line-height: 1.55; white-space: pre; }
+	.directory-config-json code { font: 0.92rem/1.55 "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+	.directory-volume { padding: 16px 18px; border: 1px solid #2d2d2d; border-radius: 8px; background: #1a1a1a; color: #e0e0e0; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); }
+	.directory-volume-source { margin: 0 0 12px; color: #cfcfcf; font-size: 0.92rem; line-height: 1.45; }
+	.directory-volume-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 0 0 14px; }
+	.directory-volume-stat { padding: 10px 12px; border: 1px solid #333; border-radius: 7px; background: #121212; }
+	.directory-volume-stat dt { margin: 0 0 4px; color: #bdbdbd; font-size: 0.78rem; font-weight: 650; text-transform: uppercase; letter-spacing: 0.04em; }
+	.directory-volume-stat dd { margin: 0; color: #f4f4f4; font-weight: 700; line-height: 1.3; }
+	.directory-volume-stat small { display: block; margin-top: 2px; color: #bdbdbd; font-weight: 500; }
+	.directory-volume-chart { width: 100%; height: auto; margin: 2px 0 16px; border: 1px solid #333; border-radius: 7px; background: #101010; overflow: hidden; }
+	.directory-volume-chart svg { display: block; width: 100%; height: auto; }
+	.directory-volume-table-wrap { margin: 0; overflow-x: auto; }
+	.directory-volume-table { width: 100%; border-collapse: collapse; }
+	.directory-volume-table th, .directory-volume-table td { padding: 9px 10px; border-top: 1px solid #303030; text-align: left; white-space: nowrap; }
+	.directory-volume-table th { color: #f1f1f1; background: #202020; font-size: 0.85rem; }
+	.directory-volume-table td { background: #161616; }
+	.directory-tool-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
+.directory-verification-tool { flex: 1 1 calc(50% - 6px); }
+.directory-tool-grid > .directory-verification-tool:only-child { flex-basis: 100%; }
+.directory-inline-tool { min-width: 0; padding: 16px; border: 1px solid #2d2d2d; border-radius: 8px; background: #1a1a1a; color: #e0e0e0; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); }
+.directory-inline-tool h3 { margin: 0 0 8px; color: #f1f1f1; font-size: 1.05rem; font-weight: 650; letter-spacing: 0; }
+.directory-inline-tool p { margin: 0 0 12px; color: #cfcfcf; line-height: 1.5; }
+.directory-inline-tool label { display: block; margin: 0 0 6px; color: #d6d6d6; font-size: 0.9rem; font-weight: 650; }
+.directory-inline-tool input, .directory-inline-tool textarea { width: 100%; box-sizing: border-box; border: 1px solid #3a3a3a; border-radius: 6px; background: #121212; color: #f4f4f4; padding: 10px 12px; font: inherit; }
+.directory-inline-tool textarea { min-height: 168px; resize: vertical; font-family: var(--bitmixlist-font-mono, "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace); font-size: 0.9rem; line-height: 1.45; }
+.directory-inline-tool input:focus, .directory-inline-tool textarea:focus { border-color: #bb86fc; outline: 2px solid rgba(187, 134, 252, 0.18); outline-offset: 0; }
+.directory-inline-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 10px; }
+.directory-inline-tool button { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: 0 12px; border: 1px solid #454545; border-radius: 6px; background: #2d2d2d; color: #f4f4f4; font-size: 0.9rem; font-weight: 650; line-height: 1.2; cursor: pointer; }
+.directory-inline-tool button:hover, .directory-inline-tool button:focus { border-color: #bb86fc; background: #383838; color: #fff; outline: none; }
+.directory-inline-tool .vg-status { margin: 0; padding: 10px 12px; border: 1px solid #3a3a3a; border-radius: 6px; background: #181818; color: #e5e5e5; line-height: 1.45; }
+.directory-inline-tool .vg-status[hidden] { display: none; }
+.directory-inline-tool .vg-status--success { border-color: #2f7d48; background: #14251b; color: #b8f7c8; }
+.directory-inline-tool .vg-status--error { border-color: #8b2f36; background: #2a1417; color: #ffc4c8; }
+.directory-inline-tool .vg-status--warning { border-color: #80652a; background: #261f12; color: #ffe4a3; }
+.directory-inline-tool .vg-status--info { border-color: #3a3a3a; background: #181818; color: #e5e5e5; }
+.directory-pgp-key { flex: 1 1 100%; grid-column: 1 / -1; }
+.directory-pgp-key pre { max-height: 360px; margin: 0; padding: 12px; overflow: auto; border: 1px solid #303030; border-radius: 6px; background: #121212; color: #f4f4f4; font-family: var(--bitmixlist-font-mono, "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace); font-size: 0.82rem; line-height: 1.42; white-space: pre-wrap; overflow-wrap: anywhere; }
+.directory-icon { display: inline-block; flex: 0 0 auto; width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.14em; }
+.directory-heading-icon { color: #bb86fc; margin-right: 0.42rem; }
+.directory-meta-link { display: inline-flex; align-items: center; gap: 0.38rem; }
+.directory-meta-link .directory-icon { width: 0.95rem; height: 0.95rem; color: #bb86fc; }
+.directory-button { gap: 0.42rem; }
+.directory-button .directory-icon { width: 1rem; height: 1rem; }
+.directory-icon-button .directory-icon { width: 17px; height: 17px; }
+.directory-section-link { display: inline-flex; align-items: center; gap: 0.35rem; }
+.directory-section-link .directory-icon { width: 0.95rem; height: 0.95rem; }
+.directory-filter-label .directory-icon { margin-right: 0.35rem; color: #bb86fc; }
+.directory-inline-tool h3 { display: flex; align-items: center; gap: 0.45rem; }
+.directory-inline-tool h3 .directory-icon { color: #bb86fc; }
+.directory-inline-tool button { gap: 0.42rem; }
+
 .directory-footer-spacer { margin-top: 34px; }
 @media (max-width: 700px) {
   .directory-page .site-header { min-height: 96px; padding-top: 0.65rem; padding-bottom: 0.55rem; }
   .directory-page .site-content-wrapper { padding-top: 104px; }
   .directory-page .header-inner { gap: 8px; min-height: 38px; padding-left: 0.5rem; padding-right: 4.25rem; }
   .directory-page .header-inner h4 { font-size: var(--directory-header-title-mobile-size, 1.15rem); }
-  .directory-page .sidebar .nav-menu a { font-size: 0.9rem; }
+  .directory-page .sidebar .nav-menu a { font-size: 1rem; }
   .directory-page .lang-switcher { right: 0.5rem; gap: 4px; }
   .directory-page .lang-link { gap: 0; padding: 3px 5px; }
   .directory-page .lang-link span { display: none; }
@@ -65,7 +146,10 @@ document.addEventListener('DOMContentLoaded', function () {
   .directory-detail h1 { font-size: 2rem; }
   .directory-detail { padding: 22px 14px 36px; }
   .directory-hero { grid-template-columns: 1fr; }
-  .directory-logo { width: 112px; height: 112px; }
+  .directory-logo { width: 128px; height: 128px; }
+  .directory-verification-tool, .directory-pgp-key { flex-basis: 100%; }
+  .directory-table-wrap { overflow-x: visible; }
+  .directory-entry-table { min-width: 0; }
   .directory-facts, .directory-facts tbody, .directory-facts tr, .directory-facts th, .directory-facts td { display: block; width: 100%; box-sizing: border-box; }
   .directory-facts th { border-bottom: 0; }
 }
@@ -120,12 +204,12 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 </div>
 <nav class="directory-meta-nav" aria-label="Разделы каталога">
-<a class="directory-meta-link" href="../mixers/">Миксеры</a>
-<a class="directory-meta-link" href="../neverkyc-exchanges/">Обмен без KYC</a>
-<a class="directory-meta-link" href="../instant-exchanges/">Обмен мгновенный</a>
-<a class="directory-meta-link" href="../p2p-markets/">P2P-площадки</a>
-<a class="directory-meta-link is-active" href="./" aria-current="true">Координаторы</a>
-<a class="directory-meta-link" href="../privacy-tools/">Инструменты приватности</a>
+<a class="directory-meta-link" href="../mixers/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="m15 15 6 6"></path><path d="M4 4l5 5"></path></svg><span>Миксеры</span></a>
+<a class="directory-meta-link" href="../neverkyc-exchanges/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg><span>Обмен без KYC</span></a>
+<a class="directory-meta-link" href="../instant-exchanges/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"></path></svg><span>Обмен мгновенный</span></a>
+<a class="directory-meta-link" href="../p2p-markets/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="4"></circle><path d="M2 21a7 7 0 0 1 14 0"></path><path d="M17 11a4 4 0 0 0 0-6"></path><path d="M22 21a7 7 0 0 0-5-6.7"></path></svg><span>P2P-площадки</span></a>
+<a class="directory-meta-link is-active" href="./" aria-current="true"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><circle cx="12" cy="18" r="3"></circle><path d="m8.4 8.1 3.2 7.8"></path><path d="m15.6 8.1-3.2 7.8"></path><path d="M9 6h6"></path></svg><span>Координаторы</span></a>
+<a class="directory-meta-link" href="../privacy-tools/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span>Инструменты приватности</span></a>
 </nav>
 </header>
 <div class="sylvester-top" style="width:728px;height:90px;">
@@ -145,38 +229,115 @@ document.addEventListener('DOMContentLoaded', function () {
 <h1>Ginger Wallet</h1>
 <p class="directory-summary">Ginger Wallet: Комиссии: 0% ниже 0,03 BTC, затем 0,3%. Страница параметров BitMixList для категории &quot;Координатор&quot;.</p>
 <div class="directory-actions">
-<a class="directory-button" href="https://api.gingerwallet.io/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
-<a class="directory-button" href="../../coordinators/ginger-wallet.html">English</a>
-</div>
-</div>
-</section>
-<section class="directory-section">
-<h2>Ссылки</h2>
-<table class="directory-facts">
+	<a class="directory-button" href="https://api.gingerwallet.io/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
+	</div>
+	</div>
+	</section>
+	<section class="directory-section">
+	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3c3 3 3 15 0 18"></path><path d="M12 3c-3 3-3 15 0 18"></path></svg><span>Ссылки</span></h2>
+	<figure class="wp-block-table directory-table-wrap">
+	<table class="directory-facts directory-entry-table">
+	<thead><tr><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Параметр</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Значение</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th></tr></thead>
 <tbody>
-<tr><th>Официальный сайт</th><td><a href="https://api.gingerwallet.io/" rel="noopener noreferrer" target="_blank">https://api.gingerwallet.io/</a></td></tr>
-<tr><th>Tor-сайт</th><td>No</td></tr>
+<tr><td class="directory-nowrap">Официальный сайт</td><td class="directory-nowrap"><a href="https://api.gingerwallet.io/" rel="noopener noreferrer" target="_blank">https://api.gingerwallet.io/</a></td></tr>
+<tr><td class="directory-nowrap">Tor-сайт</td><td class="directory-nowrap">No</td></tr>
 
 
 </tbody>
 </table>
-</section>
-<section class="directory-section">
-<h2>Параметры</h2>
-<table class="directory-facts">
+	</figure>
+	</section>
+	<section class="directory-section">
+	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h10"></path><path d="M18 6h2"></path><circle cx="16" cy="6" r="2"></circle><path d="M4 12h3"></path><path d="M11 12h9"></path><circle cx="9" cy="12" r="2"></circle><path d="M4 18h12"></path><path d="M20 18h.01"></path><circle cx="18" cy="18" r="2"></circle></svg><span>Параметры</span></h2>
+	<figure class="wp-block-table directory-table-wrap">
+	<table class="directory-facts directory-entry-table">
+	<thead><tr><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Параметр</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Значение</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th></tr></thead>
 <tbody>
-<tr><th>Комиссии</th><td>0% ниже 0,03 BTC; 0,3% при цене 0,03 BTC или выше</td></tr>
-<tr><th>Основан</th><td>2024</td></tr>
-<tr><th>Ремикс</th><td>Да</td></tr>
-<tr><th>Бесплатно до</th><td>0,03₿</td></tr>
-<tr><th>Конфигурация</th><td>Показать конфигурацию ✕ Конфигурация Разрешённые суммы ввода: 0,00009999 BTC – 43000 BTC. Разрешённые типы ввода: P2WPKH, Taproot. Разрешённые суммы вывода: 0,00009999 BTC - 43000 BTC. Разрешённые типы вывода: P2WPKH, Taproot Минимальное количество входов: 21 Максимальное количество входов: 200 Максимальное время регистрации раунда: 0д 0ч 30м 0с</td></tr>
+<tr><td class="directory-nowrap">Комиссии</td><td class="directory-nowrap">0% ниже 0,03 BTC; 0,3% при цене 0,03 BTC или выше</td></tr>
+<tr><td class="directory-nowrap">Основан</td><td class="directory-nowrap">2024</td></tr>
+<tr><td>Ремикс</td><td>Да</td></tr>
+<tr><td class="directory-nowrap">Бесплатно до</td><td class="directory-nowrap">0,03₿</td></tr>
 
 </tbody>
 </table>
+	</figure>
+</section>
+<section class="directory-section directory-entry-config">
+	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 3 4 7l4 4"></path><path d="m16 3 4 4-4 4"></path><path d="m14 4-4 16"></path></svg><span>Конфигурация координатора</span></h2>
+	<p class="directory-config-source">Получено во время сборки из Wabisator config.json. <a href="https://wabisator.com/config.json" rel="noopener noreferrer" target="_blank">Wabisator config.json</a></p>
+	<pre class="directory-config-json"><code>{
+    &quot;Allowed Input Amounts&quot;: &quot;0.00009999 BTC - 43000 BTC&quot;,
+    &quot;Allowed Input Types&quot;: &quot;P2WPKH, Taproot&quot;,
+    &quot;Allowed Output Amounts&quot;: &quot;0.00009999 BTC - 43000 BTC&quot;,
+    &quot;Allowed Output Types&quot;: &quot;P2WPKH, Taproot&quot;,
+    &quot;Minimum Inputs&quot;: 21,
+    &quot;Maximum Inputs&quot;: 200,
+    &quot;Maximum Round Registration Time&quot;: &quot;0d 0h 30m 0s&quot;
+}</code></pre>
+	</section><section class="directory-section directory-entry-volume-history">
+	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 19h18"></path><path d="M5 16 10 9l4 4 5-8"></path><path d="M19 5v5h-5"></path></svg><span>История объема</span></h2>
+	<div class="directory-volume">
+<p class="directory-volume-source">Получено во время сборки из Wabisator volumes_history.json. <a href="https://wabisator.com/volumes_history.json" rel="noopener noreferrer" target="_blank">Wabisator volumes_history.json</a> Обновлено: 2026-05-23 13:45:42 UTC.</p>
+<dl class="directory-volume-stats">
+<div class="directory-volume-stat"><dt>Общий объем</dt><dd>4080.77 BTC</dd></div>
+<div class="directory-volume-stat"><dt>Дневной максимум</dt><dd>136.25 BTC<small>2024-11-07</small></dd></div>
+<div class="directory-volume-stat"><dt>Последний день</dt><dd>0.63294599 BTC<small>2026-05-22</small></dd></div>
+<div class="directory-volume-stat"><dt>Среднее за 30 дней</dt><dd>1.80 BTC</dd></div>
+</dl>
+<div class="directory-volume-chart"><svg role="img" aria-label="История объема" focusable="false" viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg">
+<line x1="72" y1="18" x2="72" y2="188" stroke="#555" stroke-width="1"/>
+<line x1="72" y1="188" x2="702" y2="188" stroke="#555" stroke-width="1"/>
+<line x1="72" y1="188" x2="702" y2="188" stroke="#252525" stroke-width="1"/>
+<line x1="67" y1="188" x2="72" y2="188" stroke="#6a6a6a" stroke-width="1"/>
+<text x="63" y="191.5" fill="#bdbdbd" font-size="10" text-anchor="end">0</text>
+<line x1="72" y1="145.5" x2="702" y2="145.5" stroke="#252525" stroke-width="1"/>
+<line x1="67" y1="145.5" x2="72" y2="145.5" stroke="#6a6a6a" stroke-width="1"/>
+<text x="63" y="149" fill="#bdbdbd" font-size="10" text-anchor="end">4.15</text>
+<line x1="72" y1="103" x2="702" y2="103" stroke="#252525" stroke-width="1"/>
+<line x1="67" y1="103" x2="72" y2="103" stroke="#6a6a6a" stroke-width="1"/>
+<text x="63" y="106.5" fill="#bdbdbd" font-size="10" text-anchor="end">8.31</text>
+<line x1="72" y1="60.5" x2="702" y2="60.5" stroke="#252525" stroke-width="1"/>
+<line x1="67" y1="60.5" x2="72" y2="60.5" stroke="#6a6a6a" stroke-width="1"/>
+<text x="63" y="64" fill="#bdbdbd" font-size="10" text-anchor="end">12.5</text>
+<line x1="72" y1="18" x2="702" y2="18" stroke="#252525" stroke-width="1"/>
+<line x1="67" y1="18" x2="72" y2="18" stroke="#6a6a6a" stroke-width="1"/>
+<text x="63" y="21.5" fill="#bdbdbd" font-size="10" text-anchor="end">16.6</text>
+<line x1="72" y1="188" x2="72" y2="193" stroke="#6a6a6a" stroke-width="1"/>
+<text x="72" y="208" fill="#bdbdbd" font-size="10" text-anchor="middle">01-24</text>
+<line x1="383.46" y1="188" x2="383.46" y2="193" stroke="#6a6a6a" stroke-width="1"/>
+<text x="383.46" y="208" fill="#bdbdbd" font-size="10" text-anchor="middle">03-10</text>
+<line x1="702" y1="188" x2="702" y2="193" stroke="#6a6a6a" stroke-width="1"/>
+<text x="702" y="208" fill="#bdbdbd" font-size="10" text-anchor="middle">05-22</text>
+<text x="387" y="230" fill="#d8d8d8" font-size="11" font-weight="650" text-anchor="middle">Дата</text>
+<text transform="translate(16 103) rotate(-90)" fill="#d8d8d8" font-size="11" font-weight="650" text-anchor="middle">Объем (BTC)</text>
+<polyline fill="none" points="72,185.3 79.08,148.27 86.16,134.13 93.24,186.26 100.31,177.72 107.39,172.5 114.47,179.63 121.55,166.95 128.63,67.29 135.71,22.39 142.79,56.22 149.87,101.47 156.94,115.87 164.02,181.79 171.1,133.54 178.18,140.16 185.26,149.39 192.34,181.61 199.42,184.07 206.49,186.92 213.57,186 220.65,187.53 227.73,186.75 234.81,187.41 241.89,185.6 248.97,187.31 256.04,171.88 263.12,186.82 270.2,187.06 277.28,187.25 284.36,136.13 291.44,18 298.52,81.25 305.6,106.37 312.67,114.16 319.75,130.21 326.83,137.75 333.91,140.25 340.99,141.32 348.07,150.18 355.15,152.15 362.22,154.94 369.3,153.67 376.38,109.02 383.46,19.05 390.54,181.85 397.62,125.05 404.7,158.05 411.78,161.1 418.85,169.92 425.93,173.24 433.01,174.61 440.09,173.63 447.17,176.43 454.25,175.44 461.33,175.58 468.4,85.75 475.48,49.64 482.56,88.85 489.64,98.13 496.72,115.75 503.8,119.56 510.88,121.05 517.96,130.11 525.03,134.06 532.11,135.32 539.19,138.08 546.27,150.09 553.35,152.05 560.43,172.67 567.51,173.74 574.58,175.54 581.66,187.33 588.74,187.65 595.82,187.57 602.9,187.62 609.98,186.79 617.06,186.37 624.13,187.85 631.21,187.14 638.29,187.85 645.37,187.73 652.45,187.66 659.53,187.86 666.61,187.88 673.69,187.73 680.76,187.63 687.84,187.45 694.92,186.56 702,181.52" stroke="#bb86fc" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+</svg></div>
+	<h3><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 10h18"></path><path d="M9 4v16"></path><path d="M15 4v16"></path></svg><span>Последние дневные объемы</span></h3>
+	<figure class="directory-volume-table-wrap">
+<table class="directory-volume-table">
+<thead><tr><th>Дата</th><th>Объем (BTC)</th></tr></thead>
+<tbody>
+<tr><td>2026-05-22</td><td>0.63294599 BTC</td></tr><tr><td>2026-05-21</td><td>0.14105118 BTC</td></tr><tr><td>2026-05-20</td><td>0.05350147 BTC</td></tr><tr><td>2026-05-19</td><td>0.03633201 BTC</td></tr><tr><td>2026-05-18</td><td>0.02640584 BTC</td></tr><tr><td>2026-05-15</td><td>0.01201477 BTC</td></tr><tr><td>2026-05-13</td><td>0.01324559 BTC</td></tr><tr><td>2026-05-12</td><td>0.03323192 BTC</td></tr><tr><td>2026-05-11</td><td>0.02596789 BTC</td></tr><tr><td>2026-05-10</td><td>0.01473926 BTC</td></tr><tr><td>2026-05-09</td><td>0.08355237 BTC</td></tr><tr><td>2026-05-08</td><td>0.01471464 BTC</td></tr><tr><td>2026-05-07</td><td>0.15966933 BTC</td></tr><tr><td>2026-04-24</td><td>0.11846805 BTC</td></tr><tr><td>2026-04-23</td><td>0.03743204 BTC</td></tr><tr><td>2026-04-15</td><td>0.04176820 BTC</td></tr><tr><td>2026-04-14</td><td>0.03382427 BTC</td></tr><tr><td>2026-04-13</td><td>0.06563029 BTC</td></tr><tr><td>2026-04-06</td><td>1.21737796 BTC</td></tr><tr><td>2026-04-05</td><td>1.39383499 BTC</td></tr><tr><td>2026-04-04</td><td>1.49815529 BTC</td></tr><tr><td>2026-04-03</td><td>3.51323459 BTC</td></tr><tr><td>2026-04-02</td><td>3.70444805 BTC</td></tr><tr><td>2026-04-01</td><td>4.87794350 BTC</td></tr><tr><td>2026-03-31</td><td>5.14775843 BTC</td></tr><tr><td>2026-03-30</td><td>5.27087942 BTC</td></tr><tr><td>2026-03-29</td><td>5.65640172 BTC</td></tr><tr><td>2026-03-28</td><td>6.54230487 BTC</td></tr><tr><td>2026-03-27</td><td>6.68804750 BTC</td></tr><tr><td>2026-03-26</td><td>7.06028771 BTC</td></tr>
+</tbody>
+</table>
+</figure>
+</div>
 </section>
 <section class="directory-section">
-<h2>Проверка</h2>
+<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg><span>Проверка</span></h2>
 <p class="directory-note">Проверяйте официальный домен и любые гарантийные условия перед отправкой средств.</p>
+<div class="directory-tool-grid">
+<form class="directory-inline-tool directory-verification-tool" data-official-domains="[&quot;api.gingerwallet.io&quot;]" data-service-domain-check>
+	<h3><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path><path d="m8.5 11 1.8 1.8 3.5-3.6"></path></svg><span>Проверка официального домена</span></h3>
+	<p>Введите обычный или onion-домен и сравните его с официальными доменами на этой странице.</p>
+	<label for="domain-check-ginger-wallet-ru">Домен для проверки</label>
+	<input autocomplete="off" data-domain-input id="domain-check-ginger-wallet-ru" placeholder="example.com или адрес .onion" type="search"/>
+	<div class="directory-inline-actions">
+	<button type="submit"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><span>Проверить домен</span></button>
+	<p class="vg-status" data-domain-status hidden></p>
+	</div>
+	</form>
+</div>
 </section>
 <div class="directory-footer-spacer"></div>
 </article>
@@ -184,7 +345,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <footer class="site-footer" id="site-footer" role="contentinfo"></footer>
 <div class="footer">
 <div>Copyright © 2023-2026 <strong><a href="https://bitcointalk.org/index.php?action=profile;u=2739424">NotATether</a></strong>.</div>
-<div>Contact: admin [at] notatether [dot] com</div>
+        <div>Contact: admin [at] bitmixlist [dot] org</div>
 <div><em>Disclaimers:</em></div>
 <div>Only mix funds you have obtained lawfully.</div>
 <div>Do not use BitMixList for money laundering!</div>

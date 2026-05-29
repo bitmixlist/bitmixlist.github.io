@@ -403,6 +403,16 @@ const mixerDetails = {
             return extractBitcoinSignedMessage(message, '1CrywjDEzzpEMxdWzCDgtmZ3Tr57XrnANV');
         }
     },
+    'anonymixer.com': {
+        type: 'bitcoin',
+        keyIndex: 2,
+        customHandler: function(message) {
+            const address = message.match(/-----START SIGNING BITCOIN ADDRESS-----(.*?)-----END SIGNING BITCOIN ADDRESS-----/s)[1].trim();
+            const body = message.match(/-----START LETTER OF GUARANTEE-----(.*?)-----END LETTER OF GUARANTEE-----/s)[1].trim();
+            const signature = message.match(/-----START DIGITAL SIGNATURE-----(.*?)-----END DIGITAL SIGNATURE-----/s)[1].trim();
+            return { body, signature, address };
+        }
+    },
     'anonymizer.com': {
         type: 'bitcoin',
         keyIndex: 2,
@@ -516,8 +526,7 @@ function getVerifyStatusElement() {
     return status;
 }
 
-function setVerifyStatus(message, type = 'info') {
-    const status = getVerifyStatusElement();
+function setStatusElement(status, message, type = 'info') {
     if (!status) return;
 
     status.textContent = message;
@@ -527,29 +536,31 @@ function setVerifyStatus(message, type = 'info') {
     status.hidden = false;
 }
 
-function clearVerifyStatus() {
-    const status = getVerifyStatusElement();
+function clearStatusElement(status) {
     if (!status) return;
 
     status.textContent = '';
     status.hidden = true;
 }
 
-// Event listener for the verification button
-document.getElementById('verifyButton').addEventListener('click', function() {
-    try {
-        clearVerifyStatus();
+function setVerifyStatus(message, type = 'info') {
+    setStatusElement(getVerifyStatusElement(), message, type);
+}
 
-        const selectedMixer = document.getElementById('mixerSelect').value;
+function clearVerifyStatus() {
+    clearStatusElement(getVerifyStatusElement());
+}
+
+async function verifyLetterForMixer(selectedMixer, message, setStatus) {
+    try {
         const mixerInfo = mixerDetails[selectedMixer];
-        let message = document.getElementById('messageTextArea').value;
 
         if (!mixerInfo) {
-            setVerifyStatus(verifyToolText('Please select a mixer.', 'Пожалуйста, выберите миксер.'), 'error');
+            setStatus(verifyToolText('Please select a mixer.', 'Пожалуйста, выберите миксер.'), 'error');
             return;
         }
         else if (mixerInfo.type === 'none') {
-            setVerifyStatus(
+            setStatus(
                 verifyToolText('Verification for this mixer is not supported.', 'Проверка для этого миксера не поддерживается.'),
                 'error'
             );
@@ -574,46 +585,77 @@ document.getElementById('verifyButton').addEventListener('click', function() {
         if (mixerInfo.type === 'pgp') {
             const publicKey = keys[mixerInfo.keyIndex];
 
-            setVerifyStatus(verifyToolText('Verifying letter...', 'Проверка письма...'), 'info');
+            setStatus(verifyToolText('Verifying letter...', 'Проверка письма...'), 'info');
 
             const options = {
                 message: window.openpgp.cleartext.readArmored(verificationData.body), // parse armored message
                 publicKeys: window.openpgp.key.readArmored(publicKey).keys   // for verification
             };
-            window.openpgp.verify(options).then(function(verified) {
-                const validity = verified.signatures[0].valid; // true
-                if (validity) {
-                    setVerifyStatus(
-                        verifyToolText('Genuine letter of guarantee. Fingerprint: ', 'Подлинное гарантийное письмо. Отпечаток: ') +
-                        verified.signatures[0].keyid.toHex().toUpperCase(),
-                        'success'
-                    );
-                }
-                else {
-                    setVerifyStatus(verifyToolText('Invalid letter of guarantee!', 'Недействительное гарантийное письмо!'), 'error');
-                }
-            }).catch(error => {
-                console.error('An error occured during PGP verification:', error);
-                setVerifyStatus(
-                    verifyToolText('An error occurred during PGP verification.', 'Во время проверки PGP произошла ошибка.'),
-                    'error'
+            const verified = await window.openpgp.verify(options);
+            const validity = verified.signatures[0].valid; // true
+            if (validity) {
+                setStatus(
+                    verifyToolText('Genuine letter of guarantee. Fingerprint: ', 'Подлинное гарантийное письмо. Отпечаток: ') +
+                    verified.signatures[0].keyid.toHex().toUpperCase(),
+                    'success'
                 );
-            });
+            }
+            else {
+                setStatus(verifyToolText('Invalid letter of guarantee!', 'Недействительное гарантийное письмо!'), 'error');
+            }
         } else if (mixerInfo.type === 'bitcoin') {
             const isValid = vrVerify(verificationData);
             if (isValid) {
-                setVerifyStatus(
+                setStatus(
                     verifyToolText('Genuine letter of guarantee. Address: ', 'Подлинное гарантийное письмо. Адрес: ') +
                     verificationData.address,
                     'success'
                 );
             } else {
-                setVerifyStatus(verifyToolText('Invalid letter of guarantee!', 'Недействительное гарантийное письмо!'), 'error');
+                setStatus(verifyToolText('Invalid letter of guarantee!', 'Недействительное гарантийное письмо!'), 'error');
             }
         }
     }
     catch (error) {
         console.error('Verification failed:', error);
-        setVerifyStatus(verifyToolText('Verification failed.', 'Проверка не удалась.'), 'error');
+        setStatus(verifyToolText('Verification failed.', 'Проверка не удалась.'), 'error');
     }
-});
+}
+
+function setupLegacyVerifier() {
+    const button = document.getElementById('verifyButton');
+    const select = document.getElementById('mixerSelect');
+    const textarea = document.getElementById('messageTextArea');
+    if (!button || !select || !textarea) {
+        return;
+    }
+
+    button.addEventListener('click', function() {
+        clearVerifyStatus();
+        verifyLetterForMixer(select.value, textarea.value, setVerifyStatus);
+    });
+}
+
+function setupInlineVerifiers() {
+    document.querySelectorAll('[data-letter-verify-form]').forEach(function(form) {
+        const mixer = form.getAttribute('data-letter-mixer') || '';
+        const textarea = form.querySelector('[data-letter-message]');
+        const status = form.querySelector('[data-letter-status]');
+        if (!mixer || !textarea || !status) {
+            return;
+        }
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            clearStatusElement(status);
+            verifyLetterForMixer(mixer, textarea.value, function(message, type) {
+                setStatusElement(status, message, type);
+            });
+        });
+    });
+}
+
+window.bitmixlistVerifyLetter = verifyLetterForMixer;
+
+setupLegacyVerifier();
+setupInlineVerifiers();

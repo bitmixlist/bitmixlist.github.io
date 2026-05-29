@@ -11,6 +11,7 @@
 <link href="../../wp-content/litespeed/css/styles.css" rel="stylesheet"/>
 <script src="../../wp-content/litespeed/js/ad-loader.js"></script>
 <script src="../../wp-content/litespeed/js/site-search.js" defer></script>
+<script src="../../wp-content/litespeed/js/directory-filter.js" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   if (window.bitmixlistLoadTopAd) {
@@ -24,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
 .directory-page .header-inner { gap: 12px; min-height: 42px; align-items: center; position: relative; padding-right: 8rem; }
 .directory-page .header-inner h4 { flex: 1 1 0; min-width: 0; font-size: var(--directory-header-title-size, 1.5rem); line-height: 1.2; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .directory-page .lang-switcher { position: absolute; top: 50%; right: 2rem; transform: translateY(-50%); margin-left: 0; flex: 0 0 auto; }
-.directory-page .sidebar .nav-menu a { font-size: 0.95rem; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.directory-page .sidebar .nav-menu a { font-size: 1rem; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .directory-page .mobile-menu-toggle { flex: 0 0 auto; }
 .directory-page .sylvester-top, .directory-page .sylvester-top-mobile { margin-top: 1rem !important; }
 .directory-meta-nav { display: flex; justify-content: center; gap: 22px; width: 100%; margin: 0.45rem 0 0; padding: 0 1.5rem 0.15rem; overflow-x: auto; scrollbar-width: thin; box-sizing: border-box; }
@@ -38,35 +39,132 @@ document.addEventListener('DOMContentLoaded', function () {
 .directory-summary { margin: 0; color: #e8e1f5; line-height: 1.55; max-width: 760px; }
 .directory-section { margin-top: 28px; }
 .directory-section h2 { margin: 0 0 12px; font-size: 1.35rem; letter-spacing: 0; }
-.directory-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
-.directory-list-card { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; min-width: 0; padding: 14px; border: 1px solid #3a2e55; border-radius: 8px; background: #181222; }
-.directory-list-card .directory-logo { width: 64px; height: 64px; border-radius: 8px; object-fit: contain; }
-.directory-list-card .directory-logo--text { font-size: 1.15rem; }
+.directory-filter { margin: 22px 0 0; max-width: 560px; }
+.directory-filter-label { display: block; margin: 0 0 6px; color: #f6f2ff; font-size: 0.95rem; font-weight: 650; }
+.directory-filter-input { width: 100%; min-height: 40px; box-sizing: border-box; border: 1px solid #4a3a70; border-radius: 7px; background: #121018; color: #f6f2ff; padding: 0 12px; font: inherit; }
+.directory-filter-input:focus { border-color: #8a6cff; outline: 2px solid rgba(138, 108, 255, 0.24); outline-offset: 2px; }
+.directory-filter-empty { margin: 10px 0 0; color: #c9c3d8; }
+.directory-pair-filter { padding: 16px 18px; border: 1px solid #2d2d2d; border-radius: 8px; background: #1a1a1a; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); }
+.directory-pair-filter h2 { margin-bottom: 14px; }
+.directory-pair-filter__controls { display: grid; grid-template-columns: repeat(2, minmax(220px, 1fr)) auto; gap: 12px; align-items: start; }
+.directory-pair-filter__control { display: grid; gap: 6px; color: #f6f2ff; font-size: 0.92rem; font-weight: 650; }
+.directory-pair-filter__select { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.directory-pair-filter__select:focus { border-color: #8a6cff; outline: 2px solid rgba(138, 108, 255, 0.24); outline-offset: 2px; }
+.directory-pair-filter__coin-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.directory-pair-filter__coin { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 36px; padding: 5px 8px; border: 1px solid #4a3a70; border-radius: 7px; background: #121018; color: #f6f2ff; font: inherit; font-size: 0.84rem; font-weight: 650; line-height: 1.15; cursor: pointer; }
+.directory-pair-filter__coin:hover, .directory-pair-filter__coin:focus { border-color: #8a6cff; background: #1b1428; color: #fff; outline: none; }
+.directory-pair-filter__coin.is-selected { border-color: #bb86fc; background: #2a1c41; color: #fff; }
+.directory-pair-filter__coin img { display: block; flex: 0 0 20px; width: 20px; height: 20px; }
+.directory-pair-filter__reset { min-height: 40px; padding: 0 13px; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; font: inherit; font-size: 0.9rem; font-weight: 650; cursor: pointer; }
+.directory-pair-filter__reset:hover, .directory-pair-filter__reset:focus { background: #27184d; color: #fff; }
+.directory-pair-filter__status, .directory-pair-filter__empty { margin: 12px 0 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }
+.directory-pair-filter__empty { color: #ffcfdf; }
+.directory-fee-filter { padding: 16px 18px; border: 1px solid #2d2d2d; border-radius: 8px; background: #1a1a1a; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); }
+.directory-fee-filter h2 { margin-bottom: 14px; }
+.directory-fee-filter__controls { display: grid; grid-template-columns: minmax(220px, 1fr) auto; gap: 12px; align-items: end; }
+.directory-fee-filter__control { display: grid; gap: 8px; color: #f6f2ff; font-size: 0.92rem; font-weight: 650; }
+.directory-fee-filter__label-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.directory-fee-filter__value { color: #c7b8ff; font-weight: 750; white-space: nowrap; }
+.directory-fee-filter__range { width: 100%; accent-color: #bb86fc; }
+.directory-fee-filter__reset { min-height: 40px; padding: 0 13px; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; font: inherit; font-size: 0.9rem; font-weight: 650; cursor: pointer; }
+.directory-fee-filter__reset:hover, .directory-fee-filter__reset:focus { background: #27184d; color: #fff; }
+.directory-fee-filter__status, .directory-fee-filter__empty { margin: 12px 0 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }
+.directory-fee-filter__empty { color: #ffcfdf; }
+.directory-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px; }
+.directory-list-card { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 14px; min-width: 0; padding: 14px; border: 1px solid #3a2e55; border-radius: 8px; background: #181222; }
+.directory-list-card .directory-logo { width: 128px; height: 128px; border-radius: 10px; object-fit: contain; }
+.directory-list-card .directory-logo--text { font-size: 1.8rem; }
 .directory-list-title { margin: 0 0 4px; font-size: 1.05rem; line-height: 1.25; font-weight: 700; }
 .directory-list-title a { color: #f6f2ff; text-decoration: none; }
 .directory-list-title a:hover, .directory-list-title a:focus { text-decoration: underline; }
 .directory-list-summary { margin: 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }
+.coin-list { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
+.coin-badge { display: inline-flex; align-items: center; gap: 5px; min-height: 26px; padding: 2px 7px 2px 4px; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 999px; background: #121018; color: #f6f2ff; font-size: 0.82rem; font-weight: 650; line-height: 1; white-space: nowrap; }
+.coin-badge img { display: block; flex: 0 0 20px; width: 20px; height: 20px; }
+.directory-facts th.directory-coins-cell { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+.directory-facts td.directory-coins-cell { white-space: normal; overflow-wrap: normal; word-break: normal; }
+.directory-facts td.directory-coins-cell .coin-list { max-width: 100%; }
+.directory-list-summary .coin-list { display: inline-flex; margin-left: 4px; vertical-align: middle; }
+
 .directory-list-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .directory-button { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; padding: 0 10px; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; text-decoration: none; font-size: 0.9rem; font-weight: 650; }
 .directory-button:hover, .directory-button:focus { background: #27184d; color: #fff; text-decoration: none; }
+.directory-icon-button { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 34px; height: 34px; min-height: 34px; margin-top: 0; margin-left: auto; padding: 0; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; text-decoration: none !important; box-sizing: border-box; }
+.directory-icon-button:hover, .directory-icon-button:focus { background: #27184d; color: #fff; text-decoration: none !important; }
+.directory-icon-button svg { width: 17px; height: 17px; }
+.tool-registry { max-width: none; margin: 28px 0 0; padding: 0; }
+.tool-registry__header h2 { margin: 0 0 10px; font-size: 2rem; letter-spacing: 0; }
+.tool-registry .muted { margin: 0 0 16px; color: #d8d0e8; line-height: 1.45; }
+.tool-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.tool { border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 14px 14px 12px; }
+.tool__header { display: flex; align-items: center; gap: 12px; }
+.tool__header .tool__name { flex: 1 1 auto; min-width: 0; }
+.tool__name { color: #f6f2ff; font-size: 1.05rem; font-weight: 700; text-decoration: none; }
+.tool__name:hover, .tool__name:focus { color: #fff; text-decoration: underline; }
+.tool__desc { margin: 8px 0 10px; color: #d8d0e8; line-height: 1.45; }
+.tool__meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0; }
+.pill { padding: 4px 10px; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 999px; color: #e7def6; font-size: 0.82rem; line-height: 1.25; }
+.directory-table-wrap { margin: 0; overflow-x: auto; }
 .directory-facts { width: 100%; border-collapse: collapse; table-layout: fixed; }
-.directory-facts th, .directory-facts td { vertical-align: top; padding: 12px; overflow-wrap: anywhere; word-break: normal; }
+.directory-facts th, .directory-facts td { vertical-align: top; padding: 12px; overflow-wrap: normal; word-break: normal; hyphens: none; }
 .directory-facts th { color: #f6f2ff; text-align: left; background: #282238; }
 .directory-facts td { background: #1c1728; }
+.directory-facts .directory-nowrap { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+.directory-comparison-table { table-layout: auto; min-width: 1040px; }
+.directory-comparison-table--mixers { min-width: 1380px; }
+.directory-comparison-table--mixers th.directory-coins-cell,
+.directory-comparison-table--mixers td.directory-coins-cell { width: 12rem; max-width: 12rem; }
+.directory-comparison-table--mixers td.directory-coins-cell .coin-list { max-width: 12rem; }
+.directory-comparison-table--coordinators { min-width: 960px; }
+.directory-facts thead th[data-sortable-column] { cursor: pointer; user-select: none; }
+.directory-sort-button { all: unset; display: inline-flex; align-items: center; justify-content: flex-start; gap: 6px; max-width: 100%; color: inherit; font: inherit; font-weight: inherit; line-height: inherit; cursor: pointer; }
+.directory-sort-label { min-width: 0; }
+.directory-sort-button:focus-visible { outline: 2px solid #bb86fc; outline-offset: 3px; border-radius: 4px; }
+.directory-sort-indicator { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 0.8em; color: #c7b8ff; font-size: 0.78em; line-height: 1; text-align: center; }
+
+.directory-section-cautions { margin-top: 22px; }
+.directory-caution { margin: 0; padding: 16px 18px; border: 1px solid #2d2d2d; border-radius: 8px; background: #1a1a1a; color: #e0e0e0; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); line-height: 1.55; }
+.directory-caution + .directory-caution { margin-top: 12px; }
+.directory-caution h3 { margin: 0 0 8px; color: #f2ecff; font-size: 1rem; letter-spacing: 0; }
+.directory-caution p { margin: 0; }
+.directory-caution a { color: #bb86fc; font-weight: 700; text-decoration: underline; text-underline-offset: 0.16em; }
+.directory-icon { display: inline-block; flex: 0 0 auto; width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.14em; }
+.directory-heading-icon { color: #bb86fc; margin-right: 0.42rem; }
+.directory-meta-link { display: inline-flex; align-items: center; gap: 0.38rem; }
+.directory-meta-link .directory-icon { width: 0.95rem; height: 0.95rem; color: #bb86fc; }
+.directory-button { gap: 0.42rem; }
+.directory-button .directory-icon { width: 1rem; height: 1rem; }
+.directory-icon-button .directory-icon { width: 17px; height: 17px; }
+.directory-section-link { display: inline-flex; align-items: center; gap: 0.35rem; }
+.directory-section-link .directory-icon { width: 0.95rem; height: 0.95rem; }
+.directory-filter-label .directory-icon { margin-right: 0.35rem; color: #bb86fc; }
+.directory-inline-tool h3 { display: flex; align-items: center; gap: 0.45rem; }
+.directory-inline-tool h3 .directory-icon { color: #bb86fc; }
+.directory-inline-tool button { gap: 0.42rem; }
+
 @media (max-width: 700px) {
   .directory-page .site-header { min-height: 96px; padding-top: 0.65rem; padding-bottom: 0.55rem; }
   .directory-page .site-content-wrapper { padding-top: 104px; }
   .directory-page .header-inner { gap: 8px; min-height: 38px; padding-left: 0.5rem; padding-right: 4.25rem; }
   .directory-page .header-inner h4 { font-size: var(--directory-header-title-mobile-size, 1.15rem); }
-  .directory-page .sidebar .nav-menu a { font-size: 0.9rem; }
-  .directory-page .lang-switcher { right: 0.5rem; gap: 4px; }
-  .directory-page .lang-link { gap: 0; padding: 3px 5px; }
-  .directory-page .lang-link span { display: none; }
-  .directory-meta-nav { justify-content: flex-start; gap: 16px; margin-top: 0.35rem; padding-left: 0.75rem; padding-right: 0.75rem; }
-  .directory-meta-link { font-size: 0.84rem; }
-  .directory-detail { padding: 22px 14px 36px; }
-  .directory-detail h1 { font-size: 2rem; }
-  .directory-list { grid-template-columns: 1fr; }
+  .directory-page .sidebar .nav-menu a { font-size: 1rem; }
+	  .directory-page .lang-switcher { right: 0.5rem; gap: 4px; }
+	  .directory-page .lang-link { gap: 0; padding: 3px 5px; }
+	  .directory-page .lang-link span { display: none; }
+	  .directory-meta-nav { justify-content: flex-start; gap: 16px; margin-top: 0.35rem; padding-left: 0.75rem; padding-right: 0.75rem; }
+	  .directory-meta-link { font-size: 0.84rem; }
+	  .directory-detail { padding: 22px 14px 36px; }
+	  .directory-detail h1 { font-size: 2rem; }
+	  .directory-fee-filter__controls { grid-template-columns: 1fr; }
+	  .directory-fee-filter__reset { width: 100%; }
+	  .directory-pair-filter__controls { grid-template-columns: 1fr; }
+	  .directory-pair-filter__reset { width: 100%; }
+	  .directory-list { grid-template-columns: 1fr; }
+  .directory-table-wrap { overflow-x: visible; }
+  .directory-comparison-table { min-width: 0; }
+  .directory-comparison-table--mixers th.directory-coins-cell,
+  .directory-comparison-table--mixers td.directory-coins-cell { width: 100%; max-width: none; }
+  .directory-comparison-table--mixers td.directory-coins-cell .coin-list { max-width: 100%; }
   .directory-facts, .directory-facts tbody, .directory-facts tr, .directory-facts th, .directory-facts td { display: block; width: 100%; box-sizing: border-box; }
 }
 </style>
@@ -117,12 +215,12 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 </div>
 <nav class="directory-meta-nav" aria-label="Разделы каталога">
-<a class="directory-meta-link" href="../mixers/">Миксеры</a>
-<a class="directory-meta-link is-active" href="./" aria-current="true">Обмен без KYC</a>
-<a class="directory-meta-link" href="../instant-exchanges/">Обмен мгновенный</a>
-<a class="directory-meta-link" href="../p2p-markets/">P2P-площадки</a>
-<a class="directory-meta-link" href="../coordinators/">Координаторы</a>
-<a class="directory-meta-link" href="../privacy-tools/">Инструменты приватности</a>
+<a class="directory-meta-link" href="../mixers/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="m15 15 6 6"></path><path d="M4 4l5 5"></path></svg><span>Миксеры</span></a>
+<a class="directory-meta-link is-active" href="./" aria-current="true"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg><span>Обмен без KYC</span></a>
+<a class="directory-meta-link" href="../instant-exchanges/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"></path></svg><span>Обмен мгновенный</span></a>
+<a class="directory-meta-link" href="../p2p-markets/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="4"></circle><path d="M2 21a7 7 0 0 1 14 0"></path><path d="M17 11a4 4 0 0 0 0-6"></path><path d="M22 21a7 7 0 0 0-5-6.7"></path></svg><span>P2P-площадки</span></a>
+<a class="directory-meta-link" href="../coordinators/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><circle cx="12" cy="18" r="3"></circle><path d="m8.4 8.1 3.2 7.8"></path><path d="m15.6 8.1-3.2 7.8"></path><path d="M9 6h6"></path></svg><span>Координаторы</span></a>
+<a class="directory-meta-link" href="../privacy-tools/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span>Инструменты приватности</span></a>
 </nav>
 </header>
 <div class="sylvester-top" style="width:728px;height:90px;">
@@ -133,162 +231,190 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 <div class="centered"><p>Это реклама. Реклама не одобрена BitMixList.</p></div>
 <main class="site-main post-34 page type-page status-publish hentry" id="content">
-<article class="page-content directory-detail">
-<nav class="directory-breadcrumb"><a href="../index.html">Главная</a> / Never-KYC обменники</nav>
-<h1>Never-KYC обменники</h1>
-<p class="directory-summary">Раздел BitMixList для категории &quot;Never-KYC обменники&quot; с отдельными страницами записей, ссылками и параметрами.</p>
-<section class="directory-section">
-<h2>Записи</h2>
-<div class="directory-list">
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/b1exch.webp" type="image/webp"/><img alt="B1eXch logo" class="directory-logo" src="../../wp-content/uploads/2023/12/b1exch.jpg"/></picture></div>
-<div>
+<article class="page-content directory-detail" data-directory-filter-scope data-directory-pair-scope>
+		<nav class="directory-breadcrumb"><a href="../index.html">Главная</a> / Never-KYC обменники</nav>
+		<h1>Never-KYC обменники</h1>
+		<p class="directory-summary">Раздел BitMixList для категории &quot;Never-KYC обменники&quot; с отдельными страницами записей, ссылками и параметрами.</p>
+<section class="directory-section directory-section-cautions">
+<div class="directory-caution" role="note">
+<h3>Осторожно</h3>
+<p>Всегда делайте небольшие обмены. Рекомендуемая сумма — до $500 за один своп. BitMixList старается минимизировать число скамов, но любой сервис может внезапно стать мошенническим.</p>
+</div>
+</section>
+<section class="directory-section directory-pair-filter" data-directory-pair-count-prefix="Совпадений:" data-directory-pair-filter>
+	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 7h11"></path><path d="m14 3 4 4-4 4"></path><path d="M17 17H6"></path><path d="m10 21-4-4 4-4"></path></svg><span>Торговая пара</span></h2>
+	<div class="directory-pair-filter__controls">
+	<div class="directory-pair-filter__control"><label for="directory-pair-neverkyc-exchanges-ru-send">Отправляете</label><select class="directory-pair-filter__select" data-directory-pair-send id="directory-pair-neverkyc-exchanges-ru-send"><option value="">Любая монета</option><option title="Bitcoin (BTC)" value="btc">BTC</option><option title="Monero (XMR)" value="xmr">XMR</option><option title="Ethereum (ETH)" value="eth">ETH</option><option title="Litecoin (LTC)" value="ltc">LTC</option><option title="Tether on Ethereum (USDT ERC-20)" value="usdt-erc20">USDT ERC-20</option><option title="Tether on TRON (USDT TRC-20)" value="usdt-trc20">USDT TRC-20</option><option title="Tether on BNB Smart Chain (USDT BEP-20)" value="usdt-bep20">USDT BEP-20</option><option title="Tether on Solana (USDT SPL)" value="usdt-spl">USDT SPL</option><option title="USD Coin on Ethereum (USDC ERC-20)" value="usdc-erc20">USDC ERC-20</option><option title="USD Coin on BNB Smart Chain (USDC BEP-20)" value="usdc-bep20">USDC BEP-20</option><option title="USD Coin on Solana (USDC SPL)" value="usdc-spl">USDC SPL</option><option title="BNB (BNB)" value="bnb">BNB</option><option title="Solana (SOL)" value="sol">SOL</option><option title="TRON (TRX)" value="trx">TRX</option></select><div class="directory-pair-filter__coin-grid" data-directory-pair-choice-group="send"><button class="directory-pair-filter__coin is-selected" data-directory-pair-choice data-directory-pair-target="send" data-directory-pair-value="" type="button"><span>Любая монета</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="send" data-directory-pair-value="btc" title="Bitcoin (BTC)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span>BTC</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="send" data-directory-pair-value="xmr" title="Monero (XMR)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/xmr.svg"/><span>XMR</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="send" data-directory-pair-value="eth" title="Ethereum (ETH)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/eth.svg"/><span>ETH</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="send" data-directory-pair-value="ltc" title="Litecoin (LTC)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/ltc.svg"/><span>LTC</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="send" data-directory-pair-value="usdt-erc20" title="Tether on Ethereum (USDT ERC-20)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/usdt.svg"/><span>USDT ERC-20</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="send" data-directory-pair-value="usdt-trc20" title="Tether on TRON (USDT TRC-20)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/usdt.svg"/><span>USDT TRC-20</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="send" data-directory-pair-value="usdt-bep20" title="Tether on BNB Smart Chain (USDT BEP-20)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/usdt.svg"/><span>USDT BEP-20</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="send" data-directory-pair-value="usdt-spl" title="Tether on Solana (USDT SPL)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/usdt.svg"/><span>USDT SPL</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="send" data-directory-pair-value="usdc-erc20" title="USD Coin on Ethereum (USDC ERC-20)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/usdc.svg"/><span>USDC ERC-20</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="send" data-directory-pair-value="usdc-bep20" title="USD Coin on BNB Smart Chain (USDC BEP-20)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/usdc.svg"/><span>USDC BEP-20</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="send" data-directory-pair-value="usdc-spl" title="USD Coin on Solana (USDC SPL)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/usdc.svg"/><span>USDC SPL</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="send" data-directory-pair-value="bnb" title="BNB (BNB)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/bnb.svg"/><span>BNB</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="send" data-directory-pair-value="sol" title="Solana (SOL)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/sol.svg"/><span>SOL</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="send" data-directory-pair-value="trx" title="TRON (TRX)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/trx.svg"/><span>TRX</span></button></div></div>
+	<div class="directory-pair-filter__control"><label for="directory-pair-neverkyc-exchanges-ru-receive">Получаете</label><select class="directory-pair-filter__select" data-directory-pair-receive id="directory-pair-neverkyc-exchanges-ru-receive"><option value="">Любая монета</option><option title="Bitcoin (BTC)" value="btc">BTC</option><option title="Monero (XMR)" value="xmr">XMR</option><option title="Ethereum (ETH)" value="eth">ETH</option><option title="Litecoin (LTC)" value="ltc">LTC</option><option title="Tether on Ethereum (USDT ERC-20)" value="usdt-erc20">USDT ERC-20</option><option title="Tether on TRON (USDT TRC-20)" value="usdt-trc20">USDT TRC-20</option><option title="Tether on BNB Smart Chain (USDT BEP-20)" value="usdt-bep20">USDT BEP-20</option><option title="Tether on Solana (USDT SPL)" value="usdt-spl">USDT SPL</option><option title="USD Coin on Ethereum (USDC ERC-20)" value="usdc-erc20">USDC ERC-20</option><option title="USD Coin on BNB Smart Chain (USDC BEP-20)" value="usdc-bep20">USDC BEP-20</option><option title="USD Coin on Solana (USDC SPL)" value="usdc-spl">USDC SPL</option><option title="BNB (BNB)" value="bnb">BNB</option><option title="Solana (SOL)" value="sol">SOL</option><option title="TRON (TRX)" value="trx">TRX</option></select><div class="directory-pair-filter__coin-grid" data-directory-pair-choice-group="receive"><button class="directory-pair-filter__coin is-selected" data-directory-pair-choice data-directory-pair-target="receive" data-directory-pair-value="" type="button"><span>Любая монета</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="receive" data-directory-pair-value="btc" title="Bitcoin (BTC)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span>BTC</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="receive" data-directory-pair-value="xmr" title="Monero (XMR)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/xmr.svg"/><span>XMR</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="receive" data-directory-pair-value="eth" title="Ethereum (ETH)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/eth.svg"/><span>ETH</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="receive" data-directory-pair-value="ltc" title="Litecoin (LTC)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/ltc.svg"/><span>LTC</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="receive" data-directory-pair-value="usdt-erc20" title="Tether on Ethereum (USDT ERC-20)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/usdt.svg"/><span>USDT ERC-20</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="receive" data-directory-pair-value="usdt-trc20" title="Tether on TRON (USDT TRC-20)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/usdt.svg"/><span>USDT TRC-20</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="receive" data-directory-pair-value="usdt-bep20" title="Tether on BNB Smart Chain (USDT BEP-20)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/usdt.svg"/><span>USDT BEP-20</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="receive" data-directory-pair-value="usdt-spl" title="Tether on Solana (USDT SPL)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/usdt.svg"/><span>USDT SPL</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="receive" data-directory-pair-value="usdc-erc20" title="USD Coin on Ethereum (USDC ERC-20)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/usdc.svg"/><span>USDC ERC-20</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="receive" data-directory-pair-value="usdc-bep20" title="USD Coin on BNB Smart Chain (USDC BEP-20)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/usdc.svg"/><span>USDC BEP-20</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="receive" data-directory-pair-value="usdc-spl" title="USD Coin on Solana (USDC SPL)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/usdc.svg"/><span>USDC SPL</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="receive" data-directory-pair-value="bnb" title="BNB (BNB)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/bnb.svg"/><span>BNB</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="receive" data-directory-pair-value="sol" title="Solana (SOL)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/sol.svg"/><span>SOL</span></button><button class="directory-pair-filter__coin" data-directory-pair-choice data-directory-pair-target="receive" data-directory-pair-value="trx" title="TRON (TRX)" type="button"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/trx.svg"/><span>TRX</span></button></div></div>
+	<button class="directory-pair-filter__reset" data-directory-pair-reset type="button">Сбросить</button>
+	</div>
+	<p class="directory-pair-filter__status" data-directory-pair-status hidden></p>
+	<p class="directory-pair-filter__empty" data-directory-pair-empty hidden>Нет совпадающих сервисов.</p>
+	</section>
+<div class="directory-filter">
+	<label class="directory-filter-label" for="directory-filter-neverkyc-exchanges"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><span>Фильтр сервисов</span></label>
+	<input autocomplete="off" class="directory-filter-input" data-directory-filter-input id="directory-filter-neverkyc-exchanges" placeholder="Название, домен, параметр..." type="search"/>
+<p class="directory-filter-empty" data-directory-filter-empty hidden>Нет совпадающих записей.</p>
+</div>
+	<section class="directory-section">
+	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg><span>Записи</span></h2>
+	<div class="directory-list">
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="B1eXch Комиссия: 1% https://b1exch.to/ http://blckexcrpdmau6y7teqxmf6yiyg7xn7qlphjeaxgyimxokz623w4tmqd.onion/ Основан 2025 Комиссия 1%" data-directory-pair-item data-directory-pair-result data-directory-pair-coins="btc xmr eth ltc usdt-erc20 usdt-trc20 usdc-erc20">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/b1exch.webp" type="image/webp"/><img alt="B1eXch logo" class="directory-logo" src="../../wp-content/uploads/2023/12/b1exch.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="b1exch.html">B1eXch</a></h3>
-<p class="directory-list-summary">Комиссия: 1%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="b1exch.html">Параметры</a>
-<a class="directory-button" href="https://b1exch.to/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия: 1%</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="b1exch.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://b1exch.to/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/crypton.webp" type="image/webp"/><img alt="Crypton logo" class="directory-logo" src="../../wp-content/uploads/2023/12/crypton.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Crypton Комиссия: 0.1% https://crp.is/ No Основан 2023 Комиссия 0,1%" data-directory-pair-item data-directory-pair-result data-directory-pair-coins="btc xmr usdt-trc20">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/crypton.webp" type="image/webp"/><img alt="Crypton logo" class="directory-logo" src="../../wp-content/uploads/2023/12/crypton.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="crypton.html">Crypton</a></h3>
-<p class="directory-list-summary">Комиссия: 0.1%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="crypton.html">Параметры</a>
-<a class="directory-button" href="https://crp.is/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия: 0.1%</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="crypton.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://crp.is/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/dexfo.webp" type="image/webp"/><img alt="Dex.fo logo" class="directory-logo" src="../../wp-content/uploads/2023/12/dexfo.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Dex.fo Комиссия: 0.8-1.5% https://dex.fo/ http://kz2k3m4r27u4gbcds4jmudzr7nf7etlkws27zimjdtwirnrj5m6ajgad.onion/ Основан 2025 Комиссия 0,8-1,5%" data-directory-pair-item data-directory-pair-result data-directory-pair-coins="btc xmr eth ltc usdt-erc20 usdt-trc20 usdc-erc20">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/dexfo.webp" type="image/webp"/><img alt="Dex.fo logo" class="directory-logo" src="../../wp-content/uploads/2023/12/dexfo.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="dex-fo.html">Dex.fo</a></h3>
-<p class="directory-list-summary">Комиссия: 0.8-1.5%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="dex-fo.html">Параметры</a>
-<a class="directory-button" href="https://dex.fo/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия: 0.8-1.5%</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="dex-fo.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://dex.fo/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/mixerblack.webp" type="image/webp"/><img alt="Tomboi.io logo" class="directory-logo" src="../../wp-content/uploads/2023/12/mixerblack.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Tomboi.io Комиссия: 0,9% https://tomboi.io/ http://5etomc53dwpiwsm65klymy5sd3ouy7h63ljfcclgdl4q6nufhuhjpgid.onion/ Основан 2026 Комиссия 0,9%" data-directory-pair-item data-directory-pair-result data-directory-pair-coins="btc xmr eth ltc bnb sol trx usdt-erc20 usdt-trc20 usdt-bep20 usdt-spl usdc-erc20 usdc-bep20 usdc-spl">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/mixerblack.webp" type="image/webp"/><img alt="Tomboi.io logo" class="directory-logo" src="../../wp-content/uploads/2023/12/mixerblack.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="tomboi-io.html">Tomboi.io</a></h3>
-<p class="directory-list-summary">Комиссия: 0,9%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="tomboi-io.html">Параметры</a>
-<a class="directory-button" href="https://tomboi.io/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия: 0,9%</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="tomboi-io.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://tomboi.io/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/thorchainswap.webp" type="image/webp"/><img alt="THORChainSwap logo" class="directory-logo" src="../../wp-content/uploads/2023/12/thorchainswap.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="THORChainSwap Комиссия: Нет https://thorchain.org No Основан 2018 Комиссия Нет" data-directory-pair-item data-directory-pair-result data-directory-pair-coins="btc eth ltc bnb usdt-erc20 usdt-bep20 usdc-erc20 usdc-bep20">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/thorchainswap.webp" type="image/webp"/><img alt="THORChainSwap logo" class="directory-logo" src="../../wp-content/uploads/2023/12/thorchainswap.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="thorchainswap.html">THORChainSwap</a></h3>
-<p class="directory-list-summary">Комиссия: Нет</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="thorchainswap.html">Параметры</a>
-<a class="directory-button" href="https://thorchain.org" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия: Нет</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="thorchainswap.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://thorchain.org" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/bridgoro.webp" type="image/webp"/><img alt="Bridgoro logo" class="directory-logo" src="../../wp-content/uploads/2023/12/bridgoro.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Bridgoro Комиссия: Нет https://bridgoro.com/ No Основан 2025 Комиссия Не указано" data-directory-pair-item data-directory-pair-result data-directory-pair-coins="btc xmr eth ltc bnb sol trx usdt-erc20 usdt-trc20 usdt-bep20 usdt-spl usdc-erc20 usdc-bep20 usdc-spl">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/bridgoro.webp" type="image/webp"/><img alt="Bridgoro logo" class="directory-logo" src="../../wp-content/uploads/2023/12/bridgoro.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="bridgoro.html">Bridgoro</a></h3>
-<p class="directory-list-summary">Комиссия: Нет</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="bridgoro.html">Параметры</a>
-<a class="directory-button" href="https://bridgoro.com/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия: Нет</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="bridgoro.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://bridgoro.com/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/sageswap.webp" type="image/webp"/><img alt="Sageswap logo" class="directory-logo" src="../../wp-content/uploads/2023/12/sageswap.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Sageswap Комиссия: 1-6% https://sageswap.io/?utm_source=62IR1pxGbV http://SageSwap4ygi7k5e5gbnvhz2ldbprrelkkuourlp5vx6flfeypk4hvqd.onion/?utm_source=62IR1pxGbV Основан 2025 Комиссия 1-6%" data-directory-pair-item data-directory-pair-result data-directory-pair-coins="btc xmr eth ltc usdt-erc20 usdt-trc20 usdc-erc20">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/sageswap.webp" type="image/webp"/><img alt="Sageswap logo" class="directory-logo" src="../../wp-content/uploads/2023/12/sageswap.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="sageswap.html">Sageswap</a></h3>
-<p class="directory-list-summary">Комиссия: 1-6%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="sageswap.html">Параметры</a>
-<a class="directory-button" href="https://sageswap.io/?utm_source=62IR1pxGbV" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия: 1-6%</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="sageswap.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://sageswap.io/?utm_source=62IR1pxGbV" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/splash.webp" type="image/webp"/><img alt="Splash.tf logo" class="directory-logo" src="../../wp-content/uploads/2023/12/splash.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Splash.tf Комиссия: Нет https://splash.tf/?ref=3zdjXY3XC http://ekrdgp4j5y3o66urb4t5kzf3erdu6ewvk6zhu33m3m7wp2iflplk6jid.onion/?ref=3zdjXY3XC Основан 2025 Комиссия Никто" data-directory-pair-item data-directory-pair-result data-directory-pairs="btc&gt;xmr xmr&gt;btc">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/splash.webp" type="image/webp"/><img alt="Splash.tf logo" class="directory-logo" src="../../wp-content/uploads/2023/12/splash.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="splash-tf.html">Splash.tf</a></h3>
-<p class="directory-list-summary">Комиссия: Нет</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="splash-tf.html">Параметры</a>
-<a class="directory-button" href="https://splash.tf/?ref=3zdjXY3XC" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия: Нет</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="splash-tf.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://splash.tf/?ref=3zdjXY3XC" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/eigenwallet.webp" type="image/webp"/><img alt="Eigenwallet logo" class="directory-logo" src="../../wp-content/uploads/2023/12/eigenwallet.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Eigenwallet Комиссия: Нет https://eigenwallet.org/ No Основан 2021 Комиссия Никто" data-directory-pair-item data-directory-pair-result data-directory-pairs="btc&gt;xmr xmr&gt;btc">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/eigenwallet.webp" type="image/webp"/><img alt="Eigenwallet logo" class="directory-logo" src="../../wp-content/uploads/2023/12/eigenwallet.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="eigenwallet.html">Eigenwallet</a></h3>
-<p class="directory-list-summary">Комиссия: Нет</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="eigenwallet.html">Параметры</a>
-<a class="directory-button" href="https://eigenwallet.org/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия: Нет</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="eigenwallet.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://eigenwallet.org/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/basicswap.webp" type="image/webp"/><img alt="Basicswap Beta logo" class="directory-logo" src="../../wp-content/uploads/2023/12/basicswap.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Basicswap Beta Комиссия: 0% https://basicswapdex.com/ http://basicswapof6d23whqtxpdpkkr7uoafivwl22m37pypnw2deisxkdaid.onion/ Основан 2022 Комиссия 0%" data-directory-pair-item data-directory-pair-result data-directory-pair-coins="btc xmr ltc">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/basicswap.webp" type="image/webp"/><img alt="Basicswap Beta logo" class="directory-logo" src="../../wp-content/uploads/2023/12/basicswap.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="basicswap-beta.html">Basicswap Beta</a></h3>
-<p class="directory-list-summary">Комиссия: 0%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="basicswap-beta.html">Параметры</a>
-<a class="directory-button" href="https://basicswapdex.com/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия: 0%</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="basicswap-beta.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://basicswapdex.com/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/trevoid.webp" type="image/webp"/><img alt="Trêvoid logo" class="directory-logo" src="../../wp-content/uploads/2023/12/trevoid.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Trêvoid Комиссия: 5% https://bitcointalk.org/index.php?topic=5539912.0 No Основан 2025 Комиссия 5%" data-directory-pair-item data-directory-pair-result data-directory-pairs="btc&gt;xmr xmr&gt;btc">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/trevoid.webp" type="image/webp"/><img alt="Trêvoid logo" class="directory-logo" src="../../wp-content/uploads/2023/12/trevoid.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="trevoid.html">Trêvoid</a></h3>
-<p class="directory-list-summary">Комиссия: 5%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="trevoid.html">Параметры</a>
-<a class="directory-button" href="https://bitcointalk.org/index.php?topic=5539912.0" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссия: 5%</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="trevoid.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://bitcointalk.org/index.php?topic=5539912.0" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
 
 </div>
 </section>
-<section class="directory-section">
-<h2>Сравнение</h2>
-<table class="directory-facts">
-<thead><tr><th>Название</th><th>Официальный сайт</th><th>Tor-сайт</th><th>Кратко</th></tr></thead>
-<tbody>
-<tr><td><a href="b1exch.html">B1eXch</a></td><td><a href="https://b1exch.to/" rel="noopener noreferrer" target="_blank">https://b1exch.to/</a></td><td><a href="http://blckexcrpdmau6y7teqxmf6yiyg7xn7qlphjeaxgyimxokz623w4tmqd.onion/" rel="noopener noreferrer" target="_blank">http://blckexcrpdmau6y7teqxmf6yiyg7xn7qlphjeaxgyimxokz623w4tmqd.onion/</a></td><td>Комиссия: 1%</td></tr>
-<tr><td><a href="crypton.html">Crypton</a></td><td><a href="https://crp.is/" rel="noopener noreferrer" target="_blank">https://crp.is/</a></td><td>No</td><td>Комиссия: 0.1%</td></tr>
-<tr><td><a href="dex-fo.html">Dex.fo</a></td><td><a href="https://dex.fo/" rel="noopener noreferrer" target="_blank">https://dex.fo/</a></td><td><a href="http://kz2k3m4r27u4gbcds4jmudzr7nf7etlkws27zimjdtwirnrj5m6ajgad.onion/" rel="noopener noreferrer" target="_blank">http://kz2k3m4r27u4gbcds4jmudzr7nf7etlkws27zimjdtwirnrj5m6ajgad.onion/</a></td><td>Комиссия: 0.8-1.5%</td></tr>
-<tr><td><a href="tomboi-io.html">Tomboi.io</a></td><td><a href="https://tomboi.io/" rel="noopener noreferrer" target="_blank">https://tomboi.io/</a></td><td><a href="http://5etomc53dwpiwsm65klymy5sd3ouy7h63ljfcclgdl4q6nufhuhjpgid.onion/" rel="noopener noreferrer" target="_blank">http://5etomc53dwpiwsm65klymy5sd3ouy7h63ljfcclgdl4q6nufhuhjpgid.onion/</a></td><td>Комиссия: 0,9%</td></tr>
-<tr><td><a href="thorchainswap.html">THORChainSwap</a></td><td><a href="https://thorchain.org" rel="noopener noreferrer" target="_blank">https://thorchain.org</a></td><td>No</td><td>Комиссия: Нет</td></tr>
-<tr><td><a href="bridgoro.html">Bridgoro</a></td><td><a href="https://bridgoro.com/" rel="noopener noreferrer" target="_blank">https://bridgoro.com/</a></td><td>No</td><td>Комиссия: Нет</td></tr>
-<tr><td><a href="sageswap.html">Sageswap</a></td><td><a href="https://sageswap.io/?utm_source=62IR1pxGbV" rel="noopener noreferrer" target="_blank">https://sageswap.io/?utm_source=62IR1pxGbV</a></td><td><a href="http://SageSwap4ygi7k5e5gbnvhz2ldbprrelkkuourlp5vx6flfeypk4hvqd.onion/?utm_source=62IR1pxGbV" rel="noopener noreferrer" target="_blank">http://SageSwap4ygi7k5e5gbnvhz2ldbprrelkkuourlp5vx6flfeypk4hvqd.onion/?utm_source=62IR1pxGbV</a></td><td>Комиссия: 1-6%</td></tr>
-<tr><td><a href="splash-tf.html">Splash.tf</a></td><td><a href="https://splash.tf/?ref=3zdjXY3XC" rel="noopener noreferrer" target="_blank">https://splash.tf/?ref=3zdjXY3XC</a></td><td><a href="http://ekrdgp4j5y3o66urb4t5kzf3erdu6ewvk6zhu33m3m7wp2iflplk6jid.onion/?ref=3zdjXY3XC" rel="noopener noreferrer" target="_blank">http://ekrdgp4j5y3o66urb4t5kzf3erdu6ewvk6zhu33m3m7wp2iflplk6jid.onion/?ref=3zdjXY3XC</a></td><td>Комиссия: Нет</td></tr>
-<tr><td><a href="eigenwallet.html">Eigenwallet</a></td><td><a href="https://eigenwallet.org/" rel="noopener noreferrer" target="_blank">https://eigenwallet.org/</a></td><td>No</td><td>Комиссия: Нет</td></tr>
-<tr><td><a href="basicswap-beta.html">Basicswap Beta</a></td><td><a href="https://basicswapdex.com/" rel="noopener noreferrer" target="_blank">https://basicswapdex.com/</a></td><td><a href="http://basicswapof6d23whqtxpdpkkr7uoafivwl22m37pypnw2deisxkdaid.onion/" rel="noopener noreferrer" target="_blank">http://basicswapof6d23whqtxpdpkkr7uoafivwl22m37pypnw2deisxkdaid.onion/</a></td><td>Комиссия: 0%</td></tr>
-<tr><td><a href="trevoid.html">Trêvoid</a></td><td><a href="https://bitcointalk.org/index.php?topic=5539912.0" rel="noopener noreferrer" target="_blank">https://bitcointalk.org/index.php?topic=5539912.0</a></td><td>No</td><td>Комиссия: 5%</td></tr>
+	<section class="directory-section" data-directory-filter-scope>
+	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 10h18"></path><path d="M9 4v16"></path><path d="M15 4v16"></path></svg><span>Таблица данных</span></h2>
+	<div class="directory-filter">
+	<label class="directory-filter-label" for="directory-data-sheet-filter-neverkyc-exchanges-ru"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><span>Фильтр таблицы</span></label>
+	<input autocomplete="off" class="directory-filter-input" data-directory-filter-input id="directory-data-sheet-filter-neverkyc-exchanges-ru" placeholder="Название, домен, параметр..." type="search"/>
+	<p class="directory-filter-empty" data-directory-filter-empty hidden>Нет совпадающих строк.</p>
+		</div>
+<figure class="wp-block-table directory-table-wrap">
+	<table class="directory-facts directory-comparison-table directory-comparison-table--neverkyc-exchanges">
+	<thead><tr><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Название</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Веб-сайт</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Tor-сайт</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Основан</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Комиссия</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th></tr></thead>
+	<tbody>
+	<tr data-directory-filter-item data-directory-filter-text="B1eXch Комиссия: 1% https://b1exch.to/ http://blckexcrpdmau6y7teqxmf6yiyg7xn7qlphjeaxgyimxokz623w4tmqd.onion/ Основан 2025 Комиссия 1%" data-directory-pair-item data-directory-pair-coins="btc xmr eth ltc usdt-erc20 usdt-trc20 usdc-erc20"><td class="directory-nowrap"><a class="directory-link" href="b1exch.html">B1eXch</a></td><td class="directory-nowrap"><a href="https://b1exch.to/" rel="noopener noreferrer" target="_blank">b1exch.to</a></td><td class="directory-nowrap"><a href="http://blckexcrpdmau6y7teqxmf6yiyg7xn7qlphjeaxgyimxokz623w4tmqd.onion/" rel="noopener noreferrer" target="_blank" title="blckexcrpdmau6y7teqxmf6yiyg7xn7qlphjeaxgyimxokz623w4tmqd.onion">Yes</a></td><td class="directory-nowrap">2025</td><td class="directory-nowrap">1%</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Crypton Комиссия: 0.1% https://crp.is/ No Основан 2023 Комиссия 0,1%" data-directory-pair-item data-directory-pair-coins="btc xmr usdt-trc20"><td class="directory-nowrap"><a class="directory-link" href="crypton.html">Crypton</a></td><td class="directory-nowrap"><a href="https://crp.is/" rel="noopener noreferrer" target="_blank">crp.is</a></td><td class="directory-nowrap">No</td><td class="directory-nowrap">2023</td><td class="directory-nowrap">0,1%</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Dex.fo Комиссия: 0.8-1.5% https://dex.fo/ http://kz2k3m4r27u4gbcds4jmudzr7nf7etlkws27zimjdtwirnrj5m6ajgad.onion/ Основан 2025 Комиссия 0,8-1,5%" data-directory-pair-item data-directory-pair-coins="btc xmr eth ltc usdt-erc20 usdt-trc20 usdc-erc20"><td class="directory-nowrap"><a class="directory-link" href="dex-fo.html">Dex.fo</a></td><td class="directory-nowrap"><a href="https://dex.fo/" rel="noopener noreferrer" target="_blank">dex.fo</a></td><td class="directory-nowrap"><a href="http://kz2k3m4r27u4gbcds4jmudzr7nf7etlkws27zimjdtwirnrj5m6ajgad.onion/" rel="noopener noreferrer" target="_blank" title="kz2k3m4r27u4gbcds4jmudzr7nf7etlkws27zimjdtwirnrj5m6ajgad.onion">Yes</a></td><td class="directory-nowrap">2025</td><td class="directory-nowrap">0,8-1,5%</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Tomboi.io Комиссия: 0,9% https://tomboi.io/ http://5etomc53dwpiwsm65klymy5sd3ouy7h63ljfcclgdl4q6nufhuhjpgid.onion/ Основан 2026 Комиссия 0,9%" data-directory-pair-item data-directory-pair-coins="btc xmr eth ltc bnb sol trx usdt-erc20 usdt-trc20 usdt-bep20 usdt-spl usdc-erc20 usdc-bep20 usdc-spl"><td class="directory-nowrap"><a class="directory-link" href="tomboi-io.html">Tomboi.io</a></td><td class="directory-nowrap"><a href="https://tomboi.io/" rel="noopener noreferrer" target="_blank">tomboi.io</a></td><td class="directory-nowrap"><a href="http://5etomc53dwpiwsm65klymy5sd3ouy7h63ljfcclgdl4q6nufhuhjpgid.onion/" rel="noopener noreferrer" target="_blank" title="5etomc53dwpiwsm65klymy5sd3ouy7h63ljfcclgdl4q6nufhuhjpgid.onion">Yes</a></td><td class="directory-nowrap">2026</td><td class="directory-nowrap">0,9%</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="THORChainSwap Комиссия: Нет https://thorchain.org No Основан 2018 Комиссия Нет" data-directory-pair-item data-directory-pair-coins="btc eth ltc bnb usdt-erc20 usdt-bep20 usdc-erc20 usdc-bep20"><td class="directory-nowrap"><a class="directory-link" href="thorchainswap.html">THORChainSwap</a></td><td class="directory-nowrap"><a href="https://thorchain.org" rel="noopener noreferrer" target="_blank">thorchain.org</a></td><td class="directory-nowrap">No</td><td class="directory-nowrap">2018</td><td class="directory-nowrap">Нет</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Bridgoro Комиссия: Нет https://bridgoro.com/ No Основан 2025 Комиссия Не указано" data-directory-pair-item data-directory-pair-coins="btc xmr eth ltc bnb sol trx usdt-erc20 usdt-trc20 usdt-bep20 usdt-spl usdc-erc20 usdc-bep20 usdc-spl"><td class="directory-nowrap"><a class="directory-link" href="bridgoro.html">Bridgoro</a></td><td class="directory-nowrap"><a href="https://bridgoro.com/" rel="noopener noreferrer" target="_blank">bridgoro.com</a></td><td class="directory-nowrap">No</td><td class="directory-nowrap">2025</td><td class="directory-nowrap">Не указано</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Sageswap Комиссия: 1-6% https://sageswap.io/?utm_source=62IR1pxGbV http://SageSwap4ygi7k5e5gbnvhz2ldbprrelkkuourlp5vx6flfeypk4hvqd.onion/?utm_source=62IR1pxGbV Основан 2025 Комиссия 1-6%" data-directory-pair-item data-directory-pair-coins="btc xmr eth ltc usdt-erc20 usdt-trc20 usdc-erc20"><td class="directory-nowrap"><a class="directory-link" href="sageswap.html">Sageswap</a></td><td class="directory-nowrap"><a href="https://sageswap.io/?utm_source=62IR1pxGbV" rel="noopener noreferrer" target="_blank">sageswap.io</a></td><td class="directory-nowrap"><a href="http://SageSwap4ygi7k5e5gbnvhz2ldbprrelkkuourlp5vx6flfeypk4hvqd.onion/?utm_source=62IR1pxGbV" rel="noopener noreferrer" target="_blank" title="SageSwap4ygi7k5e5gbnvhz2ldbprrelkkuourlp5vx6flfeypk4hvqd.onion">Yes</a></td><td class="directory-nowrap">2025</td><td class="directory-nowrap">1-6%</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Splash.tf Комиссия: Нет https://splash.tf/?ref=3zdjXY3XC http://ekrdgp4j5y3o66urb4t5kzf3erdu6ewvk6zhu33m3m7wp2iflplk6jid.onion/?ref=3zdjXY3XC Основан 2025 Комиссия Никто" data-directory-pair-item data-directory-pairs="btc&gt;xmr xmr&gt;btc"><td class="directory-nowrap"><a class="directory-link" href="splash-tf.html">Splash.tf</a></td><td class="directory-nowrap"><a href="https://splash.tf/?ref=3zdjXY3XC" rel="noopener noreferrer" target="_blank">splash.tf</a></td><td class="directory-nowrap"><a href="http://ekrdgp4j5y3o66urb4t5kzf3erdu6ewvk6zhu33m3m7wp2iflplk6jid.onion/?ref=3zdjXY3XC" rel="noopener noreferrer" target="_blank" title="ekrdgp4j5y3o66urb4t5kzf3erdu6ewvk6zhu33m3m7wp2iflplk6jid.onion">Yes</a></td><td class="directory-nowrap">2025</td><td class="directory-nowrap">Никто</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Eigenwallet Комиссия: Нет https://eigenwallet.org/ No Основан 2021 Комиссия Никто" data-directory-pair-item data-directory-pairs="btc&gt;xmr xmr&gt;btc"><td class="directory-nowrap"><a class="directory-link" href="eigenwallet.html">Eigenwallet</a></td><td class="directory-nowrap"><a href="https://eigenwallet.org/" rel="noopener noreferrer" target="_blank">eigenwallet.org</a></td><td class="directory-nowrap">No</td><td class="directory-nowrap">2021</td><td class="directory-nowrap">Никто</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Basicswap Beta Комиссия: 0% https://basicswapdex.com/ http://basicswapof6d23whqtxpdpkkr7uoafivwl22m37pypnw2deisxkdaid.onion/ Основан 2022 Комиссия 0%" data-directory-pair-item data-directory-pair-coins="btc xmr ltc"><td class="directory-nowrap"><a class="directory-link" href="basicswap-beta.html">Basicswap Beta</a></td><td class="directory-nowrap"><a href="https://basicswapdex.com/" rel="noopener noreferrer" target="_blank">basicswapdex.com</a></td><td class="directory-nowrap"><a href="http://basicswapof6d23whqtxpdpkkr7uoafivwl22m37pypnw2deisxkdaid.onion/" rel="noopener noreferrer" target="_blank" title="basicswapof6d23whqtxpdpkkr7uoafivwl22m37pypnw2deisxkdaid.onion">Yes</a></td><td class="directory-nowrap">2022</td><td class="directory-nowrap">0%</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Trêvoid Комиссия: 5% https://bitcointalk.org/index.php?topic=5539912.0 No Основан 2025 Комиссия 5%" data-directory-pair-item data-directory-pairs="btc&gt;xmr xmr&gt;btc"><td class="directory-nowrap"><a class="directory-link" href="trevoid.html">Trêvoid</a></td><td class="directory-nowrap"><a href="https://bitcointalk.org/index.php?topic=5539912.0" rel="noopener noreferrer" target="_blank">bitcointalk.org</a></td><td class="directory-nowrap">No</td><td class="directory-nowrap">2025</td><td class="directory-nowrap">5%</td></tr>
 </tbody>
-</table>
+	</table>
+</figure>
 </section>
 </article>
 </main>
 <footer class="site-footer" id="site-footer" role="contentinfo"></footer>
 <div class="footer">
 <div>Copyright © 2023-2026 <strong><a href="https://bitcointalk.org/index.php?action=profile;u=2739424">NotATether</a></strong>.</div>
-<div>Contact: admin [at] notatether [dot] com</div>
+        <div>Contact: admin [at] bitmixlist [dot] org</div>
 <div><em>Disclaimers:</em></div>
 <div>Only mix funds you have obtained lawfully.</div>
 <div>Do not use BitMixList for money laundering!</div>

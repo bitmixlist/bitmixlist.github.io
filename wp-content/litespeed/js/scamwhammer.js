@@ -49,6 +49,7 @@ function clearScamWhammerStatus() {
 
 let scamMixers = [];
 let legitMixers = [];
+let scamWhammerListsPromise = null;
 
 async function loadScamMixers() {
     try {
@@ -86,41 +87,51 @@ async function loadLegitMixers() {
     }
 }
 
-// Load both mixer lists when the script runs
-Promise.all([loadScamMixers(), loadLegitMixers()]);
+function ensureScamWhammerLists() {
+    if (!scamWhammerListsPromise) {
+        scamWhammerListsPromise = Promise.all([loadScamMixers(), loadLegitMixers()]);
+    }
+
+    return scamWhammerListsPromise;
+}
+
+function normalizeScamWhammerDomain(value) {
+    const input = (value || '').trim().toLowerCase();
+    if (!input) return '';
+
+    try {
+        const parsed = new URL(input.startsWith('http') ? input : `http://${input}`);
+        return parsed.hostname.replace(/^www\./, '').replace(/\.$/, '');
+    } catch (e) {
+        const onionMatch = input.match(/([a-z0-9-]+\.onion)(?:[/:?#]|$)/i);
+        if (onionMatch) {
+            return onionMatch[1].toLowerCase();
+        }
+
+        return input.split('/')[0].replace(/^www\./, '').replace(/\.$/, '');
+    }
+}
 
 async function checkUrl(event) {
     event.preventDefault();
     clearScamWhammerStatus();
 
     const urlInput = document.getElementById('urlInput').value.trim().toLowerCase();
-    let domain = urlInput;
-
-    // Extract domain from URL if it includes protocol or path
-    try {
-        domain = new URL(urlInput.startsWith('http') ? urlInput : `http://${urlInput}`).hostname;
-    } catch (e) {
-        // Handle .onion addresses or invalid URLs
-        if (urlInput.endsWith('.onion')) {
-            domain = urlInput;
-        } else {
-            setScamWhammerStatus(
-                scamWhammerText(
-                    'Invalid URL format. Please enter a valid URL (e.g., anonymixer.com or bitcloak4rkfygal.onion).',
-                    'Неверный формат URL. Введите корректный адрес, например anonymixer.com или bitcloak4rkfygal.onion.'
-                ),
-                'error'
-            );
-            return;
-        }
+    let domain = normalizeScamWhammerDomain(urlInput);
+    if (!domain) {
+        setScamWhammerStatus(
+            scamWhammerText(
+                'Invalid URL format. Please enter a valid URL (e.g., anonymixer.com or bitcloak4rkfygal.onion).',
+                'Неверный формат URL. Введите корректный адрес, например anonymixer.com или bitcloak4rkfygal.onion.'
+            ),
+            'error'
+        );
+        return;
     }
-
-    // Remove 'www.' prefix if present
-    domain = domain.replace(/^www\./, '');
 
     // Ensure both mixer lists are loaded
     if (scamMixers.length === 0 || legitMixers.length === 0) {
-        await Promise.all([loadScamMixers(), loadLegitMixers()]);
+        await ensureScamWhammerLists();
         if (scamMixers.length === 0 || legitMixers.length === 0) {
             setScamWhammerStatus(
                 scamWhammerText(
@@ -164,3 +175,59 @@ async function checkUrl(event) {
     // Clear the input field
     document.getElementById('urlInput').value = '';
 }
+
+function setInlineDomainStatus(status, message, type = 'info') {
+    if (!status) return;
+
+    status.textContent = message;
+    status.className = `vg-status vg-status--${type}`;
+    status.setAttribute('role', type === 'error' ? 'alert' : 'status');
+    status.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
+    status.hidden = false;
+}
+
+function setupInlineOfficialDomainChecks() {
+    document.querySelectorAll('[data-service-domain-check]').forEach(function(form) {
+        const input = form.querySelector('[data-domain-input]');
+        const status = form.querySelector('[data-domain-status]');
+        let officialDomains = [];
+
+        try {
+            officialDomains = JSON.parse(form.getAttribute('data-official-domains') || '[]')
+                .map(normalizeScamWhammerDomain)
+                .filter(Boolean);
+        } catch (error) {
+            officialDomains = [];
+        }
+
+        if (!input || !status || officialDomains.length === 0) {
+            return;
+        }
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const domain = normalizeScamWhammerDomain(input.value);
+
+            if (!domain) {
+                setInlineDomainStatus(
+                    status,
+                    scamWhammerText('Enter a domain to check.', 'Введите домен для проверки.'),
+                    'error'
+                );
+                return;
+            }
+
+            if (officialDomains.includes(domain)) {
+                setInlineDomainStatus(status, scamWhammerText('Official domain', 'Официальный домен'), 'success');
+            } else {
+                setInlineDomainStatus(status, scamWhammerText('Not an official domain', 'Не официальный домен'), 'error');
+            }
+        });
+    });
+}
+
+if (document.getElementById('scamwhammer')) {
+    ensureScamWhammerLists();
+}
+
+setupInlineOfficialDomainChecks();

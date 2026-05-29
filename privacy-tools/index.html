@@ -11,6 +11,7 @@
 <link href="../wp-content/litespeed/css/styles.css" rel="stylesheet"/>
 <script src="../wp-content/litespeed/js/ad-loader.js"></script>
 <script src="../wp-content/litespeed/js/site-search.js" defer></script>
+<script src="../wp-content/litespeed/js/directory-filter.js" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   if (window.bitmixlistLoadTopAd) {
@@ -24,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
 .directory-page .header-inner { gap: 12px; min-height: 42px; align-items: center; position: relative; padding-right: 8rem; }
 .directory-page .header-inner h4 { flex: 1 1 0; min-width: 0; font-size: var(--directory-header-title-size, 1.5rem); line-height: 1.2; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .directory-page .lang-switcher { position: absolute; top: 50%; right: 2rem; transform: translateY(-50%); margin-left: 0; flex: 0 0 auto; }
-.directory-page .sidebar .nav-menu a { font-size: 0.95rem; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.directory-page .sidebar .nav-menu a { font-size: 1rem; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .directory-page .mobile-menu-toggle { flex: 0 0 auto; }
 .directory-page .sylvester-top, .directory-page .sylvester-top-mobile { margin-top: 1rem !important; }
 .directory-meta-nav { display: flex; justify-content: center; gap: 22px; width: 100%; margin: 0.45rem 0 0; padding: 0 1.5rem 0.15rem; overflow-x: auto; scrollbar-width: thin; box-sizing: border-box; }
@@ -38,35 +39,132 @@ document.addEventListener('DOMContentLoaded', function () {
 .directory-summary { margin: 0; color: #e8e1f5; line-height: 1.55; max-width: 760px; }
 .directory-section { margin-top: 28px; }
 .directory-section h2 { margin: 0 0 12px; font-size: 1.35rem; letter-spacing: 0; }
-.directory-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
-.directory-list-card { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; min-width: 0; padding: 14px; border: 1px solid #3a2e55; border-radius: 8px; background: #181222; }
-.directory-list-card .directory-logo { width: 64px; height: 64px; border-radius: 8px; object-fit: contain; }
-.directory-list-card .directory-logo--text { font-size: 1.15rem; }
+.directory-filter { margin: 22px 0 0; max-width: 560px; }
+.directory-filter-label { display: block; margin: 0 0 6px; color: #f6f2ff; font-size: 0.95rem; font-weight: 650; }
+.directory-filter-input { width: 100%; min-height: 40px; box-sizing: border-box; border: 1px solid #4a3a70; border-radius: 7px; background: #121018; color: #f6f2ff; padding: 0 12px; font: inherit; }
+.directory-filter-input:focus { border-color: #8a6cff; outline: 2px solid rgba(138, 108, 255, 0.24); outline-offset: 2px; }
+.directory-filter-empty { margin: 10px 0 0; color: #c9c3d8; }
+.directory-pair-filter { padding: 16px 18px; border: 1px solid #2d2d2d; border-radius: 8px; background: #1a1a1a; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); }
+.directory-pair-filter h2 { margin-bottom: 14px; }
+.directory-pair-filter__controls { display: grid; grid-template-columns: repeat(2, minmax(220px, 1fr)) auto; gap: 12px; align-items: start; }
+.directory-pair-filter__control { display: grid; gap: 6px; color: #f6f2ff; font-size: 0.92rem; font-weight: 650; }
+.directory-pair-filter__select { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.directory-pair-filter__select:focus { border-color: #8a6cff; outline: 2px solid rgba(138, 108, 255, 0.24); outline-offset: 2px; }
+.directory-pair-filter__coin-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.directory-pair-filter__coin { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 36px; padding: 5px 8px; border: 1px solid #4a3a70; border-radius: 7px; background: #121018; color: #f6f2ff; font: inherit; font-size: 0.84rem; font-weight: 650; line-height: 1.15; cursor: pointer; }
+.directory-pair-filter__coin:hover, .directory-pair-filter__coin:focus { border-color: #8a6cff; background: #1b1428; color: #fff; outline: none; }
+.directory-pair-filter__coin.is-selected { border-color: #bb86fc; background: #2a1c41; color: #fff; }
+.directory-pair-filter__coin img { display: block; flex: 0 0 20px; width: 20px; height: 20px; }
+.directory-pair-filter__reset { min-height: 40px; padding: 0 13px; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; font: inherit; font-size: 0.9rem; font-weight: 650; cursor: pointer; }
+.directory-pair-filter__reset:hover, .directory-pair-filter__reset:focus { background: #27184d; color: #fff; }
+.directory-pair-filter__status, .directory-pair-filter__empty { margin: 12px 0 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }
+.directory-pair-filter__empty { color: #ffcfdf; }
+.directory-fee-filter { padding: 16px 18px; border: 1px solid #2d2d2d; border-radius: 8px; background: #1a1a1a; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); }
+.directory-fee-filter h2 { margin-bottom: 14px; }
+.directory-fee-filter__controls { display: grid; grid-template-columns: minmax(220px, 1fr) auto; gap: 12px; align-items: end; }
+.directory-fee-filter__control { display: grid; gap: 8px; color: #f6f2ff; font-size: 0.92rem; font-weight: 650; }
+.directory-fee-filter__label-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.directory-fee-filter__value { color: #c7b8ff; font-weight: 750; white-space: nowrap; }
+.directory-fee-filter__range { width: 100%; accent-color: #bb86fc; }
+.directory-fee-filter__reset { min-height: 40px; padding: 0 13px; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; font: inherit; font-size: 0.9rem; font-weight: 650; cursor: pointer; }
+.directory-fee-filter__reset:hover, .directory-fee-filter__reset:focus { background: #27184d; color: #fff; }
+.directory-fee-filter__status, .directory-fee-filter__empty { margin: 12px 0 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }
+.directory-fee-filter__empty { color: #ffcfdf; }
+.directory-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px; }
+.directory-list-card { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 14px; min-width: 0; padding: 14px; border: 1px solid #3a2e55; border-radius: 8px; background: #181222; }
+.directory-list-card .directory-logo { width: 128px; height: 128px; border-radius: 10px; object-fit: contain; }
+.directory-list-card .directory-logo--text { font-size: 1.8rem; }
 .directory-list-title { margin: 0 0 4px; font-size: 1.05rem; line-height: 1.25; font-weight: 700; }
 .directory-list-title a { color: #f6f2ff; text-decoration: none; }
 .directory-list-title a:hover, .directory-list-title a:focus { text-decoration: underline; }
 .directory-list-summary { margin: 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }
+.coin-list { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
+.coin-badge { display: inline-flex; align-items: center; gap: 5px; min-height: 26px; padding: 2px 7px 2px 4px; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 999px; background: #121018; color: #f6f2ff; font-size: 0.82rem; font-weight: 650; line-height: 1; white-space: nowrap; }
+.coin-badge img { display: block; flex: 0 0 20px; width: 20px; height: 20px; }
+.directory-facts th.directory-coins-cell { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+.directory-facts td.directory-coins-cell { white-space: normal; overflow-wrap: normal; word-break: normal; }
+.directory-facts td.directory-coins-cell .coin-list { max-width: 100%; }
+.directory-list-summary .coin-list { display: inline-flex; margin-left: 4px; vertical-align: middle; }
+
 .directory-list-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .directory-button { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; padding: 0 10px; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; text-decoration: none; font-size: 0.9rem; font-weight: 650; }
 .directory-button:hover, .directory-button:focus { background: #27184d; color: #fff; text-decoration: none; }
+.directory-icon-button { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 34px; height: 34px; min-height: 34px; margin-top: 0; margin-left: auto; padding: 0; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; text-decoration: none !important; box-sizing: border-box; }
+.directory-icon-button:hover, .directory-icon-button:focus { background: #27184d; color: #fff; text-decoration: none !important; }
+.directory-icon-button svg { width: 17px; height: 17px; }
+.tool-registry { max-width: none; margin: 28px 0 0; padding: 0; }
+.tool-registry__header h2 { margin: 0 0 10px; font-size: 2rem; letter-spacing: 0; }
+.tool-registry .muted { margin: 0 0 16px; color: #d8d0e8; line-height: 1.45; }
+.tool-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.tool { border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 14px 14px 12px; }
+.tool__header { display: flex; align-items: center; gap: 12px; }
+.tool__header .tool__name { flex: 1 1 auto; min-width: 0; }
+.tool__name { color: #f6f2ff; font-size: 1.05rem; font-weight: 700; text-decoration: none; }
+.tool__name:hover, .tool__name:focus { color: #fff; text-decoration: underline; }
+.tool__desc { margin: 8px 0 10px; color: #d8d0e8; line-height: 1.45; }
+.tool__meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0; }
+.pill { padding: 4px 10px; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 999px; color: #e7def6; font-size: 0.82rem; line-height: 1.25; }
+.directory-table-wrap { margin: 0; overflow-x: auto; }
 .directory-facts { width: 100%; border-collapse: collapse; table-layout: fixed; }
-.directory-facts th, .directory-facts td { vertical-align: top; padding: 12px; overflow-wrap: anywhere; word-break: normal; }
+.directory-facts th, .directory-facts td { vertical-align: top; padding: 12px; overflow-wrap: normal; word-break: normal; hyphens: none; }
 .directory-facts th { color: #f6f2ff; text-align: left; background: #282238; }
 .directory-facts td { background: #1c1728; }
+.directory-facts .directory-nowrap { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+.directory-comparison-table { table-layout: auto; min-width: 1040px; }
+.directory-comparison-table--mixers { min-width: 1380px; }
+.directory-comparison-table--mixers th.directory-coins-cell,
+.directory-comparison-table--mixers td.directory-coins-cell { width: 12rem; max-width: 12rem; }
+.directory-comparison-table--mixers td.directory-coins-cell .coin-list { max-width: 12rem; }
+.directory-comparison-table--coordinators { min-width: 960px; }
+.directory-facts thead th[data-sortable-column] { cursor: pointer; user-select: none; }
+.directory-sort-button { all: unset; display: inline-flex; align-items: center; justify-content: flex-start; gap: 6px; max-width: 100%; color: inherit; font: inherit; font-weight: inherit; line-height: inherit; cursor: pointer; }
+.directory-sort-label { min-width: 0; }
+.directory-sort-button:focus-visible { outline: 2px solid #bb86fc; outline-offset: 3px; border-radius: 4px; }
+.directory-sort-indicator { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 0.8em; color: #c7b8ff; font-size: 0.78em; line-height: 1; text-align: center; }
+
+.directory-section-cautions { margin-top: 22px; }
+.directory-caution { margin: 0; padding: 16px 18px; border: 1px solid #2d2d2d; border-radius: 8px; background: #1a1a1a; color: #e0e0e0; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); line-height: 1.55; }
+.directory-caution + .directory-caution { margin-top: 12px; }
+.directory-caution h3 { margin: 0 0 8px; color: #f2ecff; font-size: 1rem; letter-spacing: 0; }
+.directory-caution p { margin: 0; }
+.directory-caution a { color: #bb86fc; font-weight: 700; text-decoration: underline; text-underline-offset: 0.16em; }
+.directory-icon { display: inline-block; flex: 0 0 auto; width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.14em; }
+.directory-heading-icon { color: #bb86fc; margin-right: 0.42rem; }
+.directory-meta-link { display: inline-flex; align-items: center; gap: 0.38rem; }
+.directory-meta-link .directory-icon { width: 0.95rem; height: 0.95rem; color: #bb86fc; }
+.directory-button { gap: 0.42rem; }
+.directory-button .directory-icon { width: 1rem; height: 1rem; }
+.directory-icon-button .directory-icon { width: 17px; height: 17px; }
+.directory-section-link { display: inline-flex; align-items: center; gap: 0.35rem; }
+.directory-section-link .directory-icon { width: 0.95rem; height: 0.95rem; }
+.directory-filter-label .directory-icon { margin-right: 0.35rem; color: #bb86fc; }
+.directory-inline-tool h3 { display: flex; align-items: center; gap: 0.45rem; }
+.directory-inline-tool h3 .directory-icon { color: #bb86fc; }
+.directory-inline-tool button { gap: 0.42rem; }
+
 @media (max-width: 700px) {
   .directory-page .site-header { min-height: 96px; padding-top: 0.65rem; padding-bottom: 0.55rem; }
   .directory-page .site-content-wrapper { padding-top: 104px; }
   .directory-page .header-inner { gap: 8px; min-height: 38px; padding-left: 0.5rem; padding-right: 4.25rem; }
   .directory-page .header-inner h4 { font-size: var(--directory-header-title-mobile-size, 1.15rem); }
-  .directory-page .sidebar .nav-menu a { font-size: 0.9rem; }
-  .directory-page .lang-switcher { right: 0.5rem; gap: 4px; }
-  .directory-page .lang-link { gap: 0; padding: 3px 5px; }
-  .directory-page .lang-link span { display: none; }
-  .directory-meta-nav { justify-content: flex-start; gap: 16px; margin-top: 0.35rem; padding-left: 0.75rem; padding-right: 0.75rem; }
-  .directory-meta-link { font-size: 0.84rem; }
-  .directory-detail { padding: 22px 14px 36px; }
-  .directory-detail h1 { font-size: 2rem; }
-  .directory-list { grid-template-columns: 1fr; }
+  .directory-page .sidebar .nav-menu a { font-size: 1rem; }
+	  .directory-page .lang-switcher { right: 0.5rem; gap: 4px; }
+	  .directory-page .lang-link { gap: 0; padding: 3px 5px; }
+	  .directory-page .lang-link span { display: none; }
+	  .directory-meta-nav { justify-content: flex-start; gap: 16px; margin-top: 0.35rem; padding-left: 0.75rem; padding-right: 0.75rem; }
+	  .directory-meta-link { font-size: 0.84rem; }
+	  .directory-detail { padding: 22px 14px 36px; }
+	  .directory-detail h1 { font-size: 2rem; }
+	  .directory-fee-filter__controls { grid-template-columns: 1fr; }
+	  .directory-fee-filter__reset { width: 100%; }
+	  .directory-pair-filter__controls { grid-template-columns: 1fr; }
+	  .directory-pair-filter__reset { width: 100%; }
+	  .directory-list { grid-template-columns: 1fr; }
+  .directory-table-wrap { overflow-x: visible; }
+  .directory-comparison-table { min-width: 0; }
+  .directory-comparison-table--mixers th.directory-coins-cell,
+  .directory-comparison-table--mixers td.directory-coins-cell { width: 100%; max-width: none; }
+  .directory-comparison-table--mixers td.directory-coins-cell .coin-list { max-width: 100%; }
   .directory-facts, .directory-facts tbody, .directory-facts tr, .directory-facts th, .directory-facts td { display: block; width: 100%; box-sizing: border-box; }
 }
 </style>
@@ -117,12 +215,12 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 </div>
 <nav class="directory-meta-nav" aria-label="Directory sections">
-<a class="directory-meta-link" href="../mixers/">Mixers</a>
-<a class="directory-meta-link" href="../neverkyc-exchanges/">Exchange KYC-Free</a>
-<a class="directory-meta-link" href="../instant-exchanges/">Exchange Instant</a>
-<a class="directory-meta-link" href="../p2p-markets/">P2P Marketplaces</a>
-<a class="directory-meta-link" href="../coordinators/">Coordinators</a>
-<a class="directory-meta-link is-active" href="./" aria-current="true">Privacy Tools</a>
+<a class="directory-meta-link" href="../mixers/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="m15 15 6 6"></path><path d="M4 4l5 5"></path></svg><span>Mixers</span></a>
+<a class="directory-meta-link" href="../neverkyc-exchanges/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg><span>Exchange Never-KYC</span></a>
+<a class="directory-meta-link" href="../instant-exchanges/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"></path></svg><span>Exchange Instant</span></a>
+<a class="directory-meta-link" href="../p2p-markets/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="4"></circle><path d="M2 21a7 7 0 0 1 14 0"></path><path d="M17 11a4 4 0 0 0 0-6"></path><path d="M22 21a7 7 0 0 0-5-6.7"></path></svg><span>P2P Marketplaces</span></a>
+<a class="directory-meta-link" href="../coordinators/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><circle cx="12" cy="18" r="3"></circle><path d="m8.4 8.1 3.2 7.8"></path><path d="m15.6 8.1-3.2 7.8"></path><path d="M9 6h6"></path></svg><span>Coordinators</span></a>
+<a class="directory-meta-link is-active" href="./" aria-current="true"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span>Privacy Tools</span></a>
 </nav>
 </header>
 <div class="sylvester-top" style="width:728px;height:90px;">
@@ -133,282 +231,241 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 <div class="centered"><p>This is an ad. Ads are not endorsed by BitMixList.</p></div>
 <main class="site-main post-34 page type-page status-publish hentry" id="content">
-<article class="page-content directory-detail">
-<nav class="directory-breadcrumb"><a href="../index.html">Home</a> / Crypto Privacy Tools</nav>
-<h1>Crypto Privacy Tools</h1>
-<p class="directory-summary">BitMixList directory section for Crypto Privacy Tools, with individual entry pages, links, and parameters.</p>
-<section class="directory-section">
-<h2>Entries</h2>
-<div class="directory-list">
-<article class="directory-list-card">
-<div><div aria-label="Sparrow Wallet logo" class="directory-logo directory-logo--text">SW</div></div>
-<div>
-<h3 class="directory-list-title"><a href="sparrow-wallet.html">Sparrow Wallet</a></h3>
-<p class="directory-list-summary">Desktop wallet with coin control, labels, Whirlpool/Wasabi support, and BIP47/PayJoin flows.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="sparrow-wallet.html">Details</a>
-<a class="directory-button" href="https://github.com/sparrowwallet/sparrow" rel="noopener noreferrer" target="_blank">Visit project</a>
+<article class="page-content directory-detail" data-directory-filter-scope data-directory-pair-scope>
+		<nav class="directory-breadcrumb"><a href="../index.html">Home</a> / Crypto Privacy Tools</nav>
+		<h1>Crypto Privacy Tools</h1>
+		<p class="directory-summary">BitMixList directory section for Crypto Privacy Tools, with individual entry pages, links, and parameters.</p>
+<section class="directory-section tool-registry">
+	<header class="tool-registry__header">
+	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span>Essential Tools for Crypto Privacy</span></h2>
+	</header>
+<div class="directory-filter">
+	<label class="directory-filter-label" for="directory-filter-privacy-tools"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><span>Filter tools</span></label>
+	<input autocomplete="off" class="directory-filter-input" data-directory-filter-input id="directory-filter-privacy-tools" placeholder="Name, domain, parameter..." type="search"/>
+<p class="directory-filter-empty" data-directory-filter-empty hidden>No matching entries.</p>
 </div>
+<ul class="tool-list" id="toolList" role="list">
+<li class="tool" data-directory-filter-item data-directory-filter-text="Sparrow Wallet Desktop wallet with coin control, labels, Whirlpool/Wasabi support, and BIP47/PayJoin flows. https://github.com/sparrowwallet/sparrow No Tags Bitcoin, Wallet, Coin control Project link https://github.com/sparrowwallet/sparrow" data-tags="Bitcoin Wallet Coin control Sparrow Wallet">
+<div class="tool__header">
+<a class="tool__name" href="sparrow-wallet.html">Sparrow Wallet</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://github.com/sparrowwallet/sparrow" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="Wasabi Wallet logo" class="directory-logo directory-logo--text">WW</div></div>
-<div>
-<h3 class="directory-list-title"><a href="wasabi-wallet.html">Wasabi Wallet</a></h3>
-<p class="directory-list-summary">WabiSabi CoinJoin + cross-platform GUI.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="wasabi-wallet.html">Details</a>
-<a class="directory-button" href="https://github.com/WalletWasabi/WalletWasabi" rel="noopener noreferrer" target="_blank">Visit project</a>
+<p class="tool__desc">Desktop wallet with coin control, labels, Whirlpool/Wasabi support, and BIP47/PayJoin flows.</p>
+<div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">Wallet</span><span class="pill">Coin control</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="Wasabi Wallet WabiSabi CoinJoin + cross-platform GUI. https://github.com/WalletWasabi/WalletWasabi No Tags Bitcoin, CoinJoin Project link https://github.com/WalletWasabi/WalletWasabi" data-tags="Bitcoin CoinJoin Wasabi Wallet">
+<div class="tool__header">
+<a class="tool__name" href="wasabi-wallet.html">Wasabi Wallet</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://github.com/WalletWasabi/WalletWasabi" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
+<p class="tool__desc">WabiSabi CoinJoin + cross-platform GUI.</p>
+<div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">CoinJoin</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="JoinMarket Incentive-based CoinJoin marketplace with maker/taker liquidity. https://github.com/JoinMarket-Org/joinmarket-clientserver No Tags Bitcoin, CoinJoin, P2P Project link https://github.com/JoinMarket-Org/joinmarket-clientserver" data-tags="Bitcoin CoinJoin P2P JoinMarket">
+<div class="tool__header">
+<a class="tool__name" href="joinmarket.html">JoinMarket</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://github.com/JoinMarket-Org/joinmarket-clientserver" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="JoinMarket logo" class="directory-logo directory-logo--text">J</div></div>
-<div>
-<h3 class="directory-list-title"><a href="joinmarket.html">JoinMarket</a></h3>
-<p class="directory-list-summary">Incentive-based CoinJoin marketplace with maker/taker liquidity.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="joinmarket.html">Details</a>
-<a class="directory-button" href="https://github.com/JoinMarket-Org/joinmarket-clientserver" rel="noopener noreferrer" target="_blank">Visit project</a>
+<p class="tool__desc">Incentive-based CoinJoin marketplace with maker/taker liquidity.</p>
+<div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">CoinJoin</span><span class="pill">P2P</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="Samourai Dojo Self-hosted Bitcoin backend for powering Samourai features (Cahoots, Whirlpool) via Tor. https://github.com/Samourai-Wallet/samourai-dojo No Tags Bitcoin, Backend Project link https://github.com/Samourai-Wallet/samourai-dojo" data-tags="Bitcoin Backend Samourai Dojo">
+<div class="tool__header">
+<a class="tool__name" href="samourai-dojo.html">Samourai Dojo</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://github.com/Samourai-Wallet/samourai-dojo" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
+<p class="tool__desc">Self-hosted Bitcoin backend for powering Samourai features (Cahoots, Whirlpool) via Tor.</p>
+<div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">Backend</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="Whirlpool CLI Command-line Whirlpool client so you can mix UTXOs on your own node with deterministic fees. https://github.com/Samourai-Wallet/whirlpool-client-cli No Tags Bitcoin, CoinJoin, CLI Project link https://github.com/Samourai-Wallet/whirlpool-client-cli" data-tags="Bitcoin CoinJoin CLI Whirlpool CLI">
+<div class="tool__header">
+<a class="tool__name" href="whirlpool-cli.html">Whirlpool CLI</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://github.com/Samourai-Wallet/whirlpool-client-cli" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="Samourai Dojo logo" class="directory-logo directory-logo--text">SD</div></div>
-<div>
-<h3 class="directory-list-title"><a href="samourai-dojo.html">Samourai Dojo</a></h3>
-<p class="directory-list-summary">Self-hosted Bitcoin backend for powering Samourai features (Cahoots, Whirlpool) via Tor.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="samourai-dojo.html">Details</a>
-<a class="directory-button" href="https://github.com/Samourai-Wallet/samourai-dojo" rel="noopener noreferrer" target="_blank">Visit project</a>
+<p class="tool__desc">Command-line Whirlpool client so you can mix UTXOs on your own node with deterministic fees.</p>
+<div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">CoinJoin</span><span class="pill">CLI</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="Chaincase iOS wallet focused on Whirlpool mixing, PayNym contacts, PayJoin, and Tor networking. https://github.com/chaincase-app/chaincase No Tags Bitcoin, Wallet, Mobile Project link https://github.com/chaincase-app/chaincase" data-tags="Bitcoin Wallet Mobile Chaincase">
+<div class="tool__header">
+<a class="tool__name" href="chaincase.html">Chaincase</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://github.com/chaincase-app/chaincase" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
+<p class="tool__desc">iOS wallet focused on Whirlpool mixing, PayNym contacts, PayJoin, and Tor networking.</p>
+<div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">Wallet</span><span class="pill">Mobile</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="Feather Wallet Modern Monero desktop wallet with Tor/I2P transport, coin control, and hardware wallet support. https://github.com/feather-wallet/feather No Tags Monero, Wallet Project link https://github.com/feather-wallet/feather" data-tags="Monero Wallet Feather Wallet">
+<div class="tool__header">
+<a class="tool__name" href="feather-wallet.html">Feather Wallet</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://github.com/feather-wallet/feather" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="Whirlpool CLI logo" class="directory-logo directory-logo--text">WC</div></div>
-<div>
-<h3 class="directory-list-title"><a href="whirlpool-cli.html">Whirlpool CLI</a></h3>
-<p class="directory-list-summary">Command-line Whirlpool client so you can mix UTXOs on your own node with deterministic fees.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="whirlpool-cli.html">Details</a>
-<a class="directory-button" href="https://github.com/Samourai-Wallet/whirlpool-client-cli" rel="noopener noreferrer" target="_blank">Visit project</a>
+<p class="tool__desc">Modern Monero desktop wallet with Tor/I2P transport, coin control, and hardware wallet support.</p>
+<div class="tool__meta"><span class="pill">Monero</span><span class="pill">Wallet</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="Monero CLI Reference Monero node and wallet CLI with ring signatures, view-only modes, and RPC APIs. https://github.com/monero-project/monero No Tags Monero, Node Project link https://github.com/monero-project/monero" data-tags="Monero Node Monero CLI">
+<div class="tool__header">
+<a class="tool__name" href="monero-cli.html">Monero CLI</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://github.com/monero-project/monero" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
+<p class="tool__desc">Reference Monero node and wallet CLI with ring signatures, view-only modes, and RPC APIs.</p>
+<div class="tool__meta"><span class="pill">Monero</span><span class="pill">Node</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="Monero GUI Official Qt-based GUI wallet bundling hardware support, node management, and Ledger/Trezor flows. https://github.com/monero-project/monero-gui No Tags Monero, Wallet, Desktop Project link https://github.com/monero-project/monero-gui" data-tags="Monero Wallet Desktop Monero GUI">
+<div class="tool__header">
+<a class="tool__name" href="monero-gui.html">Monero GUI</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://github.com/monero-project/monero-gui" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="Chaincase logo" class="directory-logo directory-logo--text">C</div></div>
-<div>
-<h3 class="directory-list-title"><a href="chaincase.html">Chaincase</a></h3>
-<p class="directory-list-summary">iOS wallet focused on Whirlpool mixing, PayNym contacts, PayJoin, and Tor networking.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="chaincase.html">Details</a>
-<a class="directory-button" href="https://github.com/chaincase-app/chaincase" rel="noopener noreferrer" target="_blank">Visit project</a>
+<p class="tool__desc">Official Qt-based GUI wallet bundling hardware support, node management, and Ledger/Trezor flows.</p>
+<div class="tool__meta"><span class="pill">Monero</span><span class="pill">Wallet</span><span class="pill">Desktop</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="Monerujo Android Monero wallet (Monerujo) with coin control, Tor/I2P networking, and QR/PayCode tools. https://github.com/m2049r/xmrwallet No Tags Monero, Wallet, Mobile Project link https://github.com/m2049r/xmrwallet" data-tags="Monero Wallet Mobile Monerujo">
+<div class="tool__header">
+<a class="tool__name" href="monerujo.html">Monerujo</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://github.com/m2049r/xmrwallet" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
+<p class="tool__desc">Android Monero wallet (Monerujo) with coin control, Tor/I2P networking, and QR/PayCode tools.</p>
+<div class="tool__meta"><span class="pill">Monero</span><span class="pill">Wallet</span><span class="pill">Mobile</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="Cake Wallet Open-source iOS/Android wallet for Monero &amp; BTC with Tor routing and in-app swap bridges. https://github.com/cake-tech/cake_wallet No Tags Monero, Wallet, Mobile Project link https://github.com/cake-tech/cake_wallet" data-tags="Monero Wallet Mobile Cake Wallet">
+<div class="tool__header">
+<a class="tool__name" href="cake-wallet.html">Cake Wallet</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://github.com/cake-tech/cake_wallet" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="Feather Wallet logo" class="directory-logo directory-logo--text">FW</div></div>
-<div>
-<h3 class="directory-list-title"><a href="feather-wallet.html">Feather Wallet</a></h3>
-<p class="directory-list-summary">Modern Monero desktop wallet with Tor/I2P transport, coin control, and hardware wallet support.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="feather-wallet.html">Details</a>
-<a class="directory-button" href="https://github.com/feather-wallet/feather" rel="noopener noreferrer" target="_blank">Visit project</a>
+<p class="tool__desc">Open-source iOS/Android wallet for Monero &amp; BTC with Tor routing and in-app swap bridges.</p>
+<div class="tool__meta"><span class="pill">Monero</span><span class="pill">Wallet</span><span class="pill">Mobile</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="EigenWallet Cross-platform wallet with built-in Tor routing and peer-to-peer BTC ↔ XMR atomic swaps. https://eigenwallet.org/ No Tags Monero, Atomic swap Project link https://eigenwallet.org/" data-tags="Monero Atomic swap EigenWallet">
+<div class="tool__header">
+<a class="tool__name" href="eigenwallet.html">EigenWallet</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://eigenwallet.org/" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
+<p class="tool__desc">Cross-platform wallet with built-in Tor routing and peer-to-peer BTC ↔ XMR atomic swaps.</p>
+<div class="tool__meta"><span class="pill">Monero</span><span class="pill">Atomic swap</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="Gliese.io Non-custodial UTXO analysis + transaction simulator built on Bitcoin/Litecoin full nodes. https://bitcointalk.org/index.php?topic=5573042.0 No Tags Bitcoin, UTXO, Analysis Project link https://bitcointalk.org/index.php?topic=5573042.0" data-tags="Bitcoin UTXO Analysis Gliese.io">
+<div class="tool__header">
+<a class="tool__name" href="gliese-io.html">Gliese.io</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://bitcointalk.org/index.php?topic=5573042.0" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="Monero CLI logo" class="directory-logo directory-logo--text">MC</div></div>
-<div>
-<h3 class="directory-list-title"><a href="monero-cli.html">Monero CLI</a></h3>
-<p class="directory-list-summary">Reference Monero node and wallet CLI with ring signatures, view-only modes, and RPC APIs.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="monero-cli.html">Details</a>
-<a class="directory-button" href="https://github.com/monero-project/monero" rel="noopener noreferrer" target="_blank">Visit project</a>
+<p class="tool__desc">Non-custodial UTXO analysis + transaction simulator built on Bitcoin/Litecoin full nodes.</p>
+<div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">UTXO</span><span class="pill">Analysis</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="THORChain Non-custodial cross-chain DEX for native BTC and other L1 assets, using node-bonded liquidity pools instead of wrapped tokens. https://thorchain.org/ No Tags Cross-chain, DEX Project link https://thorchain.org/" data-tags="Cross-chain DEX THORChain">
+<div class="tool__header">
+<a class="tool__name" href="thorchain.html">THORChain</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://thorchain.org/" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
+<p class="tool__desc">Non-custodial cross-chain DEX for native BTC and other L1 assets, using node-bonded liquidity pools instead of wrapped tokens.</p>
+<div class="tool__meta"><span class="pill">Cross-chain</span><span class="pill">DEX</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="Privacy Watch Catalog of Bitcoin privacy best practices and service audits highlighting deanonymization risks. https://privacy.watch/ No Tags Research, Guides Project link https://privacy.watch/" data-tags="Research Guides Privacy Watch">
+<div class="tool__header">
+<a class="tool__name" href="privacy-watch.html">Privacy Watch</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://privacy.watch/" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="Monero GUI logo" class="directory-logo directory-logo--text">MG</div></div>
-<div>
-<h3 class="directory-list-title"><a href="monero-gui.html">Monero GUI</a></h3>
-<p class="directory-list-summary">Official Qt-based GUI wallet bundling hardware support, node management, and Ledger/Trezor flows.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="monero-gui.html">Details</a>
-<a class="directory-button" href="https://github.com/monero-project/monero-gui" rel="noopener noreferrer" target="_blank">Visit project</a>
+<p class="tool__desc">Catalog of Bitcoin privacy best practices and service audits highlighting deanonymization risks.</p>
+<div class="tool__meta"><span class="pill">Research</span><span class="pill">Guides</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="Haveno DEX Non-custodial Tor-based DEX for fiat ↔ Monero trades; open-source Java stack with multisig escrows. https://haveno.exchange/ No Tags Monero, P2P Project link https://haveno.exchange/" data-tags="Monero P2P Haveno DEX">
+<div class="tool__header">
+<a class="tool__name" href="haveno-dex.html">Haveno DEX</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://haveno.exchange/" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
+<p class="tool__desc">Non-custodial Tor-based DEX for fiat ↔ Monero trades; open-source Java stack with multisig escrows.</p>
+<div class="tool__meta"><span class="pill">Monero</span><span class="pill">P2P</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="RetoSwap Desktop client built on Haveno offering Tor-native Monero swaps with fiat/crypto payment rails. https://retoswap.com/ No Tags Monero, P2P Project link https://retoswap.com/" data-tags="Monero P2P RetoSwap">
+<div class="tool__header">
+<a class="tool__name" href="retoswap.html">RetoSwap</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://retoswap.com/" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="Monerujo logo" class="directory-logo directory-logo--text">M</div></div>
-<div>
-<h3 class="directory-list-title"><a href="monerujo.html">Monerujo</a></h3>
-<p class="directory-list-summary">Android Monero wallet (Monerujo) with coin control, Tor/I2P networking, and QR/PayCode tools.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="monerujo.html">Details</a>
-<a class="directory-button" href="https://github.com/m2049r/xmrwallet" rel="noopener noreferrer" target="_blank">Visit project</a>
+<p class="tool__desc">Desktop client built on Haveno offering Tor-native Monero swaps with fiat/crypto payment rails.</p>
+<div class="tool__meta"><span class="pill">Monero</span><span class="pill">P2P</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="BasicSwap DEX Particl-powered atomic swap DEX for BTC, XMR, FIRO, and other privacy coins over Tor/I2P. https://basicswapdex.com/ No Tags Cross-chain, Atomic swap Project link https://basicswapdex.com/" data-tags="Cross-chain Atomic swap BasicSwap DEX">
+<div class="tool__header">
+<a class="tool__name" href="basicswap-dex.html">BasicSwap DEX</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://basicswapdex.com/" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
+<p class="tool__desc">Particl-powered atomic swap DEX for BTC, XMR, FIRO, and other privacy coins over Tor/I2P.</p>
+<div class="tool__meta"><span class="pill">Cross-chain</span><span class="pill">Atomic swap</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="Bisq Tor-based desktop DEX for fiat ↔ BTC trades secured by bonded multisig escrows. https://github.com/bisq-network/bisq No Tags Bitcoin, P2P Project link https://github.com/bisq-network/bisq" data-tags="Bitcoin P2P Bisq">
+<div class="tool__header">
+<a class="tool__name" href="bisq.html">Bisq</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://github.com/bisq-network/bisq" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="Cake Wallet logo" class="directory-logo directory-logo--text">CW</div></div>
-<div>
-<h3 class="directory-list-title"><a href="cake-wallet.html">Cake Wallet</a></h3>
-<p class="directory-list-summary">Open-source iOS/Android wallet for Monero &amp; BTC with Tor routing and in-app swap bridges.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="cake-wallet.html">Details</a>
-<a class="directory-button" href="https://github.com/cake-tech/cake_wallet" rel="noopener noreferrer" target="_blank">Visit project</a>
+<p class="tool__desc">Tor-based desktop DEX for fiat ↔ BTC trades secured by bonded multisig escrows.</p>
+<div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">P2P</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="RoboSats Tor-native Lightning P2P exchange with robot avatars, escrowed orders, and no account persistence. https://robosats.com/ No Tags Bitcoin, P2P, Tor Project link https://robosats.com/" data-tags="Bitcoin P2P Tor RoboSats">
+<div class="tool__header">
+<a class="tool__name" href="robosats.html">RoboSats</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://robosats.com/" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
+<p class="tool__desc">Tor-native Lightning P2P exchange with robot avatars, escrowed orders, and no account persistence.</p>
+<div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">P2P</span><span class="pill">Tor</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="Lnp2pBot Telegram-native escrow bot coordinating BTC trades via Lightning invoices or on-chain holds. https://lnp2pbot.com/ No Tags Bitcoin, P2P, Bot Project link https://lnp2pbot.com/" data-tags="Bitcoin P2P Bot Lnp2pBot">
+<div class="tool__header">
+<a class="tool__name" href="lnp2pbot.html">Lnp2pBot</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://lnp2pbot.com/" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="EigenWallet logo" class="directory-logo directory-logo--text">E</div></div>
-<div>
-<h3 class="directory-list-title"><a href="eigenwallet.html">EigenWallet</a></h3>
-<p class="directory-list-summary">Cross-platform wallet with built-in Tor routing and peer-to-peer BTC ↔ XMR atomic swaps.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="eigenwallet.html">Details</a>
-<a class="directory-button" href="https://eigenwallet.org/" rel="noopener noreferrer" target="_blank">Visit project</a>
+<p class="tool__desc">Telegram-native escrow bot coordinating BTC trades via Lightning invoices or on-chain holds.</p>
+<div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">P2P</span><span class="pill">Bot</span></div>
+</li>
+<li class="tool" data-directory-filter-item data-directory-filter-text="Jambler Bitcoin mixer infrastructure and liquidity platform used by several listed mixing services https://jambler.io http://jamblery7zgxknhjtmj3mhfdajmyddqxbufrf6voa32h5w4otux3crqd.onion/ Tags Bitcoin, Mixer infrastructure, Liquidity Project link https://jambler.io" data-tags="Bitcoin Mixer infrastructure Liquidity Jambler">
+<div class="tool__header">
+<a class="tool__name" href="jambler.html">Jambler</a>
+<a aria-label="Visit project" class="directory-icon-button tool-visit" href="https://jambler.io" rel="noopener noreferrer" target="_blank" title="Visit project"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span class="screen-reader-text">Visit project</span></a>
 </div>
-</div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="Gliese.io logo" class="directory-logo directory-logo--text">GI</div></div>
-<div>
-<h3 class="directory-list-title"><a href="gliese-io.html">Gliese.io</a></h3>
-<p class="directory-list-summary">Non-custodial UTXO analysis + transaction simulator built on Bitcoin/Litecoin full nodes.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="gliese-io.html">Details</a>
-<a class="directory-button" href="https://bitcointalk.org/index.php?topic=5573042.0" rel="noopener noreferrer" target="_blank">Visit project</a>
-</div>
-</div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="THORChain logo" class="directory-logo directory-logo--text">T</div></div>
-<div>
-<h3 class="directory-list-title"><a href="thorchain.html">THORChain</a></h3>
-<p class="directory-list-summary">Non-custodial cross-chain DEX for native BTC and other L1 assets, using node-bonded liquidity pools instead of wrapped tokens.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="thorchain.html">Details</a>
-<a class="directory-button" href="https://thorchain.org/" rel="noopener noreferrer" target="_blank">Visit project</a>
-</div>
-</div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="Privacy Watch logo" class="directory-logo directory-logo--text">PW</div></div>
-<div>
-<h3 class="directory-list-title"><a href="privacy-watch.html">Privacy Watch</a></h3>
-<p class="directory-list-summary">Catalog of Bitcoin privacy best practices and service audits highlighting deanonymization risks.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="privacy-watch.html">Details</a>
-<a class="directory-button" href="https://privacy.watch/" rel="noopener noreferrer" target="_blank">Visit project</a>
-</div>
-</div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="Haveno DEX logo" class="directory-logo directory-logo--text">HD</div></div>
-<div>
-<h3 class="directory-list-title"><a href="haveno-dex.html">Haveno DEX</a></h3>
-<p class="directory-list-summary">Non-custodial Tor-based DEX for fiat ↔ Monero trades; open-source Java stack with multisig escrows.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="haveno-dex.html">Details</a>
-<a class="directory-button" href="https://haveno.exchange/" rel="noopener noreferrer" target="_blank">Visit project</a>
-</div>
-</div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="RetoSwap logo" class="directory-logo directory-logo--text">R</div></div>
-<div>
-<h3 class="directory-list-title"><a href="retoswap.html">RetoSwap</a></h3>
-<p class="directory-list-summary">Desktop client built on Haveno offering Tor-native Monero swaps with fiat/crypto payment rails.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="retoswap.html">Details</a>
-<a class="directory-button" href="https://retoswap.com/" rel="noopener noreferrer" target="_blank">Visit project</a>
-</div>
-</div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="BasicSwap DEX logo" class="directory-logo directory-logo--text">BD</div></div>
-<div>
-<h3 class="directory-list-title"><a href="basicswap-dex.html">BasicSwap DEX</a></h3>
-<p class="directory-list-summary">Particl-powered atomic swap DEX for BTC, XMR, FIRO, and other privacy coins over Tor/I2P.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="basicswap-dex.html">Details</a>
-<a class="directory-button" href="https://basicswapdex.com/" rel="noopener noreferrer" target="_blank">Visit project</a>
-</div>
-</div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="Bisq logo" class="directory-logo directory-logo--text">B</div></div>
-<div>
-<h3 class="directory-list-title"><a href="bisq.html">Bisq</a></h3>
-<p class="directory-list-summary">Tor-based desktop DEX for fiat ↔ BTC trades secured by bonded multisig escrows.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="bisq.html">Details</a>
-<a class="directory-button" href="https://github.com/bisq-network/bisq" rel="noopener noreferrer" target="_blank">Visit project</a>
-</div>
-</div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="RoboSats logo" class="directory-logo directory-logo--text">R</div></div>
-<div>
-<h3 class="directory-list-title"><a href="robosats.html">RoboSats</a></h3>
-<p class="directory-list-summary">Tor-native Lightning P2P exchange with robot avatars, escrowed orders, and no account persistence.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="robosats.html">Details</a>
-<a class="directory-button" href="https://robosats.com/" rel="noopener noreferrer" target="_blank">Visit project</a>
-</div>
-</div>
-</article>
-<article class="directory-list-card">
-<div><div aria-label="Lnp2pBot logo" class="directory-logo directory-logo--text">L</div></div>
-<div>
-<h3 class="directory-list-title"><a href="lnp2pbot.html">Lnp2pBot</a></h3>
-<p class="directory-list-summary">Telegram-native escrow bot coordinating BTC trades via Lightning invoices or on-chain holds.</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="lnp2pbot.html">Details</a>
-<a class="directory-button" href="https://lnp2pbot.com/" rel="noopener noreferrer" target="_blank">Visit project</a>
-</div>
-</div>
-</article>
-
-</div>
+<p class="tool__desc">Bitcoin mixer infrastructure and liquidity platform used by several listed mixing services</p>
+<div class="tool__meta"><span class="pill">Bitcoin</span><span class="pill">Mixer infrastructure</span><span class="pill">Liquidity</span></div>
+</li>
+</ul>
 </section>
-<section class="directory-section">
-<h2>Comparison</h2>
-<table class="directory-facts">
-<thead><tr><th>Name</th><th>Official site</th><th>Tor site</th><th>Summary</th></tr></thead>
-<tbody>
-<tr><td><a href="sparrow-wallet.html">Sparrow Wallet</a></td><td><a href="https://github.com/sparrowwallet/sparrow" rel="noopener noreferrer" target="_blank">https://github.com/sparrowwallet/sparrow</a></td><td>No</td><td>Desktop wallet with coin control, labels, Whirlpool/Wasabi support, and BIP47/PayJoin flows.</td></tr>
-<tr><td><a href="wasabi-wallet.html">Wasabi Wallet</a></td><td><a href="https://github.com/WalletWasabi/WalletWasabi" rel="noopener noreferrer" target="_blank">https://github.com/WalletWasabi/WalletWasabi</a></td><td>No</td><td>WabiSabi CoinJoin + cross-platform GUI.</td></tr>
-<tr><td><a href="joinmarket.html">JoinMarket</a></td><td><a href="https://github.com/JoinMarket-Org/joinmarket-clientserver" rel="noopener noreferrer" target="_blank">https://github.com/JoinMarket-Org/joinmarket-clientserver</a></td><td>No</td><td>Incentive-based CoinJoin marketplace with maker/taker liquidity.</td></tr>
-<tr><td><a href="samourai-dojo.html">Samourai Dojo</a></td><td><a href="https://github.com/Samourai-Wallet/samourai-dojo" rel="noopener noreferrer" target="_blank">https://github.com/Samourai-Wallet/samourai-dojo</a></td><td>No</td><td>Self-hosted Bitcoin backend for powering Samourai features (Cahoots, Whirlpool) via Tor.</td></tr>
-<tr><td><a href="whirlpool-cli.html">Whirlpool CLI</a></td><td><a href="https://github.com/Samourai-Wallet/whirlpool-client-cli" rel="noopener noreferrer" target="_blank">https://github.com/Samourai-Wallet/whirlpool-client-cli</a></td><td>No</td><td>Command-line Whirlpool client so you can mix UTXOs on your own node with deterministic fees.</td></tr>
-<tr><td><a href="chaincase.html">Chaincase</a></td><td><a href="https://github.com/chaincase-app/chaincase" rel="noopener noreferrer" target="_blank">https://github.com/chaincase-app/chaincase</a></td><td>No</td><td>iOS wallet focused on Whirlpool mixing, PayNym contacts, PayJoin, and Tor networking.</td></tr>
-<tr><td><a href="feather-wallet.html">Feather Wallet</a></td><td><a href="https://github.com/feather-wallet/feather" rel="noopener noreferrer" target="_blank">https://github.com/feather-wallet/feather</a></td><td>No</td><td>Modern Monero desktop wallet with Tor/I2P transport, coin control, and hardware wallet support.</td></tr>
-<tr><td><a href="monero-cli.html">Monero CLI</a></td><td><a href="https://github.com/monero-project/monero" rel="noopener noreferrer" target="_blank">https://github.com/monero-project/monero</a></td><td>No</td><td>Reference Monero node and wallet CLI with ring signatures, view-only modes, and RPC APIs.</td></tr>
-<tr><td><a href="monero-gui.html">Monero GUI</a></td><td><a href="https://github.com/monero-project/monero-gui" rel="noopener noreferrer" target="_blank">https://github.com/monero-project/monero-gui</a></td><td>No</td><td>Official Qt-based GUI wallet bundling hardware support, node management, and Ledger/Trezor flows.</td></tr>
-<tr><td><a href="monerujo.html">Monerujo</a></td><td><a href="https://github.com/m2049r/xmrwallet" rel="noopener noreferrer" target="_blank">https://github.com/m2049r/xmrwallet</a></td><td>No</td><td>Android Monero wallet (Monerujo) with coin control, Tor/I2P networking, and QR/PayCode tools.</td></tr>
-<tr><td><a href="cake-wallet.html">Cake Wallet</a></td><td><a href="https://github.com/cake-tech/cake_wallet" rel="noopener noreferrer" target="_blank">https://github.com/cake-tech/cake_wallet</a></td><td>No</td><td>Open-source iOS/Android wallet for Monero &amp; BTC with Tor routing and in-app swap bridges.</td></tr>
-<tr><td><a href="eigenwallet.html">EigenWallet</a></td><td><a href="https://eigenwallet.org/" rel="noopener noreferrer" target="_blank">https://eigenwallet.org/</a></td><td>No</td><td>Cross-platform wallet with built-in Tor routing and peer-to-peer BTC ↔ XMR atomic swaps.</td></tr>
-<tr><td><a href="gliese-io.html">Gliese.io</a></td><td><a href="https://bitcointalk.org/index.php?topic=5573042.0" rel="noopener noreferrer" target="_blank">https://bitcointalk.org/index.php?topic=5573042.0</a></td><td>No</td><td>Non-custodial UTXO analysis + transaction simulator built on Bitcoin/Litecoin full nodes.</td></tr>
-<tr><td><a href="thorchain.html">THORChain</a></td><td><a href="https://thorchain.org/" rel="noopener noreferrer" target="_blank">https://thorchain.org/</a></td><td>No</td><td>Non-custodial cross-chain DEX for native BTC and other L1 assets, using node-bonded liquidity pools instead of wrapped tokens.</td></tr>
-<tr><td><a href="privacy-watch.html">Privacy Watch</a></td><td><a href="https://privacy.watch/" rel="noopener noreferrer" target="_blank">https://privacy.watch/</a></td><td>No</td><td>Catalog of Bitcoin privacy best practices and service audits highlighting deanonymization risks.</td></tr>
-<tr><td><a href="haveno-dex.html">Haveno DEX</a></td><td><a href="https://haveno.exchange/" rel="noopener noreferrer" target="_blank">https://haveno.exchange/</a></td><td>No</td><td>Non-custodial Tor-based DEX for fiat ↔ Monero trades; open-source Java stack with multisig escrows.</td></tr>
-<tr><td><a href="retoswap.html">RetoSwap</a></td><td><a href="https://retoswap.com/" rel="noopener noreferrer" target="_blank">https://retoswap.com/</a></td><td>No</td><td>Desktop client built on Haveno offering Tor-native Monero swaps with fiat/crypto payment rails.</td></tr>
-<tr><td><a href="basicswap-dex.html">BasicSwap DEX</a></td><td><a href="https://basicswapdex.com/" rel="noopener noreferrer" target="_blank">https://basicswapdex.com/</a></td><td>No</td><td>Particl-powered atomic swap DEX for BTC, XMR, FIRO, and other privacy coins over Tor/I2P.</td></tr>
-<tr><td><a href="bisq.html">Bisq</a></td><td><a href="https://github.com/bisq-network/bisq" rel="noopener noreferrer" target="_blank">https://github.com/bisq-network/bisq</a></td><td>No</td><td>Tor-based desktop DEX for fiat ↔ BTC trades secured by bonded multisig escrows.</td></tr>
-<tr><td><a href="robosats.html">RoboSats</a></td><td><a href="https://robosats.com/" rel="noopener noreferrer" target="_blank">https://robosats.com/</a></td><td>No</td><td>Tor-native Lightning P2P exchange with robot avatars, escrowed orders, and no account persistence.</td></tr>
-<tr><td><a href="lnp2pbot.html">Lnp2pBot</a></td><td><a href="https://lnp2pbot.com/" rel="noopener noreferrer" target="_blank">https://lnp2pbot.com/</a></td><td>No</td><td>Telegram-native escrow bot coordinating BTC trades via Lightning invoices or on-chain holds.</td></tr>
+	<section class="directory-section" data-directory-filter-scope>
+	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 10h18"></path><path d="M9 4v16"></path><path d="M15 4v16"></path></svg><span>Data Sheet</span></h2>
+	<div class="directory-filter">
+	<label class="directory-filter-label" for="directory-data-sheet-filter-privacy-tools-en"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><span>Filter data sheet</span></label>
+	<input autocomplete="off" class="directory-filter-input" data-directory-filter-input id="directory-data-sheet-filter-privacy-tools-en" placeholder="Name, domain, parameter..." type="search"/>
+	<p class="directory-filter-empty" data-directory-filter-empty hidden>No matching rows.</p>
+		</div>
+<figure class="wp-block-table directory-table-wrap">
+	<table class="directory-facts directory-comparison-table directory-comparison-table--privacy-tools">
+	<thead><tr><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Name</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Website</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Tor Site</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Tags</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th></tr></thead>
+	<tbody>
+	<tr data-directory-filter-item data-directory-filter-text="Sparrow Wallet Desktop wallet with coin control, labels, Whirlpool/Wasabi support, and BIP47/PayJoin flows. https://github.com/sparrowwallet/sparrow No Tags Bitcoin, Wallet, Coin control Project link https://github.com/sparrowwallet/sparrow"><td class="directory-nowrap"><a class="directory-link" href="sparrow-wallet.html">Sparrow Wallet</a></td><td class="directory-nowrap"><a href="https://github.com/sparrowwallet/sparrow" rel="noopener noreferrer" target="_blank">github.com</a></td><td class="directory-nowrap">No</td><td>Bitcoin, Wallet, Coin control</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Wasabi Wallet WabiSabi CoinJoin + cross-platform GUI. https://github.com/WalletWasabi/WalletWasabi No Tags Bitcoin, CoinJoin Project link https://github.com/WalletWasabi/WalletWasabi"><td class="directory-nowrap"><a class="directory-link" href="wasabi-wallet.html">Wasabi Wallet</a></td><td class="directory-nowrap"><a href="https://github.com/WalletWasabi/WalletWasabi" rel="noopener noreferrer" target="_blank">github.com</a></td><td class="directory-nowrap">No</td><td>Bitcoin, CoinJoin</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="JoinMarket Incentive-based CoinJoin marketplace with maker/taker liquidity. https://github.com/JoinMarket-Org/joinmarket-clientserver No Tags Bitcoin, CoinJoin, P2P Project link https://github.com/JoinMarket-Org/joinmarket-clientserver"><td class="directory-nowrap"><a class="directory-link" href="joinmarket.html">JoinMarket</a></td><td class="directory-nowrap"><a href="https://github.com/JoinMarket-Org/joinmarket-clientserver" rel="noopener noreferrer" target="_blank">github.com</a></td><td class="directory-nowrap">No</td><td>Bitcoin, CoinJoin, P2P</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Samourai Dojo Self-hosted Bitcoin backend for powering Samourai features (Cahoots, Whirlpool) via Tor. https://github.com/Samourai-Wallet/samourai-dojo No Tags Bitcoin, Backend Project link https://github.com/Samourai-Wallet/samourai-dojo"><td class="directory-nowrap"><a class="directory-link" href="samourai-dojo.html">Samourai Dojo</a></td><td class="directory-nowrap"><a href="https://github.com/Samourai-Wallet/samourai-dojo" rel="noopener noreferrer" target="_blank">github.com</a></td><td class="directory-nowrap">No</td><td>Bitcoin, Backend</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Whirlpool CLI Command-line Whirlpool client so you can mix UTXOs on your own node with deterministic fees. https://github.com/Samourai-Wallet/whirlpool-client-cli No Tags Bitcoin, CoinJoin, CLI Project link https://github.com/Samourai-Wallet/whirlpool-client-cli"><td class="directory-nowrap"><a class="directory-link" href="whirlpool-cli.html">Whirlpool CLI</a></td><td class="directory-nowrap"><a href="https://github.com/Samourai-Wallet/whirlpool-client-cli" rel="noopener noreferrer" target="_blank">github.com</a></td><td class="directory-nowrap">No</td><td>Bitcoin, CoinJoin, CLI</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Chaincase iOS wallet focused on Whirlpool mixing, PayNym contacts, PayJoin, and Tor networking. https://github.com/chaincase-app/chaincase No Tags Bitcoin, Wallet, Mobile Project link https://github.com/chaincase-app/chaincase"><td class="directory-nowrap"><a class="directory-link" href="chaincase.html">Chaincase</a></td><td class="directory-nowrap"><a href="https://github.com/chaincase-app/chaincase" rel="noopener noreferrer" target="_blank">github.com</a></td><td class="directory-nowrap">No</td><td>Bitcoin, Wallet, Mobile</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Feather Wallet Modern Monero desktop wallet with Tor/I2P transport, coin control, and hardware wallet support. https://github.com/feather-wallet/feather No Tags Monero, Wallet Project link https://github.com/feather-wallet/feather"><td class="directory-nowrap"><a class="directory-link" href="feather-wallet.html">Feather Wallet</a></td><td class="directory-nowrap"><a href="https://github.com/feather-wallet/feather" rel="noopener noreferrer" target="_blank">github.com</a></td><td class="directory-nowrap">No</td><td>Monero, Wallet</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Monero CLI Reference Monero node and wallet CLI with ring signatures, view-only modes, and RPC APIs. https://github.com/monero-project/monero No Tags Monero, Node Project link https://github.com/monero-project/monero"><td class="directory-nowrap"><a class="directory-link" href="monero-cli.html">Monero CLI</a></td><td class="directory-nowrap"><a href="https://github.com/monero-project/monero" rel="noopener noreferrer" target="_blank">github.com</a></td><td class="directory-nowrap">No</td><td>Monero, Node</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Monero GUI Official Qt-based GUI wallet bundling hardware support, node management, and Ledger/Trezor flows. https://github.com/monero-project/monero-gui No Tags Monero, Wallet, Desktop Project link https://github.com/monero-project/monero-gui"><td class="directory-nowrap"><a class="directory-link" href="monero-gui.html">Monero GUI</a></td><td class="directory-nowrap"><a href="https://github.com/monero-project/monero-gui" rel="noopener noreferrer" target="_blank">github.com</a></td><td class="directory-nowrap">No</td><td>Monero, Wallet, Desktop</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Monerujo Android Monero wallet (Monerujo) with coin control, Tor/I2P networking, and QR/PayCode tools. https://github.com/m2049r/xmrwallet No Tags Monero, Wallet, Mobile Project link https://github.com/m2049r/xmrwallet"><td class="directory-nowrap"><a class="directory-link" href="monerujo.html">Monerujo</a></td><td class="directory-nowrap"><a href="https://github.com/m2049r/xmrwallet" rel="noopener noreferrer" target="_blank">github.com</a></td><td class="directory-nowrap">No</td><td>Monero, Wallet, Mobile</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Cake Wallet Open-source iOS/Android wallet for Monero &amp; BTC with Tor routing and in-app swap bridges. https://github.com/cake-tech/cake_wallet No Tags Monero, Wallet, Mobile Project link https://github.com/cake-tech/cake_wallet"><td class="directory-nowrap"><a class="directory-link" href="cake-wallet.html">Cake Wallet</a></td><td class="directory-nowrap"><a href="https://github.com/cake-tech/cake_wallet" rel="noopener noreferrer" target="_blank">github.com</a></td><td class="directory-nowrap">No</td><td>Monero, Wallet, Mobile</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="EigenWallet Cross-platform wallet with built-in Tor routing and peer-to-peer BTC ↔ XMR atomic swaps. https://eigenwallet.org/ No Tags Monero, Atomic swap Project link https://eigenwallet.org/"><td class="directory-nowrap"><a class="directory-link" href="eigenwallet.html">EigenWallet</a></td><td class="directory-nowrap"><a href="https://eigenwallet.org/" rel="noopener noreferrer" target="_blank">eigenwallet.org</a></td><td class="directory-nowrap">No</td><td>Monero, Atomic swap</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Gliese.io Non-custodial UTXO analysis + transaction simulator built on Bitcoin/Litecoin full nodes. https://bitcointalk.org/index.php?topic=5573042.0 No Tags Bitcoin, UTXO, Analysis Project link https://bitcointalk.org/index.php?topic=5573042.0"><td class="directory-nowrap"><a class="directory-link" href="gliese-io.html">Gliese.io</a></td><td class="directory-nowrap"><a href="https://bitcointalk.org/index.php?topic=5573042.0" rel="noopener noreferrer" target="_blank">bitcointalk.org</a></td><td class="directory-nowrap">No</td><td>Bitcoin, UTXO, Analysis</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="THORChain Non-custodial cross-chain DEX for native BTC and other L1 assets, using node-bonded liquidity pools instead of wrapped tokens. https://thorchain.org/ No Tags Cross-chain, DEX Project link https://thorchain.org/"><td class="directory-nowrap"><a class="directory-link" href="thorchain.html">THORChain</a></td><td class="directory-nowrap"><a href="https://thorchain.org/" rel="noopener noreferrer" target="_blank">thorchain.org</a></td><td class="directory-nowrap">No</td><td>Cross-chain, DEX</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Privacy Watch Catalog of Bitcoin privacy best practices and service audits highlighting deanonymization risks. https://privacy.watch/ No Tags Research, Guides Project link https://privacy.watch/"><td class="directory-nowrap"><a class="directory-link" href="privacy-watch.html">Privacy Watch</a></td><td class="directory-nowrap"><a href="https://privacy.watch/" rel="noopener noreferrer" target="_blank">privacy.watch</a></td><td class="directory-nowrap">No</td><td>Research, Guides</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Haveno DEX Non-custodial Tor-based DEX for fiat ↔ Monero trades; open-source Java stack with multisig escrows. https://haveno.exchange/ No Tags Monero, P2P Project link https://haveno.exchange/"><td class="directory-nowrap"><a class="directory-link" href="haveno-dex.html">Haveno DEX</a></td><td class="directory-nowrap"><a href="https://haveno.exchange/" rel="noopener noreferrer" target="_blank">haveno.exchange</a></td><td class="directory-nowrap">No</td><td>Monero, P2P</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="RetoSwap Desktop client built on Haveno offering Tor-native Monero swaps with fiat/crypto payment rails. https://retoswap.com/ No Tags Monero, P2P Project link https://retoswap.com/"><td class="directory-nowrap"><a class="directory-link" href="retoswap.html">RetoSwap</a></td><td class="directory-nowrap"><a href="https://retoswap.com/" rel="noopener noreferrer" target="_blank">retoswap.com</a></td><td class="directory-nowrap">No</td><td>Monero, P2P</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="BasicSwap DEX Particl-powered atomic swap DEX for BTC, XMR, FIRO, and other privacy coins over Tor/I2P. https://basicswapdex.com/ No Tags Cross-chain, Atomic swap Project link https://basicswapdex.com/"><td class="directory-nowrap"><a class="directory-link" href="basicswap-dex.html">BasicSwap DEX</a></td><td class="directory-nowrap"><a href="https://basicswapdex.com/" rel="noopener noreferrer" target="_blank">basicswapdex.com</a></td><td class="directory-nowrap">No</td><td>Cross-chain, Atomic swap</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Bisq Tor-based desktop DEX for fiat ↔ BTC trades secured by bonded multisig escrows. https://github.com/bisq-network/bisq No Tags Bitcoin, P2P Project link https://github.com/bisq-network/bisq"><td class="directory-nowrap"><a class="directory-link" href="bisq.html">Bisq</a></td><td class="directory-nowrap"><a href="https://github.com/bisq-network/bisq" rel="noopener noreferrer" target="_blank">github.com</a></td><td class="directory-nowrap">No</td><td>Bitcoin, P2P</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="RoboSats Tor-native Lightning P2P exchange with robot avatars, escrowed orders, and no account persistence. https://robosats.com/ No Tags Bitcoin, P2P, Tor Project link https://robosats.com/"><td class="directory-nowrap"><a class="directory-link" href="robosats.html">RoboSats</a></td><td class="directory-nowrap"><a href="https://robosats.com/" rel="noopener noreferrer" target="_blank">robosats.com</a></td><td class="directory-nowrap">No</td><td>Bitcoin, P2P, Tor</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Lnp2pBot Telegram-native escrow bot coordinating BTC trades via Lightning invoices or on-chain holds. https://lnp2pbot.com/ No Tags Bitcoin, P2P, Bot Project link https://lnp2pbot.com/"><td class="directory-nowrap"><a class="directory-link" href="lnp2pbot.html">Lnp2pBot</a></td><td class="directory-nowrap"><a href="https://lnp2pbot.com/" rel="noopener noreferrer" target="_blank">lnp2pbot.com</a></td><td class="directory-nowrap">No</td><td>Bitcoin, P2P, Bot</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Jambler Bitcoin mixer infrastructure and liquidity platform used by several listed mixing services https://jambler.io http://jamblery7zgxknhjtmj3mhfdajmyddqxbufrf6voa32h5w4otux3crqd.onion/ Tags Bitcoin, Mixer infrastructure, Liquidity Project link https://jambler.io"><td class="directory-nowrap"><a class="directory-link" href="jambler.html">Jambler</a></td><td class="directory-nowrap"><a href="https://jambler.io" rel="noopener noreferrer" target="_blank">jambler.io</a></td><td class="directory-nowrap"><a href="http://jamblery7zgxknhjtmj3mhfdajmyddqxbufrf6voa32h5w4otux3crqd.onion/" rel="noopener noreferrer" target="_blank" title="jamblery7zgxknhjtmj3mhfdajmyddqxbufrf6voa32h5w4otux3crqd.onion">Yes</a></td><td>Bitcoin, Mixer infrastructure, Liquidity</td></tr>
 </tbody>
-</table>
+	</table>
+</figure>
 </section>
 </article>
 </main>
 <footer class="site-footer" id="site-footer" role="contentinfo"></footer>
 <div class="footer">
 <div>Copyright © 2023-2026 <strong><a href="https://bitcointalk.org/index.php?action=profile;u=2739424">NotATether</a></strong>.</div>
-<div>Contact: admin [at] notatether [dot] com</div>
+        <div>Contact: admin [at] bitmixlist [dot] org</div>
 <div><em>Disclaimers:</em></div>
 <div>Only mix funds you have obtained lawfully.</div>
 <div>Do not use BitMixList for money laundering!</div>

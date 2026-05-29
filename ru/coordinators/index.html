@@ -11,6 +11,7 @@
 <link href="../../wp-content/litespeed/css/styles.css" rel="stylesheet"/>
 <script src="../../wp-content/litespeed/js/ad-loader.js"></script>
 <script src="../../wp-content/litespeed/js/site-search.js" defer></script>
+<script src="../../wp-content/litespeed/js/directory-filter.js" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   if (window.bitmixlistLoadTopAd) {
@@ -24,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
 .directory-page .header-inner { gap: 12px; min-height: 42px; align-items: center; position: relative; padding-right: 8rem; }
 .directory-page .header-inner h4 { flex: 1 1 0; min-width: 0; font-size: var(--directory-header-title-size, 1.5rem); line-height: 1.2; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .directory-page .lang-switcher { position: absolute; top: 50%; right: 2rem; transform: translateY(-50%); margin-left: 0; flex: 0 0 auto; }
-.directory-page .sidebar .nav-menu a { font-size: 0.95rem; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.directory-page .sidebar .nav-menu a { font-size: 1rem; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .directory-page .mobile-menu-toggle { flex: 0 0 auto; }
 .directory-page .sylvester-top, .directory-page .sylvester-top-mobile { margin-top: 1rem !important; }
 .directory-meta-nav { display: flex; justify-content: center; gap: 22px; width: 100%; margin: 0.45rem 0 0; padding: 0 1.5rem 0.15rem; overflow-x: auto; scrollbar-width: thin; box-sizing: border-box; }
@@ -38,35 +39,132 @@ document.addEventListener('DOMContentLoaded', function () {
 .directory-summary { margin: 0; color: #e8e1f5; line-height: 1.55; max-width: 760px; }
 .directory-section { margin-top: 28px; }
 .directory-section h2 { margin: 0 0 12px; font-size: 1.35rem; letter-spacing: 0; }
-.directory-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
-.directory-list-card { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; min-width: 0; padding: 14px; border: 1px solid #3a2e55; border-radius: 8px; background: #181222; }
-.directory-list-card .directory-logo { width: 64px; height: 64px; border-radius: 8px; object-fit: contain; }
-.directory-list-card .directory-logo--text { font-size: 1.15rem; }
+.directory-filter { margin: 22px 0 0; max-width: 560px; }
+.directory-filter-label { display: block; margin: 0 0 6px; color: #f6f2ff; font-size: 0.95rem; font-weight: 650; }
+.directory-filter-input { width: 100%; min-height: 40px; box-sizing: border-box; border: 1px solid #4a3a70; border-radius: 7px; background: #121018; color: #f6f2ff; padding: 0 12px; font: inherit; }
+.directory-filter-input:focus { border-color: #8a6cff; outline: 2px solid rgba(138, 108, 255, 0.24); outline-offset: 2px; }
+.directory-filter-empty { margin: 10px 0 0; color: #c9c3d8; }
+.directory-pair-filter { padding: 16px 18px; border: 1px solid #2d2d2d; border-radius: 8px; background: #1a1a1a; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); }
+.directory-pair-filter h2 { margin-bottom: 14px; }
+.directory-pair-filter__controls { display: grid; grid-template-columns: repeat(2, minmax(220px, 1fr)) auto; gap: 12px; align-items: start; }
+.directory-pair-filter__control { display: grid; gap: 6px; color: #f6f2ff; font-size: 0.92rem; font-weight: 650; }
+.directory-pair-filter__select { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.directory-pair-filter__select:focus { border-color: #8a6cff; outline: 2px solid rgba(138, 108, 255, 0.24); outline-offset: 2px; }
+.directory-pair-filter__coin-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.directory-pair-filter__coin { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 36px; padding: 5px 8px; border: 1px solid #4a3a70; border-radius: 7px; background: #121018; color: #f6f2ff; font: inherit; font-size: 0.84rem; font-weight: 650; line-height: 1.15; cursor: pointer; }
+.directory-pair-filter__coin:hover, .directory-pair-filter__coin:focus { border-color: #8a6cff; background: #1b1428; color: #fff; outline: none; }
+.directory-pair-filter__coin.is-selected { border-color: #bb86fc; background: #2a1c41; color: #fff; }
+.directory-pair-filter__coin img { display: block; flex: 0 0 20px; width: 20px; height: 20px; }
+.directory-pair-filter__reset { min-height: 40px; padding: 0 13px; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; font: inherit; font-size: 0.9rem; font-weight: 650; cursor: pointer; }
+.directory-pair-filter__reset:hover, .directory-pair-filter__reset:focus { background: #27184d; color: #fff; }
+.directory-pair-filter__status, .directory-pair-filter__empty { margin: 12px 0 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }
+.directory-pair-filter__empty { color: #ffcfdf; }
+.directory-fee-filter { padding: 16px 18px; border: 1px solid #2d2d2d; border-radius: 8px; background: #1a1a1a; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); }
+.directory-fee-filter h2 { margin-bottom: 14px; }
+.directory-fee-filter__controls { display: grid; grid-template-columns: minmax(220px, 1fr) auto; gap: 12px; align-items: end; }
+.directory-fee-filter__control { display: grid; gap: 8px; color: #f6f2ff; font-size: 0.92rem; font-weight: 650; }
+.directory-fee-filter__label-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.directory-fee-filter__value { color: #c7b8ff; font-weight: 750; white-space: nowrap; }
+.directory-fee-filter__range { width: 100%; accent-color: #bb86fc; }
+.directory-fee-filter__reset { min-height: 40px; padding: 0 13px; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; font: inherit; font-size: 0.9rem; font-weight: 650; cursor: pointer; }
+.directory-fee-filter__reset:hover, .directory-fee-filter__reset:focus { background: #27184d; color: #fff; }
+.directory-fee-filter__status, .directory-fee-filter__empty { margin: 12px 0 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }
+.directory-fee-filter__empty { color: #ffcfdf; }
+.directory-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px; }
+.directory-list-card { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 14px; min-width: 0; padding: 14px; border: 1px solid #3a2e55; border-radius: 8px; background: #181222; }
+.directory-list-card .directory-logo { width: 128px; height: 128px; border-radius: 10px; object-fit: contain; }
+.directory-list-card .directory-logo--text { font-size: 1.8rem; }
 .directory-list-title { margin: 0 0 4px; font-size: 1.05rem; line-height: 1.25; font-weight: 700; }
 .directory-list-title a { color: #f6f2ff; text-decoration: none; }
 .directory-list-title a:hover, .directory-list-title a:focus { text-decoration: underline; }
 .directory-list-summary { margin: 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }
+.coin-list { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
+.coin-badge { display: inline-flex; align-items: center; gap: 5px; min-height: 26px; padding: 2px 7px 2px 4px; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 999px; background: #121018; color: #f6f2ff; font-size: 0.82rem; font-weight: 650; line-height: 1; white-space: nowrap; }
+.coin-badge img { display: block; flex: 0 0 20px; width: 20px; height: 20px; }
+.directory-facts th.directory-coins-cell { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+.directory-facts td.directory-coins-cell { white-space: normal; overflow-wrap: normal; word-break: normal; }
+.directory-facts td.directory-coins-cell .coin-list { max-width: 100%; }
+.directory-list-summary .coin-list { display: inline-flex; margin-left: 4px; vertical-align: middle; }
+
 .directory-list-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .directory-button { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; padding: 0 10px; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; text-decoration: none; font-size: 0.9rem; font-weight: 650; }
 .directory-button:hover, .directory-button:focus { background: #27184d; color: #fff; text-decoration: none; }
+.directory-icon-button { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 34px; height: 34px; min-height: 34px; margin-top: 0; margin-left: auto; padding: 0; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; text-decoration: none !important; box-sizing: border-box; }
+.directory-icon-button:hover, .directory-icon-button:focus { background: #27184d; color: #fff; text-decoration: none !important; }
+.directory-icon-button svg { width: 17px; height: 17px; }
+.tool-registry { max-width: none; margin: 28px 0 0; padding: 0; }
+.tool-registry__header h2 { margin: 0 0 10px; font-size: 2rem; letter-spacing: 0; }
+.tool-registry .muted { margin: 0 0 16px; color: #d8d0e8; line-height: 1.45; }
+.tool-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.tool { border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 14px 14px 12px; }
+.tool__header { display: flex; align-items: center; gap: 12px; }
+.tool__header .tool__name { flex: 1 1 auto; min-width: 0; }
+.tool__name { color: #f6f2ff; font-size: 1.05rem; font-weight: 700; text-decoration: none; }
+.tool__name:hover, .tool__name:focus { color: #fff; text-decoration: underline; }
+.tool__desc { margin: 8px 0 10px; color: #d8d0e8; line-height: 1.45; }
+.tool__meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0; }
+.pill { padding: 4px 10px; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 999px; color: #e7def6; font-size: 0.82rem; line-height: 1.25; }
+.directory-table-wrap { margin: 0; overflow-x: auto; }
 .directory-facts { width: 100%; border-collapse: collapse; table-layout: fixed; }
-.directory-facts th, .directory-facts td { vertical-align: top; padding: 12px; overflow-wrap: anywhere; word-break: normal; }
+.directory-facts th, .directory-facts td { vertical-align: top; padding: 12px; overflow-wrap: normal; word-break: normal; hyphens: none; }
 .directory-facts th { color: #f6f2ff; text-align: left; background: #282238; }
 .directory-facts td { background: #1c1728; }
+.directory-facts .directory-nowrap { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+.directory-comparison-table { table-layout: auto; min-width: 1040px; }
+.directory-comparison-table--mixers { min-width: 1380px; }
+.directory-comparison-table--mixers th.directory-coins-cell,
+.directory-comparison-table--mixers td.directory-coins-cell { width: 12rem; max-width: 12rem; }
+.directory-comparison-table--mixers td.directory-coins-cell .coin-list { max-width: 12rem; }
+.directory-comparison-table--coordinators { min-width: 960px; }
+.directory-facts thead th[data-sortable-column] { cursor: pointer; user-select: none; }
+.directory-sort-button { all: unset; display: inline-flex; align-items: center; justify-content: flex-start; gap: 6px; max-width: 100%; color: inherit; font: inherit; font-weight: inherit; line-height: inherit; cursor: pointer; }
+.directory-sort-label { min-width: 0; }
+.directory-sort-button:focus-visible { outline: 2px solid #bb86fc; outline-offset: 3px; border-radius: 4px; }
+.directory-sort-indicator { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 0.8em; color: #c7b8ff; font-size: 0.78em; line-height: 1; text-align: center; }
+
+.directory-section-cautions { margin-top: 22px; }
+.directory-caution { margin: 0; padding: 16px 18px; border: 1px solid #2d2d2d; border-radius: 8px; background: #1a1a1a; color: #e0e0e0; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); line-height: 1.55; }
+.directory-caution + .directory-caution { margin-top: 12px; }
+.directory-caution h3 { margin: 0 0 8px; color: #f2ecff; font-size: 1rem; letter-spacing: 0; }
+.directory-caution p { margin: 0; }
+.directory-caution a { color: #bb86fc; font-weight: 700; text-decoration: underline; text-underline-offset: 0.16em; }
+.directory-icon { display: inline-block; flex: 0 0 auto; width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.14em; }
+.directory-heading-icon { color: #bb86fc; margin-right: 0.42rem; }
+.directory-meta-link { display: inline-flex; align-items: center; gap: 0.38rem; }
+.directory-meta-link .directory-icon { width: 0.95rem; height: 0.95rem; color: #bb86fc; }
+.directory-button { gap: 0.42rem; }
+.directory-button .directory-icon { width: 1rem; height: 1rem; }
+.directory-icon-button .directory-icon { width: 17px; height: 17px; }
+.directory-section-link { display: inline-flex; align-items: center; gap: 0.35rem; }
+.directory-section-link .directory-icon { width: 0.95rem; height: 0.95rem; }
+.directory-filter-label .directory-icon { margin-right: 0.35rem; color: #bb86fc; }
+.directory-inline-tool h3 { display: flex; align-items: center; gap: 0.45rem; }
+.directory-inline-tool h3 .directory-icon { color: #bb86fc; }
+.directory-inline-tool button { gap: 0.42rem; }
+
 @media (max-width: 700px) {
   .directory-page .site-header { min-height: 96px; padding-top: 0.65rem; padding-bottom: 0.55rem; }
   .directory-page .site-content-wrapper { padding-top: 104px; }
   .directory-page .header-inner { gap: 8px; min-height: 38px; padding-left: 0.5rem; padding-right: 4.25rem; }
   .directory-page .header-inner h4 { font-size: var(--directory-header-title-mobile-size, 1.15rem); }
-  .directory-page .sidebar .nav-menu a { font-size: 0.9rem; }
-  .directory-page .lang-switcher { right: 0.5rem; gap: 4px; }
-  .directory-page .lang-link { gap: 0; padding: 3px 5px; }
-  .directory-page .lang-link span { display: none; }
-  .directory-meta-nav { justify-content: flex-start; gap: 16px; margin-top: 0.35rem; padding-left: 0.75rem; padding-right: 0.75rem; }
-  .directory-meta-link { font-size: 0.84rem; }
-  .directory-detail { padding: 22px 14px 36px; }
-  .directory-detail h1 { font-size: 2rem; }
-  .directory-list { grid-template-columns: 1fr; }
+  .directory-page .sidebar .nav-menu a { font-size: 1rem; }
+	  .directory-page .lang-switcher { right: 0.5rem; gap: 4px; }
+	  .directory-page .lang-link { gap: 0; padding: 3px 5px; }
+	  .directory-page .lang-link span { display: none; }
+	  .directory-meta-nav { justify-content: flex-start; gap: 16px; margin-top: 0.35rem; padding-left: 0.75rem; padding-right: 0.75rem; }
+	  .directory-meta-link { font-size: 0.84rem; }
+	  .directory-detail { padding: 22px 14px 36px; }
+	  .directory-detail h1 { font-size: 2rem; }
+	  .directory-fee-filter__controls { grid-template-columns: 1fr; }
+	  .directory-fee-filter__reset { width: 100%; }
+	  .directory-pair-filter__controls { grid-template-columns: 1fr; }
+	  .directory-pair-filter__reset { width: 100%; }
+	  .directory-list { grid-template-columns: 1fr; }
+  .directory-table-wrap { overflow-x: visible; }
+  .directory-comparison-table { min-width: 0; }
+  .directory-comparison-table--mixers th.directory-coins-cell,
+  .directory-comparison-table--mixers td.directory-coins-cell { width: 100%; max-width: none; }
+  .directory-comparison-table--mixers td.directory-coins-cell .coin-list { max-width: 100%; }
   .directory-facts, .directory-facts tbody, .directory-facts tr, .directory-facts th, .directory-facts td { display: block; width: 100%; box-sizing: border-box; }
 }
 </style>
@@ -117,12 +215,12 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 </div>
 <nav class="directory-meta-nav" aria-label="Разделы каталога">
-<a class="directory-meta-link" href="../mixers/">Миксеры</a>
-<a class="directory-meta-link" href="../neverkyc-exchanges/">Обмен без KYC</a>
-<a class="directory-meta-link" href="../instant-exchanges/">Обмен мгновенный</a>
-<a class="directory-meta-link" href="../p2p-markets/">P2P-площадки</a>
-<a class="directory-meta-link is-active" href="./" aria-current="true">Координаторы</a>
-<a class="directory-meta-link" href="../privacy-tools/">Инструменты приватности</a>
+<a class="directory-meta-link" href="../mixers/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="m15 15 6 6"></path><path d="M4 4l5 5"></path></svg><span>Миксеры</span></a>
+<a class="directory-meta-link" href="../neverkyc-exchanges/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg><span>Обмен без KYC</span></a>
+<a class="directory-meta-link" href="../instant-exchanges/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"></path></svg><span>Обмен мгновенный</span></a>
+<a class="directory-meta-link" href="../p2p-markets/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="4"></circle><path d="M2 21a7 7 0 0 1 14 0"></path><path d="M17 11a4 4 0 0 0 0-6"></path><path d="M22 21a7 7 0 0 0-5-6.7"></path></svg><span>P2P-площадки</span></a>
+<a class="directory-meta-link is-active" href="./" aria-current="true"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><circle cx="12" cy="18" r="3"></circle><path d="m8.4 8.1 3.2 7.8"></path><path d="m15.6 8.1-3.2 7.8"></path><path d="M9 6h6"></path></svg><span>Координаторы</span></a>
+<a class="directory-meta-link" href="../privacy-tools/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span>Инструменты приватности</span></a>
 </nav>
 </header>
 <div class="sylvester-top" style="width:728px;height:90px;">
@@ -133,66 +231,78 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 <div class="centered"><p>Это реклама. Реклама не одобрена BitMixList.</p></div>
 <main class="site-main post-34 page type-page status-publish hentry" id="content">
-<article class="page-content directory-detail">
-<nav class="directory-breadcrumb"><a href="../index.html">Главная</a> / Координаторы Wasabi</nav>
-<h1>Координаторы Wasabi</h1>
-<p class="directory-summary">Раздел BitMixList для категории &quot;Координаторы Wasabi&quot; с отдельными страницами записей, ссылками и параметрами.</p>
-<section class="directory-section">
-<h2>Записи</h2>
-<div class="directory-list">
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/kruw.webp" type="image/webp"/><img alt="Kruw logo" class="directory-logo" src="../../wp-content/uploads/2023/12/kruw.jpg"/></picture></div>
-<div>
+<article class="page-content directory-detail" data-directory-filter-scope data-directory-pair-scope>
+		<nav class="directory-breadcrumb"><a href="../index.html">Главная</a> / Координаторы Wasabi</nav>
+		<h1>Координаторы Wasabi</h1>
+		<p class="directory-summary">Раздел BitMixList для категории &quot;Координаторы Wasabi&quot; с отдельными страницами записей, ссылками и параметрами.</p>
+<div class="directory-filter">
+	<label class="directory-filter-label" for="directory-filter-coordinators"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><span>Фильтр сервисов</span></label>
+	<input autocomplete="off" class="directory-filter-input" data-directory-filter-input id="directory-filter-coordinators" placeholder="Название, домен, параметр..." type="search"/>
+<p class="directory-filter-empty" data-directory-filter-empty hidden>Нет совпадающих записей.</p>
+</div>
+	<section class="directory-section">
+	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg><span>Записи</span></h2>
+	<div class="directory-list">
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Kruw Комиссии: 0% https://coinjoin.kruw.io/ No Комиссии 0% Основан 2023 Ремикс Да Бесплатно до Без лимита">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/kruw.webp" type="image/webp"/><img alt="Kruw logo" class="directory-logo" src="../../wp-content/uploads/2023/12/kruw.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="kruw.html">Kruw</a></h3>
-<p class="directory-list-summary">Комиссии: 0%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="kruw.html">Параметры</a>
-<a class="directory-button" href="https://coinjoin.kruw.io/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссии: 0%</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="kruw.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://coinjoin.kruw.io/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/ginger-wallet.webp" type="image/webp"/><img alt="Ginger Wallet logo" class="directory-logo" src="../../wp-content/uploads/2023/12/ginger-wallet.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="Ginger Wallet Комиссии: 0% ниже 0,03 BTC, затем 0,3% https://api.gingerwallet.io/ No Комиссии 0% ниже 0,03 BTC; 0,3% при цене 0,03 BTC или выше Основан 2024 Ремикс Да Бесплатно до 0,03₿">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/ginger-wallet.webp" type="image/webp"/><img alt="Ginger Wallet logo" class="directory-logo" src="../../wp-content/uploads/2023/12/ginger-wallet.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="ginger-wallet.html">Ginger Wallet</a></h3>
-<p class="directory-list-summary">Комиссии: 0% ниже 0,03 BTC, затем 0,3%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="ginger-wallet.html">Параметры</a>
-<a class="directory-button" href="https://api.gingerwallet.io/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссии: 0% ниже 0,03 BTC, затем 0,3%</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="ginger-wallet.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://api.gingerwallet.io/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
-<article class="directory-list-card">
-<div><picture><source srcset="../../wp-content/uploads/2023/12/open-coordinator.webp" type="image/webp"/><img alt="OpenCoordinator logo" class="directory-logo" src="../../wp-content/uploads/2023/12/open-coordinator.jpg"/></picture></div>
-<div>
+<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="OpenCoordinator Комиссии: 0% https://api.opencoordinator.org/ No Комиссии 0% Основан 2024 Ремикс Да Бесплатно до Без лимита">
+	<div><picture><source srcset="../../wp-content/uploads/2023/12/open-coordinator.webp" type="image/webp"/><img alt="OpenCoordinator logo" class="directory-logo" src="../../wp-content/uploads/2023/12/open-coordinator.jpg"/></picture></div>
+	<div>
 <h3 class="directory-list-title"><a href="opencoordinator.html">OpenCoordinator</a></h3>
-<p class="directory-list-summary">Комиссии: 0%</p>
-<div class="directory-list-actions">
-<a class="directory-button" href="opencoordinator.html">Параметры</a>
-<a class="directory-button" href="https://api.opencoordinator.org/" rel="noopener noreferrer" target="_blank">Открыть сайт</a>
+	<p class="directory-list-summary">Комиссии: 0%</p>
+	<div class="directory-list-actions">
+	<a class="directory-button" href="opencoordinator.html"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg><span>Параметры</span></a>
+	<a class="directory-button" href="https://api.opencoordinator.org/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Открыть сайт</span></a>
 </div>
 </div>
 </article>
 
 </div>
 </section>
-<section class="directory-section">
-<h2>Сравнение</h2>
-<table class="directory-facts">
-<thead><tr><th>Название</th><th>Официальный сайт</th><th>Tor-сайт</th><th>Кратко</th></tr></thead>
-<tbody>
-<tr><td><a href="kruw.html">Kruw</a></td><td><a href="https://coinjoin.kruw.io/" rel="noopener noreferrer" target="_blank">https://coinjoin.kruw.io/</a></td><td>No</td><td>Комиссии: 0%</td></tr>
-<tr><td><a href="ginger-wallet.html">Ginger Wallet</a></td><td><a href="https://api.gingerwallet.io/" rel="noopener noreferrer" target="_blank">https://api.gingerwallet.io/</a></td><td>No</td><td>Комиссии: 0% ниже 0,03 BTC, затем 0,3%</td></tr>
-<tr><td><a href="opencoordinator.html">OpenCoordinator</a></td><td><a href="https://api.opencoordinator.org/" rel="noopener noreferrer" target="_blank">https://api.opencoordinator.org/</a></td><td>No</td><td>Комиссии: 0%</td></tr>
+	<section class="directory-section" data-directory-filter-scope>
+	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 10h18"></path><path d="M9 4v16"></path><path d="M15 4v16"></path></svg><span>Таблица данных</span></h2>
+	<div class="directory-filter">
+	<label class="directory-filter-label" for="directory-data-sheet-filter-coordinators-ru"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><span>Фильтр таблицы</span></label>
+	<input autocomplete="off" class="directory-filter-input" data-directory-filter-input id="directory-data-sheet-filter-coordinators-ru" placeholder="Название, домен, параметр..." type="search"/>
+	<p class="directory-filter-empty" data-directory-filter-empty hidden>Нет совпадающих строк.</p>
+		</div>
+<figure class="wp-block-table directory-table-wrap">
+	<table class="directory-facts directory-comparison-table directory-comparison-table--coordinators">
+	<thead><tr><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Название</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Веб-сайт</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Tor-сайт</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Комиссии</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Основан</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Ремикс</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th class="directory-nowrap" aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Бесплатно до</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th></tr></thead>
+	<tbody>
+	<tr data-directory-filter-item data-directory-filter-text="Kruw Комиссии: 0% https://coinjoin.kruw.io/ No Комиссии 0% Основан 2023 Ремикс Да Бесплатно до Без лимита"><td class="directory-nowrap"><a class="directory-link" href="kruw.html">Kruw</a></td><td class="directory-nowrap"><a href="https://coinjoin.kruw.io/" rel="noopener noreferrer" target="_blank">coinjoin.kruw.io</a></td><td class="directory-nowrap">No</td><td class="directory-nowrap">0%</td><td class="directory-nowrap">2023</td><td>Да</td><td class="directory-nowrap">Без лимита</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="Ginger Wallet Комиссии: 0% ниже 0,03 BTC, затем 0,3% https://api.gingerwallet.io/ No Комиссии 0% ниже 0,03 BTC; 0,3% при цене 0,03 BTC или выше Основан 2024 Ремикс Да Бесплатно до 0,03₿"><td class="directory-nowrap"><a class="directory-link" href="ginger-wallet.html">Ginger Wallet</a></td><td class="directory-nowrap"><a href="https://api.gingerwallet.io/" rel="noopener noreferrer" target="_blank">api.gingerwallet.io</a></td><td class="directory-nowrap">No</td><td class="directory-nowrap">0% ниже 0,03 BTC; 0,3% при цене 0,03 BTC или выше</td><td class="directory-nowrap">2024</td><td>Да</td><td class="directory-nowrap">0,03₿</td></tr>
+<tr data-directory-filter-item data-directory-filter-text="OpenCoordinator Комиссии: 0% https://api.opencoordinator.org/ No Комиссии 0% Основан 2024 Ремикс Да Бесплатно до Без лимита"><td class="directory-nowrap"><a class="directory-link" href="opencoordinator.html">OpenCoordinator</a></td><td class="directory-nowrap"><a href="https://api.opencoordinator.org/" rel="noopener noreferrer" target="_blank">api.opencoordinator.org</a></td><td class="directory-nowrap">No</td><td class="directory-nowrap">0%</td><td class="directory-nowrap">2024</td><td>Да</td><td class="directory-nowrap">Без лимита</td></tr>
 </tbody>
-</table>
+	</table>
+</figure>
 </section>
 </article>
 </main>
 <footer class="site-footer" id="site-footer" role="contentinfo"></footer>
 <div class="footer">
 <div>Copyright © 2023-2026 <strong><a href="https://bitcointalk.org/index.php?action=profile;u=2739424">NotATether</a></strong>.</div>
-<div>Contact: admin [at] notatether [dot] com</div>
+        <div>Contact: admin [at] bitmixlist [dot] org</div>
 <div><em>Disclaimers:</em></div>
 <div>Only mix funds you have obtained lawfully.</div>
 <div>Do not use BitMixList for money laundering!</div>

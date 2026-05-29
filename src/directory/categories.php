@@ -45,7 +45,7 @@ return [
             'ru' => 'Список Never-KYC обменников',
         ],
         'nav_label' => [
-            'en' => 'Exchange KYC-Free',
+            'en' => 'Exchange Never-KYC',
             'ru' => 'Обмен без KYC',
         ],
     ],

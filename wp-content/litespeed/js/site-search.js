@@ -27,21 +27,30 @@
       };
   const directorySections = isRu
     ? [
-        ["Миксеры", "/ru/mixers/"],
-        ["Обмен без KYC", "/ru/neverkyc-exchanges/"],
-        ["Обмен мгновенный", "/ru/instant-exchanges/"],
-        ["P2P-площадки", "/ru/p2p-markets/"],
-        ["Координаторы", "/ru/coordinators/"],
-        ["Инструменты приватности", "/ru/privacy-tools/"]
+        ["Миксеры", "/ru/mixers/", "mixers"],
+        ["Обмен без KYC", "/ru/neverkyc-exchanges/", "neverkyc"],
+        ["Обмен мгновенный", "/ru/instant-exchanges/", "instant"],
+        ["P2P-площадки", "/ru/p2p-markets/", "p2p"],
+        ["Координаторы", "/ru/coordinators/", "coordinators"],
+        ["Инструменты приватности", "/ru/privacy-tools/", "privacy"]
       ]
     : [
-        ["Mixers", "/mixers/"],
-        ["Exchange KYC-Free", "/neverkyc-exchanges/"],
-        ["Exchange Instant", "/instant-exchanges/"],
-        ["P2P Marketplaces", "/p2p-markets/"],
-        ["Coordinators", "/coordinators/"],
-        ["Privacy Tools", "/privacy-tools/"]
+        ["Mixers", "/mixers/", "mixers"],
+        ["Exchange Never-KYC", "/neverkyc-exchanges/", "neverkyc"],
+        ["Exchange Instant", "/instant-exchanges/", "instant"],
+        ["P2P Marketplaces", "/p2p-markets/", "p2p"],
+        ["Coordinators", "/coordinators/", "coordinators"],
+        ["Privacy Tools", "/privacy-tools/", "privacy"]
       ];
+
+  const directoryIconPaths = {
+    mixers: '<path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="m15 15 6 6"></path><path d="M4 4l5 5"></path>',
+    neverkyc: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path>',
+    instant: '<path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"></path>',
+    p2p: '<circle cx="9" cy="8" r="4"></circle><path d="M2 21a7 7 0 0 1 14 0"></path><path d="M17 11a4 4 0 0 0 0-6"></path><path d="M22 21a7 7 0 0 0-5-6.7"></path>',
+    coordinators: '<circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><circle cx="12" cy="18" r="3"></circle><path d="m8.4 8.1 3.2 7.8"></path><path d="m15.6 8.1-3.2 7.8"></path><path d="M9 6h6"></path>',
+    privacy: '<rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path>'
+  };
 
   let indexPromise = null;
 
@@ -250,12 +259,22 @@
     for (const section of directorySections) {
       const label = section[0];
       const path = section[1];
+      const iconName = section[2];
       const link = document.createElement("a");
       const isActive = currentPath === path || currentPath.startsWith(path);
+      const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      const labelSpan = document.createElement("span");
 
       link.className = "directory-meta-link" + (isActive ? " is-active" : "");
       link.href = new URL(path.replace(/^\//, ""), rootUrl).href;
-      link.textContent = label;
+      icon.setAttribute("aria-hidden", "true");
+      icon.setAttribute("class", "directory-icon");
+      icon.setAttribute("focusable", "false");
+      icon.setAttribute("viewBox", "0 0 24 24");
+      icon.innerHTML = directoryIconPaths[iconName] || "";
+      labelSpan.textContent = label;
+      link.appendChild(icon);
+      link.appendChild(labelSpan);
       if (isActive) {
         link.setAttribute("aria-current", "true");
       }

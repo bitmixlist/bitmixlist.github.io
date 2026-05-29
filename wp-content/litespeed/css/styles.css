@@ -467,6 +467,10 @@ th, td {
     display: none;
 }
 
+.directory-filter-hidden {
+    display: none !important;
+}
+
 .site-search__status {
     padding: 12px;
     color: #cfcfcf;
@@ -534,6 +538,9 @@ th, td {
 }
 
 .directory-meta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.38rem;
     flex: 0 0 auto;
     padding: 0 0 3px;
     color: #d7d0e6;
@@ -560,6 +567,25 @@ th, td {
     color: #ffffff;
     background: transparent;
     border-bottom-color: #bb86fc;
+}
+
+.directory-icon {
+    display: inline-block;
+    flex: 0 0 auto;
+    width: 1em;
+    height: 1em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vertical-align: -0.14em;
+}
+
+.directory-meta-link .directory-icon {
+    width: 0.95rem;
+    height: 0.95rem;
+    color: #bb86fc;
 }
 
 @media screen and (max-width: 768px) {
@@ -636,6 +662,8 @@ th, td {
     display: block;
     padding: 15px 25px;
     color: #e0e0e0;
+    font-size: 1rem;
+    line-height: 1.25;
     transition: all 0.3s;
     border-left: 4px solid transparent;
 }
