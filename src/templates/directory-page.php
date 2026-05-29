@@ -147,10 +147,7 @@ function directory_render_page(array $entry, array $categories, string $locale):
   .directory-hero { grid-template-columns: 1fr; }
   .directory-logo { width: 128px; height: 128px; }
   .directory-verification-tool, .directory-pgp-key { flex-basis: 100%; }
-  .directory-table-wrap { overflow-x: visible; }
-  .directory-entry-table { min-width: 0; }
-  .directory-facts, .directory-facts tbody, .directory-facts tr, .directory-facts th, .directory-facts td { display: block; width: 100%; box-sizing: border-box; }
-  .directory-facts th { border-bottom: 0; }
+' . directory_mobile_table_card_styles('  ') . '
 }
 @media (max-width: 420px) {
   .directory-detail h1 { font-size: 1.75rem; }
@@ -380,13 +377,8 @@ function directory_render_section_page(string $categorySlug, array $data, string
 	  .directory-fee-filter__reset { width: 100%; }
 	  .directory-pair-filter__controls { grid-template-columns: 1fr; }
 	  .directory-pair-filter__reset { width: 100%; }
-	  .directory-list { grid-template-columns: 1fr; }
-  .directory-table-wrap { overflow-x: visible; }
-  .directory-comparison-table { min-width: 0; }
-  .directory-comparison-table--mixers th.directory-coins-cell,
-  .directory-comparison-table--mixers td.directory-coins-cell { width: 100%; max-width: none; }
-  .directory-comparison-table--mixers td.directory-coins-cell .coin-list { max-width: 100%; }
-  .directory-facts, .directory-facts tbody, .directory-facts tr, .directory-facts th, .directory-facts td { display: block; width: 100%; box-sizing: border-box; }
+  .directory-list { grid-template-columns: 1fr; }
+' . directory_mobile_table_card_styles('  ') . '
 }
 </style>
 </head>
@@ -2655,7 +2647,7 @@ function directory_table_header(string $label): string
 
 function directory_table_cell(string $html, string $label): string
 {
-    return '<td' . directory_table_class_attr($label) . '>' . $html . '</td>';
+    return '<td' . directory_table_class_attr($label) . ' data-label="' . directory_escape($label) . '">' . $html . '</td>';
 }
 
 function directory_table_class_attr(string $label): string
@@ -2748,6 +2740,55 @@ function directory_normalize_table_label(string $label): string
     $label = html_entity_decode($label, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     $label = preg_replace('/\s+/u', ' ', $label) ?? $label;
     return mb_strtolower(trim($label), 'UTF-8');
+}
+
+function directory_mobile_table_card_styles(string $indent = ''): string
+{
+    $rules = [
+        '.directory-table-wrap { overflow-x: visible; }',
+        '.directory-entry-table, .directory-comparison-table { min-width: 0; }',
+        '.directory-comparison-table--mixers th.directory-coins-cell, .directory-comparison-table--mixers td.directory-coins-cell { width: 100%; max-width: none; }',
+        '.directory-comparison-table--mixers td.directory-coins-cell .coin-list { max-width: 100%; }',
+        '.directory-facts { border-collapse: separate; border-spacing: 0; table-layout: auto; }',
+        '.directory-facts thead { display: none; }',
+        '.directory-facts, .directory-facts tbody { display: block; width: 100%; }',
+        '.directory-facts tr { display: block; width: 100%; margin: 0 0 12px; overflow: hidden; border: 1px solid #3a2e55; border-radius: 8px; background: #1c1728; box-sizing: border-box; }',
+        '.directory-facts td { display: grid; grid-template-columns: minmax(6.5rem, 38%) minmax(0, 1fr); gap: 10px; align-items: start; width: 100%; box-sizing: border-box; padding: 10px 12px; border: 0; border-top: 1px solid #302744; background: #1c1728; white-space: normal; overflow-wrap: anywhere; }',
+        '.directory-facts td:first-child { border-top: 0; }',
+        '.directory-facts td::before { content: attr(data-label); min-width: 0; color: #c7b8ff; font-size: 0.76rem; font-weight: 750; line-height: 1.35; text-transform: uppercase; letter-spacing: 0.02em; overflow-wrap: normal; }',
+        '.directory-facts td > * { min-width: 0; }',
+        '.directory-facts td a { overflow-wrap: anywhere; }',
+        '.directory-facts .directory-nowrap { white-space: normal; }',
+        '.directory-facts td.directory-coins-cell .coin-list { max-width: 100%; }',
+        '.directory-entry-table tr { display: grid; grid-template-columns: minmax(6.5rem, 34%) minmax(0, 1fr); }',
+        '.directory-entry-table td { display: block; width: auto; border-top: 0; }',
+        '.directory-entry-table td::before { content: none; }',
+        '.directory-entry-table td:first-child { color: #c7b8ff; font-size: 0.82rem; font-weight: 750; line-height: 1.35; }',
+    ];
+
+    return $indent . implode("\n" . $indent, $rules);
+}
+
+function directory_homepage_mobile_table_card_styles(string $indent = ''): string
+{
+    $rules = [
+        '.homepage-directory .homepage-comparison-table { min-width: 0; }',
+        '.homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell { width: 100%; max-width: none; }',
+        '.homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell .coin-list { max-width: 100%; }',
+        '.homepage-directory .directory-facts { border-collapse: separate; border-spacing: 0; table-layout: auto; }',
+        '.homepage-directory .directory-facts thead { display: none; }',
+        '.homepage-directory .directory-facts, .homepage-directory .directory-facts tbody { display: block; width: 100%; }',
+        '.homepage-directory .directory-facts tr { display: block; width: 100%; margin: 0 0 12px; overflow: hidden; border: 1px solid #3a2e55; border-radius: 8px; background: #1c1728; box-sizing: border-box; }',
+        '.homepage-directory .directory-facts td { display: grid; grid-template-columns: minmax(6.5rem, 38%) minmax(0, 1fr); gap: 10px; align-items: start; width: 100%; box-sizing: border-box; padding: 10px 12px; border: 0; border-top: 1px solid #302744; background: #1c1728; white-space: normal; overflow-wrap: anywhere; }',
+        '.homepage-directory .directory-facts td:first-child { border-top: 0; }',
+        '.homepage-directory .directory-facts td::before { content: attr(data-label); min-width: 0; color: #c7b8ff; font-size: 0.76rem; font-weight: 750; line-height: 1.35; text-transform: uppercase; letter-spacing: 0.02em; overflow-wrap: normal; }',
+        '.homepage-directory .directory-facts td > * { min-width: 0; }',
+        '.homepage-directory .directory-facts td a { overflow-wrap: anywhere; }',
+        '.homepage-directory .directory-facts .directory-nowrap { white-space: normal; }',
+        '.homepage-directory .directory-facts td.directory-coins-cell .coin-list { max-width: 100%; }',
+    ];
+
+    return $indent . implode("\n" . $indent, $rules);
 }
 
 function directory_table_external_value(string $value, string $entryName = ''): string

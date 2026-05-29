@@ -131,7 +131,7 @@ function homepage_ensure_styles(string $html): string
         . '          .homepage-section-notes { margin-top: 18px; padding-top: 14px; border-top: 1px solid #3a2e55; }' . "\n"
         . '          .homepage-section-notes > h3 { margin-top: 0; }' . "\n"
         . '          .homepage-notes { border-top: 1px solid #3a2e55; padding-top: 24px; }' . "\n"
-        . '          @media (max-width: 700px) { .homepage-directory { padding: 22px 14px 36px; } .homepage-directory .directory-list { grid-template-columns: 1fr; } .homepage-directory .directory-section-heading { align-items: flex-start; flex-direction: column; gap: 2px; } .homepage-directory .homepage-comparison-table { min-width: 0; } .homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell { width: 100%; max-width: none; } .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell .coin-list { max-width: 100%; } .homepage-directory .directory-facts, .homepage-directory .directory-facts tbody, .homepage-directory .directory-facts tr, .homepage-directory .directory-facts th, .homepage-directory .directory-facts td { display: block; width: 100%; box-sizing: border-box; } }' . "\n";
+        . homepage_mobile_media_styles();
 
     if (!str_contains($html, $needle)) {
         throw new RuntimeException('Unable to locate index style insertion point');
@@ -492,7 +492,7 @@ function homepage_ensure_comparison_styles(string $html): string
     $html = str_replace($needle, $insert, $html);
 
     $needle = '          @media (max-width: 700px) { .homepage-directory { padding: 22px 14px 36px; } .homepage-directory .directory-list { grid-template-columns: 1fr; } .homepage-directory .directory-section-heading { align-items: flex-start; flex-direction: column; gap: 2px; } .homepage-directory .directory-facts, .homepage-directory .directory-facts tbody, .homepage-directory .directory-facts tr, .homepage-directory .directory-facts th, .homepage-directory .directory-facts td { display: block; width: 100%; box-sizing: border-box; } }' . "\n";
-    $insert = '          @media (max-width: 700px) { .homepage-directory { padding: 22px 14px 36px; } .homepage-directory .directory-list { grid-template-columns: 1fr; } .homepage-directory .directory-section-heading { align-items: flex-start; flex-direction: column; gap: 2px; } .homepage-directory .homepage-comparison-table { min-width: 0; } .homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell { width: 100%; max-width: none; } .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell .coin-list { max-width: 100%; } .homepage-directory .directory-facts, .homepage-directory .directory-facts tbody, .homepage-directory .directory-facts tr, .homepage-directory .directory-facts th, .homepage-directory .directory-facts td { display: block; width: 100%; box-sizing: border-box; } }' . "\n";
+    $insert = homepage_mobile_media_styles();
     return homepage_ensure_mixer_coin_cap_styles(str_replace($needle, $insert, $html));
 }
 
@@ -506,15 +506,26 @@ function homepage_ensure_mixer_coin_cap_styles(string $html): string
         $html = str_replace($needle, $insert, $html);
     }
 
-    if (!str_contains($html, '.homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell { width: 100%; max-width: none; }')) {
-        $needle = '.homepage-directory .homepage-comparison-table { min-width: 0; } ';
-        $insert = $needle
-            . '.homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell { width: 100%; max-width: none; } '
-            . '.homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell .coin-list { max-width: 100%; } ';
-        $html = str_replace($needle, $insert, $html);
+    if (!str_contains($html, '.homepage-directory .directory-facts td::before')) {
+        $html = preg_replace(
+            '~          @media \(max-width: 700px\) \{ \.homepage-directory \{ padding: 22px 14px 36px; \}.*?\.homepage-directory \.directory-facts, \.homepage-directory \.directory-facts tbody, \.homepage-directory \.directory-facts tr, \.homepage-directory \.directory-facts th, \.homepage-directory \.directory-facts td \{ display: block; width: 100%; box-sizing: border-box; \} \}\n~u',
+            homepage_mobile_media_styles(),
+            $html,
+            1
+        ) ?? $html;
     }
 
     return $html;
+}
+
+function homepage_mobile_media_styles(): string
+{
+    return '          @media (max-width: 700px) {' . "\n"
+        . '            .homepage-directory { padding: 22px 14px 36px; }' . "\n"
+        . '            .homepage-directory .directory-list { grid-template-columns: 1fr; }' . "\n"
+        . '            .homepage-directory .directory-section-heading { align-items: flex-start; flex-direction: column; gap: 2px; }' . "\n"
+        . directory_homepage_mobile_table_card_styles('            ') . "\n"
+        . '          }' . "\n";
 }
 
 function homepage_ensure_section_note_styles(string $html): string

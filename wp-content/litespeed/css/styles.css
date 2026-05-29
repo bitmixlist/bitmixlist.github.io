@@ -381,8 +381,10 @@ th, td {
     flex: 0 1 320px;
     width: min(32vw, 320px);
     min-width: 190px;
+    max-width: 100%;
     margin: 0 0.75rem 0 auto;
     z-index: 1002;
+    box-sizing: border-box;
 }
 
 .site-search__control {
@@ -393,6 +395,7 @@ th, td {
     border-radius: 7px;
     background: #151515;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 .site-search__input {
@@ -453,9 +456,12 @@ th, td {
     position: absolute;
     top: calc(100% + 6px);
     left: 0;
-    right: 0;
-    min-width: min(78vw, 360px);
+    right: auto;
+    width: min(78vw, 360px);
+    max-width: calc(100vw - 24px);
     max-height: min(58vh, 420px);
+    box-sizing: border-box;
+    overflow-x: hidden;
     overflow-y: auto;
     background: #151515;
     border: 1px solid #3e3e3e;
@@ -491,10 +497,14 @@ th, td {
 .site-search__result {
     display: grid;
     gap: 3px;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
     padding: 9px 10px;
     color: #e8e8e8;
     border-radius: 6px;
     text-decoration: none;
+    overflow-wrap: anywhere;
 }
 
 .site-search__result:hover,
@@ -506,16 +516,22 @@ th, td {
 }
 
 .site-search__title {
+    min-width: 0;
+    max-width: 100%;
     color: #ffffff;
     font-weight: 650;
     line-height: 1.25;
+    overflow-wrap: anywhere;
 }
 
 .site-search__meta,
 .site-search__description {
+    min-width: 0;
+    max-width: 100%;
     color: #bdbdbd;
     font-size: 0.8rem;
     line-height: 1.35;
+    overflow-wrap: anywhere;
 }
 
 .site-search__description {
@@ -624,6 +640,8 @@ th, td {
     .site-search__panel {
         left: auto;
         right: 0;
+        width: min(78vw, 360px);
+        max-width: calc(100vw - 16px);
     }
 
     .directory-meta-nav {

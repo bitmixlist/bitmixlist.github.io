@@ -152,9 +152,24 @@ document.addEventListener('DOMContentLoaded', function () {
   .directory-logo { width: 128px; height: 128px; }
   .directory-verification-tool, .directory-pgp-key { flex-basis: 100%; }
   .directory-table-wrap { overflow-x: visible; }
-  .directory-entry-table { min-width: 0; }
-  .directory-facts, .directory-facts tbody, .directory-facts tr, .directory-facts th, .directory-facts td { display: block; width: 100%; box-sizing: border-box; }
-  .directory-facts th { border-bottom: 0; }
+  .directory-entry-table, .directory-comparison-table { min-width: 0; }
+  .directory-comparison-table--mixers th.directory-coins-cell, .directory-comparison-table--mixers td.directory-coins-cell { width: 100%; max-width: none; }
+  .directory-comparison-table--mixers td.directory-coins-cell .coin-list { max-width: 100%; }
+  .directory-facts { border-collapse: separate; border-spacing: 0; table-layout: auto; }
+  .directory-facts thead { display: none; }
+  .directory-facts, .directory-facts tbody { display: block; width: 100%; }
+  .directory-facts tr { display: block; width: 100%; margin: 0 0 12px; overflow: hidden; border: 1px solid #3a2e55; border-radius: 8px; background: #1c1728; box-sizing: border-box; }
+  .directory-facts td { display: grid; grid-template-columns: minmax(6.5rem, 38%) minmax(0, 1fr); gap: 10px; align-items: start; width: 100%; box-sizing: border-box; padding: 10px 12px; border: 0; border-top: 1px solid #302744; background: #1c1728; white-space: normal; overflow-wrap: anywhere; }
+  .directory-facts td:first-child { border-top: 0; }
+  .directory-facts td::before { content: attr(data-label); min-width: 0; color: #c7b8ff; font-size: 0.76rem; font-weight: 750; line-height: 1.35; text-transform: uppercase; letter-spacing: 0.02em; overflow-wrap: normal; }
+  .directory-facts td > * { min-width: 0; }
+  .directory-facts td a { overflow-wrap: anywhere; }
+  .directory-facts .directory-nowrap { white-space: normal; }
+  .directory-facts td.directory-coins-cell .coin-list { max-width: 100%; }
+  .directory-entry-table tr { display: grid; grid-template-columns: minmax(6.5rem, 34%) minmax(0, 1fr); }
+  .directory-entry-table td { display: block; width: auto; border-top: 0; }
+  .directory-entry-table td::before { content: none; }
+  .directory-entry-table td:first-child { color: #c7b8ff; font-size: 0.82rem; font-weight: 750; line-height: 1.35; }
 }
 @media (max-width: 420px) {
   .directory-detail h1 { font-size: 1.75rem; }
@@ -242,8 +257,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	<table class="directory-facts directory-entry-table">
 	<thead><tr><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Параметр</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Значение</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th></tr></thead>
 <tbody>
-<tr><td class="directory-nowrap">Официальный сайт</td><td class="directory-nowrap"><a href="https://okmix.io" rel="noopener noreferrer" target="_blank">https://okmix.io</a></td></tr>
-<tr><td class="directory-nowrap">Tor-сайт</td><td class="directory-nowrap"><a href="http://wqa7jejlascugfwyrbb3shvwgaczxlkconthjyuqdb52sdn6kx57tpqd.onion/" rel="noopener noreferrer" target="_blank">wqa7jejlascugfwyrbb3shvwgaczxlkconthjyuqdb52sdn6kx57tpqd.onion</a></td></tr>
+<tr><td class="directory-nowrap" data-label="Официальный сайт">Официальный сайт</td><td class="directory-nowrap" data-label="Официальный сайт"><a href="https://okmix.io" rel="noopener noreferrer" target="_blank">https://okmix.io</a></td></tr>
+<tr><td class="directory-nowrap" data-label="Tor-сайт">Tor-сайт</td><td class="directory-nowrap" data-label="Tor-сайт"><a href="http://wqa7jejlascugfwyrbb3shvwgaczxlkconthjyuqdb52sdn6kx57tpqd.onion/" rel="noopener noreferrer" target="_blank">wqa7jejlascugfwyrbb3shvwgaczxlkconthjyuqdb52sdn6kx57tpqd.onion</a></td></tr>
 
 
 </tbody>
@@ -256,13 +271,13 @@ document.addEventListener('DOMContentLoaded', function () {
 	<table class="directory-facts directory-entry-table">
 	<thead><tr><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Параметр</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Значение</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th></tr></thead>
 <tbody>
-<tr><td class="directory-nowrap">Основан</td><td class="directory-nowrap">2025</td></tr>
-<tr><td class="directory-coins-cell">Монеты</td><td class="directory-coins-cell"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td></tr>
-<tr><td class="directory-nowrap">Реселл</td><td class="directory-nowrap">Jambler</td></tr>
-<tr><td>Плата за миксинг</td><td>5% + 0.0007₿</td></tr>
-<tr><td class="directory-nowrap">Минимум</td><td class="directory-nowrap">0.001₿</td></tr>
-<tr><td class="directory-nowrap">Максимум</td><td class="directory-nowrap">50₿</td></tr>
-<tr><td>Телеграм-бот</td><td><a href="https://t.me/Okmixer_bot" rel="noopener noreferrer" title="Да" target="_blank">Да</a></td></tr>
+<tr><td class="directory-nowrap" data-label="Основан">Основан</td><td class="directory-nowrap" data-label="Основан">2025</td></tr>
+<tr><td class="directory-coins-cell" data-label="Монеты">Монеты</td><td class="directory-coins-cell" data-label="Монеты"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td></tr>
+<tr><td class="directory-nowrap" data-label="Реселл">Реселл</td><td class="directory-nowrap" data-label="Реселл">Jambler</td></tr>
+<tr><td data-label="Плата за миксинг">Плата за миксинг</td><td data-label="Плата за миксинг">5% + 0.0007₿</td></tr>
+<tr><td class="directory-nowrap" data-label="Минимум">Минимум</td><td class="directory-nowrap" data-label="Минимум">0.001₿</td></tr>
+<tr><td class="directory-nowrap" data-label="Максимум">Максимум</td><td class="directory-nowrap" data-label="Максимум">50₿</td></tr>
+<tr><td data-label="Телеграм-бот">Телеграм-бот</td><td data-label="Телеграм-бот"><a href="https://t.me/Okmixer_bot" rel="noopener noreferrer" title="Да" target="_blank">Да</a></td></tr>
 
 </tbody>
 </table>
