@@ -175,7 +175,18 @@ function rewrite_index(string $path, string $locale, array $data): void
         $html = preg_replace('~<td><a class="directory-link" href="[^"]+">' . preg_quote($encodedDisplay, '~') . '</a></td>~u', $linked, $html, 1) ?? $html;
     }
 
-    file_put_contents($path, $html);
+    file_put_contents($path, normalize_index_directory_table_cells($html));
+}
+
+function normalize_index_directory_table_cells(string $html): string
+{
+    return preg_replace_callback(
+        '~(<td\b[^>]*\bdata-label="[^"]*"[^>]*>)(.*?)(</td>)~su',
+        static function (array $match): string {
+            return $match[1] . '<span class="directory-cell-value">' . directory_unwrap_table_cell_value($match[2]) . '</span>' . $match[3];
+        },
+        $html
+    ) ?? $html;
 }
 
 function ensure_index_styles(string $html): string
@@ -331,14 +342,12 @@ function ensure_index_mixer_coin_cap_styles(string $html): string
         $html = str_replace($needle, $insert, $html);
     }
 
-    if (!str_contains($html, '.homepage-directory .directory-facts td::before')) {
-        $html = preg_replace(
-            '~          @media \(max-width: 700px\) \{ \.homepage-directory \{ padding: 22px 14px 36px; \}.*?\.homepage-directory \.directory-facts, \.homepage-directory \.directory-facts tbody, \.homepage-directory \.directory-facts tr, \.homepage-directory \.directory-facts th, \.homepage-directory \.directory-facts td \{ display: block; width: 100%; box-sizing: border-box; \} \}\n~u',
-            index_homepage_mobile_media_styles(),
-            $html,
-            1
-        ) ?? $html;
-    }
+    $html = preg_replace(
+        '~          @media \(max-width: 700px\) \{\n            \.homepage-directory \{ padding: 22px 14px 36px; \}\n.*?\n          \}\n~su',
+        index_homepage_mobile_media_styles(),
+        $html,
+        1
+    ) ?? $html;
 
     return $html;
 }

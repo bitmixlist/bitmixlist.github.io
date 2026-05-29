@@ -28,7 +28,18 @@ function rewrite_homepage_layout(string $path, string $locale, array $data): voi
     $notes = homepage_extract_notes($oldContent, $locale, $data['categories']);
     $newContent = "\n" . homepage_render_intro($notes['intro'], $locale) . "\n" . homepage_render_directory($data, $locale, $notes['sections']) . "\n" . $notes['global'] . "\n";
 
-    file_put_contents($path, $before . '<article class="page-content directory-detail homepage-directory">' . $newContent . '</article>' . $after);
+    file_put_contents($path, homepage_normalize_directory_table_cells($before . '<article class="page-content directory-detail homepage-directory">' . $newContent . '</article>' . $after));
+}
+
+function homepage_normalize_directory_table_cells(string $html): string
+{
+    return preg_replace_callback(
+        '~(<td\b[^>]*\bdata-label="[^"]*"[^>]*>)(.*?)(</td>)~su',
+        static function (array $match): string {
+            return $match[1] . '<span class="directory-cell-value">' . directory_unwrap_table_cell_value($match[2]) . '</span>' . $match[3];
+        },
+        $html
+    ) ?? $html;
 }
 
 function homepage_split_content(string $html): array
@@ -506,14 +517,12 @@ function homepage_ensure_mixer_coin_cap_styles(string $html): string
         $html = str_replace($needle, $insert, $html);
     }
 
-    if (!str_contains($html, '.homepage-directory .directory-facts td::before')) {
-        $html = preg_replace(
-            '~          @media \(max-width: 700px\) \{ \.homepage-directory \{ padding: 22px 14px 36px; \}.*?\.homepage-directory \.directory-facts, \.homepage-directory \.directory-facts tbody, \.homepage-directory \.directory-facts tr, \.homepage-directory \.directory-facts th, \.homepage-directory \.directory-facts td \{ display: block; width: 100%; box-sizing: border-box; \} \}\n~u',
-            homepage_mobile_media_styles(),
-            $html,
-            1
-        ) ?? $html;
-    }
+    $html = preg_replace(
+        '~          @media \(max-width: 700px\) \{\n            \.homepage-directory \{ padding: 22px 14px 36px; \}\n.*?\n          \}\n~su',
+        homepage_mobile_media_styles(),
+        $html,
+        1
+    ) ?? $html;
 
     return $html;
 }

@@ -159,9 +159,10 @@ document.addEventListener('DOMContentLoaded', function () {
   .directory-facts thead { display: none; }
   .directory-facts, .directory-facts tbody { display: block; width: 100%; }
   .directory-facts tr { display: block; width: 100%; margin: 0 0 12px; overflow: hidden; border: 1px solid #3a2e55; border-radius: 8px; background: #1c1728; box-sizing: border-box; }
-  .directory-facts td { display: grid; grid-template-columns: minmax(6.5rem, 38%) minmax(0, 1fr); gap: 10px; align-items: start; width: 100%; box-sizing: border-box; padding: 10px 12px; border: 0; border-top: 1px solid #302744; background: #1c1728; white-space: normal; overflow-wrap: anywhere; }
+  .directory-facts td { display: flex; align-items: flex-start; gap: 10px; width: 100%; box-sizing: border-box; padding: 10px 12px; border: 0; border-top: 1px solid #302744; background: #1c1728; white-space: normal; overflow-wrap: anywhere; }
   .directory-facts td:first-child { border-top: 0; }
-  .directory-facts td::before { content: attr(data-label); min-width: 0; color: #c7b8ff; font-size: 0.76rem; font-weight: 750; line-height: 1.35; text-transform: uppercase; letter-spacing: 0.02em; overflow-wrap: normal; }
+  .directory-facts td::before { content: attr(data-label); flex: 0 0 min(8rem, 42%); max-width: 42%; min-width: 0; color: #c7b8ff; font-size: 0.76rem; font-weight: 750; line-height: 1.35; text-transform: uppercase; letter-spacing: 0.02em; overflow-wrap: normal; }
+  .directory-facts td > .directory-cell-value { display: block; flex: 1 1 auto; min-width: 0; color: #f6f2ff; overflow-wrap: anywhere; }
   .directory-facts td > * { min-width: 0; }
   .directory-facts td a { overflow-wrap: anywhere; }
   .directory-facts .directory-nowrap { white-space: normal; }
@@ -169,7 +170,9 @@ document.addEventListener('DOMContentLoaded', function () {
   .directory-entry-table tr { display: grid; grid-template-columns: minmax(6.5rem, 34%) minmax(0, 1fr); }
   .directory-entry-table td { display: block; width: auto; border-top: 0; }
   .directory-entry-table td::before { content: none; }
-  .directory-entry-table td:first-child { color: #c7b8ff; font-size: 0.82rem; font-weight: 750; line-height: 1.35; }
+  .directory-entry-table td:first-child { width: auto; color: #c7b8ff; font-size: 0.82rem; font-weight: 750; line-height: 1.35; overflow-wrap: normal; word-break: normal; hyphens: none; }
+  .directory-entry-table td:first-child .directory-cell-value { overflow-wrap: normal; word-break: normal; hyphens: none; }
+  .directory-entry-table td:last-child .directory-cell-value { overflow-wrap: anywhere; }
 }
 @media (max-width: 420px) {
   .directory-detail h1 { font-size: 1.75rem; }
@@ -257,10 +260,10 @@ document.addEventListener('DOMContentLoaded', function () {
 	<table class="directory-facts directory-entry-table">
 	<thead><tr><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Параметр</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Значение</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th></tr></thead>
 <tbody>
-<tr><td class="directory-nowrap" data-label="Официальный сайт">Официальный сайт</td><td class="directory-nowrap" data-label="Официальный сайт"><a href="https://dreadpirate.io/" rel="noopener noreferrer" target="_blank">https://dreadpirate.io/</a></td></tr>
-<tr><td class="directory-nowrap" data-label="Tor-сайт">Tor-сайт</td><td class="directory-nowrap" data-label="Tor-сайт"><a href="http://dreadpirate.uf64coiynj4s7on3dus6ww5ap25vnih6ha3iug7ex7odmkaqikubigqd.onion/" rel="noopener noreferrer" target="_blank">dreadpirate.uf64coiynj4s7on3dus6ww5ap25vnih6ha3iug7ex7odmkaqikubigqd.onion</a></td></tr>
+<tr><td class="directory-nowrap" data-label="Официальный сайт"><span class="directory-cell-value">Официальный сайт</span></td><td class="directory-nowrap" data-label="Официальный сайт"><span class="directory-cell-value"><a href="https://dreadpirate.io/" rel="noopener noreferrer" target="_blank">https://dreadpirate.io/</a></span></td></tr>
+<tr><td class="directory-nowrap" data-label="Tor-сайт"><span class="directory-cell-value">Tor-сайт</span></td><td class="directory-nowrap" data-label="Tor-сайт"><span class="directory-cell-value"><a href="http://dreadpirate.uf64coiynj4s7on3dus6ww5ap25vnih6ha3iug7ex7odmkaqikubigqd.onion/" rel="noopener noreferrer" target="_blank">dreadpirate.uf64coiynj4s7on3dus6ww5ap25vnih6ha3iug7ex7odmkaqikubigqd.onion</a></span></td></tr>
 
-<tr><td data-label="Поддержка">Поддержка</td><td data-label="Поддержка"><a href="https://dreadpirate.io/pgp" target="_blank" rel="noopener noreferrer">PGP</a> / Jabber: DreadPirate@exploit.im / TOX: <a href="tox:100ED03114B7DF7AA7FD477FFE97A1AF6D4807A24C9998333157B8EB144B3A4D4BF8E6FB00B1" title="100ED03114B7DF7AA7FD477FFE97A1AF6D4807A24C9998333157B8EB144B3A4D4BF8E6FB00B1" rel="noopener noreferrer">100ED03114B7DF7AA7FD477FFE97A1AF6D4807A24C9998333157B8EB144B3A4D4BF8E6FB00B1</a></td></tr>
+<tr><td data-label="Поддержка"><span class="directory-cell-value">Поддержка</span></td><td data-label="Поддержка"><span class="directory-cell-value"><a href="https://dreadpirate.io/pgp" target="_blank" rel="noopener noreferrer">PGP</a> / Jabber: DreadPirate@exploit.im / TOX: <a href="tox:100ED03114B7DF7AA7FD477FFE97A1AF6D4807A24C9998333157B8EB144B3A4D4BF8E6FB00B1" title="100ED03114B7DF7AA7FD477FFE97A1AF6D4807A24C9998333157B8EB144B3A4D4BF8E6FB00B1" rel="noopener noreferrer">100ED03114B7DF7AA7FD477FFE97A1AF6D4807A24C9998333157B8EB144B3A4D4BF8E6FB00B1</a></span></td></tr>
 </tbody>
 </table>
 	</figure>
@@ -271,13 +274,13 @@ document.addEventListener('DOMContentLoaded', function () {
 	<table class="directory-facts directory-entry-table">
 	<thead><tr><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Параметр</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Значение</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th></tr></thead>
 <tbody>
-<tr><td class="directory-nowrap" data-label="Основан">Основан</td><td class="directory-nowrap" data-label="Основан">2026</td></tr>
-<tr><td class="directory-coins-cell" data-label="Монеты">Монеты</td><td class="directory-coins-cell" data-label="Монеты"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></td></tr>
-<tr><td class="directory-nowrap" data-label="Реселл">Реселл</td><td class="directory-nowrap" data-label="Реселл">Jambler</td></tr>
-<tr><td data-label="Плата за миксинг">Плата за миксинг</td><td data-label="Плата за миксинг">5% + 0.0007₿</td></tr>
-<tr><td class="directory-nowrap" data-label="Минимум">Минимум</td><td class="directory-nowrap" data-label="Минимум">0.01₿</td></tr>
-<tr><td class="directory-nowrap" data-label="Максимум">Максимум</td><td class="directory-nowrap" data-label="Максимум">10₿</td></tr>
-<tr><td data-label="Телеграм-бот">Телеграм-бот</td><td data-label="Телеграм-бот">Нет</td></tr>
+<tr><td class="directory-nowrap" data-label="Основан"><span class="directory-cell-value">Основан</span></td><td class="directory-nowrap" data-label="Основан"><span class="directory-cell-value">2026</span></td></tr>
+<tr><td class="directory-coins-cell" data-label="Монеты"><span class="directory-cell-value">Монеты</span></td><td class="directory-coins-cell" data-label="Монеты"><span class="directory-cell-value"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></span></td></tr>
+<tr><td class="directory-nowrap" data-label="Реселл"><span class="directory-cell-value">Реселл</span></td><td class="directory-nowrap" data-label="Реселл"><span class="directory-cell-value">Jambler</span></td></tr>
+<tr><td data-label="Плата за миксинг"><span class="directory-cell-value">Плата за миксинг</span></td><td data-label="Плата за миксинг"><span class="directory-cell-value">5% + 0.0007₿</span></td></tr>
+<tr><td class="directory-nowrap" data-label="Минимум"><span class="directory-cell-value">Минимум</span></td><td class="directory-nowrap" data-label="Минимум"><span class="directory-cell-value">0.01₿</span></td></tr>
+<tr><td class="directory-nowrap" data-label="Максимум"><span class="directory-cell-value">Максимум</span></td><td class="directory-nowrap" data-label="Максимум"><span class="directory-cell-value">10₿</span></td></tr>
+<tr><td data-label="Телеграм-бот"><span class="directory-cell-value">Телеграм-бот</span></td><td data-label="Телеграм-бот"><span class="directory-cell-value">Нет</span></td></tr>
 
 </tbody>
 </table>

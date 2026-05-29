@@ -1690,11 +1690,22 @@ function directory_table_facts(DOMXPath $xpath, array $headers, array $cells, st
         $facts[] = [
             'label' => $label,
             'value' => $value,
-            'html' => directory_inner_html($cell),
+            'html' => directory_unwrap_cell_value_html(directory_inner_html($cell)),
         ];
     }
 
     return $facts;
+}
+
+function directory_unwrap_cell_value_html(string $html): string
+{
+    $html = trim($html);
+
+    while (preg_match('/^<span\s+class=(["\'])directory-cell-value\1>(.*)<\/span>$/is', $html, $matches) === 1) {
+        $html = trim($matches[2]);
+    }
+
+    return $html;
 }
 
 function directory_table_cell_value(DOMXPath $xpath, DOMNode $cell): string
