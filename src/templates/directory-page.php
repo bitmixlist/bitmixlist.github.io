@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-const DIRECTORY_CSS_ASSET_VERSION = '20260530';
+const DIRECTORY_ASSET_VERSION = '20260530-2';
 
 function directory_render_page(array $entry, array $categories, string $locale): string
 {
@@ -34,13 +34,14 @@ function directory_render_page(array $entry, array $categories, string $locale):
     $headerSizes = directory_header_font_sizes($headerTitle);
 
     return '<!DOCTYPE html>
-<html dir="ltr" lang="' . ($isRu ? 'ru-RU' : 'en-GB') . '">
+<html dir="ltr" lang="' . ($isRu ? 'ru-RU' : 'en-GB') . '" prefix="og: https://ogp.me/ns#">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>' . directory_escape($title) . '</title>
 <meta content="' . directory_escape($description) . '" name="description"/>
 <link href="' . directory_escape($canonical) . '" rel="canonical"/>
+' . directory_render_head_assets($base, $canonical, $title, $description, $locale) . '
 <link as="style" data-optimized="2" href="' . directory_css_asset_url($base, 'wp-content/litespeed/css/d4d1cd3e2db3bf373348bdfd89958038.css') . '" onload="this.onload=null;this.rel=\'stylesheet\'" rel="preload"/>
 <noscript><link data-optimized="2" href="' . directory_css_asset_url($base, 'wp-content/litespeed/css/d4d1cd3e2db3bf373348bdfd89958038.css') . '" rel="stylesheet"/></noscript>
 <link href="' . directory_css_asset_url($base, 'wp-content/litespeed/css/styles.css') . '" rel="stylesheet"/>
@@ -253,13 +254,14 @@ function directory_render_section_page(string $categorySlug, array $data, string
     ]);
 
     return '<!DOCTYPE html>
-<html dir="ltr" lang="' . ($isRu ? 'ru-RU' : 'en-GB') . '">
+<html dir="ltr" lang="' . ($isRu ? 'ru-RU' : 'en-GB') . '" prefix="og: https://ogp.me/ns#">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>' . directory_escape($title) . '</title>
 <meta content="' . directory_escape($description) . '" name="description"/>
 <link href="' . directory_escape($canonical) . '" rel="canonical"/>
+' . directory_render_head_assets($base, $canonical, $title, $description, $locale) . '
 <link as="style" data-optimized="2" href="' . directory_css_asset_url($base, 'wp-content/litespeed/css/d4d1cd3e2db3bf373348bdfd89958038.css') . '" onload="this.onload=null;this.rel=\'stylesheet\'" rel="preload"/>
 <noscript><link data-optimized="2" href="' . directory_css_asset_url($base, 'wp-content/litespeed/css/d4d1cd3e2db3bf373348bdfd89958038.css') . '" rel="stylesheet"/></noscript>
 <link href="' . directory_css_asset_url($base, 'wp-content/litespeed/css/styles.css') . '" rel="stylesheet"/>
@@ -2647,20 +2649,71 @@ function directory_table_header(string $label): string
     return '<th' . directory_table_class_attr($label) . ' aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">' . directory_escape($label) . '</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th>';
 }
 
+function directory_asset_url(string $base, string $path): string
+{
+    return $base . $path . '?v=' . DIRECTORY_ASSET_VERSION;
+}
+
 function directory_css_asset_url(string $base, string $path): string
 {
-    return $base . $path . '?v=' . DIRECTORY_CSS_ASSET_VERSION;
+    return directory_asset_url($base, $path);
+}
+
+function directory_render_head_assets(string $base, string $canonical, string $title, string $description, string $locale): string
+{
+    $ogLocale = $locale === 'ru' ? 'ru_RU' : 'en_GB';
+    $logoUrl = 'https://bitmixlist.org/wp-content/uploads/2023/12/logo-1-e1701782109696.png';
+
+    return '<link href="https://gmpg.org/xfn/11" rel="profile"/>
+<meta content="max-image-preview:large" name="robots"/>
+<meta content="' . directory_escape($ogLocale) . '" property="og:locale"/>
+<meta content="BitMixList -" property="og:site_name"/>
+<meta content="article" property="og:type"/>
+<meta content="' . directory_escape($title) . '" property="og:title"/>
+<meta content="' . directory_escape($description) . '" property="og:description"/>
+<meta content="' . directory_escape($canonical) . '" property="og:url"/>
+<meta content="' . directory_escape($logoUrl) . '" property="og:image"/>
+<meta content="' . directory_escape($logoUrl) . '" property="og:image:secure_url"/>
+<meta content="350" property="og:image:width"/>
+<meta content="105" property="og:image:height"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="' . directory_escape($title) . '" name="twitter:title"/>
+<meta content="' . directory_escape($description) . '" name="twitter:description"/>
+<meta content="' . directory_escape($logoUrl) . '" name="twitter:image"/>
+<link href="' . directory_asset_url($base, 'wp-content/uploads/2023/12/cropped-favicon-2-32x32.png') . '" rel="icon" sizes="32x32"/>
+<link href="' . directory_asset_url($base, 'wp-content/uploads/2023/12/cropped-favicon-2-192x192.png') . '" rel="icon" sizes="192x192"/>
+<link href="' . directory_asset_url($base, 'wp-content/uploads/2023/12/cropped-favicon-2-180x180.png') . '" rel="apple-touch-icon"/>
+<meta content="' . directory_asset_url($base, 'wp-content/uploads/2023/12/cropped-favicon-2-192x192.png') . '" name="msapplication-TileImage"/>';
+}
+
+function directory_version_cacheable_head_urls(string $html): string
+{
+    $html = str_replace(
+        'cropped-favicon-2-270x270.png',
+        'cropped-favicon-2-192x192.png',
+        $html
+    );
+
+    $html = preg_replace_callback(
+        '~\bhref=(["\'])([^"\']*wp-content/litespeed/css/[^"\']+?\.css)(?:\?[^"\']*)?\1~',
+        static function (array $match): string {
+            return 'href=' . $match[1] . $match[2] . '?v=' . DIRECTORY_ASSET_VERSION . $match[1];
+        },
+        $html
+    ) ?? $html;
+
+    return preg_replace_callback(
+        '~\b(href|content)=(["\'])([^"\']*wp-content/uploads/2023/12/cropped-favicon-2-[^"\']+\.(?:png|webp|jpg))(?:\?[^"\']*)?\2~i',
+        static function (array $match): string {
+            return $match[1] . '=' . $match[2] . $match[3] . '?v=' . DIRECTORY_ASSET_VERSION . $match[2];
+        },
+        $html
+    ) ?? $html;
 }
 
 function directory_version_css_asset_urls(string $html): string
 {
-    return preg_replace_callback(
-        '~\bhref=(["\'])([^"\']*wp-content/litespeed/css/[^"\']+?\.css)(?:\?[^"\']*)?\1~',
-        static function (array $match): string {
-            return 'href=' . $match[1] . $match[2] . '?v=' . DIRECTORY_CSS_ASSET_VERSION . $match[1];
-        },
-        $html
-    ) ?? $html;
+    return directory_version_cacheable_head_urls($html);
 }
 
 function directory_table_cell(string $html, string $label): string

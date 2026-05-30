@@ -28,7 +28,7 @@ function rewrite_homepage_layout(string $path, string $locale, array $data): voi
     $notes = homepage_extract_notes($oldContent, $locale, $data['categories']);
     $newContent = "\n" . homepage_render_intro($notes['intro'], $locale) . "\n" . homepage_render_directory($data, $locale, $notes['sections']) . "\n" . $notes['global'] . "\n";
 
-    file_put_contents($path, homepage_normalize_directory_table_cells(directory_version_css_asset_urls($before . '<article class="page-content directory-detail homepage-directory">' . $newContent . '</article>' . $after)));
+    file_put_contents($path, homepage_normalize_directory_table_cells(directory_version_cacheable_head_urls($before . '<article class="page-content directory-detail homepage-directory">' . $newContent . '</article>' . $after)));
 }
 
 function homepage_normalize_directory_table_cells(string $html): string

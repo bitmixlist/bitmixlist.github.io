@@ -175,7 +175,7 @@ function rewrite_index(string $path, string $locale, array $data): void
         $html = preg_replace('~<td><a class="directory-link" href="[^"]+">' . preg_quote($encodedDisplay, '~') . '</a></td>~u', $linked, $html, 1) ?? $html;
     }
 
-    file_put_contents($path, normalize_index_directory_table_cells(directory_version_css_asset_urls($html)));
+    file_put_contents($path, normalize_index_directory_table_cells(directory_version_cacheable_head_urls($html)));
 }
 
 function normalize_index_directory_table_cells(string $html): string
