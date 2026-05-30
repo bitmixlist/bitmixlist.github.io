@@ -200,6 +200,7 @@ function directory_extract_all(string $root, array $options = []): array
                 'type' => $category['type'],
                 'assets' => $entry['assets'],
                 'links' => $links,
+                'status' => directory_entry_status_override($categorySlug, $slug),
                 'content' => [
                     'en' => $entry['content'],
                     'ru' => $ru['content'],
@@ -1566,6 +1567,52 @@ function directory_mixer_support_override(string $slug): array
     return $support[$slug] ?? [];
 }
 
+function directory_entry_status_override(string $categorySlug, string $slug): array
+{
+    if ($categorySlug === 'mixers' && $slug === 'dreadpirate') {
+        return [
+            'type' => 'maintenance',
+            'label' => [
+                'en' => 'Under maintenance',
+                'ru' => 'На обслуживании',
+            ],
+            'action_label' => [
+                'en' => 'Under maintenance',
+                'ru' => 'На обслуживании',
+            ],
+            'title' => [
+                'en' => 'DreadPirate is under maintenance',
+                'ru' => 'DreadPirate на обслуживании',
+            ],
+            'lead' => [
+                'en' => 'DreadPirate is not accepting new mixes or transactions while it works through reported technical issues.',
+                'ru' => 'DreadPirate временно не принимает новые миксы или транзакции из-за заявленных технических проблем.',
+            ],
+            'items' => [
+                'en' => [
+                    'DreadPirate says unfinished mixes will be refunded to the sending addresses, not to addresses specified in PGP messages.',
+                    'The 0.5 BTC XSS deposit still appears intact, and there is no stated plan to request a deposit refund, so BitMixList is treating this as a technical pause.',
+                    'Refund timing for unfinished mixes has not been confirmed yet.',
+                ],
+                'ru' => [
+                    'DreadPirate сообщает, что незавершенные миксы будут возвращены на адреса отправки, а не на адреса, указанные в PGP-сообщениях.',
+                    'Депозит 0.5 BTC на XSS, насколько известно BitMixList, остается в порядке; о запросе возврата депозита не сообщалось, поэтому это помечено как техническая пауза.',
+                    'Срок возврата незавершенных миксов пока не подтвержден.',
+                ],
+            ],
+            'source' => [
+                'label' => [
+                    'en' => 'AltcoinsTalks notice',
+                    'ru' => 'уведомление на AltcoinsTalks',
+                ],
+                'url' => 'https://www.altcoinstalks.com/index.php?topic=339855.msg2123130#msg2123130',
+            ],
+        ];
+    }
+
+    return [];
+}
+
 function directory_expand_tox_support(array $links): array
 {
     $html = (string) ($links['support_html'] ?? '');
@@ -1676,6 +1723,7 @@ function directory_table_facts(DOMXPath $xpath, array $headers, array $cells, st
             || directory_is_website_header($label)
             || directory_is_tor_header($label)
             || directory_is_support_header($label)
+            || directory_is_status_header($label)
             || directory_is_config_header($label)
             || ($categorySlug === 'mixers' && directory_is_support_channel_header($label))
         ) {
@@ -1885,6 +1933,12 @@ function directory_is_support_header(string $label): bool
 {
     $normalized = mb_strtolower($label, 'UTF-8');
     return str_contains($normalized, 'support') || str_contains($normalized, 'поддерж');
+}
+
+function directory_is_status_header(string $label): bool
+{
+    $normalized = mb_strtolower(trim($label), 'UTF-8');
+    return in_array($normalized, ['status', 'статус'], true);
 }
 
 function directory_is_support_channel_header(string $label): bool

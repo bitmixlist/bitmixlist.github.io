@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-const DIRECTORY_ASSET_VERSION = '20260530-2';
+const DIRECTORY_ASSET_VERSION = '20260530-3';
 
 function directory_render_page(array $entry, array $categories, string $locale): string
 {
@@ -32,6 +32,7 @@ function directory_render_page(array $entry, array $categories, string $locale):
     $labels = directory_page_labels($locale);
     $headerTitle = directory_header_title($entry, $category, $locale);
     $headerSizes = directory_header_font_sizes($headerTitle);
+    $statusStyles = directory_entry_has_status($entry) ? directory_status_styles() : '';
 
     return '<!DOCTYPE html>
 <html dir="ltr" lang="' . ($isRu ? 'ru-RU' : 'en-GB') . '" prefix="og: https://ogp.me/ns#">
@@ -82,11 +83,10 @@ function directory_render_page(array $entry, array $categories, string $locale):
 .directory-facts .directory-nowrap { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
 .directory-entry-table { table-layout: auto; min-width: 620px; }
 .directory-entry-table th:first-child, .directory-entry-table td:first-child { width: 34%; }
-.directory-entry-table tbody td:first-child { color: #f6f2ff; font-weight: 650; }
-.directory-entry-table thead th { font-size: 0.88rem; }
-' . directory_sort_styles() . '
-' . directory_coin_styles() . '
-.directory-note { margin: 0; padding: 14px 16px; border: 1px solid #4a3a70; border-radius: 8px; background: #181222; line-height: 1.55; }
+	.directory-entry-table tbody td:first-child { color: #f6f2ff; font-weight: 650; }
+	.directory-entry-table thead th { font-size: 0.88rem; }
+	' . directory_sort_styles() . '
+	' . directory_coin_styles() . $statusStyles . '.directory-note { margin: 0; padding: 14px 16px; border: 1px solid #4a3a70; border-radius: 8px; background: #181222; line-height: 1.55; }
 .directory-note > :first-child { margin-top: 0; }
 .directory-note > :last-child { margin-bottom: 0; }
 .directory-config { margin: 0; padding: 16px 18px; border: 1px solid #3a2e55; border-radius: 8px; background: #181222; line-height: 1.55; }
@@ -179,13 +179,13 @@ function directory_render_page(array $entry, array $categories, string $locale):
 <div>
 <p class="directory-kicker">' . directory_escape($category['singular'][$locale]) . '</p>
 <h1>' . directory_escape($name) . '</h1>
-<p class="directory-summary">' . directory_escape($description) . '</p>
-<div class="directory-actions">
-	' . ($external !== '' ? '<a class="directory-button" href="' . directory_escape($external) . '" rel="noopener noreferrer" target="_blank">' . directory_icon_label('external-link', $labels['visit']) . '</a>' : '') . '
-	</div>
-	</div>
-	</section>
-	<section class="directory-section">
+	<p class="directory-summary">' . directory_escape($description) . '</p>
+	<div class="directory-actions">
+		' . directory_render_external_action($entry, $locale, $external, $labels['visit']) . '
+		</div>
+		</div>
+		</section>' . directory_render_status_notice($entry, $locale) . '
+		<section class="directory-section">
 	<h2>' . directory_section_heading($labels['links'], 'links') . '</h2>
 	<figure class="wp-block-table directory-table-wrap">
 	<table class="directory-facts directory-entry-table">
@@ -219,7 +219,7 @@ function directory_render_page(array $entry, array $categories, string $locale):
 <div class="directory-footer-spacer"></div>
 </article>
 </main>
-' . directory_render_footer($base) . '
+' . directory_render_footer($base, $locale) . '
 </div>
 ' . directory_render_sidebar_script() . '
 </body>
@@ -252,6 +252,7 @@ function directory_render_section_page(string $categorySlug, array $data, string
         directory_render_mixer_fee_filter($entries, $categorySlug, $locale),
         directory_render_exchange_pair_filter($entries, $categorySlug, $locale, $base),
     ]);
+    $statusStyles = directory_entries_have_status($entries) ? directory_status_styles() : '';
 
     return '<!DOCTYPE html>
 <html dir="ltr" lang="' . ($isRu ? 'ru-RU' : 'en-GB') . '" prefix="og: https://ogp.me/ns#">
@@ -321,12 +322,11 @@ function directory_render_section_page(string $categorySlug, array $data, string
 .directory-list-card { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 14px; min-width: 0; padding: 14px; border: 1px solid #3a2e55; border-radius: 8px; background: #181222; }
 .directory-list-card .directory-logo { width: 128px; height: 128px; border-radius: 10px; object-fit: contain; }
 .directory-list-card .directory-logo--text { font-size: 1.8rem; }
-.directory-list-title { margin: 0 0 4px; font-size: 1.05rem; line-height: 1.25; font-weight: 700; }
-.directory-list-title a { color: #f6f2ff; text-decoration: none; }
-.directory-list-title a:hover, .directory-list-title a:focus { text-decoration: underline; }
-.directory-list-summary { margin: 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }
-' . directory_coin_styles() . '
-.directory-list-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+	.directory-list-title { margin: 0 0 4px; font-size: 1.05rem; line-height: 1.25; font-weight: 700; }
+	.directory-list-title a { color: #f6f2ff; text-decoration: none; }
+	.directory-list-title a:hover, .directory-list-title a:focus { text-decoration: underline; }
+	.directory-list-summary { margin: 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }
+	' . directory_coin_styles() . $statusStyles . '.directory-list-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .directory-button { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; padding: 0 10px; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; text-decoration: none; font-size: 0.9rem; font-weight: 650; }
 .directory-button:hover, .directory-button:focus { background: #27184d; color: #fff; text-decoration: none; }
 .directory-icon-button { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 34px; height: 34px; min-height: 34px; margin-top: 0; margin-left: auto; padding: 0; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; text-decoration: none !important; box-sizing: border-box; }
@@ -413,7 +413,7 @@ function directory_render_section_page(string $categorySlug, array $data, string
 </section>
 </article>
 </main>
-' . directory_render_footer($base) . '
+' . directory_render_footer($base, $locale) . '
 </div>
 ' . directory_render_sidebar_script() . '
 </body>
@@ -510,9 +510,9 @@ function directory_page_labels(string $locale): array
 
 function directory_render_nav_scripts(string $base): string
 {
-    return '<script src="' . directory_escape($base) . 'wp-content/litespeed/js/ad-loader.js"></script>
-<script src="' . directory_escape($base) . 'wp-content/litespeed/js/site-search.js" defer></script>
-<script src="' . directory_escape($base) . 'wp-content/litespeed/js/directory-filter.js" defer></script>
+    return '<script src="' . directory_escape(directory_js_asset_url($base, 'wp-content/litespeed/js/ad-loader.js')) . '"></script>
+<script src="' . directory_escape(directory_js_asset_url($base, 'wp-content/litespeed/js/site-search.js')) . '" defer></script>
+<script src="' . directory_escape(directory_js_asset_url($base, 'wp-content/litespeed/js/directory-filter.js')) . '" defer></script>
 <script>
 document.addEventListener(\'DOMContentLoaded\', function () {
   if (window.bitmixlistLoadTopAd) {
@@ -530,13 +530,13 @@ function directory_render_entry_verification_scripts(array $entry, string $base)
 
     $scripts = '';
     if (directory_official_domains_for_entry($entry) !== []) {
-        $scripts .= '<script src="' . directory_escape($base) . 'wp-content/litespeed/js/scamwhammer.js" defer></script>' . "\n";
+        $scripts .= '<script src="' . directory_escape(directory_js_asset_url($base, 'wp-content/litespeed/js/scamwhammer.js')) . '" defer></script>' . "\n";
     }
 
     if (directory_letter_verifier_domain($entry) !== '') {
-        $scripts .= '<script src="' . directory_escape($base) . 'wp-content/litespeed/js/openpgp.min.js" defer></script>' . "\n"
-            . '<script src="' . directory_escape($base) . 'wp-content/litespeed/js/btc-message-verifier.min.js" defer></script>' . "\n"
-            . '<script src="' . directory_escape($base) . 'wp-content/litespeed/js/verifytool.js" defer></script>' . "\n";
+        $scripts .= '<script src="' . directory_escape(directory_js_asset_url($base, 'wp-content/litespeed/js/openpgp.min.js')) . '" defer></script>' . "\n"
+            . '<script src="' . directory_escape(directory_js_asset_url($base, 'wp-content/litespeed/js/btc-message-verifier.min.js')) . '" defer></script>' . "\n"
+            . '<script src="' . directory_escape(directory_js_asset_url($base, 'wp-content/litespeed/js/verifytool.js')) . '" defer></script>' . "\n";
     }
 
     return rtrim($scripts);
@@ -1202,21 +1202,18 @@ function directory_render_section_card(array $entry, string $locale, string $bas
     $visitLabel = $isTool
         ? ($locale === 'ru' ? 'Открыть проект' : 'Visit project')
         : ($locale === 'ru' ? 'Открыть сайт' : 'Visit site');
-    $externalAction = '';
-    if ($external !== '') {
-        $externalAction = $isTool
-            ? directory_external_icon_button($external, $visitLabel, 'directory-list-external')
-            : '<a class="directory-button" href="' . directory_escape($external) . '" rel="noopener noreferrer" target="_blank">' . directory_icon_label('external-link', $visitLabel) . '</a>';
-    }
+    $externalAction = directory_render_external_action($entry, $locale, $external, $visitLabel, $isTool, 'directory-list-external');
+    $status = directory_entry_status($entry);
+    $statusClass = $status === [] ? '' : ' directory-list-card--' . directory_escape((string) ($status['type'] ?? 'status'));
     $pairAttributes = directory_pair_filter_item_attributes($entry, true);
 
-    return '<article class="directory-list-card" data-directory-filter-item data-directory-filter-text="' . directory_escape(directory_filter_text_for_entry($entry, $locale, false)) . '"' . $pairAttributes . directory_fee_filter_item_attributes($entry) . '>
-	<div>' . directory_logo_markup($entry, $base, $name) . '</div>
-	<div>
-<h3 class="directory-list-title"><a href="' . directory_escape($entryHref) . '">' . directory_escape($name) . '</a></h3>
-	' . ($summary !== '' ? '<p class="directory-list-summary">' . directory_render_card_summary($summary, $base) . '</p>' : '') . '
-	<div class="directory-list-actions">
-	<a class="directory-button" href="' . directory_escape($entryHref) . '">' . directory_icon_label('details', $detailsLabel) . '</a>
+    return '<article class="directory-list-card' . $statusClass . '" data-directory-filter-item data-directory-filter-text="' . directory_escape(directory_filter_text_for_entry($entry, $locale, false)) . '"' . $pairAttributes . directory_fee_filter_item_attributes($entry) . '>
+		<div class="directory-card-media">' . directory_logo_markup($entry, $base, $name) . directory_render_status_sign($entry, $locale) . '</div>
+		<div>
+	<h3 class="directory-list-title"><a href="' . directory_escape($entryHref) . '">' . directory_escape($name) . '</a></h3>' . directory_render_status_badge_line($entry, $locale, true, "\t\t") . '
+		' . ($summary !== '' ? '<p class="directory-list-summary">' . directory_render_card_summary($summary, $base) . '</p>' : '') . '
+		<div class="directory-list-actions">
+		<a class="directory-button" href="' . directory_escape($entryHref) . '">' . directory_icon_label('details', $detailsLabel) . '</a>
 	' . $externalAction . '
 </div>
 </div>
@@ -1229,12 +1226,12 @@ function directory_render_section_table(array $entries, string $locale, string $
     $rows = '';
 
     foreach ($entries as $entry) {
-        $rows .= directory_render_section_table_row($entry, $locale, $base, $fromPath, $labels['facts']) . "\n";
+        $rows .= directory_render_section_table_row($entry, $locale, $base, $fromPath, $labels['facts'], $labels['status']) . "\n";
     }
 
     return '<figure class="wp-block-table directory-table-wrap">
-	<table class="directory-facts directory-comparison-table directory-comparison-table--' . directory_escape($categorySlug) . '">
-	<thead><tr>' . directory_table_header($labels['name']) . directory_table_header($labels['site']) . directory_table_header($labels['tor']) . directory_render_section_fact_headers($labels['facts']) . '</tr></thead>
+		<table class="directory-facts directory-comparison-table directory-comparison-table--' . directory_escape($categorySlug) . '">
+		<thead><tr>' . directory_table_header($labels['name']) . directory_render_status_header($labels['status']) . directory_table_header($labels['site']) . directory_table_header($labels['tor']) . directory_render_section_fact_headers($labels['facts']) . '</tr></thead>
 	<tbody>
 	' . $rows . '</tbody>
 	</table>
@@ -1274,6 +1271,7 @@ function directory_section_table_labels(array $entries, string $locale, string $
 
     return [
         'name' => $locale === 'ru' ? 'Название' : 'Name',
+        'status' => directory_entries_have_status($entries) ? ($locale === 'ru' ? 'Статус' : 'Status') : '',
         'site' => $locale === 'ru' ? 'Веб-сайт' : 'Website',
         'tor' => $locale === 'ru' ? 'Tor-сайт' : 'Tor Site',
         'facts' => $facts,
@@ -1299,7 +1297,7 @@ function directory_render_section_fact_headers(array $labels): string
     return $headers;
 }
 
-function directory_render_section_table_row(array $entry, string $locale, string $base, string $fromPath, array $factLabels): string
+function directory_render_section_table_row(array $entry, string $locale, string $base, string $fromPath, array $factLabels, string $statusLabel = ''): string
 {
     $display = directory_base_name($entry['table_display'][$locale] ?? $entry['content'][$locale]['name']);
     $entryHref = directory_relative_path($fromPath, $entry['output_paths'][$locale]);
@@ -1315,6 +1313,9 @@ function directory_render_section_table_row(array $entry, string $locale, string
     }
 
     $cells = directory_table_cell('<a class="directory-link" href="' . directory_escape($entryHref) . '">' . directory_escape($display) . '</a>', $nameLabel);
+    if ($statusLabel !== '') {
+        $cells .= directory_table_cell(directory_render_status_badge($entry, $locale, false), $statusLabel);
+    }
     $cells .= directory_table_cell(directory_table_external_value($external, $display), $siteLabel);
     $cells .= directory_table_cell(directory_table_tor_value($tor), $torLabel);
 
@@ -1619,6 +1620,216 @@ function directory_coin_styles(string $indent = ''): string
     return $indent . implode("\n" . $indent, $lines) . "\n";
 }
 
+function directory_status_styles(string $indent = ''): string
+{
+    $lines = [
+        '.directory-button--disabled, .directory-button--disabled:hover, .directory-button--disabled:focus { border-color: #5d5668; background: #24212c; color: #aaa2b8; cursor: not-allowed; filter: saturate(0.65); opacity: 0.78; pointer-events: none; text-decoration: none; }',
+        '.directory-status-badge { display: inline-flex; align-items: center; gap: 5px; min-height: 26px; margin: 6px 0 2px; padding: 2px 8px; border: 1px solid #d49a24; border-radius: 999px; background: #2a1d08; color: #ffd88a; font-size: 0.78rem; font-weight: 750; line-height: 1.1; text-transform: uppercase; letter-spacing: 0.02em; }',
+        '.directory-status-badge .directory-icon { width: 0.95em; height: 0.95em; }',
+        '.directory-list-card--maintenance { position: relative; border-color: #8a6b2b; background: linear-gradient(180deg, #1d1820, #181222); }',
+        '.directory-card-media { position: relative; min-width: 0; width: 128px; max-width: 100%; }',
+        '.directory-list-card--maintenance .directory-card-media a { display: block; }',
+        '.directory-list-card--maintenance .directory-card-media .directory-logo { opacity: 0.38; filter: grayscale(0.55) saturate(0.55) contrast(0.9); }',
+        '.directory-list-card--maintenance .directory-card-media::after { content: ""; position: absolute; inset: 0; width: 128px; height: 128px; max-width: 100%; border-radius: 10px; background: repeating-linear-gradient(135deg, rgba(246, 184, 63, 0.78) 0 10px, rgba(27, 20, 16, 0.62) 10px 20px); opacity: 0.82; pointer-events: none; }',
+        '.directory-card-status-sign { position: absolute; right: 6px; bottom: 6px; z-index: 1; display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: 2px solid #1c1406; border-radius: 6px; background: #f6b83f; color: #241400; transform: rotate(45deg); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35); }',
+        '.directory-card-status-sign .directory-icon { width: 18px; height: 18px; transform: rotate(-45deg); stroke-width: 2.4; }',
+        '.directory-maintenance-notice { position: relative; display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 18px; margin: 24px 0 0; padding: 24px 22px 20px; overflow: hidden; border: 1px solid #9b7424; border-radius: 8px; background: #1b1510; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28); }',
+        '.directory-maintenance-notice::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 10px; background: repeating-linear-gradient(135deg, #f6b83f 0 14px, #1b1410 14px 28px); }',
+        '.directory-maintenance-sign { display: flex; align-items: center; justify-content: center; width: 62px; height: 62px; margin-top: 6px; border: 3px solid #1c1406; border-radius: 8px; background: #f6b83f; color: #241400; transform: rotate(45deg); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35); }',
+        '.directory-maintenance-sign .directory-icon { width: 32px; height: 32px; transform: rotate(-45deg); stroke-width: 2.4; }',
+        '.directory-maintenance-body { min-width: 0; }',
+        '.directory-maintenance-kicker { margin: 0 0 6px; color: #ffd88a; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }',
+        '.directory-maintenance-notice h2 { margin: 0 0 8px; color: #fff3cf; font-size: 1.35rem; letter-spacing: 0; }',
+        '.directory-maintenance-lead { margin: 0 0 12px; color: #f2dfb8; line-height: 1.55; }',
+        '.directory-maintenance-list { margin: 0; padding-left: 1.1rem; color: #e8d4aa; line-height: 1.5; }',
+        '.directory-maintenance-source { margin: 12px 0 0; color: #cdbb92; font-size: 0.9rem; }',
+        '.directory-maintenance-source a { color: #ffe2a4; text-decoration: underline; text-underline-offset: 0.16em; }',
+        '@media (max-width: 700px) { .directory-maintenance-notice { grid-template-columns: 1fr; padding: 22px 16px 18px; } .directory-maintenance-sign { width: 54px; height: 54px; margin: 2px 0 0; } }',
+    ];
+
+    return $indent . implode("\n" . $indent, $lines) . "\n";
+}
+
+function directory_entry_status(array $entry): array
+{
+    return is_array($entry['status'] ?? null) ? $entry['status'] : [];
+}
+
+function directory_entry_has_status(array $entry): bool
+{
+    return directory_entry_status($entry) !== [];
+}
+
+function directory_entries_have_status(array $entries): bool
+{
+    foreach ($entries as $entry) {
+        if (directory_entry_has_status($entry)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function directory_status_text(array $status, string $key, string $locale): string
+{
+    $value = $status[$key] ?? '';
+    if (!is_array($value)) {
+        return trim((string) $value);
+    }
+
+    if (isset($value[$locale])) {
+        return trim((string) $value[$locale]);
+    }
+    if (isset($value['en'])) {
+        return trim((string) $value['en']);
+    }
+
+    foreach ($value as $candidate) {
+        if (!is_array($candidate)) {
+            return trim((string) $candidate);
+        }
+    }
+
+    return '';
+}
+
+function directory_status_items(array $status, string $locale): array
+{
+    $items = $status['items'] ?? [];
+    if (isset($items[$locale]) && is_array($items[$locale])) {
+        return array_values(array_filter(array_map('trim', array_map('strval', $items[$locale]))));
+    }
+    if (isset($items['en']) && is_array($items['en'])) {
+        return array_values(array_filter(array_map('trim', array_map('strval', $items['en']))));
+    }
+
+    return [];
+}
+
+function directory_render_status_badge(array $entry, string $locale, bool $withIcon = false): string
+{
+    $status = directory_entry_status($entry);
+    if ($status === []) {
+        return '';
+    }
+
+    $label = directory_status_text($status, 'label', $locale);
+    if ($label === '') {
+        return '';
+    }
+
+    $icon = $withIcon ? directory_icon('maintenance') : '';
+
+    return '<span class="directory-status-badge">' . $icon . '<span>' . directory_escape($label) . '</span></span>';
+}
+
+function directory_render_status_badge_line(array $entry, string $locale, bool $withIcon, string $indent): string
+{
+    $badge = directory_render_status_badge($entry, $locale, $withIcon);
+    if ($badge === '') {
+        return '';
+    }
+
+    return "\n" . $indent . $badge;
+}
+
+function directory_render_status_sign(array $entry, string $locale): string
+{
+    $status = directory_entry_status($entry);
+    if ($status === []) {
+        return '';
+    }
+
+    $label = directory_status_text($status, 'label', $locale);
+
+    return '<span class="directory-card-status-sign" title="' . directory_escape($label) . '" aria-label="' . directory_escape($label) . '">' . directory_icon('maintenance') . '</span>';
+}
+
+function directory_render_status_header(string $label): string
+{
+    return $label === '' ? '' : directory_table_header($label);
+}
+
+function directory_render_external_action(array $entry, string $locale, string $external, string $visitLabel, bool $isTool = false, string $class = ''): string
+{
+    if (directory_entry_has_status($entry)) {
+        return directory_render_disabled_external_action($visitLabel, $class);
+    }
+
+    if ($external === '') {
+        return '';
+    }
+
+    if ($isTool) {
+        return directory_external_icon_button($external, $visitLabel, $class);
+    }
+
+    $classes = trim('directory-button ' . $class);
+
+    return '<a class="' . directory_escape($classes) . '" href="' . directory_escape($external) . '" rel="noopener noreferrer" target="_blank">' . directory_icon_label('external-link', $visitLabel) . '</a>';
+}
+
+function directory_render_disabled_external_action(string $label, string $class = ''): string
+{
+    $label = trim($label);
+    if ($label === '') {
+        return '';
+    }
+
+    $classes = trim('directory-button directory-button--disabled ' . $class);
+
+    return '<span class="' . directory_escape($classes) . '" aria-disabled="true">' . directory_icon_label('external-link', $label) . '</span>';
+}
+
+function directory_render_status_notice(array $entry, string $locale): string
+{
+    $status = directory_entry_status($entry);
+    if ($status === []) {
+        return '';
+    }
+
+    $label = directory_status_text($status, 'label', $locale);
+    $title = directory_status_text($status, 'title', $locale);
+    $lead = directory_status_text($status, 'lead', $locale);
+    $items = directory_status_items($status, $locale);
+    $source = directory_render_status_source($status, $locale);
+    $list = '';
+    foreach ($items as $item) {
+        $list .= '<li>' . directory_escape($item) . '</li>';
+    }
+
+    return '
+		<section class="directory-maintenance-notice" aria-labelledby="directory-maintenance-title">
+	<div class="directory-maintenance-sign">' . directory_icon('maintenance') . '</div>
+	<div class="directory-maintenance-body">
+	<p class="directory-maintenance-kicker">' . directory_escape($label) . '</p>
+	<h2 id="directory-maintenance-title">' . directory_escape($title) . '</h2>
+	' . ($lead !== '' ? '<p class="directory-maintenance-lead">' . directory_escape($lead) . '</p>' : '') . '
+	' . ($list !== '' ? '<ul class="directory-maintenance-list">' . $list . '</ul>' : '') . '
+	' . $source . '
+	</div>
+	</section>';
+}
+
+function directory_render_status_source(array $status, string $locale): string
+{
+    $source = $status['source'] ?? [];
+    if (!is_array($source)) {
+        return '';
+    }
+
+    $url = trim((string) ($source['url'] ?? ''));
+    $label = directory_status_text($source, 'label', $locale);
+    if ($url === '' || $label === '') {
+        return '';
+    }
+
+    $sourceLabel = $locale === 'ru' ? 'Источник' : 'Source';
+
+    return '<p class="directory-maintenance-source">' . directory_escape($sourceLabel) . ': <a href="' . directory_escape($url) . '" rel="noopener noreferrer" target="_blank">' . directory_escape($label) . '</a></p>';
+}
+
 function directory_normalize_coin_style_rules(string $html): string
 {
     $indentedBlock = '          .directory-facts th.directory-coins-cell { white-space: nowrap; overflow-wrap: normal; word-break: normal; }' . "\n"
@@ -1879,6 +2090,7 @@ function directory_icon_paths(): array
         'letter-check' => '<path d="M6 3h9l5 5v13H6z"></path><path d="M14 3v6h6"></path><path d="m9 15 2 2 4-4"></path>',
         'links' => '<circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3c3 3 3 15 0 18"></path><path d="M12 3c-3 3-3 15 0 18"></path>',
         'lock' => '<rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path>',
+        'maintenance' => '<path d="M10.6 2.6 2.6 10.6a2 2 0 0 0 0 2.8l8 8a2 2 0 0 0 2.8 0l8-8a2 2 0 0 0 0-2.8l-8-8a2 2 0 0 0-2.8 0z"></path><path d="M12 8v5"></path><path d="M12 16h.01"></path>',
         'mixers' => '<path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="m15 15 6 6"></path><path d="M4 4l5 5"></path>',
         'network' => '<circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><circle cx="12" cy="18" r="3"></circle><path d="m8.4 8.1 3.2 7.8"></path><path d="m15.6 8.1-3.2 7.8"></path><path d="M9 6h6"></path>',
         'notes' => '<path d="M6 3h9l5 5v13H6z"></path><path d="M14 3v6h6"></path><path d="M9 13h6"></path><path d="M9 17h4"></path>',
@@ -1918,6 +2130,14 @@ function directory_filter_text_for_entry(array $entry, string $locale, bool $inc
 
     if ($includeSupport) {
         $parts[] = $entry['links']['support'] ?? '';
+    }
+
+    $status = directory_entry_status($entry);
+    if ($status !== []) {
+        $parts[] = directory_status_text($status, 'label', $locale);
+        $parts[] = directory_status_text($status, 'title', $locale);
+        $parts[] = directory_status_text($status, 'lead', $locale);
+        $parts = array_merge($parts, directory_status_items($status, $locale));
     }
 
     foreach ($entry['facts'][$locale] ?? [] as $fact) {
@@ -2659,6 +2879,11 @@ function directory_css_asset_url(string $base, string $path): string
     return directory_asset_url($base, $path);
 }
 
+function directory_js_asset_url(string $base, string $path): string
+{
+    return directory_asset_url($base, $path);
+}
+
 function directory_render_head_assets(string $base, string $canonical, string $title, string $description, string $locale): string
 {
     $ogLocale = $locale === 'ru' ? 'ru_RU' : 'en_GB';
@@ -2698,6 +2923,14 @@ function directory_version_cacheable_head_urls(string $html): string
         '~\bhref=(["\'])([^"\']*wp-content/litespeed/css/[^"\']+?\.css)(?:\?[^"\']*)?\1~',
         static function (array $match): string {
             return 'href=' . $match[1] . $match[2] . '?v=' . DIRECTORY_ASSET_VERSION . $match[1];
+        },
+        $html
+    ) ?? $html;
+
+    $html = preg_replace_callback(
+        '~\bsrc=(["\'])([^"\']*wp-content/litespeed/js/[^"\']+?\.js)(?:\?[^"\']*)?\1~',
+        static function (array $match): string {
+            return 'src=' . $match[1] . $match[2] . '?v=' . DIRECTORY_ASSET_VERSION . $match[1];
         },
         $html
     ) ?? $html;
@@ -2770,6 +3003,7 @@ function directory_is_nowrap_table_label(string $label): bool
         'official site',
         'coordinator link',
         'resells',
+        'status',
         'название',
         'веб-сайт',
         'веб сайт',
@@ -2777,6 +3011,7 @@ function directory_is_nowrap_table_label(string $label): bool
         'официальный сайт',
         'url координатора',
         'реселл',
+        'статус',
     ];
     if (in_array($normalized, $exact, true)) {
         return true;
@@ -3080,26 +3315,38 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>';
 }
 
-function directory_render_footer(string $base): string
+function directory_render_footer(string $base, string $locale = 'en'): string
 {
+    $isRu = $locale === 'ru';
+    $copyright = $isRu
+        ? '© 2023-2026. <strong><a href="https://bitcointalk.org/index.php?action=profile;u=2739424">NotATether</a></strong>.'
+        : 'Copyright © 2023-2026 <strong><a href="https://bitcointalk.org/index.php?action=profile;u=2739424">NotATether</a></strong>.';
+    $contact = $isRu ? 'Контакт: admin [at] bitmixlist [dot] org' : 'Contact: admin [at] bitmixlist [dot] org';
+    $disclaimers = $isRu ? 'Отказ от ответственности:' : 'Disclaimers:';
+    $lawful = $isRu ? 'Смешивайте только те средства, которые вы получили законным путем.' : 'Only mix funds you have obtained lawfully.';
+    $laundering = $isRu ? 'Не используйте BitMixList для отмывания денег!' : 'Do not use BitMixList for money laundering!';
+    $donate = $isRu ? 'Пожертвовать (нажмите, чтобы получить адреса)' : 'Donate (Click to get addresses)';
+    $bitcoinTitle = $isRu ? 'Пожертвовать в Bitcoin' : 'Donate with Bitcoin';
+    $moneroTitle = $isRu ? 'Пожертвовать в Monero' : 'Donate with Monero';
+
     return '<footer class="site-footer" id="site-footer" role="contentinfo"></footer>
 <div class="footer">
-<div>Copyright © 2023-2026 <strong><a href="https://bitcointalk.org/index.php?action=profile;u=2739424">NotATether</a></strong>.</div>
-        <div>Contact: admin [at] bitmixlist [dot] org</div>
-<div><em>Disclaimers:</em></div>
-<div>Only mix funds you have obtained lawfully.</div>
-<div>Do not use BitMixList for money laundering!</div>
+<div>' . $copyright . '</div>
+<div>' . $contact . '</div>
+<div><em>' . $disclaimers . '</em></div>
+<div>' . $lawful . '</div>
+<div>' . $laundering . '</div>
 <div style="font-size: 12px;">TOR: mixlistihakx3uexhl3wv7xxpnso75pl2fxxupulqz3gpoybum62puid.onion</div>
 <hr/>
-<div>Donate (Click to get addresses)</div>
+<div>' . $donate . '</div>
 <div class="donate">
 <div><a href="bitcoin:bc1q6sac2xn46fwtv3jqtn606pewz8w6r7hlnwzgvp?amount=0.0001"><picture>
 <source srcset="' . $base . 'wp-content/uploads/2023/12/bitcoin.webp" type="image/webp"/>
-<img src="' . $base . 'wp-content/uploads/2023/12/bitcoin.jpg" title="Donate with Bitcoin" width="150px"/>
+<img src="' . $base . 'wp-content/uploads/2023/12/bitcoin.jpg" title="' . $bitcoinTitle . '" width="150px"/>
 </picture></a></div>
 <div><a href="monero:89m7X1HMSiY1jy175wSmsrZ6Bzmeo1DUPgVsxP2d9qcDMScoB9YgJmKBLWhQy72E4fiEysHY1rMuQUP965vsAwrU3ktAN1E?tx_amount=0.050000000000"><picture>
 <source srcset="' . $base . 'wp-content/uploads/2023/12/monero.webp" type="image/webp"/>
-<img src="' . $base . 'wp-content/uploads/2023/12/monero.jpg" title="Donate with Monero" width="150px"/>
+<img src="' . $base . 'wp-content/uploads/2023/12/monero.jpg" title="' . $moneroTitle . '" width="150px"/>
 </picture></a></div>
 </div>
 </div>';

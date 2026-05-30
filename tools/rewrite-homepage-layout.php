@@ -6,13 +6,15 @@ declare(strict_types=1);
 require_once __DIR__ . '/../src/directory/extract.php';
 require_once __DIR__ . '/../src/templates/directory-page.php';
 
-$root = dirname(__DIR__);
-$data = directory_extract_all($root);
+if (isset($_SERVER['SCRIPT_FILENAME']) && realpath((string) $_SERVER['SCRIPT_FILENAME']) === __FILE__) {
+    $root = dirname(__DIR__);
+    $data = directory_extract_all($root);
 
-rewrite_homepage_layout($root . '/index.html', 'en', $data);
-rewrite_homepage_layout($root . '/ru/index.html', 'ru', $data);
+    rewrite_homepage_layout($root . '/index.html', 'en', $data);
+    rewrite_homepage_layout($root . '/ru/index.html', 'ru', $data);
 
-echo "Homepage directory layout rewritten.\n";
+    echo "Homepage directory layout rewritten.\n";
+}
 
 function rewrite_homepage_layout(string $path, string $locale, array $data): void
 {
@@ -83,7 +85,20 @@ function homepage_ensure_styles(string $html): string
     $html = directory_normalize_table_wrap_style_rules($html);
 
     if (str_contains($html, '.homepage-directory')) {
-        return homepage_ensure_header_nav_styles(homepage_ensure_title_style(homepage_ensure_filter_styles(homepage_ensure_intro_styles(homepage_ensure_section_note_styles(homepage_ensure_directory_icon_styles(homepage_ensure_icon_button_styles(homepage_ensure_tool_registry_styles(homepage_ensure_sort_styles(homepage_ensure_nowrap_styles(homepage_ensure_coin_styles(homepage_ensure_card_logo_styles(homepage_ensure_comparison_styles($html)))))))))))));
+        $html = homepage_ensure_comparison_styles($html);
+        $html = homepage_ensure_card_logo_styles($html);
+        $html = homepage_ensure_coin_styles($html);
+        $html = homepage_ensure_status_styles($html);
+        $html = homepage_ensure_nowrap_styles($html);
+        $html = homepage_ensure_sort_styles($html);
+        $html = homepage_ensure_tool_registry_styles($html);
+        $html = homepage_ensure_icon_button_styles($html);
+        $html = homepage_ensure_directory_icon_styles($html);
+        $html = homepage_ensure_section_note_styles($html);
+        $html = homepage_ensure_intro_styles($html);
+        $html = homepage_ensure_filter_styles($html);
+        $html = homepage_ensure_title_style($html);
+        return homepage_ensure_header_nav_styles($html);
     }
 
     $needle = '          .directory-link { font-weight: 700; color: #f6f2ff; }' . "\n";
@@ -114,6 +129,7 @@ function homepage_ensure_styles(string $html): string
         . '          .homepage-directory .directory-list-title a:hover, .homepage-directory .directory-list-title a:focus { text-decoration: underline; }' . "\n"
         . '          .homepage-directory .directory-list-summary { margin: 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }' . "\n"
         . directory_coin_styles('          ')
+        . directory_status_styles('          ')
         . '          .homepage-directory .directory-list-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }' . "\n"
         . '          .homepage-directory .directory-button { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; margin-top: 0; padding: 0 10px; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; text-decoration: none; font-size: 0.9rem; font-weight: 650; line-height: 1.2; }' . "\n"
         . '          .homepage-directory .directory-button:hover, .homepage-directory .directory-button:focus { background: #27184d; color: #fff; text-decoration: none; }' . "\n"
@@ -419,6 +435,26 @@ function homepage_ensure_coin_styles(string $html): string
     }
 
     return str_replace($needle, $needle . directory_coin_styles('          '), $html);
+}
+
+function homepage_ensure_status_styles(string $html): string
+{
+    $statusStyles = directory_status_styles('          ');
+    $existingStatusPattern = '~          \.directory-button--disabled,[\s\S]*?          @media \(max-width: 700px\) \{ \.directory-maintenance-notice \{[^\n]*\n~';
+    if (preg_match($existingStatusPattern, $html) === 1) {
+        return preg_replace($existingStatusPattern, $statusStyles, $html, 1) ?? $html;
+    }
+
+    if (str_contains($html, '.directory-status-badge')) {
+        return $html;
+    }
+
+    $needle = '          .directory-list-summary .coin-list { display: inline-flex; margin-left: 4px; vertical-align: middle; }' . "\n";
+    if (!str_contains($html, $needle)) {
+        throw new RuntimeException('Unable to locate status style insertion point');
+    }
+
+    return str_replace($needle, $needle . $statusStyles, $html);
 }
 
 function homepage_ensure_nowrap_styles(string $html): string
@@ -1198,25 +1234,24 @@ function homepage_render_card(array $entry, string $locale, string $base, string
     $tags = $isTool ? homepage_tool_tags($entry, $locale) : [];
     $dataTags = $isTool ? ' data-tags="' . directory_escape(implode(' ', $tags)) . '"' : '';
     $cardClass = $isTool ? 'directory-list-card tool' : 'directory-list-card mixer-card';
+    $status = directory_entry_status($entry);
+    if ($status !== []) {
+        $cardClass .= ' directory-list-card--' . directory_escape((string) ($status['type'] ?? 'status'));
+    }
 
     $summaryMarkup = '';
     if ($summary !== '') {
         $summaryTag = $isTool ? 'p' : 'div';
         $summaryMarkup = '<' . $summaryTag . ' class="directory-list-summary ' . directory_escape($summaryClass) . '">' . directory_render_card_summary($summary, $base) . '</' . $summaryTag . '>';
     }
-    $externalAction = '';
-    if ($external !== '') {
-        $externalAction = $isTool
-            ? directory_external_icon_button($external, $visitLabel, $visitClass)
-            : '<a class="directory-button ' . directory_escape($visitClass) . '" href="' . directory_escape($external) . '" rel="noopener noreferrer" target="_blank">' . directory_icon_label('external-link', $visitLabel) . '</a>';
-    }
+    $externalAction = directory_render_external_action($entry, $locale, $external, $visitLabel, $isTool, $visitClass);
 
     return '<' . $tag . ' class="' . $cardClass . '"' . $dataTags . ' data-directory-filter-item data-directory-filter-text="' . directory_escape(homepage_filter_text_for_entry($entry, $locale, false)) . '">
-<div><a class="mixer-logo-link" href="' . directory_escape($entryHref) . '" rel="noopener noreferrer">' . directory_logo_markup($entry, $base, $name) . '</a></div>
-<div>
-<h3 class="directory-list-title"><a class="' . directory_escape($nameClass) . '" href="' . directory_escape($entryHref) . '" rel="noopener noreferrer">' . directory_escape($name) . '</a></h3>
-	' . $summaryMarkup . '
-	<div class="directory-list-actions">
+	<div class="directory-card-media"><a class="mixer-logo-link" href="' . directory_escape($entryHref) . '" rel="noopener noreferrer">' . directory_logo_markup($entry, $base, $name) . '</a>' . directory_render_status_sign($entry, $locale) . '</div>
+	<div>
+	<h3 class="directory-list-title"><a class="' . directory_escape($nameClass) . '" href="' . directory_escape($entryHref) . '" rel="noopener noreferrer">' . directory_escape($name) . '</a></h3>' . directory_render_status_badge_line($entry, $locale, true, "\t\t") . '
+		' . $summaryMarkup . '
+		<div class="directory-list-actions">
 	<a class="directory-button" href="' . directory_escape($entryHref) . '">' . directory_icon_label('details', $detailsLabel) . '</a>
 	' . $externalAction . '
 </div>
@@ -1251,12 +1286,12 @@ function homepage_render_table(array $entries, string $locale, string $base, boo
     $rows = '';
 
     foreach ($entries as $entry) {
-        $rows .= homepage_render_table_row($entry, $locale, $base, $labels['facts'], $filterable) . "\n";
+        $rows .= homepage_render_table_row($entry, $locale, $base, $labels['facts'], $filterable, $labels['status']) . "\n";
     }
 
     return '<figure class="wp-block-table directory-table-wrap">
-	<table class="directory-facts homepage-comparison-table">
-	<thead><tr>' . directory_table_header($labels['name']) . directory_table_header($labels['site']) . directory_table_header($labels['tor']) . homepage_render_fact_headers($labels['facts']) . '</tr></thead>
+		<table class="directory-facts homepage-comparison-table">
+		<thead><tr>' . directory_table_header($labels['name']) . directory_render_status_header($labels['status']) . directory_table_header($labels['site']) . directory_table_header($labels['tor']) . homepage_render_fact_headers($labels['facts']) . '</tr></thead>
 	<tbody>
 	' . $rows . '</tbody>
 </table>
@@ -1293,6 +1328,7 @@ function homepage_table_labels(array $entries, string $locale, bool $isTool, str
 
     return [
         'name' => $locale === 'ru' ? 'Название' : 'Name',
+        'status' => directory_entries_have_status($entries) ? ($locale === 'ru' ? 'Статус' : 'Status') : '',
         'site' => $locale === 'ru' ? 'Веб-сайт' : 'Website',
         'tor' => $locale === 'ru' ? 'Tor-сайт' : 'Tor Site',
         'facts' => $facts,
@@ -1318,7 +1354,7 @@ function homepage_render_fact_headers(array $labels): string
     return $headers;
 }
 
-function homepage_render_table_row(array $entry, string $locale, string $base, array $factLabels, bool $filterable): string
+function homepage_render_table_row(array $entry, string $locale, string $base, array $factLabels, bool $filterable, string $statusLabel = ''): string
 {
     $entryHref = $entry['index_paths'][$locale];
     $display = directory_base_name($entry['table_display'][$locale] ?? $entry['content'][$locale]['name']);
@@ -1334,6 +1370,9 @@ function homepage_render_table_row(array $entry, string $locale, string $base, a
     }
 
     $cells = directory_table_cell('<a class="directory-link" href="' . directory_escape($entryHref) . '">' . directory_escape($display) . '</a>', $nameLabel);
+    if ($statusLabel !== '') {
+        $cells .= directory_table_cell(directory_render_status_badge($entry, $locale, false), $statusLabel);
+    }
     $cells .= directory_table_cell(homepage_website_value($external, $display), $siteLabel);
     $cells .= directory_table_cell(directory_table_tor_value($tor), $torLabel);
 
@@ -1378,6 +1417,14 @@ function homepage_filter_text_for_entry(array $entry, string $locale, bool $incl
 
     if ($includeSupport) {
         $parts[] = $entry['links']['support'] ?? '';
+    }
+
+    $status = directory_entry_status($entry);
+    if ($status !== []) {
+        $parts[] = directory_status_text($status, 'label', $locale);
+        $parts[] = directory_status_text($status, 'title', $locale);
+        $parts[] = directory_status_text($status, 'lead', $locale);
+        $parts = array_merge($parts, directory_status_items($status, $locale));
     }
 
     $categorySlug = (string) ($entry['category'] ?? '');

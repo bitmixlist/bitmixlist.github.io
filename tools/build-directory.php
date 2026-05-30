@@ -6,6 +6,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../src/directory/extract.php';
 require_once __DIR__ . '/../src/templates/directory-page.php';
 require_once __DIR__ . '/../src/search-index.php';
+require_once __DIR__ . '/rewrite-homepage-layout.php';
 
 const GENERATED_DIR_MARKER = '.bitmixlist-generated';
 
@@ -72,8 +73,8 @@ foreach ($pages as $path => $html) {
 mark_generated_dirs(array_keys($pages));
 
 if (!$skipIndex) {
-    rewrite_index($root . '/index.html', 'en', $data);
-    rewrite_index($root . '/ru/index.html', 'ru', $data);
+    rewrite_homepage_layout($root . '/index.html', 'en', $data);
+    rewrite_homepage_layout($root . '/ru/index.html', 'ru', $data);
 }
 
 write_sitemap($root, $data);
@@ -223,6 +224,7 @@ function ensure_index_styles(string $html): string
             . '          .homepage-directory .directory-list-title a:hover, .homepage-directory .directory-list-title a:focus { text-decoration: underline; }' . "\n"
             . '          .homepage-directory .directory-list-summary { margin: 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }' . "\n"
             . directory_coin_styles('          ')
+            . directory_status_styles('          ')
             . '          .homepage-directory .directory-list-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }' . "\n"
             . '          .homepage-directory .directory-button { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; margin-top: 0; padding: 0 10px; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; text-decoration: none; font-size: 0.9rem; font-weight: 650; line-height: 1.2; }' . "\n"
             . '          .homepage-directory .directory-button:hover, .homepage-directory .directory-button:focus { background: #27184d; color: #fff; text-decoration: none; }' . "\n"
@@ -310,6 +312,11 @@ function ensure_index_styles(string $html): string
     if (!str_contains($html, '.coin-badge')) {
         $needle = '          .homepage-directory .directory-list-summary { margin: 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }' . "\n";
         $html = str_replace($needle, $needle . directory_coin_styles('          '), $html);
+    }
+
+    if (!str_contains($html, '.directory-status-badge')) {
+        $needle = '          .directory-list-summary .coin-list { display: inline-flex; margin-left: 4px; vertical-align: middle; }' . "\n";
+        $html = str_replace($needle, $needle . directory_status_styles('          '), $html);
     }
 
     $html = str_replace(
