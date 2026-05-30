@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+const DIRECTORY_CSS_ASSET_VERSION = '20260530';
+
 function directory_render_page(array $entry, array $categories, string $locale): string
 {
     $category = $categories[$entry['category']];
@@ -39,9 +41,9 @@ function directory_render_page(array $entry, array $categories, string $locale):
 <title>' . directory_escape($title) . '</title>
 <meta content="' . directory_escape($description) . '" name="description"/>
 <link href="' . directory_escape($canonical) . '" rel="canonical"/>
-<link as="style" data-optimized="2" href="' . $base . 'wp-content/litespeed/css/d4d1cd3e2db3bf373348bdfd89958038.css" onload="this.onload=null;this.rel=\'stylesheet\'" rel="preload"/>
-<noscript><link data-optimized="2" href="' . $base . 'wp-content/litespeed/css/d4d1cd3e2db3bf373348bdfd89958038.css" rel="stylesheet"/></noscript>
-<link href="' . $base . 'wp-content/litespeed/css/styles.css" rel="stylesheet"/>
+<link as="style" data-optimized="2" href="' . directory_css_asset_url($base, 'wp-content/litespeed/css/d4d1cd3e2db3bf373348bdfd89958038.css') . '" onload="this.onload=null;this.rel=\'stylesheet\'" rel="preload"/>
+<noscript><link data-optimized="2" href="' . directory_css_asset_url($base, 'wp-content/litespeed/css/d4d1cd3e2db3bf373348bdfd89958038.css') . '" rel="stylesheet"/></noscript>
+<link href="' . directory_css_asset_url($base, 'wp-content/litespeed/css/styles.css') . '" rel="stylesheet"/>
 ' . directory_render_nav_scripts($base) . '
 ' . directory_render_entry_verification_scripts($entry, $base) . '
 <style>
@@ -258,9 +260,9 @@ function directory_render_section_page(string $categorySlug, array $data, string
 <title>' . directory_escape($title) . '</title>
 <meta content="' . directory_escape($description) . '" name="description"/>
 <link href="' . directory_escape($canonical) . '" rel="canonical"/>
-<link as="style" data-optimized="2" href="' . $base . 'wp-content/litespeed/css/d4d1cd3e2db3bf373348bdfd89958038.css" onload="this.onload=null;this.rel=\'stylesheet\'" rel="preload"/>
-<noscript><link data-optimized="2" href="' . $base . 'wp-content/litespeed/css/d4d1cd3e2db3bf373348bdfd89958038.css" rel="stylesheet"/></noscript>
-<link href="' . $base . 'wp-content/litespeed/css/styles.css" rel="stylesheet"/>
+<link as="style" data-optimized="2" href="' . directory_css_asset_url($base, 'wp-content/litespeed/css/d4d1cd3e2db3bf373348bdfd89958038.css') . '" onload="this.onload=null;this.rel=\'stylesheet\'" rel="preload"/>
+<noscript><link data-optimized="2" href="' . directory_css_asset_url($base, 'wp-content/litespeed/css/d4d1cd3e2db3bf373348bdfd89958038.css') . '" rel="stylesheet"/></noscript>
+<link href="' . directory_css_asset_url($base, 'wp-content/litespeed/css/styles.css') . '" rel="stylesheet"/>
 ' . directory_render_nav_scripts($base) . '
 <style>
 .directory-page .site-header { display: block; min-height: 108px; padding-top: 1rem; padding-bottom: 0.95rem; }
@@ -2643,6 +2645,22 @@ function directory_onion_label(string $value): string
 function directory_table_header(string $label): string
 {
     return '<th' . directory_table_class_attr($label) . ' aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">' . directory_escape($label) . '</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th>';
+}
+
+function directory_css_asset_url(string $base, string $path): string
+{
+    return $base . $path . '?v=' . DIRECTORY_CSS_ASSET_VERSION;
+}
+
+function directory_version_css_asset_urls(string $html): string
+{
+    return preg_replace_callback(
+        '~\bhref=(["\'])([^"\']*wp-content/litespeed/css/[^"\']+?\.css)(?:\?[^"\']*)?\1~',
+        static function (array $match): string {
+            return 'href=' . $match[1] . $match[2] . '?v=' . DIRECTORY_CSS_ASSET_VERSION . $match[1];
+        },
+        $html
+    ) ?? $html;
 }
 
 function directory_table_cell(string $html, string $label): string
