@@ -643,18 +643,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://bitmixlist.org/mixers/dreadpirate.html</loc>
-    <lastmod>2026-06-02T00:00:00Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://bitmixlist.org/ru/mixers/dreadpirate.html</loc>
-    <lastmod>2026-06-02T00:00:00Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://bitmixlist.org/mixers/mixer-black.html</loc>
     <lastmod>2026-06-02T00:00:00Z</lastmod>
     <changefreq>weekly</changefreq>
@@ -691,6 +679,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://bitmixlist.org/mixers/dreadpirate.html</loc>
+    <lastmod>2026-06-02T00:00:00Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/ru/mixers/dreadpirate.html</loc>
+    <lastmod>2026-06-02T00:00:00Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://bitmixlist.org/neverkyc-exchanges/b1exch.html</loc>
     <lastmod>2026-06-02T00:00:00Z</lastmod>
     <changefreq>weekly</changefreq>
@@ -722,18 +722,6 @@
   </url>
   <url>
     <loc>https://bitmixlist.org/ru/neverkyc-exchanges/dex-fo.html</loc>
-    <lastmod>2026-06-02T00:00:00Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://bitmixlist.org/neverkyc-exchanges/tomboi-io.html</loc>
-    <lastmod>2026-06-02T00:00:00Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://bitmixlist.org/ru/neverkyc-exchanges/tomboi-io.html</loc>
     <lastmod>2026-06-02T00:00:00Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -818,6 +806,18 @@
   </url>
   <url>
     <loc>https://bitmixlist.org/ru/neverkyc-exchanges/trevoid.html</loc>
+    <lastmod>2026-06-02T00:00:00Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/neverkyc-exchanges/tomboi-io.html</loc>
+    <lastmod>2026-06-02T00:00:00Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/ru/neverkyc-exchanges/tomboi-io.html</loc>
     <lastmod>2026-06-02T00:00:00Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

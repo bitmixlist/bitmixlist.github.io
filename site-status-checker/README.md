@@ -47,6 +47,10 @@ Then rebuild the static pages with the Cloud Run feed URL:
 BITMIXLIST_STATUS_FEED_URL=https://SERVICE_URL/status.json php tools/build-directory.php
 ```
 
+## Target manifest
+
+Targets default to online for HTTP `2xx`, `3xx`, and `4xx` responses, and offline for `5xx` responses or network failures. A target can set `online_http_statuses` when a known protection page returns a `5xx` status while the service is reachable.
+
 ## Configuration
 
 | Variable | Default | Description |

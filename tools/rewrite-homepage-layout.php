@@ -1142,6 +1142,8 @@ function homepage_render_category(string $slug, array $category, array $entries,
         return homepage_render_tool_registry_category($slug, $category, $entries, $locale, $sectionNotes);
     }
 
+    $entries = directory_entries_with_status_last($entries);
+
     return '<section class="directory-section homepage-directory-section' . ($isTool ? ' tool-registry' : '') . '" id="' . directory_escape($anchor) . '" data-category="' . directory_escape($slug) . '" data-directory-filter-scope data-directory-status-scope>
 	<div class="directory-section-heading">
 	<h2>' . directory_section_heading($title, directory_category_icon($slug)) . '</h2>

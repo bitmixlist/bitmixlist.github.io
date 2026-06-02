@@ -142,7 +142,7 @@ async def _probe_url(target: dict[str, Any]) -> dict[str, Any]:
             async with client.stream("GET", url) as response:
                 latency_ms = int(round((time.perf_counter() - started) * 1000))
                 status_code = response.status_code
-                status = "online" if 200 <= status_code < 500 else "offline"
+                status = _status_from_http_response(status_code, target)
                 return base | {
                     "status": status,
                     "http_status": status_code,
@@ -156,6 +156,19 @@ async def _probe_url(target: dict[str, Any]) -> dict[str, Any]:
             "latency_ms": latency_ms,
             "error": f"{type(exc).__name__}: {exc}",
         }
+
+
+def _status_from_http_response(status_code: int, target: dict[str, Any]) -> str:
+    raw_online_statuses = target.get("online_http_statuses", [])
+    configured_statuses = raw_online_statuses if isinstance(raw_online_statuses, list) else []
+    online_statuses = {
+        int(value)
+        for value in configured_statuses
+        if isinstance(value, int) or (isinstance(value, str) and value.isdigit())
+    }
+    if status_code in online_statuses:
+        return "online"
+    return "online" if 200 <= status_code < 500 else "offline"
 
 
 def _aggregate_service(

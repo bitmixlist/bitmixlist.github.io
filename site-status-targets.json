@@ -211,19 +211,6 @@
             ]
         },
         {
-            "id": "mixers:dreadpirate",
-            "category": "mixers",
-            "slug": "dreadpirate",
-            "name": "DreadPirate",
-            "targets": [
-                {
-                    "kind": "clearnet",
-                    "url": "https://dreadpirate.io/",
-                    "source": "listed"
-                }
-            ]
-        },
-        {
             "id": "mixers:mixer-black",
             "category": "mixers",
             "slug": "mixer-black",
@@ -263,6 +250,19 @@
             ]
         },
         {
+            "id": "mixers:dreadpirate",
+            "category": "mixers",
+            "slug": "dreadpirate",
+            "name": "DreadPirate",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://dreadpirate.io/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
             "id": "neverkyc-exchanges:b1exch",
             "category": "neverkyc-exchanges",
             "slug": "b1exch",
@@ -297,19 +297,6 @@
                 {
                     "kind": "clearnet",
                     "url": "https://dex.fo/",
-                    "source": "listed"
-                }
-            ]
-        },
-        {
-            "id": "neverkyc-exchanges:tomboi-io",
-            "category": "neverkyc-exchanges",
-            "slug": "tomboi-io",
-            "name": "Tomboi.io",
-            "targets": [
-                {
-                    "kind": "clearnet",
-                    "url": "https://tomboi.io/",
                     "source": "listed"
                 }
             ]
@@ -393,6 +380,19 @@
             ]
         },
         {
+            "id": "neverkyc-exchanges:tomboi-io",
+            "category": "neverkyc-exchanges",
+            "slug": "tomboi-io",
+            "name": "Tomboi.io",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://tomboi.io/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
             "id": "instant-exchanges:quickex",
             "category": "instant-exchanges",
             "slug": "quickex",
@@ -440,7 +440,10 @@
                 {
                     "kind": "clearnet",
                     "url": "https://trocador.app/?ref=M7uvgXV2HR",
-                    "source": "listed"
+                    "source": "listed",
+                    "online_http_statuses": [
+                        503
+                    ]
                 }
             ]
         },

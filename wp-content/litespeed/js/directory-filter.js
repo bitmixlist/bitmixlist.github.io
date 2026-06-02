@@ -338,7 +338,17 @@ document.addEventListener('DOMContentLoaded', () => {
     return 'text';
   };
 
+  const rowIsPinnedLast = (row) => Boolean(row.querySelector(
+    '.directory-status-badge--maintenance, .directory-status-badge--scam-accusation'
+  ));
+
   const compareRows = (index, direction, type, originalIndexes) => (left, right) => {
+    const leftPinnedLast = rowIsPinnedLast(left);
+    const rightPinnedLast = rowIsPinnedLast(right);
+    if (leftPinnedLast !== rightPinnedLast) {
+      return leftPinnedLast ? 1 : -1;
+    }
+
     const leftText = cellText(left, index);
     const rightText = cellText(right, index);
     let result = 0;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-const DIRECTORY_ASSET_VERSION = '20260602-1';
+const DIRECTORY_ASSET_VERSION = '20260602-2';
 
 function directory_render_page(array $entry, array $categories, string $locale): string
 {
@@ -906,14 +906,14 @@ function directory_render_status_filter(array $entries, string $locale, string $
 
     $id = 'directory-status-filter-' . preg_replace('/[^a-z0-9-]+/i', '-', $scopeId . '-' . $locale);
     $legend = $locale === 'ru' ? 'Доступность' : 'Availability';
+    $online = $locale === 'ru' ? 'Только онлайн-сервисы' : 'Online services only';
     $all = $locale === 'ru' ? 'Все сервисы' : 'All services';
-    $online = $locale === 'ru' ? 'Только онлайн' : 'Online only';
 
     return '<fieldset class="directory-status-filter" data-directory-status-filter>
 	<legend>' . directory_icon_label('activity', $legend) . '</legend>
 	<div class="directory-status-filter-options">
-	<label class="directory-status-filter-option" for="' . directory_escape($id) . '-all"><input checked id="' . directory_escape($id) . '-all" name="' . directory_escape($id) . '" type="radio" value="all"/><span>' . directory_escape($all) . '</span></label>
-	<label class="directory-status-filter-option" for="' . directory_escape($id) . '-online"><input id="' . directory_escape($id) . '-online" name="' . directory_escape($id) . '" type="radio" value="online"/><span>' . directory_escape($online) . '</span></label>
+	<label class="directory-status-filter-option" for="' . directory_escape($id) . '-online"><input checked id="' . directory_escape($id) . '-online" name="' . directory_escape($id) . '" type="radio" value="online"/><span>' . directory_escape($online) . '</span></label>
+	<label class="directory-status-filter-option" for="' . directory_escape($id) . '-all"><input id="' . directory_escape($id) . '-all" name="' . directory_escape($id) . '" type="radio" value="all"/><span>' . directory_escape($all) . '</span></label>
 	</div>
 </fieldset>';
 }
@@ -1147,6 +1147,8 @@ function directory_render_section_entries_section(array $entries, string $locale
         return directory_render_tool_registry_section($entries, $locale, $fromPath, $category, $categorySlug);
     }
 
+    $entries = directory_entries_with_status_last($entries);
+
 	return directory_render_optional_blocks([
         directory_render_directory_filter($categorySlug, $category, $locale),
         directory_render_status_filter($entries, $locale, $categorySlug),
@@ -1271,6 +1273,7 @@ function directory_render_section_card(array $entry, string $locale, string $bas
 
 function directory_render_section_table(array $entries, string $locale, string $base, string $fromPath, string $categorySlug): string
 {
+    $entries = directory_entries_with_status_last($entries);
     $labels = directory_section_table_labels($entries, $locale, $categorySlug);
     $rows = '';
 
@@ -1837,13 +1840,13 @@ function directory_status_targets_for_entry(array $entry): array
         return [];
     }
 
-    return [
-        [
-            'kind' => 'clearnet',
-            'url' => $url,
-            'source' => $override === '' ? 'listed' : 'override',
-        ],
+    $target = [
+        'kind' => 'clearnet',
+        'url' => $url,
+        'source' => $override === '' ? 'listed' : 'override',
     ];
+
+    return [array_merge($target, directory_status_target_options($entry))];
 }
 
 function directory_normalize_status_target_url(string $url): string
@@ -1874,6 +1877,18 @@ function directory_status_target_override(array $entry): string
     ];
 
     return $overrides[$categorySlug][$slug] ?? '';
+}
+
+function directory_status_target_options(array $entry): array
+{
+    $categorySlug = (string) ($entry['category'] ?? '');
+    $slug = (string) ($entry['slug'] ?? '');
+
+    if ($categorySlug === 'instant-exchanges' && $slug === 'trocador') {
+        return ['online_http_statuses' => [503]];
+    }
+
+    return [];
 }
 
 function directory_status_target_manifest(array $data): array
@@ -1939,6 +1954,37 @@ function directory_entries_have_status(array $entries): bool
     }
 
     return false;
+}
+
+function directory_entries_with_status_last(array $entries): array
+{
+    $normal = [];
+    $flagged = [];
+
+    foreach ($entries as $entry) {
+        if (directory_entry_should_sort_last($entry)) {
+            $flagged[] = $entry;
+        } else {
+            $normal[] = $entry;
+        }
+    }
+
+    return array_merge($normal, $flagged);
+}
+
+function directory_entry_should_sort_last(array $entry): bool
+{
+    if (($entry['type'] ?? 'service') !== 'service') {
+        return false;
+    }
+
+    $status = directory_entry_status($entry);
+    if ($status === []) {
+        return false;
+    }
+
+    $type = strtolower(preg_replace('/[^a-z0-9-]+/i', '-', (string) ($status['type'] ?? '')) ?: '');
+    return in_array($type, ['maintenance', 'scam-accusation'], true);
 }
 
 function directory_status_text(array $status, string $key, string $locale): string
