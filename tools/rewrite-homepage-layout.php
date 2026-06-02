@@ -89,6 +89,7 @@ function homepage_ensure_styles(string $html): string
         $html = homepage_ensure_card_logo_styles($html);
         $html = homepage_ensure_coin_styles($html);
         $html = homepage_ensure_status_styles($html);
+        $html = homepage_ensure_live_status_styles($html);
         $html = homepage_ensure_nowrap_styles($html);
         $html = homepage_ensure_sort_styles($html);
         $html = homepage_ensure_tool_registry_styles($html);
@@ -97,6 +98,7 @@ function homepage_ensure_styles(string $html): string
         $html = homepage_ensure_section_note_styles($html);
         $html = homepage_ensure_intro_styles($html);
         $html = homepage_ensure_filter_styles($html);
+        $html = homepage_ensure_status_filter_styles($html);
         $html = homepage_ensure_title_style($html);
         return homepage_ensure_header_nav_styles($html);
     }
@@ -114,6 +116,7 @@ function homepage_ensure_styles(string $html): string
         . '          .directory-filter-input { width: 100%; min-height: 40px; box-sizing: border-box; border: 1px solid #4a3a70; border-radius: 7px; background: #121018; color: #f6f2ff; padding: 0 12px; font: inherit; }' . "\n"
         . '          .directory-filter-input:focus { border-color: #8a6cff; outline: 2px solid rgba(138, 108, 255, 0.24); outline-offset: 2px; }' . "\n"
         . '          .directory-filter-empty { margin: 10px 0 0; color: #c9c3d8; }' . "\n"
+        . directory_status_filter_styles('          ')
         . '          .homepage-directory .directory-section { margin-top: 28px; }' . "\n"
         . '          .homepage-directory .directory-section h2 { margin: 0 0 12px; font-size: 1.35rem; letter-spacing: 0; }' . "\n"
         . '          .homepage-directory .directory-section h3 { margin: 22px 0 10px; font-size: 1.08rem; letter-spacing: 0; }' . "\n"
@@ -130,6 +133,7 @@ function homepage_ensure_styles(string $html): string
         . '          .homepage-directory .directory-list-summary { margin: 0; color: #d8d0e8; font-size: 0.92rem; line-height: 1.45; }' . "\n"
         . directory_coin_styles('          ')
         . directory_status_styles('          ')
+        . directory_live_status_styles('          ')
         . '          .homepage-directory .directory-list-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }' . "\n"
         . '          .homepage-directory .directory-button { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; margin-top: 0; padding: 0 10px; border: 1px solid #7a61f6; border-radius: 7px; background: #1a1234; color: #f2ecff; text-decoration: none; font-size: 0.9rem; font-weight: 650; line-height: 1.2; }' . "\n"
         . '          .homepage-directory .directory-button:hover, .homepage-directory .directory-button:focus { background: #27184d; color: #fff; text-decoration: none; }' . "\n"
@@ -255,6 +259,20 @@ function homepage_ensure_filter_styles(string $html): string
     return str_replace($needle, $insert, $html);
 }
 
+function homepage_ensure_status_filter_styles(string $html): string
+{
+    if (str_contains($html, '.directory-status-filter {')) {
+        return $html;
+    }
+
+    $needle = '          .directory-filter-empty { margin: 10px 0 0; color: #c9c3d8; }' . "\n";
+    if (!str_contains($html, $needle)) {
+        throw new RuntimeException('Unable to locate status filter style insertion point');
+    }
+
+    return str_replace($needle, $needle . directory_status_filter_styles('          '), $html);
+}
+
 function homepage_ensure_header_meta_nav(string $html, string $locale, array $categories): string
 {
     $fromPath = $locale === 'ru' ? 'ru/index.html' : 'index.html';
@@ -284,24 +302,42 @@ function homepage_ensure_header_meta_nav(string $html, string $locale, array $ca
 
 function homepage_ensure_filter_script(string $html): string
 {
-    if (str_contains($html, 'directory-filter.js')) {
-        return $html;
+    $base = str_contains($html, 'src="../wp-content/litespeed/js/site-search.js') ? '../' : '';
+
+    if (!str_contains($html, 'directory-filter.js')) {
+        $pattern = '~(<script src="' . preg_quote($base . 'wp-content/litespeed/js/site-search.js', '~') . '(?:\?v=[^"]*)?" defer></script>\R)~';
+        $replacement = '$1<script src="' . $base . 'wp-content/litespeed/js/directory-filter.js" defer></script>' . "\n";
+        $updated = preg_replace($pattern, $replacement, $html, 1, $count);
+        if (!is_string($updated) || $count !== 1) {
+            throw new RuntimeException('Unable to locate homepage filter script insertion point');
+        }
+        $html = $updated;
     }
 
-    $needle = '<script src="wp-content/litespeed/js/site-search.js" defer></script>' . "\n";
-    $insert = $needle . '<script src="wp-content/litespeed/js/directory-filter.js" defer></script>' . "\n";
+    return homepage_ensure_status_script($html, $base);
+}
 
-    if (str_contains($html, $needle)) {
-        return str_replace($needle, $insert, $html);
+function homepage_ensure_status_script(string $html, string $base): string
+{
+    $statusUrl = directory_escape(directory_status_feed_url($base));
+    if (str_contains($html, 'site-status.js')) {
+        $pattern = '~(<script\b(?=[^>]*\bsrc="' . preg_quote($base . 'wp-content/litespeed/js/site-status.js', '~') . '(?:\?v=[^"]*)?")[^>]*\bdata-status-url=")[^"]*("[^>]*></script>)~';
+        $updated = preg_replace($pattern, '$1' . $statusUrl . '$2', $html, 1, $count);
+        if (!is_string($updated) || $count !== 1) {
+            throw new RuntimeException('Unable to update homepage status script feed URL');
+        }
+
+        return $updated;
     }
 
-    $ruNeedle = '<script src="../wp-content/litespeed/js/site-search.js" defer></script>' . "\n";
-    $ruInsert = $ruNeedle . '<script src="../wp-content/litespeed/js/directory-filter.js" defer></script>' . "\n";
-    if (str_contains($html, $ruNeedle)) {
-        return str_replace($ruNeedle, $ruInsert, $html);
+    $pattern = '~(<script src="' . preg_quote($base . 'wp-content/litespeed/js/directory-filter.js', '~') . '(?:\?v=[^"]*)?" defer></script>\R)~';
+    $replacement = '$1<script src="' . $base . 'wp-content/litespeed/js/site-status.js" data-status-url="' . $statusUrl . '" defer></script>' . "\n";
+    $updated = preg_replace($pattern, $replacement, $html, 1, $count);
+    if (!is_string($updated) || $count !== 1) {
+        throw new RuntimeException('Unable to locate homepage status script insertion point');
     }
 
-    throw new RuntimeException('Unable to locate homepage filter script insertion point');
+    return $updated;
 }
 
 function homepage_ensure_directory_icon_styles(string $html): string
@@ -455,6 +491,20 @@ function homepage_ensure_status_styles(string $html): string
     }
 
     return str_replace($needle, $needle . $statusStyles, $html);
+}
+
+function homepage_ensure_live_status_styles(string $html): string
+{
+    if (str_contains($html, '.directory-site-status {')) {
+        return $html;
+    }
+
+    $needle = '          .homepage-directory .directory-list-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }' . "\n";
+    if (!str_contains($html, $needle)) {
+        throw new RuntimeException('Unable to locate live status style insertion point');
+    }
+
+    return str_replace($needle, directory_live_status_styles('          ') . $needle, $html);
 }
 
 function homepage_ensure_nowrap_styles(string $html): string
@@ -1092,12 +1142,13 @@ function homepage_render_category(string $slug, array $category, array $entries,
         return homepage_render_tool_registry_category($slug, $category, $entries, $locale, $sectionNotes);
     }
 
-    return '<section class="directory-section homepage-directory-section' . ($isTool ? ' tool-registry' : '') . '" id="' . directory_escape($anchor) . '" data-category="' . directory_escape($slug) . '" data-directory-filter-scope>
+    return '<section class="directory-section homepage-directory-section' . ($isTool ? ' tool-registry' : '') . '" id="' . directory_escape($anchor) . '" data-category="' . directory_escape($slug) . '" data-directory-filter-scope data-directory-status-scope>
 	<div class="directory-section-heading">
 	<h2>' . directory_section_heading($title, directory_category_icon($slug)) . '</h2>
 	<a class="directory-section-link" href="' . directory_escape($sectionHref) . '">' . directory_icon_label('arrow-right', $sectionLabel) . '</a>
 	</div>
 	' . homepage_render_directory_filter($slug, $category, $locale) . '
+	' . directory_render_status_filter($entries, $locale, $slug) . '
 	<h3>' . directory_section_heading($entriesLabel, 'entries') . '</h3>
 	' . homepage_render_cards($entries, $locale, $base, $isTool) . '
 	<section class="homepage-data-sheet" data-directory-filter-scope>
@@ -1245,15 +1296,20 @@ function homepage_render_card(array $entry, string $locale, string $base, string
         $summaryMarkup = '<' . $summaryTag . ' class="directory-list-summary ' . directory_escape($summaryClass) . '">' . directory_render_card_summary($summary, $base) . '</' . $summaryTag . '>';
     }
     $externalAction = directory_render_external_action($entry, $locale, $external, $visitLabel, $isTool, $visitClass);
+    $actions = array_values(array_filter([
+        directory_render_live_status_badge($entry, $locale),
+        '<a class="directory-button" href="' . directory_escape($entryHref) . '">' . directory_icon_label('details', $detailsLabel) . '</a>',
+        $externalAction,
+    ]));
+    $actionsHtml = implode("\n\t", $actions);
 
-    return '<' . $tag . ' class="' . $cardClass . '"' . $dataTags . ' data-directory-filter-item data-directory-filter-text="' . directory_escape(homepage_filter_text_for_entry($entry, $locale, false)) . '">
+    return '<' . $tag . ' class="' . $cardClass . '"' . $dataTags . ' data-directory-filter-item data-directory-filter-text="' . directory_escape(homepage_filter_text_for_entry($entry, $locale, false)) . '"' . directory_status_item_attributes($entry) . '>
 	<div class="directory-card-media"><a class="mixer-logo-link" href="' . directory_escape($entryHref) . '" rel="noopener noreferrer">' . directory_logo_markup($entry, $base, $name) . '</a>' . directory_render_status_sign($entry, $locale) . '</div>
 	<div>
 	<h3 class="directory-list-title"><a class="' . directory_escape($nameClass) . '" href="' . directory_escape($entryHref) . '" rel="noopener noreferrer">' . directory_escape($name) . '</a></h3>' . directory_render_status_badge_line($entry, $locale, true, "\t\t") . '
 		' . $summaryMarkup . '
 		<div class="directory-list-actions">
-	<a class="directory-button" href="' . directory_escape($entryHref) . '">' . directory_icon_label('details', $detailsLabel) . '</a>
-	' . $externalAction . '
+	' . $actionsHtml . '
 </div>
 ' . ($tags !== [] ? '<div class="tool__meta">' . homepage_render_pills($tags) . '</div>' : '') . '
 </div>
@@ -1286,12 +1342,12 @@ function homepage_render_table(array $entries, string $locale, string $base, boo
     $rows = '';
 
     foreach ($entries as $entry) {
-        $rows .= homepage_render_table_row($entry, $locale, $base, $labels['facts'], $filterable, $labels['status']) . "\n";
+        $rows .= homepage_render_table_row($entry, $locale, $base, $labels['facts'], $filterable, $labels['status'], $labels['live_status']) . "\n";
     }
 
     return '<figure class="wp-block-table directory-table-wrap">
 		<table class="directory-facts homepage-comparison-table">
-		<thead><tr>' . directory_table_header($labels['name']) . directory_render_status_header($labels['status']) . directory_table_header($labels['site']) . directory_table_header($labels['tor']) . homepage_render_fact_headers($labels['facts']) . '</tr></thead>
+		<thead><tr>' . directory_table_header($labels['name']) . directory_render_status_header($labels['status']) . directory_render_status_header($labels['live_status']) . directory_table_header($labels['site']) . directory_table_header($labels['tor']) . homepage_render_fact_headers($labels['facts']) . '</tr></thead>
 	<tbody>
 	' . $rows . '</tbody>
 </table>
@@ -1329,6 +1385,7 @@ function homepage_table_labels(array $entries, string $locale, bool $isTool, str
     return [
         'name' => $locale === 'ru' ? 'Название' : 'Name',
         'status' => directory_entries_have_status($entries) ? ($locale === 'ru' ? 'Статус' : 'Status') : '',
+        'live_status' => directory_entries_have_status_targets($entries) ? ($locale === 'ru' ? 'Доступность' : 'Live status') : '',
         'site' => $locale === 'ru' ? 'Веб-сайт' : 'Website',
         'tor' => $locale === 'ru' ? 'Tor-сайт' : 'Tor Site',
         'facts' => $facts,
@@ -1354,7 +1411,7 @@ function homepage_render_fact_headers(array $labels): string
     return $headers;
 }
 
-function homepage_render_table_row(array $entry, string $locale, string $base, array $factLabels, bool $filterable, string $statusLabel = ''): string
+function homepage_render_table_row(array $entry, string $locale, string $base, array $factLabels, bool $filterable, string $statusLabel = '', string $liveStatusLabel = ''): string
 {
     $entryHref = $entry['index_paths'][$locale];
     $display = directory_base_name($entry['table_display'][$locale] ?? $entry['content'][$locale]['name']);
@@ -1373,6 +1430,9 @@ function homepage_render_table_row(array $entry, string $locale, string $base, a
     if ($statusLabel !== '') {
         $cells .= directory_table_cell(directory_render_status_badge($entry, $locale, false), $statusLabel);
     }
+    if ($liveStatusLabel !== '') {
+        $cells .= directory_table_cell(directory_render_live_status_badge($entry, $locale), $liveStatusLabel);
+    }
     $cells .= directory_table_cell(homepage_website_value($external, $display), $siteLabel);
     $cells .= directory_table_cell(directory_table_tor_value($tor), $torLabel);
 
@@ -1382,7 +1442,7 @@ function homepage_render_table_row(array $entry, string $locale, string $base, a
     }
 
     $filterAttrs = $filterable
-        ? ' data-directory-filter-item data-directory-filter-text="' . directory_escape(homepage_filter_text_for_entry($entry, $locale, false)) . '"'
+        ? ' data-directory-filter-item data-directory-filter-text="' . directory_escape(homepage_filter_text_for_entry($entry, $locale, false)) . '"' . directory_status_item_attributes($entry)
         : '';
 
     return '<tr' . $filterAttrs . '>' . $cells . '</tr>';

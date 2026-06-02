@@ -41,6 +41,14 @@ foreach ($data['entries'] as $entry) {
     }
 }
 
+$statusTargetsPaths = [
+    $root . '/site-status-targets.json',
+];
+if (is_dir($root . '/site-status-checker')) {
+    $statusTargetsPaths[] = $root . '/site-status-checker/site-status-targets.json';
+}
+$statusTargetsJson = directory_status_targets_json($data);
+
 if ($checkOnly) {
     foreach ($pages as $path => $html) {
         if (!is_file($path)) {
@@ -50,6 +58,16 @@ if ($checkOnly) {
         $existing = file_get_contents($path);
         if ($existing !== $html) {
             fwrite(STDERR, "Generated page is stale: {$path}" . PHP_EOL);
+            exit(1);
+        }
+    }
+    foreach ($statusTargetsPaths as $statusTargetsPath) {
+        if (!is_file($statusTargetsPath)) {
+            fwrite(STDERR, "Missing generated status target manifest: {$statusTargetsPath}" . PHP_EOL);
+            exit(1);
+        }
+        if (file_get_contents($statusTargetsPath) !== $statusTargetsJson) {
+            fwrite(STDERR, "Generated status target manifest is stale: {$statusTargetsPath}" . PHP_EOL);
             exit(1);
         }
     }
@@ -77,6 +95,9 @@ if (!$skipIndex) {
     rewrite_homepage_layout($root . '/ru/index.html', 'ru', $data);
 }
 
+foreach ($statusTargetsPaths as $statusTargetsPath) {
+    file_put_contents($statusTargetsPath, $statusTargetsJson);
+}
 write_sitemap($root, $data);
 bitmixlist_write_search_index($root);
 

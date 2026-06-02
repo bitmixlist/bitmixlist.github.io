@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const scopes = Array.from(document.querySelectorAll('[data-directory-filter-scope]'));
 
   const normalize = (value) => (value || '').toLowerCase().replace(/\s+/g, ' ').trim();
-  const visibilityKeys = ['directoryTextHidden', 'directoryPairHidden', 'directoryFeeHidden'];
+  const visibilityKeys = ['directoryTextHidden', 'directoryPairHidden', 'directoryFeeHidden', 'directoryStatusHidden'];
   const setFilterHidden = (item, key, isHidden) => {
     item.dataset[key] = isHidden ? '1' : '0';
     const hidden = visibilityKeys.some((visibilityKey) => item.dataset[visibilityKey] === '1');
@@ -28,6 +28,15 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const scope of scopes) {
       updateScopeEmpty(scope);
     }
+  };
+
+  window.bitmixlistDirectoryFilters = {
+    itemIsVisible,
+    scopeItems,
+    setFilterHidden,
+    updateAllScopeEmpty,
+    updateScopeEmpty,
+    visibilityKeys,
   };
 
   for (const scope of scopes) {

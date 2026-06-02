@@ -1610,6 +1610,45 @@ function directory_entry_status_override(string $categorySlug, string $slug): ar
         ];
     }
 
+    if ($categorySlug === 'neverkyc-exchanges' && $slug === 'tomboi-io') {
+        return [
+            'type' => 'scam-accusation',
+            'label' => [
+                'en' => 'Scam Accusation',
+                'ru' => 'Scam Accusation',
+            ],
+            'action_label' => [
+                'en' => 'Scam Accusation',
+                'ru' => 'Scam Accusation',
+            ],
+            'title' => [
+                'en' => 'Tomboi.io has an active scam accusation',
+                'ru' => 'Для Tomboi.io опубликована scam accusation',
+            ],
+            'lead' => [
+                'en' => 'A scam accusation thread has been posted for Tomboi.io on Bitcointalk. Review the thread before using the service.',
+                'ru' => 'На Bitcointalk опубликована тема scam accusation по Tomboi.io. Изучите тему перед использованием сервиса.',
+            ],
+            'items' => [
+                'en' => [
+                    'BitMixList is flagging this service while the accusation is public and unresolved.',
+                    'The service link is disabled from BitMixList until this warning is reviewed again.',
+                ],
+                'ru' => [
+                    'BitMixList помечает этот сервис, пока обвинение публично и не закрыто.',
+                    'Ссылка на сервис отключена на BitMixList до повторного пересмотра предупреждения.',
+                ],
+            ],
+            'source' => [
+                'label' => [
+                    'en' => 'Bitcointalk scam accusation thread',
+                    'ru' => 'тема scam accusation на Bitcointalk',
+                ],
+                'url' => 'https://bitcointalk.org/index.php?topic=5584545.msg66788575#msg66788575',
+            ],
+        ];
+    }
+
     return [];
 }
 
@@ -1938,7 +1977,7 @@ function directory_is_support_header(string $label): bool
 function directory_is_status_header(string $label): bool
 {
     $normalized = mb_strtolower(trim($label), 'UTF-8');
-    return in_array($normalized, ['status', 'статус'], true);
+    return in_array($normalized, ['status', 'live status', 'статус', 'доступность'], true);
 }
 
 function directory_is_support_channel_header(string $label): bool

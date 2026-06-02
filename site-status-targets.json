@@ -1,0 +1,656 @@
+{
+    "schema_version": 1,
+    "ttl_seconds": 3600,
+    "targets": [
+        {
+            "id": "mixers:mixer-money",
+            "category": "mixers",
+            "slug": "mixer-money",
+            "name": "Mixer.money",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://mixer.money",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:mixtum",
+            "category": "mixers",
+            "slug": "mixtum",
+            "name": "Mixtum",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://mixtum.io",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:coinomize",
+            "category": "mixers",
+            "slug": "coinomize",
+            "name": "Coinomize",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://coinomize.biz/ref/716869674",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:anonymixer",
+            "category": "mixers",
+            "slug": "anonymixer",
+            "name": "Anonymixer",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://anonymixer.com",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:webmixer",
+            "category": "mixers",
+            "slug": "webmixer",
+            "name": "Webmixer",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://webmixer.io",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:mixtura-money",
+            "category": "mixers",
+            "slug": "mixtura-money",
+            "name": "Mixtura.money",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://mixtura.money",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:mixero",
+            "category": "mixers",
+            "slug": "mixero",
+            "name": "Mixero",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://mixero.io/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:mixy-money",
+            "category": "mixers",
+            "slug": "mixy-money",
+            "name": "Mixy.money",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://mixy.money",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:dreammixer",
+            "category": "mixers",
+            "slug": "dreammixer",
+            "name": "DreamMixer",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://mixerdream.com",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:thormixer",
+            "category": "mixers",
+            "slug": "thormixer",
+            "name": "Thormixer",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://thormixer.io/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:jokermix",
+            "category": "mixers",
+            "slug": "jokermix",
+            "name": "JokerMix",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://jokermix.to/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:genesismix",
+            "category": "mixers",
+            "slug": "genesismix",
+            "name": "GenesisMix",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://genesismix.cx/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:okmix",
+            "category": "mixers",
+            "slug": "okmix",
+            "name": "Okmix",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://okmix.io",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:zeusmix",
+            "category": "mixers",
+            "slug": "zeusmix",
+            "name": "Zeusmix",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://zeusmix.to/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:trustmixer",
+            "category": "mixers",
+            "slug": "trustmixer",
+            "name": "TrustMixer",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://trustmixer.io",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:bmix",
+            "category": "mixers",
+            "slug": "bmix",
+            "name": "Bmix",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://bmix.io/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:dreadpirate",
+            "category": "mixers",
+            "slug": "dreadpirate",
+            "name": "DreadPirate",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://dreadpirate.io/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:mixer-black",
+            "category": "mixers",
+            "slug": "mixer-black",
+            "name": "Mixer.Black",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://mixer.black/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:mixtwix",
+            "category": "mixers",
+            "slug": "mixtwix",
+            "name": "MixTwix",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://mixtwix.io/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:bitxer",
+            "category": "mixers",
+            "slug": "bitxer",
+            "name": "Bitxer",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://www.bitxer.io/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "neverkyc-exchanges:b1exch",
+            "category": "neverkyc-exchanges",
+            "slug": "b1exch",
+            "name": "B1eXch",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://b1exch.to/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "neverkyc-exchanges:crypton",
+            "category": "neverkyc-exchanges",
+            "slug": "crypton",
+            "name": "Crypton",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://crp.is/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "neverkyc-exchanges:dex-fo",
+            "category": "neverkyc-exchanges",
+            "slug": "dex-fo",
+            "name": "Dex.fo",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://dex.fo/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "neverkyc-exchanges:tomboi-io",
+            "category": "neverkyc-exchanges",
+            "slug": "tomboi-io",
+            "name": "Tomboi.io",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://tomboi.io/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "neverkyc-exchanges:thorchainswap",
+            "category": "neverkyc-exchanges",
+            "slug": "thorchainswap",
+            "name": "THORChainSwap",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://thorchain.org",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "neverkyc-exchanges:bridgoro",
+            "category": "neverkyc-exchanges",
+            "slug": "bridgoro",
+            "name": "Bridgoro",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://bridgoro.com/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "neverkyc-exchanges:sageswap",
+            "category": "neverkyc-exchanges",
+            "slug": "sageswap",
+            "name": "Sageswap",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://sageswap.io/?utm_source=62IR1pxGbV",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "neverkyc-exchanges:splash-tf",
+            "category": "neverkyc-exchanges",
+            "slug": "splash-tf",
+            "name": "Splash.tf",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://splash.tf/?ref=3zdjXY3XC",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "neverkyc-exchanges:eigenwallet",
+            "category": "neverkyc-exchanges",
+            "slug": "eigenwallet",
+            "name": "Eigenwallet",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://eigenwallet.org/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "neverkyc-exchanges:basicswap-beta",
+            "category": "neverkyc-exchanges",
+            "slug": "basicswap-beta",
+            "name": "Basicswap Beta",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://basicswapdex.com/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "instant-exchanges:quickex",
+            "category": "instant-exchanges",
+            "slug": "quickex",
+            "name": "Quickex",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://quickex.io",
+                    "source": "override"
+                }
+            ]
+        },
+        {
+            "id": "instant-exchanges:cce-cash",
+            "category": "instant-exchanges",
+            "slug": "cce-cash",
+            "name": "CCE.cash",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://cce.cash?ref=KJxgqaOV",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "instant-exchanges:wizardswap",
+            "category": "instant-exchanges",
+            "slug": "wizardswap",
+            "name": "Wizardswap",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://wizardswap.io",
+                    "source": "override"
+                }
+            ]
+        },
+        {
+            "id": "instant-exchanges:trocador",
+            "category": "instant-exchanges",
+            "slug": "trocador",
+            "name": "Trocador",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://trocador.app/?ref=M7uvgXV2HR",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "instant-exchanges:chainswap",
+            "category": "instant-exchanges",
+            "slug": "chainswap",
+            "name": "ChainSwap",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://chainswap.io/?ref=74AW8Ubn3y",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "instant-exchanges:pegasusswap",
+            "category": "instant-exchanges",
+            "slug": "pegasusswap",
+            "name": "PegasusSwap",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://pegasusswap.com",
+                    "source": "override"
+                }
+            ]
+        },
+        {
+            "id": "instant-exchanges:exolix",
+            "category": "instant-exchanges",
+            "slug": "exolix",
+            "name": "Exolix",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://exolix.com",
+                    "source": "override"
+                }
+            ]
+        },
+        {
+            "id": "instant-exchanges:bitcoinvn",
+            "category": "instant-exchanges",
+            "slug": "bitcoinvn",
+            "name": "BitcoinVN",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://bitcoinvn.io",
+                    "source": "override"
+                }
+            ]
+        },
+        {
+            "id": "p2p-markets:localcoinswap",
+            "category": "p2p-markets",
+            "slug": "localcoinswap",
+            "name": "LocalCoinSwap",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://localcoinswap.com/?rc=A46F666A",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "p2p-markets:hodlhodl",
+            "category": "p2p-markets",
+            "slug": "hodlhodl",
+            "name": "HodlHodl",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://hodlhodl.com/join/EMLR2",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "p2p-markets:noones",
+            "category": "p2p-markets",
+            "slug": "noones",
+            "name": "Noones",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://noones.com/?r=VividImpala709",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "p2p-markets:peach-bitcoin",
+            "category": "p2p-markets",
+            "slug": "peach-bitcoin",
+            "name": "Peach Bitcoin",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://peachbitcoin.com/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "p2p-markets:robosats",
+            "category": "p2p-markets",
+            "slug": "robosats",
+            "name": "Robosats",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://robosats.com/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "p2p-markets:bisq",
+            "category": "p2p-markets",
+            "slug": "bisq",
+            "name": "Bisq",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://bisq.network/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "p2p-markets:nonkyc",
+            "category": "p2p-markets",
+            "slug": "nonkyc",
+            "name": "Nonkyc",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://nonkyc.io?ref=67515cb8572aa49b681cfc9b&campaign=bitmxlist&source=bitmixlist.org",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "p2p-markets:lnp2pbot",
+            "category": "p2p-markets",
+            "slug": "lnp2pbot",
+            "name": "lnp2pbot",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://lnp2pbot.com",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "p2p-markets:retoswap",
+            "category": "p2p-markets",
+            "slug": "retoswap",
+            "name": "Retoswap",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://retoswap.com",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "coordinators:kruw",
+            "category": "coordinators",
+            "slug": "kruw",
+            "name": "Kruw",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://coinjoin.kruw.io/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "coordinators:ginger-wallet",
+            "category": "coordinators",
+            "slug": "ginger-wallet",
+            "name": "Ginger Wallet",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://api.gingerwallet.io/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "coordinators:opencoordinator",
+            "category": "coordinators",
+            "slug": "opencoordinator",
+            "name": "OpenCoordinator",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://api.opencoordinator.org/",
+                    "source": "listed"
+                }
+            ]
+        }
+    ]
+}
