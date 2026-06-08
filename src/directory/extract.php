@@ -186,9 +186,12 @@ function directory_extract_all(string $root, array $options = []): array
             }
             if ($categorySlug === 'mixers') {
                 $supportOverride = directory_mixer_support_override($slug);
-                if ($supportOverride !== [] && (trim($links['support'] ?? '') === '' || $slug === 'dreadpirate')) {
+                if ($supportOverride !== [] && (trim($links['support'] ?? '') === '' || directory_mixer_support_override_is_authoritative($slug))) {
                     $links['support'] = $supportOverride['support'];
                     $links['support_html'] = $supportOverride['support_html'];
+                }
+                foreach (directory_mixer_link_override($slug) as $key => $value) {
+                    $links[$key] = $value;
                 }
             }
             $links = directory_expand_tox_support($links);
@@ -727,6 +730,7 @@ function directory_apply_mixer_fact_overrides(array $facts, string $slug, string
     }
 
     $facts = directory_apply_mixer_telegram_bot_override($facts, $slug, $locale);
+    $facts = directory_apply_mixer_parameter_overrides($facts, $slug, $locale);
     $resells = directory_mixer_resells_override($slug);
     if ($resells !== '') {
         $facts = directory_upsert_resells_fact($facts, $locale === 'ru' ? 'Реселл' : 'Resells', $resells);
@@ -736,6 +740,60 @@ function directory_apply_mixer_fact_overrides(array $facts, string $slug, string
     $facts = directory_strip_mixer_not_stated_fee_suffix($facts);
 
     return directory_merge_mixer_withdraw_fee_fact($facts);
+}
+
+function directory_apply_mixer_parameter_overrides(array $facts, string $slug, string $locale): array
+{
+    if ($slug === 'jokermix') {
+        $facts = directory_replace_or_append_fact(
+            $facts,
+            'directory_is_coin_fact_label_for_extract',
+            $locale === 'ru' ? 'Монеты' : 'Coins',
+            'BTC, ETH, LTC'
+        );
+        return directory_replace_or_append_fact(
+            $facts,
+            'directory_is_mixing_fee_fact_label_for_extract',
+            $locale === 'ru' ? 'Плата за миксинг' : 'Mixing Fee',
+            $locale === 'ru' ? 'BTC: 1-150 сат/вБ; ETH/LTC: 2-7%' : 'BTC: 1-150 sats/vB; ETH/LTC: 2-7%'
+        );
+    }
+
+    if ($slug === 'zeusmix') {
+        $facts = directory_replace_or_append_fact(
+            $facts,
+            'directory_is_coin_fact_label_for_extract',
+            $locale === 'ru' ? 'Монеты' : 'Coins',
+            'LTC, ETH, SOL, TRX, USDT-TRC20'
+        );
+        return directory_replace_or_append_fact(
+            $facts,
+            'directory_is_mixing_fee_fact_label_for_extract',
+            $locale === 'ru' ? 'Плата за миксинг' : 'Mixing Fee',
+            '1-6%'
+        );
+    }
+
+    return $facts;
+}
+
+function directory_replace_or_append_fact(array $facts, callable $matchesLabel, string $label, string $value): array
+{
+    $fact = [
+        'label' => $label,
+        'value' => $value,
+        'html' => htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+    ];
+
+    foreach ($facts as $index => $existing) {
+        if ($matchesLabel((string) ($existing['label'] ?? ''))) {
+            $facts[$index] = $fact;
+            return $facts;
+        }
+    }
+
+    $facts[] = $fact;
+    return $facts;
 }
 
 function directory_merge_mixer_withdraw_fee_fact(array $facts): array
@@ -842,9 +900,18 @@ function directory_apply_mixer_amount_overrides(array $facts, string $slug, stri
     }
 
     if ($slug === 'zeusmix') {
-        $variable = $locale === 'ru' ? 'Переменная' : 'Variable';
-        $facts = directory_upsert_minimum_fact($facts, $locale === 'ru' ? 'Минимум' : 'Minimum', $variable);
-        return directory_upsert_maximum_fact($facts, $locale === 'ru' ? 'Максимум' : 'Maximum', $variable);
+        $facts = directory_replace_or_append_fact(
+            $facts,
+            'directory_is_minimum_fact_label_for_extract',
+            $locale === 'ru' ? 'Минимум' : 'Minimum',
+            '$400'
+        );
+        return directory_replace_or_append_fact(
+            $facts,
+            'directory_is_maximum_fact_label_for_extract',
+            $locale === 'ru' ? 'Максимум' : 'Maximum',
+            '$10,000'
+        );
     }
 
     return $facts;
@@ -941,6 +1008,7 @@ function directory_mixer_telegram_bot_url(string $slug): string
         'okmix' => 'https://t.me/Okmixer_bot',
         'bmix' => 'https://t.me/bMixIoBot?start=s-0',
         'bitxer' => 'https://t.me/bitxerbot',
+        'jokermix' => 'https://t.me/JokerMixBOT',
     ];
 
     return $urls[$slug] ?? '';
@@ -1543,8 +1611,8 @@ function directory_mixer_support_override(string $slug): array
             'support_html' => '<a href="https://dreadpirate.io/pgp">PGP</a> / Jabber: DreadPirate@exploit.im / TOX: <a href="tox:100ED03114B7DF7AA7FD477FFE97A1AF6D4807A24C9998333157B8EB144B3A4D4BF8E6FB00B1" title="100ED03114B7DF7AA7FD477FFE97A1AF6D4807A24C9998333157B8EB144B3A4D4BF8E6FB00B1">100ED03114B7DF7AA7FD477FFE97A1AF6D4807A24C9998333157B8EB144B3A4D4BF8E6FB00B1</a>',
         ],
         'jokermix' => [
-            'support' => 'jokermix.to@proton.me',
-            'support_html' => '<a href="mailto:jokermix.to@proton.me">jokermix.to@proton.me</a>',
+            'support' => 'jokermix@tuta.io / @JokerMixPrivacy',
+            'support_html' => '<a href="mailto:jokermix@tuta.io">jokermix@tuta.io</a> / <a href="https://t.me/JokerMixPrivacy">@JokerMixPrivacy</a>',
         ],
         'mixer-black' => [
             'support' => 'Chat / PGP',
@@ -1559,12 +1627,31 @@ function directory_mixer_support_override(string $slug): array
             'support_html' => '<a href="mailto:info@trustmixer.io">info@trustmixer.io</a> / <a href="https://t.me/trustmixer">t.me/trustmixer</a>',
         ],
         'zeusmix' => [
-            'support' => 'zeusmixto',
-            'support_html' => '<a href="https://t.me/zeusmixto">zeusmixto</a>',
+            'support' => '@ZeusMixTor / zeusmix@mailum.com',
+            'support_html' => '<a href="https://t.me/ZeusMixTor">@ZeusMixTor</a> / <a href="mailto:zeusmix@mailum.com">zeusmix@mailum.com</a>',
         ],
     ];
 
     return $support[$slug] ?? [];
+}
+
+function directory_mixer_support_override_is_authoritative(string $slug): bool
+{
+    return in_array($slug, ['dreadpirate', 'jokermix', 'zeusmix'], true);
+}
+
+function directory_mixer_link_override(string $slug): array
+{
+    $links = [
+        'jokermix' => [
+            'tor' => 'http://jokerrj25jeuks7rqodsyo2xofsasakra2naaa4axb3cyb4j333ya5yd.onion/',
+        ],
+        'zeusmix' => [
+            'tor' => 'http://zeus4sdq2cs4yd2uo5jqcl3zs74nxktspkikyisxsmlqyojo25pcmiid.onion/',
+        ],
+    ];
+
+    return $links[$slug] ?? [];
 }
 
 function directory_entry_status_override(string $categorySlug, string $slug): array

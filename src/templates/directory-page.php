@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-const DIRECTORY_ASSET_VERSION = '20260602-2';
+const DIRECTORY_ASSET_VERSION = '20260608-1';
 
 function directory_render_page(array $entry, array $categories, string $locale): string
 {
@@ -33,7 +33,7 @@ function directory_render_page(array $entry, array $categories, string $locale):
     $headerTitle = directory_header_title($entry, $category, $locale);
     $headerSizes = directory_header_font_sizes($headerTitle);
     $statusStyles = (directory_entry_has_status($entry) ? directory_status_styles() : '')
-        . (directory_entry_has_status_target($entry) ? directory_live_status_styles() : '');
+        . (directory_entry_has_live_status($entry) ? directory_live_status_styles() : '');
     $actions = array_values(array_filter([
         directory_render_live_status_badge($entry, $locale),
         directory_render_external_action($entry, $locale, $external, $labels['visit']),
@@ -198,7 +198,7 @@ function directory_render_page(array $entry, array $categories, string $locale):
 	<thead><tr>' . directory_table_header($labels['table_field']) . directory_table_header($labels['table_value']) . '</tr></thead>
 <tbody>
 ' . directory_entry_table_row($labels['clearnet'], directory_external_value($external)) . '
-' . (directory_entry_has_status_target($entry) ? directory_entry_table_row($labels['live_status'], directory_render_live_status_badge($entry, $locale)) : '') . '
+' . (directory_entry_has_live_status($entry) ? directory_entry_table_row($labels['live_status'], directory_render_live_status_badge($entry, $locale)) : '') . '
 ' . directory_entry_table_row($labels['tor'], directory_tor_value($tor)) . '
 ' . ($mirrors !== [] ? directory_entry_table_row($labels['mirrors'], directory_render_mirror_links($mirrors)) : '') . '
 ' . ($support !== '' ? directory_entry_table_row($labels['support'], directory_render_support_value($support, $supportHtml)) : '') . '
@@ -260,8 +260,8 @@ function directory_render_section_page(string $categorySlug, array $data, string
         directory_render_exchange_pair_filter($entries, $categorySlug, $locale, $base),
     ]);
     $statusStyles = (directory_entries_have_status($entries) ? directory_status_styles() : '')
-        . (directory_entries_have_status_targets($entries) ? directory_live_status_styles() : '');
-    $statusScopeAttr = directory_entries_have_status_targets($entries) ? ' data-directory-status-scope' : '';
+        . (directory_entries_have_live_status($entries) ? directory_live_status_styles() : '');
+    $statusScopeAttr = directory_entries_have_live_status($entries) ? ' data-directory-status-scope' : '';
 
     return '<!DOCTYPE html>
 <html dir="ltr" lang="' . ($isRu ? 'ru-RU' : 'en-GB') . '" prefix="og: https://ogp.me/ns#">
@@ -900,7 +900,7 @@ function directory_render_directory_filter(string $scopeId, array $category, str
 
 function directory_render_status_filter(array $entries, string $locale, string $scopeId): string
 {
-    if (!directory_entries_have_status_targets($entries)) {
+    if (!directory_entries_have_live_status($entries)) {
         return '';
     }
 
@@ -1324,7 +1324,7 @@ function directory_section_table_labels(array $entries, string $locale, string $
     return [
         'name' => $locale === 'ru' ? 'Название' : 'Name',
         'status' => directory_entries_have_status($entries) ? ($locale === 'ru' ? 'Статус' : 'Status') : '',
-        'live_status' => directory_entries_have_status_targets($entries) ? ($locale === 'ru' ? 'Доступность' : 'Live status') : '',
+        'live_status' => directory_entries_have_live_status($entries) ? ($locale === 'ru' ? 'Доступность' : 'Live status') : '',
         'site' => $locale === 'ru' ? 'Веб-сайт' : 'Website',
         'tor' => $locale === 'ru' ? 'Tor-сайт' : 'Tor Site',
         'facts' => $facts,
@@ -1755,7 +1755,8 @@ function directory_status_filter_styles(string $indent = ''): string
 
 function directory_render_live_status_badge(array $entry, string $locale): string
 {
-    if (!directory_entry_has_status_target($entry)) {
+    $forcedStatus = directory_forced_live_status($entry);
+    if ($forcedStatus === '' && !directory_entry_has_status_target($entry)) {
         return '';
     }
 
@@ -1771,12 +1772,46 @@ function directory_render_live_status_badge(array $entry, string $locale): strin
         $json = '{}';
     }
 
-    return '<span class="directory-site-status" data-site-status-id="' . directory_escape(directory_live_status_id($entry)) . '" data-site-status-labels="' . directory_escape($json) . '" data-site-status-state="unknown"><span data-site-status-text>' . directory_escape($labels['status_checking']) . '</span></span>';
+    $state = $forcedStatus !== '' ? $forcedStatus : 'unknown';
+    $statusId = $forcedStatus === ''
+        ? ' data-site-status-id="' . directory_escape(directory_live_status_id($entry)) . '"'
+        : ' data-site-status-static="' . directory_escape($forcedStatus) . '"';
+    $text = $forcedStatus !== '' ? $labelMap[$forcedStatus] : $labels['status_checking'];
+
+    return '<span class="directory-site-status directory-site-status--' . directory_escape($state) . '"' . $statusId . ' data-site-status-labels="' . directory_escape($json) . '" data-site-status-state="' . directory_escape($state) . '"><span data-site-status-text>' . directory_escape($text) . '</span></span>';
+}
+
+function directory_forced_live_status(array $entry): string
+{
+    $categorySlug = (string) ($entry['category'] ?? '');
+    $slug = (string) ($entry['slug'] ?? '');
+
+    if ($categorySlug === 'neverkyc-exchanges' && $slug === 'trevoid') {
+        return 'online';
+    }
+
+    return '';
+}
+
+function directory_entry_has_live_status(array $entry): bool
+{
+    return directory_forced_live_status($entry) !== '' || directory_entry_has_status_target($entry);
 }
 
 function directory_entry_has_status_target(array $entry): bool
 {
     return directory_status_targets_for_entry($entry) !== [];
+}
+
+function directory_entries_have_live_status(array $entries): bool
+{
+    foreach ($entries as $entry) {
+        if (directory_entry_has_live_status($entry)) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 function directory_entries_have_status_targets(array $entries): bool
@@ -1801,8 +1836,12 @@ function directory_status_item_attributes(array $entry): string
         return '';
     }
 
-    $attributes = ' data-directory-status-item data-directory-status-state="unknown"';
-    if (directory_entry_has_status_target($entry)) {
+    $forcedStatus = directory_forced_live_status($entry);
+    $state = $forcedStatus !== '' ? $forcedStatus : 'unknown';
+    $attributes = ' data-directory-status-item data-directory-status-state="' . directory_escape($state) . '"';
+    if ($forcedStatus !== '') {
+        $attributes .= ' data-directory-status-static="' . directory_escape($forcedStatus) . '"';
+    } elseif (directory_entry_has_status_target($entry)) {
         $attributes .= ' data-directory-status-id="' . directory_escape(directory_live_status_id($entry)) . '"';
     }
 
@@ -1822,6 +1861,9 @@ function directory_status_feed_url(string $base): string
 function directory_status_targets_for_entry(array $entry): array
 {
     if (($entry['type'] ?? 'service') !== 'service') {
+        return [];
+    }
+    if (directory_forced_live_status($entry) !== '') {
         return [];
     }
 
@@ -2307,20 +2349,26 @@ function directory_coin_items(string $value): array
             continue;
         }
 
-        $icon = strtolower($symbol);
-        if ($icon === 'ln-btc') {
-            $icon = 'ln-btc';
-        }
-
         $titles = directory_coin_titles();
-        if (!isset($titles[$icon])) {
+        $icon = strtolower($symbol);
+        $label = $symbol;
+        $title = $titles[$icon] ?? '';
+        $titleIncludesSymbol = false;
+
+        if (preg_match('/^(?:USDT|USDC)-(?:ERC20|TRC20|BEP20|SPL)$/', $symbol) === 1) {
+            $meta = directory_pair_coin_meta($symbol);
+            $icon = $meta['icon'];
+            $label = $meta['label'];
+            $title = $meta['title'];
+            $titleIncludesSymbol = true;
+        } elseif (!isset($titles[$icon])) {
             return [];
         }
 
         $items[] = [
             'icon' => $icon,
-            'label' => $symbol,
-            'title' => $titles[$icon] . ' (' . $symbol . ')',
+            'label' => $label,
+            'title' => $titleIncludesSymbol ? $title : $title . ' (' . $symbol . ')',
         ];
     }
 

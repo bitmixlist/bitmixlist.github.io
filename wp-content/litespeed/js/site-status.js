@@ -1,6 +1,7 @@
 (function () {
   const badges = Array.from(document.querySelectorAll('[data-site-status-id]'));
-  if (badges.length === 0) {
+  const hasStatusFilters = document.querySelector('[data-directory-status-filter]') !== null;
+  if (badges.length === 0 && !hasStatusFilters) {
     return;
   }
 
@@ -29,6 +30,13 @@
       return state;
     }
     return 'unknown';
+  };
+
+  const staticStatusState = (item) => {
+    if (!item.hasAttribute('data-directory-status-static')) {
+      return null;
+    }
+    return normalizeState(item.getAttribute('data-directory-status-static'));
   };
 
   const serviceMap = (payload) => {
@@ -145,9 +153,10 @@
   const markStatusItems = (services) => {
     const items = Array.from(document.querySelectorAll('[data-directory-status-item]'));
     for (const item of items) {
-      const id = item.getAttribute('data-directory-status-id');
+      const staticState = staticStatusState(item);
+      const id = staticState === null ? item.getAttribute('data-directory-status-id') : null;
       const record = id ? services[id] : null;
-      const state = normalizeState(record && record.status);
+      const state = staticState === null ? normalizeState(record && record.status) : staticState;
       item.setAttribute('data-directory-status-state', state);
       item.classList.remove(
         'directory-status-item--online',
@@ -177,6 +186,9 @@
     filter.addEventListener('change', applyStatusFilters);
   }
   applyStatusFilters();
+  if (badges.length === 0) {
+    return;
+  }
 
   const applyCachedPayload = () => {
     try {
