@@ -146,7 +146,7 @@
     <meta name="msapplication-TileImage" content="wp-content/uploads/2023/12/cropped-favicon-2-192x192.png?v=20260530-3" />
     <link rel="preload" as="style" href="wp-content/litespeed/css/styles.css?v=20260530-3" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="wp-content/litespeed/css/styles.css?v=20260530-3"></noscript>
-    <link rel="stylesheet" href="wp-content/litespeed/css/aml-check.css?v=20260615-1">
+    <link rel="stylesheet" href="wp-content/litespeed/css/aml-check.css?v=20260615-2">
     <script src="wp-content/litespeed/js/ad-loader.js?v=20260530-3"></script>
 <script src="wp-content/litespeed/js/site-search.js?v=20260530-3" defer></script>
 <script>
@@ -347,6 +347,17 @@
       <header class="page-header">
         <h1 class="entry-title">Anonymous Address AML Score Checker</h1>
       </header>
+        <div class="aml-launch-banner" role="status" aria-live="polite">
+          <div class="aml-launch-banner__mark" aria-hidden="true">AML</div>
+          <div class="aml-launch-banner__body">
+            <div class="aml-launch-banner__title">The AML checker has moved to its dedicated dashboard</div>
+            <p>Use the new BitMixList AML dashboard for address checks, token balances, payments, and reports. Existing tokens and balances remain available there.</p>
+            <div class="aml-launch-banner__actions">
+              <a class="aml-launch-banner__button" href="https://amlcheck.bitmixlist.org/" rel="noopener noreferrer">Open clearnet dashboard</a>
+              <a class="aml-launch-banner__button aml-launch-banner__button--secondary" href="http://amlcheckigatauwud4ilv3tsk5kewrqdxoyfelcqkmbrgpcpk7tkqrad.onion" rel="noopener noreferrer">Open Tor onion dashboard</a>
+            </div>
+          </div>
+        </div>
         <p>Before sending mixed coins to a regulated exchange or payment processor, check the AML score of your Bitcoin address so you can review risk signals before anyone else does. The checker uses reputable third-party scoring providers without sharing personal data such as your IP address; only the crypto address is sent for scoring, and Javascript is required for the tool to run.</p>
         <p>Check your target address, recent counterparties, and any deposits you plan to mix or consolidate before deciding whether to reuse or abandon a wallet. High AML scores can trigger freezes at regulated services, and transaction size can still trigger automated controls regardless of the address score.</p>
         <p>An API is coming soon, but there is no release timeline. We recently switched providers, so prices have been raised.</p>
@@ -368,129 +379,17 @@
             <li>It should take a few seconds for an address check to be processed.</li>
           </ul>
           <p>If you have any issues with your payment, send an email with your payment ID for manual crediting.</p>
-          <div class="aml-maintenance-banner" role="status" aria-live="polite">
-            <div class="aml-maintenance-banner__mark" aria-hidden="true">!</div>
-            <div>
-              <div class="aml-maintenance-banner__title">Maintenance in progress</div>
-              <p>The AML checker is temporarily disabled while the new version is deployed. Existing tokens and balances are not affected.</p>
+          <div class="aml-launch-banner" role="status" aria-live="polite">
+            <div class="aml-launch-banner__mark" aria-hidden="true">AML</div>
+            <div class="aml-launch-banner__body">
+              <div class="aml-launch-banner__title">Continue in the dedicated AML checker dashboard</div>
+              <p>The embedded checker has been replaced by the dedicated AMLCHECK dashboard. Use the clearnet or Tor onion address below.</p>
+              <div class="aml-launch-banner__actions">
+                <a class="aml-launch-banner__button" href="https://amlcheck.bitmixlist.org/" rel="noopener noreferrer">Open clearnet dashboard</a>
+                <a class="aml-launch-banner__button aml-launch-banner__button--secondary" href="http://amlcheckigatauwud4ilv3tsk5kewrqdxoyfelcqkmbrgpcpk7tkqrad.onion" rel="noopener noreferrer">Open Tor onion dashboard</a>
+              </div>
             </div>
           </div>
-          <div class="address-checker-container">
-            <div class="aml-widget">
-              <h2>AML Checks &amp; Payments</h2>
-              <div class="flex">
-                <div class="token-section">
-                  <label for="tokenInput">Token</label>
-                  <input id="tokenInput" placeholder="Enter your API token" type="text" disabled/>
-                <div class="token-action-buttons">
-                  <button class="bitmix-button" onclick="loadToken(this)" disabled>Load token info</button>
-                  <button class="bitmix-button" onclick="generateToken(this)" disabled>Generate token</button>
-                </div>
-                <div class="error" id="tokenError"></div>
-                <div class="token-details" id="tokenDetails"></div>
-              </div>
-              <div class="actions-section">
-                <label>Purchase checks</label>
-                <div style="margin-bottom:0.5rem">
-                  <select id="checkPackageSelect" disabled>
-                    <option value="100" selected>100-check package</option>
-                    <option value="10">10-check package</option>
-                  </select>
-                </div>
-                <div class="action-buttons">
-                  <button class="bitmix-button" id="createPaymentBtn" onclick="createPayment()" disabled>Buy checks</button>
-                  <button class="bitmix-button" onclick="refreshPaymentsClick(this)" disabled>Refresh payments</button>
-                </div>
-                <div class="error" id="paymentMessage" style="margin-top:0.5rem"></div>
-              </div>
-            </div>
-            <div class="lookup-section">
-              <label>Run lookup</label>
-              <div class="lookup-row">
-                <div>
-                  <select id="chainSelect" disabled>
-                  <option value="bitcoin">Bitcoin</option>
-                  </select>
-                </div>
-                <div class="lookup-input-container">
-                  <input id="addressInput" placeholder="Address" type="text" disabled/>
-                </div>
-                <div class="lookup-button-container">
-                  <button class="bitmix-button" id="runButton" onclick="runLookup()" disabled>Run AML check</button>
-                  <button class="bitmix-button" onclick="loadLastJob()" disabled>Load last check</button>
-                </div>
-              </div>
-              <div class="error" id="lookupMaintenanceNote">The AML checker is temporarily offline for maintenance.</div>
-              <div class="error" id="lookupError"></div>
-                <div class="info-card" id="lookupStatus" style="display:none;align-items:center;gap:0.75rem;">
-                  <div class="spinner" id="lookupSpinner" style="display:none"></div>
-                  <div>
-                    <div id="lookupStatusText"></div>
-                    <div id="lookupJobMeta" style="font-size:0.8rem;color:#94a3b8;"></div>
-                  </div>
-                </div>
-              <div class="result-grid" id="lookupVisualResult">
-                <div class="result-card" id="amlScoreCard">
-                  <h4>AML Score</h4>
-                  <div class="aml-score-value" id="amlScoreValue">--</div>
-                  <div class="aml-entity-label" id="amlEntityLabel"></div>
-                  <div class="aml-risk-label" id="amlRiskLabel"></div>
-                  <div class="aml-score-bar">
-                    <div class="aml-score-marker" id="amlScoreMarker" style="left:0%;"></div>
-                  </div>
-                  <div class="result-footnote" id="amlScoreFootnote">Results from MistTrack</div>
-                </div>
-                <div class="result-card" id="arkhamCard">
-                  <h4>Counterparties</h4>
-                  <div class="arkham-summary" id="arkhamTotals">
-                    <div class="arkham-total-label">Arkham Totals</div>
-                    <div class="arkham-total-value">-- BTC</div>
-                    <div class="arkham-total-value">$--</div>
-                  </div>
-                  <div class="arkham-content">
-                    <div class="arkham-pie" id="arkhamPie"></div>
-                    <div class="arkham-legend" id="arkhamLegend">
-                      <div class="arkham-empty">No counterparties detected.</div>
-                    </div>
-                  </div>
-                  <div class="arkham-unknown" id="arkhamUnknown">No unknown counterparties reported.</div>
-                  <div class="result-footnote">Includes outgoing transactions</div>
-                </div>
-                <div class="result-card" id="chainabuseCard">
-                  <h4>Scam Reports</h4>
-                  <div class="chainabuse-value" id="chainabuseValue">--</div>
-                  <div class="chainabuse-actions">
-                    <button class="bitmix-button" id="chainabuseViewBtn" type="button" disabled>View reports</button>
-                    <a id="chainabuseViewLink" href="https://chainabuse.com" target="_blank" rel="noopener noreferrer">Open ChainAbuse</a>
-                  </div>
-                  <div class="chainabuse-popover" id="chainabusePopover">
-                    <div class="chainabuse-popover-header">
-                      <span>ChainAbuse Reports</span>
-                      <button class="bitmix-button" id="chainabuseClosePopover" type="button" aria-label="Close reports list">✕</button>
-                    </div>
-                    <div class="chainabuse-popover-body" id="chainabuseReportsList">
-                      <div class="chainabuse-empty">No reports to show.</div>
-                    </div>
-                  </div>
-                  <div class="result-footnote">Results from ChainAbuse</div>
-                </div>
-                <div class="result-card" id="sanctionsCard">
-                  <h4>Sanctions</h4>
-                  <div class="sanctions-status" id="sanctionsStatus">--</div>
-                  <div style="font-size:0.75rem;color:#94a3b8;margin-top:0.3rem;">Data from OFAC &amp; OFSI</div>
-                </div>
-              </div>
-              <div class="export-row" id="exportRow">
-                <button class="bitmix-button" id="exportResultBtn" onclick="exportLookupResult()" disabled>Export as text</button>
-              </div>
-            </div>
-            <div class="payment-section">
-              <h3>Payment requests</h3>
-              <div id="paymentsTable">No payments yet.</div>
-            </div>
-          </div>
-        </div>
-      </div>
       </div>
     </main>
     <footer class="site-footer" id="site-footer" role="contentinfo"></footer>
@@ -516,7 +415,6 @@
 </div>
     <script data-optimized="1" src="wp-content/litespeed/js/1d034a87d61ff5f30ca39d179529e895.js?v=20260530-3" defer></script>
     <script src="wp-content/litespeed/js/popover.min.js?v=20260530-3" defer></script>
-    <!-- AML checker script temporarily disabled during the maintenance deployment window. -->
   </body>
 </html>
 <!-- Page optimized by LiteSpeed Cache @2023-12-12 10:30:01 -->

@@ -45,6 +45,92 @@
   line-height: 1.45;
 }
 
+.aml-launch-banner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.9rem;
+  margin: 1.25rem 0 1.5rem;
+  padding: 1rem 1.1rem;
+  color: #f5efff;
+  background: linear-gradient(135deg, #241934 0%, #16121f 100%);
+  border: 1px solid rgba(187, 134, 252, 0.42);
+  border-left: 5px solid #bb86fc;
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+}
+
+.aml-launch-banner__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  color: #170f22;
+  background: #bb86fc;
+  border-radius: 50%;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.aml-launch-banner__title {
+  margin: 0 0 0.2rem;
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.aml-launch-banner p {
+  margin: 0;
+  color: #d8cce8;
+  line-height: 1.45;
+}
+
+.aml-launch-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.85rem;
+}
+
+.aml-launch-banner__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0.5rem 0.8rem;
+  color: #170f22;
+  background: #bb86fc;
+  border: 1px solid #bb86fc;
+  border-radius: 6px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.aml-launch-banner__button:hover,
+.aml-launch-banner__button:focus-visible {
+  color: #170f22;
+  background: #d7baff;
+  border-color: #d7baff;
+  text-decoration: none;
+}
+
+.aml-launch-banner__button--secondary {
+  color: #f5efff;
+  background: #1a1234;
+  border-color: #7a61f6;
+}
+
+.aml-launch-banner__button--secondary:hover,
+.aml-launch-banner__button--secondary:focus-visible {
+  color: #ffffff;
+  background: #27184d;
+  border-color: #bb86fc;
+}
+
 .address-checker-container .aml-widget {
   max-width: 1280px;
   margin: 0 auto;
@@ -713,6 +799,20 @@
     flex-basis: 28px;
     width: 28px;
     height: 28px;
+  }
+
+  .aml-launch-banner {
+    grid-template-columns: 1fr;
+    padding: 0.9rem;
+  }
+
+  .aml-launch-banner__mark {
+    width: 30px;
+    height: 30px;
+  }
+
+  .aml-launch-banner__button {
+    width: 100%;
   }
 
   .address-checker-container .aml-widget {
