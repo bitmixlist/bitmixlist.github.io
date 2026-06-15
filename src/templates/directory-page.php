@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-const DIRECTORY_ASSET_VERSION = '20260608-1';
+const DIRECTORY_ASSET_VERSION = '20260615-1';
+const DIRECTORY_STATUS_FEED_URL = 'https://bitmixlist-site-status-242473302317.us-central1.run.app/status.json';
 
 function directory_render_page(array $entry, array $categories, string $locale): string
 {
@@ -1869,7 +1870,7 @@ function directory_status_feed_url(string $base): string
         return $configured;
     }
 
-    return $base . 'site-status.json';
+    return DIRECTORY_STATUS_FEED_URL;
 }
 
 function directory_status_targets_for_entry(array $entry): array
