@@ -144,7 +144,7 @@
 
       for (const item of statusItems(scope)) {
         const state = normalizeState(item.getAttribute('data-directory-status-state'));
-        setFilterHidden(item, 'directoryStatusHidden', mode === 'online' && state !== 'online');
+        setFilterHidden(item, 'directoryStatusHidden', mode === 'online' && state === 'offline');
       }
     }
     updateAllScopeEmpty();
