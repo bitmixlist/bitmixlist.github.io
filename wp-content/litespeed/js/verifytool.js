@@ -353,7 +353,36 @@ const keys = [
         dd5sZD6PoEPLEIEevZk=
         =33yx
         -----END PGP PUBLIC KEY BLOCK-----
-        `)
+        `),
+    cleanPGPKey(`-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+        mQINBGoalfoBEADPHyCOjrncpd/e0uu9e6+dPVABRAbl4X33aDI9+mP9tkj7PRmK
+        cLMYyiNaN8g1NQ5e2WaTmSHwK3fvLdV8ynga4MZ4jKhmhnYngOwlgJelcCbtlP/h
+        4SNJbIoNXUO5YqySbuxNAvq5yn7glbLdisQY39PSYQ9oJsEI2eExSyBjEOW9554O
+        45k5/fL4/zgJfeA2mzR9Q8pNUgykmn/k9MIYWAIoj1C9lBLaCkRr97W4x61c4R7x
+        mYgvQxpmZSMWMnrtUdp8Wazsl2MGXz6ex817PCUiqSnFnEO1xqXtnsCNKH5XioQ/
+        lMsIWfBbZXrGwjv1z+qnRnokW34XzktMFXNs5QylVYJN+VV3zIflSDkAlVW8h0Nf
+        Jm7zqpu8t/ZW7vA94S7J+L9R/3aAG7zX58WO1zHMtoIabNNIm7E+p5NSzjMBU81V
+        Dm3rQRpeXvdHE5O7CVdrOh7psPG6gKOegWTPf50hnw1e+TqZQxmCaq3/2Ca3hv/d
+        3cWUPeJ/7+t7iF/X2G9bGvV6smF3EuwqltRbACHRsyVkQ22m2H5D5JFqdRLCZNiS
+        EIDbmQH+e722mW0t1qYl+EPj9cxweilkw25VIOefw7kFDljA8KmiVIyr6nqInQ8z
+        8YV5g+0ps1iKvbBMUW1sNfsch11cOlLZ1VNXRf0QjUNseHndU/rTYJX8lQARAQAB
+        tDdGbGFzaCBNaXhlciAod2FycmFudHkgc2lnbmluZykgPG5vcmVwbHlAZmxhc2ht
+        aXhlci5jb20+iQJRBBMBCgA7FiEE1CjZ+FtNNf++2iCHD2Z2B2do6WsFAmoalfoC
+        GwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQD2Z2B2do6Wsh3hAAj8HG
+        xju+LbWPOseQZDK4HF1E4yh2Q0sV1rcR79c6JlAA75u0TeA/eZOWl8tdp6sW2cn+
+        aTI/FRORVyYPNpTk4u8d248y4sKSN8S7pCxMMCMtGOpbcFmoYUMRb6b9gEAywsHt
+        O/7nQGkc+vf+e1yhgeCu4Ae0kgWeiW1iMS9uCzHnuVMdTQB0Pfw7zSc3/CEiYGqn
+        NN/Qr3AbcW4xHtsGu5ZVFmp4ho2vVY391TBudg/tL5XABXQlQQDgctxJMO89Oj+p
+        SA09t+IiM3gGEBH3B7hWNvNneHkiJAYjZKmaCEBMVcUeNan6u3Rx8ayA58Thq0g8
+        DSzWaWRjFINXBUfQ1/3LH/oaxlcbN7uQAEny+SOyQNTbOpGFV9DfsBlItb0cx406
+        j1M2UeAGAy/N4EgH9E93++gnnKdK8lYrokttsBmA14bGnpQBqmLsOYdyNTbkERQJ
+        f1fcPX1KvWWZfU6gZQBr6EiHMuvF6sbFTkjbHOFiu5WDdbh15XMoXOY4g1j2a1N7
+        CYDatzWvUYPJFnoyagMgMZVx0h/rdCHTLLV7+rqLXTl26pDL8f8J58+JYW/lHJKS
+        kzgeuIhCDyh/nb9M0e6gnt4Rmavjh0G/HHmEeqRmunWc/v+u4mzi5AQz8BQ18/Ro
+        dmL/RppZ5axbzZtrXx/0qSwUTcWxs56WhlgP0/8=
+        =M2mm
+        -----END PGP PUBLIC KEY BLOCK-----`)
     // Add other keys or addresses as necessary
 ];
 
@@ -447,6 +476,9 @@ const mixerDetails = {
     'zeusmix.to': { type: 'pgp', keyIndex: 8 },
     'mixer.black': { type: 'pgp', keyIndex: 10 },
     'mixtwix.io': { type: 'pgp', keyIndex: 11 },
+    'flashmixer.io': { type: 'pgp', keyIndex: 12 },
+    'flashmixer.to': { type: 'pgp', keyIndex: 12 },
+    'flashmixer.co': { type: 'pgp', keyIndex: 12 },
 };
 
 function vrVerify(vrMsg) {

@@ -1287,10 +1287,7 @@ function homepage_render_card(array $entry, string $locale, string $base, string
     $tags = $isTool ? homepage_tool_tags($entry, $locale) : [];
     $dataTags = $isTool ? ' data-tags="' . directory_escape(implode(' ', $tags)) . '"' : '';
     $cardClass = $isTool ? 'directory-list-card tool' : 'directory-list-card mixer-card';
-    $status = directory_entry_status($entry);
-    if ($status !== []) {
-        $cardClass .= ' directory-list-card--' . directory_escape((string) ($status['type'] ?? 'status'));
-    }
+    $cardClass .= directory_entry_card_status_classes($entry);
 
     $summaryMarkup = '';
     if ($summary !== '') {
@@ -1481,8 +1478,7 @@ function homepage_filter_text_for_entry(array $entry, string $locale, bool $incl
         $parts[] = $entry['links']['support'] ?? '';
     }
 
-    $status = directory_entry_status($entry);
-    if ($status !== []) {
+    foreach (directory_entry_status_blocks($entry) as $status) {
         $parts[] = directory_status_text($status, 'label', $locale);
         $parts[] = directory_status_text($status, 'title', $locale);
         $parts[] = directory_status_text($status, 'lead', $locale);

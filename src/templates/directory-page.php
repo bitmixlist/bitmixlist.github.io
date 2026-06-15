@@ -721,6 +721,9 @@ function directory_supported_letter_verifier_details(): array
         'zeusmix.to' => 8,
         'mixer.black' => 10,
         'mixtwix.io' => 11,
+        'flashmixer.io' => 12,
+        'flashmixer.to' => 12,
+        'flashmixer.co' => 12,
     ] as $domain => $keyIndex) {
         $details[$domain] = ['type' => 'pgp', 'key_index' => $keyIndex];
     }
@@ -1255,8 +1258,7 @@ function directory_render_section_card(array $entry, string $locale, string $bas
         $externalAction,
     ]));
     $actionsHtml = implode("\n\t\t", $actions);
-    $status = directory_entry_status($entry);
-    $statusClass = $status === [] ? '' : ' directory-list-card--' . directory_escape((string) ($status['type'] ?? 'status'));
+    $statusClass = directory_entry_card_status_classes($entry);
     $pairAttributes = directory_pair_filter_item_attributes($entry, true);
 
     return '<article class="directory-list-card' . $statusClass . '" data-directory-filter-item data-directory-filter-text="' . directory_escape(directory_filter_text_for_entry($entry, $locale, false)) . '"' . directory_status_item_attributes($entry) . $pairAttributes . directory_fee_filter_item_attributes($entry) . '>
@@ -1681,8 +1683,10 @@ function directory_status_styles(string $indent = ''): string
     $lines = [
         '.directory-button--disabled, .directory-button--disabled:hover, .directory-button--disabled:focus { border-color: #5d5668; background: #24212c; color: #aaa2b8; cursor: not-allowed; filter: saturate(0.65); opacity: 0.78; pointer-events: none; text-decoration: none; }',
         '.directory-status-badge { display: inline-flex; align-items: center; gap: 5px; min-height: 26px; margin: 6px 0 2px; padding: 2px 8px; border: 1px solid #d49a24; border-radius: 999px; background: #2a1d08; color: #ffd88a; font-size: 0.78rem; font-weight: 750; line-height: 1.1; text-transform: uppercase; letter-spacing: 0.02em; }',
+        '.directory-status-badge--notice { border-color: #3f7ca4; background: #0f2230; color: #bfe8ff; }',
         '.directory-status-badge--scam-accusation { border-color: #b8444e; background: #2a1014; color: #ffc7cd; }',
         '.directory-status-badge .directory-icon { width: 0.95em; height: 0.95em; }',
+        '.directory-list-card--notice { position: relative; border-color: #345a73; background: linear-gradient(180deg, #171d25, #181222); }',
         '.directory-list-card--maintenance { position: relative; border-color: #8a6b2b; background: linear-gradient(180deg, #1d1820, #181222); }',
         '.directory-list-card--scam-accusation { position: relative; border-color: #9d2f3b; background: linear-gradient(180deg, #251419, #181222); }',
         '.directory-card-media { position: relative; min-width: 0; width: 128px; max-width: 100%; }',
@@ -1691,27 +1695,37 @@ function directory_status_styles(string $indent = ''): string
         '.directory-list-card--maintenance .directory-card-media::after { content: ""; position: absolute; inset: 0; width: 128px; height: 128px; max-width: 100%; border-radius: 10px; background: repeating-linear-gradient(135deg, rgba(246, 184, 63, 0.34) 0 10px, rgba(27, 20, 16, 0.24) 10px 20px); opacity: 0.5; pointer-events: none; }',
         '.directory-list-card--scam-accusation .directory-card-media::after { content: ""; position: absolute; inset: 0; width: 128px; height: 128px; max-width: 100%; border-radius: 10px; background: repeating-linear-gradient(135deg, rgba(220, 54, 68, 0.34) 0 10px, rgba(27, 20, 22, 0.24) 10px 20px); opacity: 0.55; pointer-events: none; }',
         '.directory-card-status-sign { position: absolute; right: 6px; bottom: 6px; z-index: 1; display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: 2px solid #1c1406; border-radius: 6px; background: #f6b83f; color: #241400; transform: rotate(45deg); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35); }',
+        '.directory-card-status-sign--notice { border-color: #092232; background: #52b7d8; color: #061923; }',
         '.directory-card-status-sign--scam-accusation { border-color: #24070b; background: #dc3644; color: #fff1f3; }',
         '.directory-card-status-sign .directory-icon { width: 18px; height: 18px; transform: rotate(-45deg); stroke-width: 2.4; }',
         '.directory-maintenance-notice { position: relative; display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 18px; margin: 24px 0 0; padding: 24px 22px 20px; overflow: hidden; border: 1px solid #9b7424; border-radius: 8px; background: #1b1510; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28); }',
         '.directory-maintenance-notice::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 10px; background: repeating-linear-gradient(135deg, #f6b83f 0 14px, #1b1410 14px 28px); }',
+        '.directory-maintenance-notice--notice { border-color: #3f7ca4; background: #101a22; }',
+        '.directory-maintenance-notice--notice::before { background: linear-gradient(90deg, #52b7d8, #6fcf97); }',
         '.directory-maintenance-notice--scam-accusation { border-color: #a12f3b; background: #211014; }',
         '.directory-maintenance-notice--scam-accusation::before { background: repeating-linear-gradient(135deg, #dc3644 0 14px, #1d0d10 14px 28px); }',
         '.directory-maintenance-sign { display: flex; align-items: center; justify-content: center; width: 62px; height: 62px; margin-top: 6px; border: 3px solid #1c1406; border-radius: 8px; background: #f6b83f; color: #241400; transform: rotate(45deg); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35); }',
+        '.directory-maintenance-sign--notice { border-color: #092232; background: #52b7d8; color: #061923; }',
         '.directory-maintenance-sign--scam-accusation { border-color: #24070b; background: #dc3644; color: #fff1f3; }',
         '.directory-maintenance-sign .directory-icon { width: 32px; height: 32px; transform: rotate(-45deg); stroke-width: 2.4; }',
         '.directory-maintenance-body { min-width: 0; }',
         '.directory-maintenance-kicker { margin: 0 0 6px; color: #ffd88a; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }',
+        '.directory-maintenance-notice--notice .directory-maintenance-kicker { color: #96dfff; }',
         '.directory-maintenance-notice--scam-accusation .directory-maintenance-kicker { color: #ff9da7; }',
         '.directory-maintenance-notice h2 { margin: 0 0 8px; color: #fff3cf; font-size: 1.35rem; letter-spacing: 0; }',
+        '.directory-maintenance-notice--notice h2 { color: #e4f7ff; }',
         '.directory-maintenance-notice--scam-accusation h2 { color: #ffe8eb; }',
         '.directory-maintenance-lead { margin: 0 0 12px; color: #f2dfb8; line-height: 1.55; }',
+        '.directory-maintenance-notice--notice .directory-maintenance-lead { color: #ccecff; }',
         '.directory-maintenance-notice--scam-accusation .directory-maintenance-lead { color: #f5c8cd; }',
         '.directory-maintenance-list { margin: 0; padding-left: 1.1rem; color: #e8d4aa; line-height: 1.5; }',
+        '.directory-maintenance-notice--notice .directory-maintenance-list { color: #b8deef; }',
         '.directory-maintenance-notice--scam-accusation .directory-maintenance-list { color: #edc3c8; }',
         '.directory-maintenance-source { margin: 12px 0 0; color: #cdbb92; font-size: 0.9rem; }',
+        '.directory-maintenance-notice--notice .directory-maintenance-source { color: #9fc7d8; }',
         '.directory-maintenance-notice--scam-accusation .directory-maintenance-source { color: #d8a8ae; }',
         '.directory-maintenance-source a { color: #ffe2a4; text-decoration: underline; text-underline-offset: 0.16em; }',
+        '.directory-maintenance-notice--notice .directory-maintenance-source a { color: #bfe8ff; }',
         '.directory-maintenance-notice--scam-accusation .directory-maintenance-source a { color: #ffb7bf; }',
         '@media (max-width: 700px) { .directory-maintenance-notice { grid-template-columns: 1fr; padding: 22px 16px 18px; } .directory-maintenance-sign { width: 54px; height: 54px; margin: 2px 0 0; } }',
     ];
@@ -1982,9 +1996,37 @@ function directory_entry_status(array $entry): array
     return is_array($entry['status'] ?? null) ? $entry['status'] : [];
 }
 
+function directory_entry_notices(array $entry): array
+{
+    $notices = $entry['notices'] ?? [];
+    if (!is_array($notices)) {
+        return [];
+    }
+
+    $result = [];
+    foreach ($notices as $notice) {
+        if (is_array($notice)) {
+            $result[] = $notice;
+        }
+    }
+
+    return $result;
+}
+
+function directory_entry_status_blocks(array $entry): array
+{
+    $blocks = [];
+    $status = directory_entry_status($entry);
+    if ($status !== []) {
+        $blocks[] = $status;
+    }
+
+    return array_merge($blocks, directory_entry_notices($entry));
+}
+
 function directory_entry_has_status(array $entry): bool
 {
-    return directory_entry_status($entry) !== [];
+    return directory_entry_status_blocks($entry) !== [];
 }
 
 function directory_entries_have_status(array $entries): bool
@@ -2029,6 +2071,21 @@ function directory_entry_should_sort_last(array $entry): bool
     return in_array($type, ['maintenance', 'scam-accusation'], true);
 }
 
+function directory_entry_has_blocking_status(array $entry): bool
+{
+    $status = directory_entry_status($entry);
+    if ($status === []) {
+        return false;
+    }
+
+    if (isset($status['blocks_external'])) {
+        return (bool) $status['blocks_external'];
+    }
+
+    $type = strtolower(preg_replace('/[^a-z0-9-]+/i', '-', (string) ($status['type'] ?? '')) ?: '');
+    return in_array($type, ['maintenance', 'scam-accusation'], true);
+}
+
 function directory_status_text(array $status, string $key, string $locale): string
 {
     $value = $status[$key] ?? '';
@@ -2067,21 +2124,27 @@ function directory_status_items(array $status, string $locale): array
 
 function directory_render_status_badge(array $entry, string $locale, bool $withIcon = false): string
 {
-    $status = directory_entry_status($entry);
-    if ($status === []) {
-        return '';
+    $badges = '';
+    $seen = [];
+    foreach (directory_entry_status_blocks($entry) as $status) {
+        $label = directory_status_text($status, 'label', $locale);
+        if ($label === '') {
+            continue;
+        }
+
+        $type = preg_replace('/[^a-z0-9-]+/i', '-', (string) ($status['type'] ?? 'status')) ?: 'status';
+        $key = strtolower($type . ':' . $label);
+        if (isset($seen[$key])) {
+            continue;
+        }
+        $seen[$key] = true;
+
+        $icon = $withIcon ? directory_icon(directory_status_icon($type)) : '';
+        $class = 'directory-status-badge directory-status-badge--' . strtolower($type);
+        $badges .= ($badges !== '' ? ' ' : '') . '<span class="' . directory_escape($class) . '">' . $icon . '<span>' . directory_escape($label) . '</span></span>';
     }
 
-    $label = directory_status_text($status, 'label', $locale);
-    if ($label === '') {
-        return '';
-    }
-
-    $icon = $withIcon ? directory_icon('maintenance') : '';
-    $type = preg_replace('/[^a-z0-9-]+/i', '-', (string) ($status['type'] ?? 'status')) ?: 'status';
-    $class = 'directory-status-badge directory-status-badge--' . strtolower($type);
-
-    return '<span class="' . directory_escape($class) . '">' . $icon . '<span>' . directory_escape($label) . '</span></span>';
+    return $badges;
 }
 
 function directory_render_status_badge_line(array $entry, string $locale, bool $withIcon, string $indent): string
@@ -2096,7 +2159,7 @@ function directory_render_status_badge_line(array $entry, string $locale, bool $
 
 function directory_render_status_sign(array $entry, string $locale): string
 {
-    $status = directory_entry_status($entry);
+    $status = directory_entry_card_status($entry);
     if ($status === []) {
         return '';
     }
@@ -2105,7 +2168,34 @@ function directory_render_status_sign(array $entry, string $locale): string
     $type = preg_replace('/[^a-z0-9-]+/i', '-', (string) ($status['type'] ?? 'status')) ?: 'status';
     $class = 'directory-card-status-sign directory-card-status-sign--' . strtolower($type);
 
-    return '<span class="' . directory_escape($class) . '" title="' . directory_escape($label) . '" aria-label="' . directory_escape($label) . '">' . directory_icon('maintenance') . '</span>';
+    return '<span class="' . directory_escape($class) . '" title="' . directory_escape($label) . '" aria-label="' . directory_escape($label) . '">' . directory_icon(directory_status_icon($type)) . '</span>';
+}
+
+function directory_status_icon(string $type): string
+{
+    return strtolower($type) === 'notice' ? 'notice' : 'maintenance';
+}
+
+function directory_entry_card_status(array $entry): array
+{
+    $status = directory_entry_status($entry);
+    if ($status !== []) {
+        return $status;
+    }
+
+    $notices = directory_entry_notices($entry);
+    return $notices[0] ?? [];
+}
+
+function directory_entry_card_status_classes(array $entry): string
+{
+    $status = directory_entry_card_status($entry);
+    if ($status === []) {
+        return '';
+    }
+
+    $type = preg_replace('/[^a-z0-9-]+/i', '-', (string) ($status['type'] ?? 'status')) ?: 'status';
+    return ' directory-list-card--' . directory_escape(strtolower($type));
 }
 
 function directory_render_status_header(string $label): string
@@ -2115,7 +2205,7 @@ function directory_render_status_header(string $label): string
 
 function directory_render_external_action(array $entry, string $locale, string $external, string $visitLabel, bool $isTool = false, string $class = ''): string
 {
-    if (directory_entry_has_status($entry)) {
+    if (directory_entry_has_blocking_status($entry)) {
         return directory_render_disabled_external_action($visitLabel, $class);
     }
 
@@ -2146,11 +2236,16 @@ function directory_render_disabled_external_action(string $label, string $class 
 
 function directory_render_status_notice(array $entry, string $locale): string
 {
-    $status = directory_entry_status($entry);
-    if ($status === []) {
-        return '';
+    $html = '';
+    foreach (directory_entry_status_blocks($entry) as $index => $status) {
+        $html .= directory_render_status_notice_block($status, $locale, (string) ($entry['slug'] ?? 'entry'), $index);
     }
 
+    return $html;
+}
+
+function directory_render_status_notice_block(array $status, string $locale, string $slug, int $index): string
+{
     $label = directory_status_text($status, 'label', $locale);
     $title = directory_status_text($status, 'title', $locale);
     $lead = directory_status_text($status, 'lead', $locale);
@@ -2159,17 +2254,19 @@ function directory_render_status_notice(array $entry, string $locale): string
     $type = preg_replace('/[^a-z0-9-]+/i', '-', (string) ($status['type'] ?? 'status')) ?: 'status';
     $noticeClass = 'directory-maintenance-notice directory-maintenance-notice--' . strtolower($type);
     $signClass = 'directory-maintenance-sign directory-maintenance-sign--' . strtolower($type);
+    $icon = directory_icon(directory_status_icon($type));
     $list = '';
     foreach ($items as $item) {
         $list .= '<li>' . directory_escape($item) . '</li>';
     }
+    $titleId = 'directory-maintenance-title-' . preg_replace('/[^a-z0-9-]+/i', '-', $slug . '-' . $index);
 
     return '
-		<section class="' . directory_escape($noticeClass) . '" aria-labelledby="directory-maintenance-title">
-	<div class="' . directory_escape($signClass) . '">' . directory_icon('maintenance') . '</div>
+		<section class="' . directory_escape($noticeClass) . '" aria-labelledby="' . directory_escape($titleId) . '">
+	<div class="' . directory_escape($signClass) . '">' . $icon . '</div>
 	<div class="directory-maintenance-body">
 	<p class="directory-maintenance-kicker">' . directory_escape($label) . '</p>
-	<h2 id="directory-maintenance-title">' . directory_escape($title) . '</h2>
+	<h2 id="' . directory_escape($titleId) . '">' . directory_escape($title) . '</h2>
 	' . ($lead !== '' ? '<p class="directory-maintenance-lead">' . directory_escape($lead) . '</p>' : '') . '
 	' . ($list !== '' ? '<ul class="directory-maintenance-list">' . $list . '</ul>' : '') . '
 	' . $source . '
@@ -2179,6 +2276,25 @@ function directory_render_status_notice(array $entry, string $locale): string
 
 function directory_render_status_source(array $status, string $locale): string
 {
+    $sources = $status['sources'] ?? [];
+    if (is_array($sources) && $sources !== []) {
+        $links = [];
+        foreach ($sources as $source) {
+            if (!is_array($source)) {
+                continue;
+            }
+            $url = trim((string) ($source['url'] ?? ''));
+            $label = directory_status_text($source, 'label', $locale);
+            if ($url !== '' && $label !== '') {
+                $links[] = '<a href="' . directory_escape($url) . '" rel="noopener noreferrer" target="_blank">' . directory_escape($label) . '</a>';
+            }
+        }
+        if ($links !== []) {
+            $sourceLabel = $locale === 'ru' ? 'Источники' : 'Sources';
+            return '<p class="directory-maintenance-source">' . directory_escape($sourceLabel) . ': ' . implode(', ', $links) . '</p>';
+        }
+    }
+
     $source = $status['source'] ?? [];
     if (!is_array($source)) {
         return '';
@@ -2465,6 +2581,7 @@ function directory_icon_paths(): array
         'maintenance' => '<path d="M10.6 2.6 2.6 10.6a2 2 0 0 0 0 2.8l8 8a2 2 0 0 0 2.8 0l8-8a2 2 0 0 0 0-2.8l-8-8a2 2 0 0 0-2.8 0z"></path><path d="M12 8v5"></path><path d="M12 16h.01"></path>',
         'mixers' => '<path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="m15 15 6 6"></path><path d="M4 4l5 5"></path>',
         'network' => '<circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><circle cx="12" cy="18" r="3"></circle><path d="m8.4 8.1 3.2 7.8"></path><path d="m15.6 8.1-3.2 7.8"></path><path d="M9 6h6"></path>',
+        'notice' => '<circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path>',
         'notes' => '<path d="M6 3h9l5 5v13H6z"></path><path d="M14 3v6h6"></path><path d="M9 13h6"></path><path d="M9 17h4"></path>',
         'parameters' => '<path d="M4 6h10"></path><path d="M18 6h2"></path><circle cx="16" cy="6" r="2"></circle><path d="M4 12h3"></path><path d="M11 12h9"></path><circle cx="9" cy="12" r="2"></circle><path d="M4 18h12"></path><path d="M20 18h.01"></path><circle cx="18" cy="18" r="2"></circle>',
         'pgp-key' => '<circle cx="7.5" cy="14.5" r="4.5"></circle><path d="M11 11 21 1"></path><path d="m16 6 2 2"></path><path d="m19 3 2 2"></path>',
@@ -2504,8 +2621,7 @@ function directory_filter_text_for_entry(array $entry, string $locale, bool $inc
         $parts[] = $entry['links']['support'] ?? '';
     }
 
-    $status = directory_entry_status($entry);
-    if ($status !== []) {
+    foreach (directory_entry_status_blocks($entry) as $status) {
         $parts[] = directory_status_text($status, 'label', $locale);
         $parts[] = directory_status_text($status, 'title', $locale);
         $parts[] = directory_status_text($status, 'lead', $locale);

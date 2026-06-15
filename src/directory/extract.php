@@ -146,6 +146,13 @@ function directory_extract_all(string $root, array $options = []): array
             if ($ruNotes === '') {
                 $ruNotes = directory_extract_existing_entry_notes($root . '/' . $outputPaths['ru']);
             }
+            if ($categorySlug === 'mixers') {
+                $notesOverride = directory_mixer_notes_override($slug);
+                if ($notesOverride !== []) {
+                    $enNotes = $notesOverride['en'] ?? $enNotes;
+                    $ruNotes = $notesOverride['ru'] ?? $ruNotes;
+                }
+            }
             $enConfig = trim($entry['config'] ?? '');
             $ruConfig = trim($ru['config'] ?? '');
             if ($enConfig === '') {
@@ -204,6 +211,7 @@ function directory_extract_all(string $root, array $options = []): array
                 'assets' => $entry['assets'],
                 'links' => $links,
                 'status' => directory_entry_status_override($categorySlug, $slug),
+                'notices' => directory_entry_notice_overrides($categorySlug, $slug),
                 'content' => [
                     'en' => $entry['content'],
                     'ru' => $ru['content'],
@@ -1009,6 +1017,7 @@ function directory_mixer_telegram_bot_url(string $slug): string
         'bmix' => 'https://t.me/bMixIoBot?start=s-0',
         'bitxer' => 'https://t.me/bitxerbot',
         'jokermix' => 'https://t.me/JokerMixBOT',
+        'flash-mixer' => 'https://t.me/flashmixer_bot',
     ];
 
     return $urls[$slug] ?? '';
@@ -1598,6 +1607,10 @@ function directory_is_mirrors_header(string $text): bool
 function directory_mixer_support_override(string $slug): array
 {
     $support = [
+        'flash-mixer' => [
+            'support' => 'flashmixer@proton.me / @flashmixer_bot / PGP verifier / MCP endpoint',
+            'support_html' => '<a href="mailto:flashmixer@proton.me">flashmixer@proton.me</a> / <a href="https://t.me/flashmixer_bot">@flashmixer_bot</a> / <a href="https://flashmixer.io/verify">PGP verifier</a> / <a href="https://flashmixer.io/mcp">MCP endpoint</a>',
+        ],
         'bitxer' => [
             'support' => 'bitxer.io@protonmail.com / PGP / PGP checker',
             'support_html' => '<a href="mailto:bitxer.io@protonmail.com">bitxer.io@protonmail.com</a> / <a href="https://www.bitxer.io/files/pgp/en/pgp-key.txt">PGP</a> / <a href="https://bitlist.co/service/bitxer/verify-pgp">PGP checker</a>',
@@ -1635,6 +1648,40 @@ function directory_mixer_support_override(string $slug): array
     return $support[$slug] ?? [];
 }
 
+function directory_mixer_notes_override(string $slug): array
+{
+    if ($slug !== 'flash-mixer') {
+        return [];
+    }
+
+    return [
+        'en' => '<p>Flash Mixer is a Bitcoin-only service with Standard and Premium pools. The site states that orders can split payouts to 1-2 Bitcoin addresses, use custom percentage fees inside the supported range, and set optional payout delays.</p>
+<ul>
+<li>Standard Pool: 0.001-1.5 BTC, 1.5%-10.0% + $30 fixed fee, 0-72 hour delay.</li>
+<li>Premium Pool: 0.01-450 BTC, 3.0%-10.0% + $30 fixed fee, 2-72 hour delay.</li>
+<li>Minimum payout: 0.0001 BTC. Maximum payout addresses per order: 2.</li>
+<li>You have 12 hours to send payment after order creation. The exact amount shown must be sent; no more and no less.</li>
+<li>Orders are irreversible once created. Funds cannot be refunded after payment is sent.</li>
+<li>Processing begins after the incoming Bitcoin payment reaches 3 on-chain confirmations.</li>
+<li>The service states that no registration, email, identity verification, or personal data is required to create an order, and that no logs are kept after order completion.</li>
+<li>Developer access is listed through the MCP endpoint at <a href="https://flashmixer.io/mcp">flashmixer.io/mcp</a>.</li>
+</ul>
+<p>Warranty letter verification is available at <a href="https://flashmixer.io/verify">flashmixer.io/verify</a>. The service PGP fingerprint shown there is D428 D9F8 5B4D 35FF BEDA 2087 0F66 7607 6768 E96B.</p>',
+        'ru' => '<p>Flash Mixer — сервис только для Bitcoin с пулами Standard и Premium. На сайте указано, что заказ может разделять выплаты на 1-2 Bitcoin-адреса, использовать пользовательскую процентную комиссию в доступном диапазоне и задавать задержки выплат.</p>
+<ul>
+<li>Standard Pool: 0.001-1.5 BTC, 1.5%-10.0% + фиксированная комиссия $30, задержка 0-72 часа.</li>
+<li>Premium Pool: 0.01-450 BTC, 3.0%-10.0% + фиксированная комиссия $30, задержка 2-72 часа.</li>
+<li>Минимальная выплата: 0.0001 BTC. Максимум адресов выплаты в заказе: 2.</li>
+<li>После создания заказа на отправку платежа дается 12 часов. Нужно отправить точную указанную сумму: не больше и не меньше.</li>
+<li>Заказы необратимы после создания. Средства нельзя вернуть после отправки платежа.</li>
+<li>Обработка начинается после 3 on-chain подтверждений входящего Bitcoin-платежа.</li>
+<li>Сервис заявляет, что для создания заказа не нужны регистрация, email, проверка личности или персональные данные, а после завершения заказа логи не сохраняются.</li>
+<li>Доступ для разработчиков указан через MCP endpoint: <a href="https://flashmixer.io/mcp">flashmixer.io/mcp</a>.</li>
+</ul>
+<p>Проверка гарантийного письма доступна на <a href="https://flashmixer.io/verify">flashmixer.io/verify</a>. Указанный там PGP fingerprint сервиса: D428 D9F8 5B4D 35FF BEDA 2087 0F66 7607 6768 E96B.</p>',
+    ];
+}
+
 function directory_mixer_support_override_is_authoritative(string $slug): bool
 {
     return in_array($slug, ['dreadpirate', 'jokermix', 'zeusmix'], true);
@@ -1643,6 +1690,13 @@ function directory_mixer_support_override_is_authoritative(string $slug): bool
 function directory_mixer_link_override(string $slug): array
 {
     $links = [
+        'flash-mixer' => [
+            'tor' => 'http://flashmxup6d3qesb72j3ciurm6v2tgjjhdffndiv35o2ifk62wv7njid.onion',
+            'mirrors' => [
+                ['label' => 'flashmixer.to', 'url' => 'https://flashmixer.to'],
+                ['label' => 'flashmixer.co', 'url' => 'https://flashmixer.co'],
+            ],
+        ],
         'jokermix' => [
             'tor' => 'http://jokerrj25jeuks7rqodsyo2xofsasakra2naaa4axb3cyb4j333ya5yd.onion/',
         ],
@@ -1654,45 +1708,287 @@ function directory_mixer_link_override(string $slug): array
     return $links[$slug] ?? [];
 }
 
-function directory_entry_status_override(string $categorySlug, string $slug): array
+function directory_entry_notice_overrides(string $categorySlug, string $slug): array
 {
-    if ($categorySlug === 'mixers' && $slug === 'dreadpirate') {
-        return [
-            'type' => 'maintenance',
+    return array_merge(
+        directory_entry_domain_age_notice_overrides($categorySlug, $slug),
+        directory_entry_javascript_notice_overrides($categorySlug, $slug)
+    );
+}
+
+function directory_entry_domain_age_notice_overrides(string $categorySlug, string $slug): array
+{
+    if ($categorySlug === 'mixers' && $slug === 'flash-mixer') {
+        return [[
+            'type' => 'notice',
             'label' => [
-                'en' => 'Under maintenance',
-                'ru' => 'На обслуживании',
-            ],
-            'action_label' => [
-                'en' => 'Under maintenance',
-                'ru' => 'На обслуживании',
+                'en' => 'Notice',
+                'ru' => 'Уведомление',
             ],
             'title' => [
-                'en' => 'DreadPirate is under maintenance',
-                'ru' => 'DreadPirate на обслуживании',
+                'en' => 'Flash Mixer domains are newly registered',
+                'ru' => 'Домены Flash Mixer зарегистрированы недавно',
             ],
             'lead' => [
-                'en' => 'DreadPirate is not accepting new mixes or transactions while it works through reported technical issues.',
-                'ru' => 'DreadPirate временно не принимает новые миксы или транзакции из-за заявленных технических проблем.',
+                'en' => 'RDAP data shows that flashmixer.io, flashmixer.to, and flashmixer.co were registered on May 24, 2026. At the time of review on June 13, 2026, those domains were 19 days old.',
+                'ru' => 'Данные RDAP показывают, что flashmixer.io, flashmixer.to и flashmixer.co зарегистрированы 24 мая 2026 года. На момент проверки 13 июня 2026 года этим доменам было 19 дней.',
             ],
             'items' => [
                 'en' => [
-                    'DreadPirate says unfinished mixes will be refunded to the sending addresses, not to addresses specified in PGP messages.',
-                    'The 0.5 BTC XSS deposit still appears intact, and there is no stated plan to request a deposit refund, so BitMixList is treating this as a technical pause.',
-                    'Refund timing for unfinished mixes has not been confirmed yet.',
+                    'This is not a harmful-service warning; it is a domain-age note for extra context.',
                 ],
                 'ru' => [
-                    'DreadPirate сообщает, что незавершенные миксы будут возвращены на адреса отправки, а не на адреса, указанные в PGP-сообщениях.',
-                    'Депозит 0.5 BTC на XSS, насколько известно BitMixList, остается в порядке; о запросе возврата депозита не сообщалось, поэтому это помечено как техническая пауза.',
-                    'Срок возврата незавершенных миксов пока не подтвержден.',
+                    'Это не предупреждение о вредоносности сервиса; это справочная пометка о возрасте домена.',
                 ],
             ],
-            'source' => [
-                'label' => [
-                    'en' => 'AltcoinsTalks notice',
-                    'ru' => 'уведомление на AltcoinsTalks',
+            'sources' => [
+                [
+                    'label' => [
+                        'en' => 'Identity Digital RDAP record',
+                        'ru' => 'запись RDAP Identity Digital',
+                    ],
+                    'url' => 'https://rdap.identitydigital.services/rdap/domain/flashmixer.io',
                 ],
-                'url' => 'https://www.altcoinstalks.com/index.php?topic=339855.msg2123130#msg2123130',
+                [
+                    'label' => [
+                        'en' => 'Tonic RDAP record',
+                        'ru' => 'запись RDAP Tonic',
+                    ],
+                    'url' => 'https://rdap.tonicregistry.to/rdap/domain/flashmixer.to',
+                ],
+                [
+                    'label' => [
+                        'en' => 'Namecheap RDAP record',
+                        'ru' => 'запись RDAP Namecheap',
+                    ],
+                    'url' => 'https://rdap.namecheap.com/domain/flashmixer.co',
+                ],
+            ],
+        ]];
+    }
+
+    $domainAgeNotices = [
+        'mixers' => [
+            'mixer-black' => [
+                'domain' => 'mixer.black',
+                'registered_en' => 'May 1, 2026',
+                'registered_ru' => '1 мая 2026 года',
+                'age_days' => 42,
+                'age_days_ru' => '42 дня',
+                'source_label_en' => 'Identity Digital RDAP record',
+                'source_label_ru' => 'запись RDAP Identity Digital',
+                'source_url' => 'https://rdap.identitydigital.services/rdap/domain/mixer.black',
+            ],
+            'mixtwix' => [
+                'domain' => 'mixtwix.io',
+                'registered_en' => 'April 10, 2026',
+                'registered_ru' => '10 апреля 2026 года',
+                'age_days' => 63,
+                'age_days_ru' => '63 дня',
+                'source_label_en' => 'Identity Digital RDAP record',
+                'source_label_ru' => 'запись RDAP Identity Digital',
+                'source_url' => 'https://rdap.identitydigital.services/rdap/domain/mixtwix.io',
+            ],
+        ],
+        'neverkyc-exchanges' => [
+            'tomboi-io' => [
+                'domain' => 'tomboi.io',
+                'registered_en' => 'April 9, 2026',
+                'registered_ru' => '9 апреля 2026 года',
+                'age_days' => 64,
+                'age_days_ru' => '64 дня',
+                'source_label_en' => 'Identity Digital RDAP record',
+                'source_label_ru' => 'запись RDAP Identity Digital',
+                'source_url' => 'https://rdap.identitydigital.services/rdap/domain/tomboi.io',
+            ],
+        ],
+    ];
+
+    $notice = $domainAgeNotices[$categorySlug][$slug] ?? null;
+    if (!is_array($notice)) {
+        return [];
+    }
+
+    $domain = $notice['domain'];
+
+    return [[
+        'type' => 'notice',
+        'label' => [
+            'en' => 'Notice',
+            'ru' => 'Уведомление',
+        ],
+        'title' => [
+            'en' => $domain . ' is a newly registered domain',
+            'ru' => $domain . ' — новый домен',
+        ],
+        'lead' => [
+            'en' => 'RDAP/WHOIS data shows that ' . $domain . ' was registered on ' . $notice['registered_en'] . '. At the time of review on June 13, 2026, the domain was ' . $notice['age_days'] . ' days old.',
+            'ru' => 'Данные RDAP/WHOIS показывают, что ' . $domain . ' зарегистрирован ' . $notice['registered_ru'] . '. На момент проверки 13 июня 2026 года домену было ' . $notice['age_days_ru'] . '.',
+        ],
+        'items' => [
+            'en' => [
+                'This is not a harmful-service warning; it is a domain-age note for extra context.',
+            ],
+            'ru' => [
+                'Это не предупреждение о вредоносности сервиса; это справочная пометка о возрасте домена.',
+            ],
+        ],
+        'source' => [
+            'label' => [
+                'en' => $notice['source_label_en'],
+                'ru' => $notice['source_label_ru'],
+            ],
+            'url' => $notice['source_url'],
+        ],
+    ]];
+}
+
+function directory_entry_javascript_notice_overrides(string $categorySlug, string $slug): array
+{
+    $javascriptNotices = [
+        'mixers' => [
+            'mixer-money' => ['domain' => 'mixer.money', 'source_url' => 'https://mixer.money/', 'http_code' => 403],
+            'mixtum' => ['domain' => 'mixtum.io', 'source_url' => 'https://mixtum.io/', 'http_code' => 403],
+            'anonymixer' => ['domain' => 'anonymixer.com', 'source_url' => 'https://anonymixer.com/', 'http_code' => 200],
+            'webmixer' => ['domain' => 'webmixer.io', 'source_url' => 'https://webmixer.io/', 'http_code' => 403],
+            'mixtura-money' => ['domain' => 'mixtura.money', 'source_url' => 'https://mixtura.money/', 'http_code' => 200],
+            'mixero' => ['domain' => 'mixero.io', 'source_url' => 'https://mixero.io/', 'http_code' => 200],
+            'mixy-money' => ['domain' => 'mixy.money', 'source_url' => 'https://mixy.money/', 'http_code' => 403],
+            'dreammixer' => ['domain' => 'mixerdream.com', 'source_url' => 'https://mixerdream.com/', 'http_code' => 403],
+            'thormixer' => ['domain' => 'thormixer.io', 'source_url' => 'https://thormixer.io/', 'http_code' => 403],
+            'jokermix' => ['domain' => 'jokermix.to', 'source_url' => 'https://jokermix.to/', 'http_code' => 200],
+            'genesismix' => ['domain' => 'genesismix.cx', 'source_url' => 'https://genesismix.cx/', 'http_code' => 200],
+            'zeusmix' => ['domain' => 'zeusmix.to', 'source_url' => 'https://zeusmix.to/', 'http_code' => 200],
+            'trustmixer' => ['domain' => 'trustmixer.io', 'source_url' => 'https://trustmixer.io/', 'http_code' => 200],
+            'bmix' => ['domain' => 'bmix.io', 'source_url' => 'https://bmix.io/', 'http_code' => 200],
+            'mixer-black' => ['domain' => 'mixer.black', 'source_url' => 'https://mixer.black/', 'http_code' => 522],
+            'mixtwix' => ['domain' => 'mixtwix.io', 'source_url' => 'https://mixtwix.io/', 'http_code' => 200],
+            'bitxer' => ['domain' => 'bitxer.io', 'source_url' => 'https://www.bitxer.io/', 'http_code' => 403],
+            'flash-mixer' => ['domain' => 'flashmixer.io', 'source_url' => 'https://flashmixer.io/', 'http_code' => 200],
+        ],
+        'neverkyc-exchanges' => [
+            'b1exch' => ['domain' => 'b1exch.to', 'source_url' => 'https://b1exch.to/', 'http_code' => 200],
+            'crypton' => ['domain' => 'crp.is', 'source_url' => 'https://crp.is/', 'http_code' => 200],
+            'dex-fo' => ['domain' => 'dex.fo', 'source_url' => 'https://dex.fo/', 'http_code' => 200],
+            'thorchainswap' => ['domain' => 'thorchain.org', 'source_url' => 'https://thorchain.org/', 'http_code' => 200],
+            'bridgoro' => ['domain' => 'bridgoro.com', 'source_url' => 'https://bridgoro.com/', 'http_code' => 200],
+            'splash-tf' => ['domain' => 'splash.tf', 'source_url' => 'https://splash.tf/?ref=3zdjXY3XC', 'http_code' => 200],
+            'eigenwallet' => ['domain' => 'eigenwallet.org', 'source_url' => 'https://eigenwallet.org/', 'http_code' => 200],
+            'basicswap-beta' => ['domain' => 'basicswapdex.com', 'source_url' => 'https://basicswapdex.com/', 'http_code' => 200],
+            'tomboi-io' => ['domain' => 'tomboi.io', 'source_url' => 'https://tomboi.io/', 'http_code' => 403],
+        ],
+        'instant-exchanges' => [
+            'quickex' => ['domain' => 'quickex.io', 'source_url' => 'https://quickex.io/', 'http_code' => 200],
+            'cce-cash' => ['domain' => 'cce.cash', 'source_url' => 'https://cce.cash/?ref=KJxgqaOV', 'http_code' => 200],
+            'wizardswap' => ['domain' => 'wizardswap.io', 'source_url' => 'https://www.wizardswap.io/', 'http_code' => 200],
+            'trocador' => ['domain' => 'trocador.app', 'source_url' => 'https://trocador.app/?ref=M7uvgXV2HR', 'http_code' => 503],
+            'chainswap' => ['domain' => 'chainswap.io', 'source_url' => 'https://chainswap.io/?ref=74AW8Ubn3y', 'http_code' => 403],
+            'pegasusswap' => ['domain' => 'pegasusswap.com', 'source_url' => 'https://pegasusswap.com/', 'http_code' => 200],
+            'exolix' => ['domain' => 'exolix.com', 'source_url' => 'https://exolix.com/', 'http_code' => 200],
+            'bitcoinvn' => ['domain' => 'bitcoinvn.io', 'source_url' => 'https://bitcoinvn.io/', 'http_code' => 200],
+        ],
+    ];
+
+    $notice = $javascriptNotices[$categorySlug][$slug] ?? null;
+    if (!is_array($notice)) {
+        return [];
+    }
+
+    $domain = (string) $notice['domain'];
+    $httpCode = (int) $notice['http_code'];
+    $leadEn = 'A clearnet check on June 13, 2026 found executable JavaScript on the public page for ' . $domain . '.';
+    $leadRu = 'Проверка clearnet-страницы 13 июня 2026 года обнаружила исполняемый JavaScript на публичной странице ' . $domain . '.';
+    if ($httpCode >= 400) {
+        $leadEn = 'A clearnet check on June 13, 2026 found executable JavaScript in the public HTTP ' . $httpCode . ' response for ' . $domain . '.';
+        $leadRu = 'Проверка clearnet-страницы 13 июня 2026 года обнаружила исполняемый JavaScript в публичном HTTP ' . $httpCode . ' ответе для ' . $domain . '.';
+    }
+
+    return [[
+        'type' => 'notice',
+        'label' => [
+            'en' => 'Notice',
+            'ru' => 'Уведомление',
+        ],
+        'title' => [
+            'en' => $domain . ' uses JavaScript',
+            'ru' => $domain . ' использует JavaScript',
+        ],
+        'lead' => [
+            'en' => $leadEn,
+            'ru' => $leadRu,
+        ],
+        'items' => [
+            'en' => [
+                'This is not a harmful-service warning; it is a browser-behavior note for users who disable JavaScript or prefer static pages.',
+                'Review the page behavior before entering payout addresses or creating an order.',
+            ],
+            'ru' => [
+                'Это не предупреждение о вредоносности сервиса; это пометка о поведении страницы для пользователей, которые отключают JavaScript или предпочитают статические страницы.',
+                'Проверьте поведение страницы перед вводом адресов выплаты или созданием заказа.',
+            ],
+        ],
+        'source' => [
+            'label' => [
+                'en' => $domain . ' clearnet response',
+                'ru' => 'clearnet-ответ ' . $domain,
+            ],
+            'url' => (string) $notice['source_url'],
+        ],
+    ]];
+}
+
+function directory_entry_status_override(string $categorySlug, string $slug): array
+{
+    if ($categorySlug === 'mixers' && $slug === 'flash-mixer') {
+        return [];
+    }
+
+    if ($categorySlug === 'mixers' && $slug === 'dreadpirate') {
+        return [
+            'type' => 'scam-accusation',
+            'label' => [
+                'en' => 'SCAM',
+                'ru' => 'SCAM',
+            ],
+            'action_label' => [
+                'en' => 'SCAM',
+                'ru' => 'SCAM',
+            ],
+            'title' => [
+                'en' => 'DreadPirate is marked as SCAM',
+                'ru' => 'DreadPirate помечен как SCAM',
+            ],
+            'lead' => [
+                'en' => 'Forum posts describe unresolved claims for lost funds and continuing questions around the takedown message. BitMixList is marking DreadPirate as SCAM for the time being.',
+                'ru' => 'В сообщениях на форуме описаны нерешенные претензии по потерянным средствам и вопросы к сообщению о закрытии сервиса. BitMixList временно помечает DreadPirate как SCAM.',
+            ],
+            'items' => [
+                'en' => [
+                    'A forum user reported submitting a compensation claim for lost funds through the XSS escrow process.',
+                    'Forum participants noted that no official FIOD or DOJ confirmation had been found in the public discussion and questioned whether the takedown message was genuine.',
+                    'The primary visit action is disabled from BitMixList until this warning is reviewed again.',
+                ],
+                'ru' => [
+                    'Пользователь форума сообщил, что подал заявку на компенсацию потерянных средств через процедуру XSS escrow.',
+                    'Участники обсуждения отметили, что в публичной теме не найдено официального подтверждения от FIOD или DOJ, и усомнились в подлинности сообщения о закрытии.',
+                    'Основная кнопка перехода к сервису отключена на BitMixList до повторного пересмотра предупреждения.',
+                ],
+            ],
+            'sources' => [
+                [
+                    'label' => [
+                        'en' => 'AltcoinsTalks DreadPirate thread, page 32',
+                        'ru' => 'тема DreadPirate на AltcoinsTalks, стр. 32',
+                    ],
+                    'url' => 'https://www.altcoinstalks.com/index.php?topic=339855.465',
+                ],
+                [
+                    'label' => [
+                        'en' => 'AltcoinsTalks DreadPirate thread, page 33',
+                        'ru' => 'тема DreadPirate на AltcoinsTalks, стр. 33',
+                    ],
+                    'url' => 'https://www.altcoinstalks.com/index.php?topic=339855.480',
+                ],
             ],
         ];
     }

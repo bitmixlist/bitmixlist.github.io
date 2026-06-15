@@ -250,6 +250,19 @@
             ]
         },
         {
+            "id": "mixers:flash-mixer",
+            "category": "mixers",
+            "slug": "flash-mixer",
+            "name": "Flash Mixer",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://flashmixer.io",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
             "id": "mixers:dreadpirate",
             "category": "mixers",
             "slug": "dreadpirate",

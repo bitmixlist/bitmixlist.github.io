@@ -9,7 +9,7 @@
     <title>Anonymous Bitcoin AML Checker – BitMixList</title>
     <meta name="description" content="Run anonymous AML screens on Bitcoin addresses before sending funds to regulated services." />
     <meta name="robots" content="max-image-preview:large" />
-    <link rel="canonical" href="https://bitmixlist.org/aml-check/" />
+    <link rel="canonical" href="https://bitmixlist.org/aml-check.html" />
     <meta name="generator" content="All in One SEO (AIOSEO) 4.5.1.1" />
     <meta property="og:locale" content="en_GB" />
     <meta property="og:site_name" content="BitMixList -" />
@@ -368,16 +368,20 @@
             <li>It should take a few seconds for an address check to be processed.</li>
           </ul>
           <p>If you have any issues with your payment, send an email with your payment ID for manual crediting.</p>
+          <div class="info-card" role="status" aria-live="polite" style="display:block;margin:1rem 0;">
+            <strong>Maintenance in progress.</strong>
+            The AML checker is temporarily disabled while the new version is deployed. Existing tokens and balances are not affected.
+          </div>
           <div class="address-checker-container">
             <div class="aml-widget">
               <h2>AML Checks &amp; Payments</h2>
               <div class="flex">
                 <div class="token-section">
                   <label for="tokenInput">Token</label>
-                  <input id="tokenInput" placeholder="Enter your API token" type="text"/>
+                  <input id="tokenInput" placeholder="Enter your API token" type="text" disabled/>
                 <div class="token-action-buttons">
-                  <button class="bitmix-button" onclick="loadToken(this)">Load token info</button>
-                  <button class="bitmix-button" onclick="generateToken(this)">Generate token</button>
+                  <button class="bitmix-button" onclick="loadToken(this)" disabled>Load token info</button>
+                  <button class="bitmix-button" onclick="generateToken(this)" disabled>Generate token</button>
                 </div>
                 <div class="error" id="tokenError"></div>
                 <div class="token-details" id="tokenDetails"></div>
@@ -385,14 +389,14 @@
               <div class="actions-section">
                 <label>Purchase checks</label>
                 <div style="margin-bottom:0.5rem">
-                  <select id="checkPackageSelect">
+                  <select id="checkPackageSelect" disabled>
                     <option value="100" selected>100-check package</option>
                     <option value="10">10-check package</option>
                   </select>
                 </div>
                 <div class="action-buttons">
-                  <button class="bitmix-button" id="createPaymentBtn" onclick="createPayment()">Buy checks</button>
-                  <button class="bitmix-button" onclick="refreshPaymentsClick(this)">Refresh payments</button>
+                  <button class="bitmix-button" id="createPaymentBtn" onclick="createPayment()" disabled>Buy checks</button>
+                  <button class="bitmix-button" onclick="refreshPaymentsClick(this)" disabled>Refresh payments</button>
                 </div>
                 <div class="error" id="paymentMessage" style="margin-top:0.5rem"></div>
               </div>
@@ -401,19 +405,19 @@
               <label>Run lookup</label>
               <div class="lookup-row">
                 <div>
-                  <select id="chainSelect">
+                  <select id="chainSelect" disabled>
                   <option value="bitcoin">Bitcoin</option>
                   </select>
                 </div>
                 <div class="lookup-input-container">
-                  <input id="addressInput" placeholder="Address" type="text"/>
+                  <input id="addressInput" placeholder="Address" type="text" disabled/>
                 </div>
                 <div class="lookup-button-container">
-                  <button class="bitmix-button" id="runButton" onclick="runLookup()">Run AML check</button>
-                  <button class="bitmix-button" onclick="loadLastJob()">Load last check</button>
+                  <button class="bitmix-button" id="runButton" onclick="runLookup()" disabled>Run AML check</button>
+                  <button class="bitmix-button" onclick="loadLastJob()" disabled>Load last check</button>
                 </div>
               </div>
-              <div class="error" id="lookupMaintenanceNote"></div>
+              <div class="error" id="lookupMaintenanceNote">The AML checker is temporarily offline for maintenance.</div>
               <div class="error" id="lookupError"></div>
                 <div class="info-card" id="lookupStatus" style="display:none;align-items:center;gap:0.75rem;">
                   <div class="spinner" id="lookupSpinner" style="display:none"></div>
@@ -474,7 +478,7 @@
                 </div>
               </div>
               <div class="export-row" id="exportRow">
-                <button class="bitmix-button" id="exportResultBtn" onclick="exportLookupResult()">Export as text</button>
+                <button class="bitmix-button" id="exportResultBtn" onclick="exportLookupResult()" disabled>Export as text</button>
               </div>
             </div>
             <div class="payment-section">
@@ -509,7 +513,7 @@
 </div>
     <script data-optimized="1" src="wp-content/litespeed/js/1d034a87d61ff5f30ca39d179529e895.js?v=20260530-3" defer></script>
     <script src="wp-content/litespeed/js/popover.min.js?v=20260530-3" defer></script>
-    <script src="wp-content/litespeed/js/aml-check.js?v=20260530-3" defer></script>
+    <!-- AML checker script temporarily disabled during the maintenance deployment window. -->
   </body>
 </html>
 <!-- Page optimized by LiteSpeed Cache @2023-12-12 10:30:01 -->

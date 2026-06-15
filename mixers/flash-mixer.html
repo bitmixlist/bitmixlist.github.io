@@ -3,24 +3,24 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Peach Bitcoin - Peer-to-Peer Marketplaces - BitMixList</title>
-<meta content="Peach Bitcoin: Crypto: BTC. BitMixList parameter page for this p2p marketplace." name="description"/>
-<link href="https://bitmixlist.org/p2p-markets/peach-bitcoin.html" rel="canonical"/>
+<title>Flash Mixer - Bitcoin Mixers - BitMixList</title>
+<meta content="Flash Mixer: Mixing fee: Standard 1.5%-10.0%; Premium 3.0%-10.0% + $30 fixed. BitMixList parameter page for this mixer." name="description"/>
+<link href="https://bitmixlist.org/mixers/flash-mixer.html" rel="canonical"/>
 <link href="https://gmpg.org/xfn/11" rel="profile"/>
 <meta content="max-image-preview:large" name="robots"/>
 <meta content="en_GB" property="og:locale"/>
 <meta content="BitMixList -" property="og:site_name"/>
 <meta content="article" property="og:type"/>
-<meta content="Peach Bitcoin - Peer-to-Peer Marketplaces - BitMixList" property="og:title"/>
-<meta content="Peach Bitcoin: Crypto: BTC. BitMixList parameter page for this p2p marketplace." property="og:description"/>
-<meta content="https://bitmixlist.org/p2p-markets/peach-bitcoin.html" property="og:url"/>
+<meta content="Flash Mixer - Bitcoin Mixers - BitMixList" property="og:title"/>
+<meta content="Flash Mixer: Mixing fee: Standard 1.5%-10.0%; Premium 3.0%-10.0% + $30 fixed. BitMixList parameter page for this mixer." property="og:description"/>
+<meta content="https://bitmixlist.org/mixers/flash-mixer.html" property="og:url"/>
 <meta content="https://bitmixlist.org/wp-content/uploads/2023/12/logo-1-e1701782109696.png" property="og:image"/>
 <meta content="https://bitmixlist.org/wp-content/uploads/2023/12/logo-1-e1701782109696.png" property="og:image:secure_url"/>
 <meta content="350" property="og:image:width"/>
 <meta content="105" property="og:image:height"/>
 <meta content="summary_large_image" name="twitter:card"/>
-<meta content="Peach Bitcoin - Peer-to-Peer Marketplaces - BitMixList" name="twitter:title"/>
-<meta content="Peach Bitcoin: Crypto: BTC. BitMixList parameter page for this p2p marketplace." name="twitter:description"/>
+<meta content="Flash Mixer - Bitcoin Mixers - BitMixList" name="twitter:title"/>
+<meta content="Flash Mixer: Mixing fee: Standard 1.5%-10.0%; Premium 3.0%-10.0% + $30 fixed. BitMixList parameter page for this mixer." name="twitter:description"/>
 <meta content="https://bitmixlist.org/wp-content/uploads/2023/12/logo-1-e1701782109696.png" name="twitter:image"/>
 <link href="../wp-content/uploads/2023/12/cropped-favicon-2-32x32.png?v=20260608-1" rel="icon" sizes="32x32"/>
 <link href="../wp-content/uploads/2023/12/cropped-favicon-2-192x192.png?v=20260608-1" rel="icon" sizes="192x192"/>
@@ -41,6 +41,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 <script src="../wp-content/litespeed/js/scamwhammer.js?v=20260608-1" defer></script>
+<script src="../wp-content/litespeed/js/openpgp.min.js?v=20260608-1" defer></script>
+<script src="../wp-content/litespeed/js/btc-message-verifier.min.js?v=20260608-1" defer></script>
+<script src="../wp-content/litespeed/js/verifytool.js?v=20260608-1" defer></script>
 <style>
 .directory-page .site-header { display: block; min-height: 108px; padding-top: 1rem; padding-bottom: 0.95rem; }
 .directory-page .site-content-wrapper { padding-top: 124px; }
@@ -91,6 +94,53 @@ document.addEventListener('DOMContentLoaded', function () {
 .directory-facts td.directory-coins-cell { white-space: normal; overflow-wrap: normal; word-break: normal; }
 .directory-facts td.directory-coins-cell .coin-list { max-width: 100%; }
 .directory-list-summary .coin-list { display: inline-flex; margin-left: 4px; vertical-align: middle; }
+.directory-button--disabled, .directory-button--disabled:hover, .directory-button--disabled:focus { border-color: #5d5668; background: #24212c; color: #aaa2b8; cursor: not-allowed; filter: saturate(0.65); opacity: 0.78; pointer-events: none; text-decoration: none; }
+.directory-status-badge { display: inline-flex; align-items: center; gap: 5px; min-height: 26px; margin: 6px 0 2px; padding: 2px 8px; border: 1px solid #d49a24; border-radius: 999px; background: #2a1d08; color: #ffd88a; font-size: 0.78rem; font-weight: 750; line-height: 1.1; text-transform: uppercase; letter-spacing: 0.02em; }
+.directory-status-badge--notice { border-color: #3f7ca4; background: #0f2230; color: #bfe8ff; }
+.directory-status-badge--scam-accusation { border-color: #b8444e; background: #2a1014; color: #ffc7cd; }
+.directory-status-badge .directory-icon { width: 0.95em; height: 0.95em; }
+.directory-list-card--notice { position: relative; border-color: #345a73; background: linear-gradient(180deg, #171d25, #181222); }
+.directory-list-card--maintenance { position: relative; border-color: #8a6b2b; background: linear-gradient(180deg, #1d1820, #181222); }
+.directory-list-card--scam-accusation { position: relative; border-color: #9d2f3b; background: linear-gradient(180deg, #251419, #181222); }
+.directory-card-media { position: relative; min-width: 0; width: 128px; max-width: 100%; }
+.directory-list-card--maintenance .directory-card-media a, .directory-list-card--scam-accusation .directory-card-media a { display: block; }
+.directory-list-card--maintenance .directory-card-media .directory-logo, .directory-list-card--scam-accusation .directory-card-media .directory-logo { opacity: 0.72; filter: grayscale(0.25) saturate(0.85) contrast(0.96); }
+.directory-list-card--maintenance .directory-card-media::after { content: ""; position: absolute; inset: 0; width: 128px; height: 128px; max-width: 100%; border-radius: 10px; background: repeating-linear-gradient(135deg, rgba(246, 184, 63, 0.34) 0 10px, rgba(27, 20, 16, 0.24) 10px 20px); opacity: 0.5; pointer-events: none; }
+.directory-list-card--scam-accusation .directory-card-media::after { content: ""; position: absolute; inset: 0; width: 128px; height: 128px; max-width: 100%; border-radius: 10px; background: repeating-linear-gradient(135deg, rgba(220, 54, 68, 0.34) 0 10px, rgba(27, 20, 22, 0.24) 10px 20px); opacity: 0.55; pointer-events: none; }
+.directory-card-status-sign { position: absolute; right: 6px; bottom: 6px; z-index: 1; display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: 2px solid #1c1406; border-radius: 6px; background: #f6b83f; color: #241400; transform: rotate(45deg); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35); }
+.directory-card-status-sign--notice { border-color: #092232; background: #52b7d8; color: #061923; }
+.directory-card-status-sign--scam-accusation { border-color: #24070b; background: #dc3644; color: #fff1f3; }
+.directory-card-status-sign .directory-icon { width: 18px; height: 18px; transform: rotate(-45deg); stroke-width: 2.4; }
+.directory-maintenance-notice { position: relative; display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 18px; margin: 24px 0 0; padding: 24px 22px 20px; overflow: hidden; border: 1px solid #9b7424; border-radius: 8px; background: #1b1510; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28); }
+.directory-maintenance-notice::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 10px; background: repeating-linear-gradient(135deg, #f6b83f 0 14px, #1b1410 14px 28px); }
+.directory-maintenance-notice--notice { border-color: #3f7ca4; background: #101a22; }
+.directory-maintenance-notice--notice::before { background: linear-gradient(90deg, #52b7d8, #6fcf97); }
+.directory-maintenance-notice--scam-accusation { border-color: #a12f3b; background: #211014; }
+.directory-maintenance-notice--scam-accusation::before { background: repeating-linear-gradient(135deg, #dc3644 0 14px, #1d0d10 14px 28px); }
+.directory-maintenance-sign { display: flex; align-items: center; justify-content: center; width: 62px; height: 62px; margin-top: 6px; border: 3px solid #1c1406; border-radius: 8px; background: #f6b83f; color: #241400; transform: rotate(45deg); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35); }
+.directory-maintenance-sign--notice { border-color: #092232; background: #52b7d8; color: #061923; }
+.directory-maintenance-sign--scam-accusation { border-color: #24070b; background: #dc3644; color: #fff1f3; }
+.directory-maintenance-sign .directory-icon { width: 32px; height: 32px; transform: rotate(-45deg); stroke-width: 2.4; }
+.directory-maintenance-body { min-width: 0; }
+.directory-maintenance-kicker { margin: 0 0 6px; color: #ffd88a; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+.directory-maintenance-notice--notice .directory-maintenance-kicker { color: #96dfff; }
+.directory-maintenance-notice--scam-accusation .directory-maintenance-kicker { color: #ff9da7; }
+.directory-maintenance-notice h2 { margin: 0 0 8px; color: #fff3cf; font-size: 1.35rem; letter-spacing: 0; }
+.directory-maintenance-notice--notice h2 { color: #e4f7ff; }
+.directory-maintenance-notice--scam-accusation h2 { color: #ffe8eb; }
+.directory-maintenance-lead { margin: 0 0 12px; color: #f2dfb8; line-height: 1.55; }
+.directory-maintenance-notice--notice .directory-maintenance-lead { color: #ccecff; }
+.directory-maintenance-notice--scam-accusation .directory-maintenance-lead { color: #f5c8cd; }
+.directory-maintenance-list { margin: 0; padding-left: 1.1rem; color: #e8d4aa; line-height: 1.5; }
+.directory-maintenance-notice--notice .directory-maintenance-list { color: #b8deef; }
+.directory-maintenance-notice--scam-accusation .directory-maintenance-list { color: #edc3c8; }
+.directory-maintenance-source { margin: 12px 0 0; color: #cdbb92; font-size: 0.9rem; }
+.directory-maintenance-notice--notice .directory-maintenance-source { color: #9fc7d8; }
+.directory-maintenance-notice--scam-accusation .directory-maintenance-source { color: #d8a8ae; }
+.directory-maintenance-source a { color: #ffe2a4; text-decoration: underline; text-underline-offset: 0.16em; }
+.directory-maintenance-notice--notice .directory-maintenance-source a { color: #bfe8ff; }
+.directory-maintenance-notice--scam-accusation .directory-maintenance-source a { color: #ffb7bf; }
+@media (max-width: 700px) { .directory-maintenance-notice { grid-template-columns: 1fr; padding: 22px 16px 18px; } .directory-maintenance-sign { width: 54px; height: 54px; margin: 2px 0 0; } }
 .directory-site-status { display: inline-flex; align-items: center; gap: 6px; min-height: 28px; padding: 3px 9px; border: 1px solid #565068; border-radius: 999px; background: #17131f; color: #d6d0e4; font-size: 0.8rem; font-weight: 750; line-height: 1.1; white-space: nowrap; }
 .directory-site-status::before { content: ""; width: 0.58em; height: 0.58em; border-radius: 999px; background: #8b8498; box-shadow: 0 0 0 3px rgba(139, 132, 152, 0.16); }
 .directory-site-status[data-site-status-state="online"] { border-color: #2e8b57; background: #102019; color: #b9f6ce; }
@@ -204,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function () {
 }
 </style>
 </head>
-<body class="page-template-default page wp-custom-logo directory-page" style="--directory-header-title-size: 1.38rem; --directory-header-title-mobile-size: 0.88rem;">
+<body class="page-template-default page wp-custom-logo directory-page" style="--directory-header-title-size: 1.5rem; --directory-header-title-mobile-size: 1.15rem;">
 <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
 <nav class="sidebar">
 <div class="logo-container">
@@ -237,23 +287,23 @@ document.addEventListener('DOMContentLoaded', function () {
 <header class="site-header" id="site-header" role="banner">
 <div class="header-inner">
 <button aria-label="Open menu" class="mobile-menu-toggle">☰</button>
-<h4>Peach Bitcoin - P2P marketplace</h4>
+<h4>Flash Mixer - Mixer</h4>
 <div class="lang-switcher" aria-label="Language selector">
 <span class="lang-link is-active" aria-current="true">
 <img src="../wp-content/uploads/2023/12/flag-en.svg" alt="EN flag" width="14" height="10"/>
 <span>EN</span>
 </span>
-<a class="lang-link" href="../ru/p2p-markets/peach-bitcoin.html" hreflang="ru" lang="ru">
+<a class="lang-link" href="../ru/mixers/flash-mixer.html" hreflang="ru" lang="ru">
 <img src="../wp-content/uploads/2023/12/flag-ru.svg" alt="RU flag" width="14" height="10"/>
 <span>RU</span>
 </a>
 </div>
 </div>
 <nav class="directory-meta-nav" aria-label="Directory sections">
-<a class="directory-meta-link" href="../mixers/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="m15 15 6 6"></path><path d="M4 4l5 5"></path></svg><span>Mixers</span></a>
+<a class="directory-meta-link is-active" href="./" aria-current="true"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="m15 15 6 6"></path><path d="M4 4l5 5"></path></svg><span>Mixers</span></a>
 <a class="directory-meta-link" href="../neverkyc-exchanges/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg><span>Exchange Never-KYC</span></a>
 <a class="directory-meta-link" href="../instant-exchanges/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"></path></svg><span>Exchange Instant</span></a>
-<a class="directory-meta-link is-active" href="./" aria-current="true"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="4"></circle><path d="M2 21a7 7 0 0 1 14 0"></path><path d="M17 11a4 4 0 0 0 0-6"></path><path d="M22 21a7 7 0 0 0-5-6.7"></path></svg><span>P2P Marketplaces</span></a>
+<a class="directory-meta-link" href="../p2p-markets/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="4"></circle><path d="M2 21a7 7 0 0 1 14 0"></path><path d="M17 11a4 4 0 0 0 0-6"></path><path d="M22 21a7 7 0 0 0-5-6.7"></path></svg><span>P2P Marketplaces</span></a>
 <a class="directory-meta-link" href="../coordinators/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><circle cx="12" cy="18" r="3"></circle><path d="m8.4 8.1 3.2 7.8"></path><path d="m15.6 8.1-3.2 7.8"></path><path d="M9 6h6"></path></svg><span>Coordinators</span></a>
 <a class="directory-meta-link" href="../privacy-tools/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span>Privacy Tools</span></a>
 </nav>
@@ -267,30 +317,50 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="centered"><p>This is an ad. Ads are not endorsed by BitMixList.</p></div>
 <main class="site-main post-34 page type-page status-publish hentry" id="content">
 <article class="page-content directory-detail">
-<nav class="directory-breadcrumb"><a href="../index.html">Home</a> / <a href="./">Peer-to-Peer Marketplaces</a> / Peach Bitcoin</nav>
+<nav class="directory-breadcrumb"><a href="../index.html">Home</a> / <a href="./">Bitcoin Mixers</a> / Flash Mixer</nav>
 <section class="directory-hero">
-<div><picture><source srcset="../wp-content/uploads/2023/12/peach-bitcoin.webp" type="image/webp"/><img alt="Peach Bitcoin logo" class="directory-logo" src="../wp-content/uploads/2023/12/peach-bitcoin.jpg"/></picture></div>
+<div><picture><img alt="Flash Mixer logo" class="directory-logo" src="../wp-content/uploads/2023/12/flashmixer.png"/></picture></div>
 <div>
-<p class="directory-kicker">P2P marketplace</p>
-<h1>Peach Bitcoin</h1>
-	<p class="directory-summary">Peach Bitcoin: Crypto: BTC. BitMixList parameter page for this p2p marketplace.</p>
+<p class="directory-kicker">Mixer</p>
+<h1>Flash Mixer</h1>
+	<p class="directory-summary">Flash Mixer: Mixing fee: Standard 1.5%-10.0%; Premium 3.0%-10.0% + $30 fixed. BitMixList parameter page for this mixer.</p>
 	<div class="directory-actions">
-		<span class="directory-site-status directory-site-status--unknown" data-site-status-id="p2p-markets:peach-bitcoin" data-site-status-labels="{&quot;checking&quot;:&quot;Checking&quot;,&quot;online&quot;:&quot;Online&quot;,&quot;offline&quot;:&quot;Offline&quot;,&quot;unknown&quot;:&quot;Unknown&quot;}" data-site-status-state="unknown"><span data-site-status-text>Checking</span></span>
-		<a class="directory-button" href="https://peachbitcoin.com/" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Visit official site</span></a>
+		<span class="directory-site-status directory-site-status--unknown" data-site-status-id="mixers:flash-mixer" data-site-status-labels="{&quot;checking&quot;:&quot;Checking&quot;,&quot;online&quot;:&quot;Online&quot;,&quot;offline&quot;:&quot;Offline&quot;,&quot;unknown&quot;:&quot;Unknown&quot;}" data-site-status-state="unknown"><span data-site-status-text>Checking</span></span>
+		<a class="directory-button" href="https://flashmixer.io" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg><span>Visit official site</span></a>
 		</div>
 		</div>
 		</section>
+		<section class="directory-maintenance-notice directory-maintenance-notice--notice" aria-labelledby="directory-maintenance-title-flash-mixer-0">
+	<div class="directory-maintenance-sign directory-maintenance-sign--notice"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></div>
+	<div class="directory-maintenance-body">
+	<p class="directory-maintenance-kicker">Notice</p>
+	<h2 id="directory-maintenance-title-flash-mixer-0">Flash Mixer domains are newly registered</h2>
+	<p class="directory-maintenance-lead">RDAP data shows that flashmixer.io, flashmixer.to, and flashmixer.co were registered on May 24, 2026. At the time of review on June 13, 2026, those domains were 19 days old.</p>
+	<ul class="directory-maintenance-list"><li>This is not a harmful-service warning; it is a domain-age note for extra context.</li></ul>
+	<p class="directory-maintenance-source">Sources: <a href="https://rdap.identitydigital.services/rdap/domain/flashmixer.io" rel="noopener noreferrer" target="_blank">Identity Digital RDAP record</a>, <a href="https://rdap.tonicregistry.to/rdap/domain/flashmixer.to" rel="noopener noreferrer" target="_blank">Tonic RDAP record</a>, <a href="https://rdap.namecheap.com/domain/flashmixer.co" rel="noopener noreferrer" target="_blank">Namecheap RDAP record</a></p>
+	</div>
+	</section>
+		<section class="directory-maintenance-notice directory-maintenance-notice--notice" aria-labelledby="directory-maintenance-title-flash-mixer-1">
+	<div class="directory-maintenance-sign directory-maintenance-sign--notice"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></div>
+	<div class="directory-maintenance-body">
+	<p class="directory-maintenance-kicker">Notice</p>
+	<h2 id="directory-maintenance-title-flash-mixer-1">flashmixer.io uses JavaScript</h2>
+	<p class="directory-maintenance-lead">A clearnet check on June 13, 2026 found executable JavaScript on the public page for flashmixer.io.</p>
+	<ul class="directory-maintenance-list"><li>This is not a harmful-service warning; it is a browser-behavior note for users who disable JavaScript or prefer static pages.</li><li>Review the page behavior before entering payout addresses or creating an order.</li></ul>
+	<p class="directory-maintenance-source">Source: <a href="https://flashmixer.io/" rel="noopener noreferrer" target="_blank">flashmixer.io clearnet response</a></p>
+	</div>
+	</section>
 		<section class="directory-section">
 	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3c3 3 3 15 0 18"></path><path d="M12 3c-3 3-3 15 0 18"></path></svg><span>Links</span></h2>
 	<figure class="wp-block-table directory-table-wrap">
 	<table class="directory-facts directory-entry-table">
 	<thead><tr><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Parameter</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Value</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th></tr></thead>
 <tbody>
-<tr><td class="directory-nowrap" data-label="Official site"><span class="directory-cell-value">Official site</span></td><td class="directory-nowrap" data-label="Official site"><span class="directory-cell-value"><a href="https://peachbitcoin.com/" rel="noopener noreferrer" target="_blank">https://peachbitcoin.com/</a></span></td></tr>
-<tr><td class="directory-nowrap" data-label="Live status"><span class="directory-cell-value">Live status</span></td><td class="directory-nowrap" data-label="Live status"><span class="directory-cell-value"><span class="directory-site-status directory-site-status--unknown" data-site-status-id="p2p-markets:peach-bitcoin" data-site-status-labels="{&quot;checking&quot;:&quot;Checking&quot;,&quot;online&quot;:&quot;Online&quot;,&quot;offline&quot;:&quot;Offline&quot;,&quot;unknown&quot;:&quot;Unknown&quot;}" data-site-status-state="unknown"><span data-site-status-text>Checking</span></span></span></td></tr>
-<tr><td class="directory-nowrap" data-label="Tor site"><span class="directory-cell-value">Tor site</span></td><td class="directory-nowrap" data-label="Tor site"><span class="directory-cell-value">No</span></td></tr>
-
-
+<tr><td class="directory-nowrap" data-label="Official site"><span class="directory-cell-value">Official site</span></td><td class="directory-nowrap" data-label="Official site"><span class="directory-cell-value"><a href="https://flashmixer.io" rel="noopener noreferrer" target="_blank">https://flashmixer.io</a></span></td></tr>
+<tr><td class="directory-nowrap" data-label="Live status"><span class="directory-cell-value">Live status</span></td><td class="directory-nowrap" data-label="Live status"><span class="directory-cell-value"><span class="directory-site-status directory-site-status--unknown" data-site-status-id="mixers:flash-mixer" data-site-status-labels="{&quot;checking&quot;:&quot;Checking&quot;,&quot;online&quot;:&quot;Online&quot;,&quot;offline&quot;:&quot;Offline&quot;,&quot;unknown&quot;:&quot;Unknown&quot;}" data-site-status-state="unknown"><span data-site-status-text>Checking</span></span></span></td></tr>
+<tr><td class="directory-nowrap" data-label="Tor site"><span class="directory-cell-value">Tor site</span></td><td class="directory-nowrap" data-label="Tor site"><span class="directory-cell-value"><a href="http://flashmxup6d3qesb72j3ciurm6v2tgjjhdffndiv35o2ifk62wv7njid.onion" rel="noopener noreferrer" target="_blank">flashmxup6d3qesb72j3ciurm6v2tgjjhdffndiv35o2ifk62wv7njid.onion</a></span></td></tr>
+<tr><td data-label="Known mirrors"><span class="directory-cell-value">Known mirrors</span></td><td data-label="Known mirrors"><span class="directory-cell-value"><a href="https://flashmixer.to" rel="noopener noreferrer" target="_blank">flashmixer.to</a>, <a href="https://flashmixer.co" rel="noopener noreferrer" target="_blank">flashmixer.co</a></span></td></tr>
+<tr><td data-label="Support"><span class="directory-cell-value">Support</span></td><td data-label="Support"><span class="directory-cell-value"><a href="mailto:flashmixer@proton.me" rel="noopener noreferrer">flashmixer@proton.me</a> / <a href="https://t.me/flashmixer_bot" target="_blank" rel="noopener noreferrer">@flashmixer_bot</a> / <a href="https://flashmixer.io/verify" target="_blank" rel="noopener noreferrer">PGP verifier</a> / <a href="https://flashmixer.io/mcp" target="_blank" rel="noopener noreferrer">MCP endpoint</a></span></td></tr>
 </tbody>
 </table>
 	</figure>
@@ -301,28 +371,88 @@ document.addEventListener('DOMContentLoaded', function () {
 	<table class="directory-facts directory-entry-table">
 	<thead><tr><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Parameter</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th><th aria-sort="none" data-sortable-column=""><button class="directory-sort-button" type="button"><span class="directory-sort-label">Value</span><span aria-hidden="true" class="directory-sort-indicator">↕</span></button></th></tr></thead>
 <tbody>
-<tr><td class="directory-nowrap" data-label="Founded"><span class="directory-cell-value">Founded</span></td><td class="directory-nowrap" data-label="Founded"><span class="directory-cell-value">2022</span></td></tr>
-<tr><td class="directory-coins-cell" data-label="Crypto"><span class="directory-cell-value">Crypto</span></td><td class="directory-coins-cell" data-label="Crypto"><span class="directory-cell-value"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></span></td></tr>
+<tr><td class="directory-nowrap" data-label="Founded"><span class="directory-cell-value">Founded</span></td><td class="directory-nowrap" data-label="Founded"><span class="directory-cell-value">2026</span></td></tr>
+<tr><td class="directory-coins-cell" data-label="Coins"><span class="directory-cell-value">Coins</span></td><td class="directory-coins-cell" data-label="Coins"><span class="directory-cell-value"><span class="coin-list" aria-label="BTC"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span></span></span></td></tr>
+<tr><td data-label="Mixing Fee"><span class="directory-cell-value">Mixing Fee</span></td><td data-label="Mixing Fee"><span class="directory-cell-value">Standard 1.5%-10.0%; Premium 3.0%-10.0% + $30 fixed</span></td></tr>
+<tr><td class="directory-nowrap" data-label="Minimum"><span class="directory-cell-value">Minimum</span></td><td class="directory-nowrap" data-label="Minimum"><span class="directory-cell-value">0.001₿</span></td></tr>
+<tr><td class="directory-nowrap" data-label="Maximum"><span class="directory-cell-value">Maximum</span></td><td class="directory-nowrap" data-label="Maximum"><span class="directory-cell-value">450₿</span></td></tr>
+<tr><td data-label="Telegram Bot"><span class="directory-cell-value">Telegram Bot</span></td><td data-label="Telegram Bot"><span class="directory-cell-value"><a href="https://t.me/flashmixer_bot" rel="noopener noreferrer" title="Yes" target="_blank">Yes</a></span></td></tr>
 
 </tbody>
 </table>
 	</figure>
 </section>
-
+<section class="directory-section directory-entry-notes">
+	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 3h9l5 5v13H6z"></path><path d="M14 3v6h6"></path><path d="M9 13h6"></path><path d="M9 17h4"></path></svg><span>Notes</span></h2>
+	<div class="directory-note"><p>Flash Mixer is a Bitcoin-only service with Standard and Premium pools. The site states that orders can split payouts to 1-2 Bitcoin addresses, use custom percentage fees inside the supported range, and set optional payout delays.</p>
+<ul>
+<li>Standard Pool: 0.001-1.5 BTC, 1.5%-10.0% + $30 fixed fee, 0-72 hour delay.</li>
+<li>Premium Pool: 0.01-450 BTC, 3.0%-10.0% + $30 fixed fee, 2-72 hour delay.</li>
+<li>Minimum payout: 0.0001 BTC. Maximum payout addresses per order: 2.</li>
+<li>You have 12 hours to send payment after order creation. The exact amount shown must be sent; no more and no less.</li>
+<li>Orders are irreversible once created. Funds cannot be refunded after payment is sent.</li>
+<li>Processing begins after the incoming Bitcoin payment reaches 3 on-chain confirmations.</li>
+<li>The service states that no registration, email, identity verification, or personal data is required to create an order, and that no logs are kept after order completion.</li>
+<li>Developer access is listed through the MCP endpoint at <a href="https://flashmixer.io/mcp" target="_blank" rel="noopener noreferrer">flashmixer.io/mcp</a>.</li>
+</ul>
+<p>Warranty letter verification is available at <a href="https://flashmixer.io/verify" target="_blank" rel="noopener noreferrer">flashmixer.io/verify</a>. The service PGP fingerprint shown there is D428 D9F8 5B4D 35FF BEDA 2087 0F66 7607 6768 E96B.</p></div>
+	</section>
 <section class="directory-section">
 <h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg><span>Verification</span></h2>
-<p class="directory-note">Verify the official domain and any guarantee terms before sending funds.</p>
+<p class="directory-note">This entry lists a PGP support channel. Save any letter of guarantee and verify the signature in the BitMixList guarantee verifier before relying on a refund.</p>
 <div class="directory-tool-grid">
-<form class="directory-inline-tool directory-verification-tool" data-official-domains="[&quot;peachbitcoin.com&quot;]" data-service-domain-check>
+<form class="directory-inline-tool directory-verification-tool" data-official-domains="[&quot;flashmixer.io&quot;,&quot;flashmxup6d3qesb72j3ciurm6v2tgjjhdffndiv35o2ifk62wv7njid.onion&quot;,&quot;flashmixer.to&quot;,&quot;flashmixer.co&quot;]" data-service-domain-check>
 	<h3><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path><path d="m8.5 11 1.8 1.8 3.5-3.6"></path></svg><span>Official domain check</span></h3>
 	<p>Enter a clearnet or onion domain and compare it with the official domains listed on this page.</p>
-	<label for="domain-check-peach-bitcoin-en">Domain to check</label>
-	<input autocomplete="off" data-domain-input id="domain-check-peach-bitcoin-en" placeholder="example.com or .onion address" type="search"/>
+	<label for="domain-check-flash-mixer-en">Domain to check</label>
+	<input autocomplete="off" data-domain-input id="domain-check-flash-mixer-en" placeholder="example.com or .onion address" type="search"/>
 	<div class="directory-inline-actions">
 	<button type="submit"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><span>Check domain</span></button>
 	<p class="vg-status" data-domain-status hidden></p>
 	</div>
-	</form>
+	</form><form class="directory-inline-tool directory-verification-tool" data-letter-mixer="flashmixer.io" data-letter-verify-form>
+	<h3><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 3h9l5 5v13H6z"></path><path d="M14 3v6h6"></path><path d="m9 15 2 2 4-4"></path></svg><span>Letter of guarantee verifier</span></h3>
+	<p>Paste a letter of guarantee from this service.</p>
+	<label for="letter-check-flash-mixer-en">Letter of guarantee</label>
+	<textarea data-letter-message id="letter-check-flash-mixer-en" placeholder="Paste the letter of guarantee..."></textarea>
+	<div class="directory-inline-actions">
+	<button type="submit"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg><span>Verify letter</span></button>
+	<p class="vg-status" data-letter-status hidden></p>
+	</div>
+	</form><section class="directory-inline-tool directory-pgp-key" data-search-exclude>
+	<h3><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="14.5" r="4.5"></circle><path d="M11 11 21 1"></path><path d="m16 6 2 2"></path><path d="m19 3 2 2"></path></svg><span>PGP public key</span></h3>
+	<p>This is the service&apos;s PGP public key if you want to import it into another application.</p>
+	<pre><code>-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mQINBGoalfoBEADPHyCOjrncpd/e0uu9e6+dPVABRAbl4X33aDI9+mP9tkj7PRmK
+cLMYyiNaN8g1NQ5e2WaTmSHwK3fvLdV8ynga4MZ4jKhmhnYngOwlgJelcCbtlP/h
+4SNJbIoNXUO5YqySbuxNAvq5yn7glbLdisQY39PSYQ9oJsEI2eExSyBjEOW9554O
+45k5/fL4/zgJfeA2mzR9Q8pNUgykmn/k9MIYWAIoj1C9lBLaCkRr97W4x61c4R7x
+mYgvQxpmZSMWMnrtUdp8Wazsl2MGXz6ex817PCUiqSnFnEO1xqXtnsCNKH5XioQ/
+lMsIWfBbZXrGwjv1z+qnRnokW34XzktMFXNs5QylVYJN+VV3zIflSDkAlVW8h0Nf
+Jm7zqpu8t/ZW7vA94S7J+L9R/3aAG7zX58WO1zHMtoIabNNIm7E+p5NSzjMBU81V
+Dm3rQRpeXvdHE5O7CVdrOh7psPG6gKOegWTPf50hnw1e+TqZQxmCaq3/2Ca3hv/d
+3cWUPeJ/7+t7iF/X2G9bGvV6smF3EuwqltRbACHRsyVkQ22m2H5D5JFqdRLCZNiS
+EIDbmQH+e722mW0t1qYl+EPj9cxweilkw25VIOefw7kFDljA8KmiVIyr6nqInQ8z
+8YV5g+0ps1iKvbBMUW1sNfsch11cOlLZ1VNXRf0QjUNseHndU/rTYJX8lQARAQAB
+tDdGbGFzaCBNaXhlciAod2FycmFudHkgc2lnbmluZykgPG5vcmVwbHlAZmxhc2ht
+aXhlci5jb20+iQJRBBMBCgA7FiEE1CjZ+FtNNf++2iCHD2Z2B2do6WsFAmoalfoC
+GwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQD2Z2B2do6Wsh3hAAj8HG
+xju+LbWPOseQZDK4HF1E4yh2Q0sV1rcR79c6JlAA75u0TeA/eZOWl8tdp6sW2cn+
+aTI/FRORVyYPNpTk4u8d248y4sKSN8S7pCxMMCMtGOpbcFmoYUMRb6b9gEAywsHt
+O/7nQGkc+vf+e1yhgeCu4Ae0kgWeiW1iMS9uCzHnuVMdTQB0Pfw7zSc3/CEiYGqn
+NN/Qr3AbcW4xHtsGu5ZVFmp4ho2vVY391TBudg/tL5XABXQlQQDgctxJMO89Oj+p
+SA09t+IiM3gGEBH3B7hWNvNneHkiJAYjZKmaCEBMVcUeNan6u3Rx8ayA58Thq0g8
+DSzWaWRjFINXBUfQ1/3LH/oaxlcbN7uQAEny+SOyQNTbOpGFV9DfsBlItb0cx406
+j1M2UeAGAy/N4EgH9E93++gnnKdK8lYrokttsBmA14bGnpQBqmLsOYdyNTbkERQJ
+f1fcPX1KvWWZfU6gZQBr6EiHMuvF6sbFTkjbHOFiu5WDdbh15XMoXOY4g1j2a1N7
+CYDatzWvUYPJFnoyagMgMZVx0h/rdCHTLLV7+rqLXTl26pDL8f8J58+JYW/lHJKS
+kzgeuIhCDyh/nb9M0e6gnt4Rmavjh0G/HHmEeqRmunWc/v+u4mzi5AQz8BQ18/Ro
+dmL/RppZ5axbzZtrXx/0qSwUTcWxs56WhlgP0/8=
+=M2mm
+
+-----END PGP PUBLIC KEY BLOCK-----</code></pre>
+</section>
 </div>
 </section>
 <div class="directory-footer-spacer"></div>
