@@ -146,7 +146,7 @@
     <meta name="msapplication-TileImage" content="wp-content/uploads/2023/12/cropped-favicon-2-192x192.png?v=20260530-3" />
     <link rel="preload" as="style" href="wp-content/litespeed/css/styles.css?v=20260530-3" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="wp-content/litespeed/css/styles.css?v=20260530-3"></noscript>
-    <link rel="stylesheet" href="wp-content/litespeed/css/aml-check.css?v=20260530-3">
+    <link rel="stylesheet" href="wp-content/litespeed/css/aml-check.css?v=20260615-1">
     <script src="wp-content/litespeed/js/ad-loader.js?v=20260530-3"></script>
 <script src="wp-content/litespeed/js/site-search.js?v=20260530-3" defer></script>
 <script>
@@ -368,9 +368,12 @@
             <li>It should take a few seconds for an address check to be processed.</li>
           </ul>
           <p>If you have any issues with your payment, send an email with your payment ID for manual crediting.</p>
-          <div class="info-card" role="status" aria-live="polite" style="display:block;margin:1rem 0;">
-            <strong>Maintenance in progress.</strong>
-            The AML checker is temporarily disabled while the new version is deployed. Existing tokens and balances are not affected.
+          <div class="aml-maintenance-banner" role="status" aria-live="polite">
+            <div class="aml-maintenance-banner__mark" aria-hidden="true">!</div>
+            <div>
+              <div class="aml-maintenance-banner__title">Maintenance in progress</div>
+              <p>The AML checker is temporarily disabled while the new version is deployed. Existing tokens and balances are not affected.</p>
+            </div>
           </div>
           <div class="address-checker-container">
             <div class="aml-widget">
