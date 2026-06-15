@@ -94,53 +94,6 @@ document.addEventListener('DOMContentLoaded', function () {
 .directory-facts td.directory-coins-cell { white-space: normal; overflow-wrap: normal; word-break: normal; }
 .directory-facts td.directory-coins-cell .coin-list { max-width: 100%; }
 .directory-list-summary .coin-list { display: inline-flex; margin-left: 4px; vertical-align: middle; }
-.directory-button--disabled, .directory-button--disabled:hover, .directory-button--disabled:focus { border-color: #5d5668; background: #24212c; color: #aaa2b8; cursor: not-allowed; filter: saturate(0.65); opacity: 0.78; pointer-events: none; text-decoration: none; }
-.directory-status-badge { display: inline-flex; align-items: center; gap: 5px; min-height: 26px; margin: 6px 0 2px; padding: 2px 8px; border: 1px solid #d49a24; border-radius: 999px; background: #2a1d08; color: #ffd88a; font-size: 0.78rem; font-weight: 750; line-height: 1.1; text-transform: uppercase; letter-spacing: 0.02em; }
-.directory-status-badge--notice { border-color: #3f7ca4; background: #0f2230; color: #bfe8ff; }
-.directory-status-badge--scam-accusation { border-color: #b8444e; background: #2a1014; color: #ffc7cd; }
-.directory-status-badge .directory-icon { width: 0.95em; height: 0.95em; }
-.directory-list-card--notice { position: relative; border-color: #345a73; background: linear-gradient(180deg, #171d25, #181222); }
-.directory-list-card--maintenance { position: relative; border-color: #8a6b2b; background: linear-gradient(180deg, #1d1820, #181222); }
-.directory-list-card--scam-accusation { position: relative; border-color: #9d2f3b; background: linear-gradient(180deg, #251419, #181222); }
-.directory-card-media { position: relative; min-width: 0; width: 128px; max-width: 100%; }
-.directory-list-card--maintenance .directory-card-media a, .directory-list-card--scam-accusation .directory-card-media a { display: block; }
-.directory-list-card--maintenance .directory-card-media .directory-logo, .directory-list-card--scam-accusation .directory-card-media .directory-logo { opacity: 0.72; filter: grayscale(0.25) saturate(0.85) contrast(0.96); }
-.directory-list-card--maintenance .directory-card-media::after { content: ""; position: absolute; inset: 0; width: 128px; height: 128px; max-width: 100%; border-radius: 10px; background: repeating-linear-gradient(135deg, rgba(246, 184, 63, 0.34) 0 10px, rgba(27, 20, 16, 0.24) 10px 20px); opacity: 0.5; pointer-events: none; }
-.directory-list-card--scam-accusation .directory-card-media::after { content: ""; position: absolute; inset: 0; width: 128px; height: 128px; max-width: 100%; border-radius: 10px; background: repeating-linear-gradient(135deg, rgba(220, 54, 68, 0.34) 0 10px, rgba(27, 20, 22, 0.24) 10px 20px); opacity: 0.55; pointer-events: none; }
-.directory-card-status-sign { position: absolute; right: 6px; bottom: 6px; z-index: 1; display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: 2px solid #1c1406; border-radius: 6px; background: #f6b83f; color: #241400; transform: rotate(45deg); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35); }
-.directory-card-status-sign--notice { border-color: #092232; background: #52b7d8; color: #061923; }
-.directory-card-status-sign--scam-accusation { border-color: #24070b; background: #dc3644; color: #fff1f3; }
-.directory-card-status-sign .directory-icon { width: 18px; height: 18px; transform: rotate(-45deg); stroke-width: 2.4; }
-.directory-maintenance-notice { position: relative; display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 18px; margin: 24px 0 0; padding: 24px 22px 20px; overflow: hidden; border: 1px solid #9b7424; border-radius: 8px; background: #1b1510; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28); }
-.directory-maintenance-notice::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 10px; background: repeating-linear-gradient(135deg, #f6b83f 0 14px, #1b1410 14px 28px); }
-.directory-maintenance-notice--notice { border-color: #3f7ca4; background: #101a22; }
-.directory-maintenance-notice--notice::before { background: linear-gradient(90deg, #52b7d8, #6fcf97); }
-.directory-maintenance-notice--scam-accusation { border-color: #a12f3b; background: #211014; }
-.directory-maintenance-notice--scam-accusation::before { background: repeating-linear-gradient(135deg, #dc3644 0 14px, #1d0d10 14px 28px); }
-.directory-maintenance-sign { display: flex; align-items: center; justify-content: center; width: 62px; height: 62px; margin-top: 6px; border: 3px solid #1c1406; border-radius: 8px; background: #f6b83f; color: #241400; transform: rotate(45deg); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35); }
-.directory-maintenance-sign--notice { border-color: #092232; background: #52b7d8; color: #061923; }
-.directory-maintenance-sign--scam-accusation { border-color: #24070b; background: #dc3644; color: #fff1f3; }
-.directory-maintenance-sign .directory-icon { width: 32px; height: 32px; transform: rotate(-45deg); stroke-width: 2.4; }
-.directory-maintenance-body { min-width: 0; }
-.directory-maintenance-kicker { margin: 0 0 6px; color: #ffd88a; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
-.directory-maintenance-notice--notice .directory-maintenance-kicker { color: #96dfff; }
-.directory-maintenance-notice--scam-accusation .directory-maintenance-kicker { color: #ff9da7; }
-.directory-maintenance-notice h2 { margin: 0 0 8px; color: #fff3cf; font-size: 1.35rem; letter-spacing: 0; }
-.directory-maintenance-notice--notice h2 { color: #e4f7ff; }
-.directory-maintenance-notice--scam-accusation h2 { color: #ffe8eb; }
-.directory-maintenance-lead { margin: 0 0 12px; color: #f2dfb8; line-height: 1.55; }
-.directory-maintenance-notice--notice .directory-maintenance-lead { color: #ccecff; }
-.directory-maintenance-notice--scam-accusation .directory-maintenance-lead { color: #f5c8cd; }
-.directory-maintenance-list { margin: 0; padding-left: 1.1rem; color: #e8d4aa; line-height: 1.5; }
-.directory-maintenance-notice--notice .directory-maintenance-list { color: #b8deef; }
-.directory-maintenance-notice--scam-accusation .directory-maintenance-list { color: #edc3c8; }
-.directory-maintenance-source { margin: 12px 0 0; color: #cdbb92; font-size: 0.9rem; }
-.directory-maintenance-notice--notice .directory-maintenance-source { color: #9fc7d8; }
-.directory-maintenance-notice--scam-accusation .directory-maintenance-source { color: #d8a8ae; }
-.directory-maintenance-source a { color: #ffe2a4; text-decoration: underline; text-underline-offset: 0.16em; }
-.directory-maintenance-notice--notice .directory-maintenance-source a { color: #bfe8ff; }
-.directory-maintenance-notice--scam-accusation .directory-maintenance-source a { color: #ffb7bf; }
-@media (max-width: 700px) { .directory-maintenance-notice { grid-template-columns: 1fr; padding: 22px 16px 18px; } .directory-maintenance-sign { width: 54px; height: 54px; margin: 2px 0 0; } }
 .directory-site-status { display: inline-flex; align-items: center; gap: 6px; min-height: 28px; padding: 3px 9px; border: 1px solid #565068; border-radius: 999px; background: #17131f; color: #d6d0e4; font-size: 0.8rem; font-weight: 750; line-height: 1.1; white-space: nowrap; }
 .directory-site-status::before { content: ""; width: 0.58em; height: 0.58em; border-radius: 999px; background: #8b8498; box-shadow: 0 0 0 3px rgba(139, 132, 152, 0.16); }
 .directory-site-status[data-site-status-state="online"] { border-color: #2e8b57; background: #102019; color: #b9f6ce; }
@@ -330,16 +283,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		</div>
 		</div>
 		</section>
-		<section class="directory-maintenance-notice directory-maintenance-notice--notice" aria-labelledby="directory-maintenance-title-thormixer-0">
-	<div class="directory-maintenance-sign directory-maintenance-sign--notice"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></div>
-	<div class="directory-maintenance-body">
-	<p class="directory-maintenance-kicker">Notice</p>
-	<h2 id="directory-maintenance-title-thormixer-0">thormixer.io uses JavaScript</h2>
-	<p class="directory-maintenance-lead">A clearnet check on June 13, 2026 found executable JavaScript in the public HTTP 403 response for thormixer.io.</p>
-	<ul class="directory-maintenance-list"><li>This is not a harmful-service warning; it is a browser-behavior note for users who disable JavaScript or prefer static pages.</li><li>Review the page behavior before entering payout addresses or creating an order.</li></ul>
-	<p class="directory-maintenance-source">Source: <a href="https://thormixer.io/" rel="noopener noreferrer" target="_blank">thormixer.io clearnet response</a></p>
-	</div>
-	</section>
 		<section class="directory-section">
 	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3c3 3 3 15 0 18"></path><path d="M12 3c-3 3-3 15 0 18"></path></svg><span>Links</span></h2>
 	<figure class="wp-block-table directory-table-wrap">

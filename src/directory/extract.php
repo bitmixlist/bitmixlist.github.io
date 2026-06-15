@@ -1896,12 +1896,15 @@ function directory_entry_javascript_notice_overrides(string $categorySlug, strin
 
     $domain = (string) $notice['domain'];
     $httpCode = (int) $notice['http_code'];
+    if ($httpCode < 200 || $httpCode >= 300) {
+        // Only show JavaScript notices for successful public page responses.
+        // Infrastructure challenge/error pages such as Cloudflare and DDoS-Guard
+        // often inject scripts into non-2xx responses and should not count.
+        return [];
+    }
+
     $leadEn = 'A clearnet check on June 13, 2026 found executable JavaScript on the public page for ' . $domain . '.';
     $leadRu = 'Проверка clearnet-страницы 13 июня 2026 года обнаружила исполняемый JavaScript на публичной странице ' . $domain . '.';
-    if ($httpCode >= 400) {
-        $leadEn = 'A clearnet check on June 13, 2026 found executable JavaScript in the public HTTP ' . $httpCode . ' response for ' . $domain . '.';
-        $leadRu = 'Проверка clearnet-страницы 13 июня 2026 года обнаружила исполняемый JavaScript в публичном HTTP ' . $httpCode . ' ответе для ' . $domain . '.';
-    }
 
     return [[
         'type' => 'notice',
