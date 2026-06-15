@@ -1923,11 +1923,9 @@ function directory_entry_javascript_notice_overrides(string $categorySlug, strin
         'items' => [
             'en' => [
                 'This is not a harmful-service warning; it is a browser-behavior note for users who disable JavaScript or prefer static pages.',
-                'Review the page behavior before entering payout addresses or creating an order.',
             ],
             'ru' => [
                 'Это не предупреждение о вредоносности сервиса; это пометка о поведении страницы для пользователей, которые отключают JavaScript или предпочитают статические страницы.',
-                'Проверьте поведение страницы перед вводом адресов выплаты или созданием заказа.',
             ],
         ],
         'source' => [
