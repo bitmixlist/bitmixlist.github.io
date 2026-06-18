@@ -1,5 +1,6 @@
 # Build-time source paths are not public site content.
 Options -Indexes
+ErrorDocument 404 /404.html
 
 <IfModule mod_alias.c>
 RedirectMatch 404 ^/(src|tools)(/|$)
