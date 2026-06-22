@@ -3316,7 +3316,7 @@ function directory_external_value(string $value): string
         return 'No';
     }
 
-    return '<a href="' . directory_escape($value) . '" rel="noopener noreferrer" target="_blank">' . directory_escape($value) . '</a>';
+    return '<a href="' . directory_escape($value) . '" rel="noopener noreferrer" target="_blank">' . directory_escape(directory_table_external_label($value)) . '</a>';
 }
 
 function directory_tor_value(string $value): string
