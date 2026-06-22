@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/manual-entries.php';
+
 function directory_repo_root(): string
 {
     return dirname(__DIR__, 2);
@@ -256,11 +258,56 @@ function directory_extract_all(string $root, array $options = []): array
         }
     }
 
+    $entries = directory_remove_manual_entry_ids($entries, directory_manual_entry_removed_ids());
+    $entries = directory_apply_manual_entries($entries, directory_manual_entries($categories));
+
     return [
         'categories' => $categories,
         'entries' => $entries,
         'section_cautions' => $sectionCautions,
     ];
+}
+
+function directory_apply_manual_entries(array $entries, array $manualEntries): array
+{
+    $byId = [];
+    foreach ($entries as $index => $entry) {
+        $byId[(string) ($entry['id'] ?? '')] = $index;
+    }
+
+    foreach ($manualEntries as $manualEntry) {
+        $id = (string) ($manualEntry['id'] ?? '');
+        if ($id === '') {
+            continue;
+        }
+
+        if (isset($byId[$id])) {
+            $entries[$byId[$id]] = $manualEntry;
+            continue;
+        }
+
+        $byId[$id] = count($entries);
+        $entries[] = $manualEntry;
+    }
+
+    return $entries;
+}
+
+function directory_remove_manual_entry_ids(array $entries, array $removedIds): array
+{
+    $removed = [];
+    foreach ($removedIds as $id) {
+        $removed[(string) $id] = true;
+    }
+
+    if ($removed === []) {
+        return $entries;
+    }
+
+    return array_values(array_filter(
+        $entries,
+        static fn (array $entry): bool => !isset($removed[(string) ($entry['id'] ?? '')])
+    ));
 }
 
 function directory_fetch_wabisator_config(string $url = DIRECTORY_WABISATOR_CONFIG_URL): array

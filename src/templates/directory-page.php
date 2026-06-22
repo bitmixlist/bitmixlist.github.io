@@ -1507,6 +1507,7 @@ function directory_exchange_pair_support_map(): array
             'eigenwallet' => ['pairs' => $btcXmr],
             'basicswap-beta' => ['coins' => $atomicCore],
             'trevoid' => ['pairs' => $btcXmr],
+            'altquick' => ['coins' => ['BTC', 'XMR', 'ETH', 'LTC', 'SOL']],
         ],
         'instant-exchanges' => [
             'quickex' => ['coins' => $core],

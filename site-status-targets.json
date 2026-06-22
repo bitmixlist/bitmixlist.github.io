@@ -393,6 +393,19 @@
             ]
         },
         {
+            "id": "neverkyc-exchanges:altquick",
+            "category": "neverkyc-exchanges",
+            "slug": "altquick",
+            "name": "AltQuick",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://altquick.com/?aKey=72470881de66c2ee9eae13a4dcca5d791de4fd14",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
             "id": "neverkyc-exchanges:tomboi-io",
             "category": "neverkyc-exchanges",
             "slug": "tomboi-io",
