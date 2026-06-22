@@ -34,7 +34,38 @@ function directory_manual_entries(array $categories): array
                 'support_html' => '',
             ],
             'status' => [],
-            'notices' => [],
+            'notices' => [
+                [
+                    'type' => 'notice',
+                    'label' => [
+                        'en' => 'Notice',
+                        'ru' => 'Уведомление',
+                    ],
+                    'title' => [
+                        'en' => 'altquick.com uses JavaScript',
+                        'ru' => 'altquick.com использует JavaScript',
+                    ],
+                    'lead' => [
+                        'en' => 'A clearnet check on June 22, 2026 found executable JavaScript on the public page for altquick.com.',
+                        'ru' => 'Проверка clearnet-страницы 22 июня 2026 года обнаружила исполняемый JavaScript на публичной странице altquick.com.',
+                    ],
+                    'items' => [
+                        'en' => [
+                            'This is not a harmful-service warning; it is a browser-behavior note for users who disable JavaScript or prefer static pages.',
+                        ],
+                        'ru' => [
+                            'Это не предупреждение о вредоносности сервиса; это пометка о поведении страницы для пользователей, которые отключают JavaScript или предпочитают статические страницы.',
+                        ],
+                    ],
+                    'source' => [
+                        'label' => [
+                            'en' => 'altquick.com clearnet response',
+                            'ru' => 'clearnet-ответ altquick.com',
+                        ],
+                        'url' => 'https://altquick.com/',
+                    ],
+                ],
+            ],
             'content' => [
                 'en' => [
                     'name' => 'AltQuick',
