@@ -1745,7 +1745,8 @@ function directory_mixer_link_override(string $slug): array
             ],
         ],
         'jokermix' => [
-            'tor' => 'http://jokerrj25jeuks7rqodsyo2xofsasakra2naaa4axb3cyb4j333ya5yd.onion/',
+            'clearnet' => 'http://jokermix.to/ref/ds1VwQT96i',
+            'tor' => 'http://jokerrj25jeuks7rqodsyo2xofsasakra2naaa4axb3cyb4j333ya5yd.onion/ref/ds1VwQT96i',
         ],
         'zeusmix' => [
             'tor' => 'http://zeus4sdq2cs4yd2uo5jqcl3zs74nxktspkikyisxsmlqyojo25pcmiid.onion/',
