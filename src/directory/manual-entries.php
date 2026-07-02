@@ -6,22 +6,25 @@ function directory_manual_entry_removed_ids(): array
 {
     return [
         'instant-exchanges:altquick',
+        'neverkyc-exchanges:yifi',
     ];
 }
 
 function directory_manual_entries(array $categories): array
 {
-    $categorySlug = 'neverkyc-exchanges';
-    $slug = 'altquick';
+    $neverKycCategorySlug = 'neverkyc-exchanges';
+    $instantCategorySlug = 'instant-exchanges';
+    $altquickSlug = 'altquick';
     $yifiSlug = 'yifi';
-    $type = $categories[$categorySlug]['type'] ?? 'service';
+    $neverKycType = $categories[$neverKycCategorySlug]['type'] ?? 'service';
+    $instantType = $categories[$instantCategorySlug]['type'] ?? 'service';
 
     return [
         [
-            'id' => $categorySlug . ':' . $slug,
-            'slug' => $slug,
-            'category' => $categorySlug,
-            'type' => $type,
+            'id' => $neverKycCategorySlug . ':' . $altquickSlug,
+            'slug' => $altquickSlug,
+            'category' => $neverKycCategorySlug,
+            'type' => $neverKycType,
             'assets' => [
                 'webp' => '',
                 'image' => 'wp-content/uploads/2023/12/altquick-white-bg.png',
@@ -103,19 +106,19 @@ function directory_manual_entries(array $categories): array
             ],
             'volume_history' => [],
             'index_paths' => [
-                'en' => $categorySlug . '/' . $slug . '.html',
-                'ru' => $categorySlug . '/' . $slug . '.html',
+                'en' => $neverKycCategorySlug . '/' . $altquickSlug . '.html',
+                'ru' => $neverKycCategorySlug . '/' . $altquickSlug . '.html',
             ],
             'output_paths' => [
-                'en' => $categorySlug . '/' . $slug . '.html',
-                'ru' => 'ru/' . $categorySlug . '/' . $slug . '.html',
+                'en' => $neverKycCategorySlug . '/' . $altquickSlug . '.html',
+                'ru' => 'ru/' . $neverKycCategorySlug . '/' . $altquickSlug . '.html',
             ],
         ],
         [
-            'id' => $categorySlug . ':' . $yifiSlug,
+            'id' => $instantCategorySlug . ':' . $yifiSlug,
             'slug' => $yifiSlug,
-            'category' => $categorySlug,
-            'type' => $type,
+            'category' => $instantCategorySlug,
+            'type' => $instantType,
             'assets' => [
                 'webp' => '',
                 'image' => 'wp-content/uploads/2023/12/yifi.jpg',
@@ -164,23 +167,23 @@ function directory_manual_entries(array $categories): array
             'content' => [
                 'en' => [
                     'name' => 'YiFi',
-                    'summary' => 'Fee: no YiFi platform fee',
+                    'summary' => 'Fee: None',
                     'description' => 'YiFi is a swap and yield aggregator that routes across DEX, CEX, and private liquidity paths.',
                 ],
                 'ru' => [
                     'name' => 'YiFi',
-                    'summary' => 'Комиссия: без комиссии YiFi',
+                    'summary' => 'Комиссия: Нет',
                     'description' => 'YiFi — агрегатор обменов и доходности, который маршрутизирует сделки через DEX, CEX и приватные источники ликвидности.',
                 ],
             ],
             'facts' => [
                 'en' => [
                     directory_manual_fact('Founded', '2026'),
-                    directory_manual_fact('Fee', 'No YiFi platform fee'),
+                    directory_manual_fact('Fee', 'None'),
                 ],
                 'ru' => [
                     directory_manual_fact('Основан', '2026'),
-                    directory_manual_fact('Комиссия', 'Без комиссии YiFi'),
+                    directory_manual_fact('Комиссия', 'Нет'),
                 ],
             ],
             'table_display' => [
@@ -188,8 +191,8 @@ function directory_manual_entries(array $categories): array
                 'ru' => 'YiFi',
             ],
             'notes' => [
-                'en' => '<p>The <a href="https://bitcointalk.org/index.php?topic=5579150.msg66573538#msg66573538">Bitcointalk announcement</a> describes YiFi as a swap aggregator for DEX, CEX, and private routes. It says private swaps use two independent providers and an XMR intermediate transfer to break the on-chain link between sender and receiver.</p><p>YiFi states that KYC requirements, if any, are imposed by integrated providers rather than YiFi. In the same thread, the operator said YiFi is non-custodial and that users may still need to follow a provider-specific process if a provider-side flag or freeze occurs.</p><p>The official site says YiFi does not charge an additional swap platform fee; network and exchange/liquidity-provider fees still apply.</p>',
-                'ru' => '<p><a href="https://bitcointalk.org/index.php?topic=5579150.msg66573538#msg66573538">Анонс на Bitcointalk</a> описывает YiFi как агрегатор обменов для DEX, CEX и приватных маршрутов. В нем сказано, что приватные обмены используют двух независимых провайдеров и промежуточный перевод через XMR, чтобы разорвать on-chain связь между отправителем и получателем.</p><p>YiFi указывает, что требования KYC, если они возникают, задаются интегрированными провайдерами, а не самим YiFi. В той же теме оператор написал, что YiFi не хранит средства, а при флаге или заморозке на стороне провайдера пользователю все равно может потребоваться пройти процедуру конкретного провайдера.</p><p>Официальный сайт сообщает, что YiFi не взимает дополнительную комиссию платформы за обмен; сетевые комиссии и комиссии бирж/провайдеров ликвидности все равно применяются.</p>',
+                'en' => '<p>The <a href="https://bitcointalk.org/index.php?topic=5579150.msg66573538#msg66573538">Bitcointalk announcement</a> describes YiFi as a swap aggregator for DEX, CEX, and private routes. It says private swaps use two independent providers and an XMR intermediate transfer to break the on-chain link between sender and receiver.</p><p>YiFi states that KYC requirements, if any, are imposed by integrated providers rather than YiFi. In the same thread, the operator said YiFi is non-custodial and that users may still need to follow a provider-specific process if a provider-side flag or freeze occurs.</p><p>Network and exchange/liquidity-provider fees still apply.</p>',
+                'ru' => '<p><a href="https://bitcointalk.org/index.php?topic=5579150.msg66573538#msg66573538">Анонс на Bitcointalk</a> описывает YiFi как агрегатор обменов для DEX, CEX и приватных маршрутов. В нем сказано, что приватные обмены используют двух независимых провайдеров и промежуточный перевод через XMR, чтобы разорвать on-chain связь между отправителем и получателем.</p><p>YiFi указывает, что требования KYC, если они возникают, задаются интегрированными провайдерами, а не самим YiFi. В той же теме оператор написал, что YiFi не хранит средства, а при флаге или заморозке на стороне провайдера пользователю все равно может потребоваться пройти процедуру конкретного провайдера.</p><p>Сетевые комиссии и комиссии бирж/провайдеров ликвидности все равно применяются.</p>',
             ],
             'config' => [
                 'en' => '',
@@ -197,12 +200,12 @@ function directory_manual_entries(array $categories): array
             ],
             'volume_history' => [],
             'index_paths' => [
-                'en' => $categorySlug . '/' . $yifiSlug . '.html',
-                'ru' => $categorySlug . '/' . $yifiSlug . '.html',
+                'en' => $instantCategorySlug . '/' . $yifiSlug . '.html',
+                'ru' => $instantCategorySlug . '/' . $yifiSlug . '.html',
             ],
             'output_paths' => [
-                'en' => $categorySlug . '/' . $yifiSlug . '.html',
-                'ru' => 'ru/' . $categorySlug . '/' . $yifiSlug . '.html',
+                'en' => $instantCategorySlug . '/' . $yifiSlug . '.html',
+                'ru' => 'ru/' . $instantCategorySlug . '/' . $yifiSlug . '.html',
             ],
         ],
     ];

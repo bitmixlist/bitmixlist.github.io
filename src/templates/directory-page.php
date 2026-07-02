@@ -1508,7 +1508,6 @@ function directory_exchange_pair_support_map(): array
             'basicswap-beta' => ['coins' => $atomicCore],
             'trevoid' => ['pairs' => $btcXmr],
             'altquick' => ['coins' => ['BTC', 'XMR', 'ETH', 'LTC', 'SOL']],
-            'yifi' => ['coins' => ['BTC', 'XMR', 'ETH', 'LTC', 'SOL', 'USDT-ERC20', 'USDT-TRC20']],
         ],
         'instant-exchanges' => [
             'quickex' => ['coins' => $core],
@@ -1519,6 +1518,7 @@ function directory_exchange_pair_support_map(): array
             'pegasusswap' => ['pairs' => $btcXmr],
             'exolix' => ['coins' => $core],
             'bitcoinvn' => ['coins' => ['BTC', 'XMR', 'ETH', 'LTC', 'USDT-ERC20', 'USDT-TRC20', 'USDC-ERC20']],
+            'yifi' => ['coins' => ['BTC', 'XMR', 'ETH', 'LTC', 'SOL', 'USDT-ERC20', 'USDT-TRC20']],
         ],
     ];
 }

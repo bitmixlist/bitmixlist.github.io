@@ -406,19 +406,6 @@
             ]
         },
         {
-            "id": "neverkyc-exchanges:yifi",
-            "category": "neverkyc-exchanges",
-            "slug": "yifi",
-            "name": "YiFi",
-            "targets": [
-                {
-                    "kind": "clearnet",
-                    "url": "https://yifi.io/",
-                    "source": "listed"
-                }
-            ]
-        },
-        {
             "id": "neverkyc-exchanges:tomboi-io",
             "category": "neverkyc-exchanges",
             "slug": "tomboi-io",
@@ -535,6 +522,19 @@
                     "kind": "clearnet",
                     "url": "https://bitcoinvn.io",
                     "source": "override"
+                }
+            ]
+        },
+        {
+            "id": "instant-exchanges:yifi",
+            "category": "instant-exchanges",
+            "slug": "yifi",
+            "name": "YiFi",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://yifi.io/",
+                    "source": "listed"
                 }
             ]
         },
