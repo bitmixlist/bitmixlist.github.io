@@ -1508,6 +1508,7 @@ function directory_exchange_pair_support_map(): array
             'basicswap-beta' => ['coins' => $atomicCore],
             'trevoid' => ['pairs' => $btcXmr],
             'altquick' => ['coins' => ['BTC', 'XMR', 'ETH', 'LTC', 'SOL']],
+            'yifi' => ['coins' => ['BTC', 'XMR', 'ETH', 'LTC', 'SOL', 'USDT-ERC20', 'USDT-TRC20']],
         ],
         'instant-exchanges' => [
             'quickex' => ['coins' => $core],

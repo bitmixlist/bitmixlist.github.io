@@ -1923,6 +1923,7 @@ function directory_entry_javascript_notice_overrides(string $categorySlug, strin
             'splash-tf' => ['domain' => 'splash.tf', 'source_url' => 'https://splash.tf/?ref=3zdjXY3XC', 'http_code' => 200],
             'eigenwallet' => ['domain' => 'eigenwallet.org', 'source_url' => 'https://eigenwallet.org/', 'http_code' => 200],
             'basicswap-beta' => ['domain' => 'basicswapdex.com', 'source_url' => 'https://basicswapdex.com/', 'http_code' => 200],
+            'yifi' => ['domain' => 'yifi.io', 'source_url' => 'https://yifi.io/', 'http_code' => 200],
             'tomboi-io' => ['domain' => 'tomboi.io', 'source_url' => 'https://tomboi.io/', 'http_code' => 403],
         ],
         'instant-exchanges' => [
