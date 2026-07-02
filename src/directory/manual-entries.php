@@ -118,7 +118,7 @@ function directory_manual_entries(array $categories): array
             'type' => $type,
             'assets' => [
                 'webp' => '',
-                'image' => 'wp-content/uploads/2023/12/yifi.svg',
+                'image' => 'wp-content/uploads/2023/12/yifi.jpg',
                 'alt' => 'YiFi logo',
             ],
             'links' => [
