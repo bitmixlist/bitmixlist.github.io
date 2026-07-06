@@ -1508,6 +1508,7 @@ function directory_exchange_pair_support_map(): array
             'basicswap-beta' => ['coins' => $atomicCore],
             'trevoid' => ['pairs' => $btcXmr],
             'altquick' => ['coins' => ['BTC', 'XMR', 'ETH', 'LTC', 'SOL']],
+            'el-capo' => ['coins' => ['BTC', 'ETH', 'XMR', 'LTC', 'LTC-MWEB', 'XRP', 'SOL', 'USDT-ERC20', 'USDT-TRC20', 'USDT-SPL']],
         ],
         'instant-exchanges' => [
             'quickex' => ['coins' => $core],
@@ -1646,6 +1647,8 @@ function directory_pair_coin_meta(string $coin): array
         'usdc-spl' => ['label' => 'USDC SPL', 'title' => 'USD Coin on Solana (USDC SPL)', 'icon' => 'usdc', 'weight' => 62],
         'bnb' => ['label' => 'BNB', 'title' => 'BNB (BNB)', 'icon' => 'bnb', 'weight' => 70],
         'sol' => ['label' => 'SOL', 'title' => 'Solana (SOL)', 'icon' => 'sol', 'weight' => 80],
+        'ltc-mweb' => ['label' => 'LTC MWEB', 'title' => 'Litecoin MWEB (LTC-MWEB)', 'icon' => 'ltc', 'weight' => 81],
+        'xrp' => ['label' => 'XRP', 'title' => 'XRP Ledger (XRP)', 'icon' => 'many', 'weight' => 85],
         'trx' => ['label' => 'TRX', 'title' => 'TRON (TRX)', 'icon' => 'trx', 'weight' => 90],
     ];
 

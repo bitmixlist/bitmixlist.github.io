@@ -15,6 +15,7 @@ function directory_manual_entries(array $categories): array
     $neverKycCategorySlug = 'neverkyc-exchanges';
     $instantCategorySlug = 'instant-exchanges';
     $altquickSlug = 'altquick';
+    $elCapoSlug = 'el-capo';
     $yifiSlug = 'yifi';
     $neverKycType = $categories[$neverKycCategorySlug]['type'] ?? 'service';
     $instantType = $categories[$instantCategorySlug]['type'] ?? 'service';
@@ -112,6 +113,100 @@ function directory_manual_entries(array $categories): array
             'output_paths' => [
                 'en' => $neverKycCategorySlug . '/' . $altquickSlug . '.html',
                 'ru' => 'ru/' . $neverKycCategorySlug . '/' . $altquickSlug . '.html',
+            ],
+        ],
+        [
+            'id' => $neverKycCategorySlug . ':' . $elCapoSlug,
+            'slug' => $elCapoSlug,
+            'category' => $neverKycCategorySlug,
+            'type' => $neverKycType,
+            'assets' => [
+                'webp' => '',
+                'image' => 'wp-content/uploads/2023/12/el-capo.svg',
+                'alt' => 'El Capo logo',
+            ],
+            'links' => [
+                'clearnet' => 'https://elcapo.io/',
+                'tor' => 'http://elcapo4l4xad5iipvv6ewg46x6jgb26ed43e5jbrlajxatjoxybue4id.onion',
+                'mirrors' => [],
+                'support' => '@elcapo_support / SimpleX / support@elcapo.io / PGP / contact form',
+                'support_html' => '<a href="https://t.me/elcapo_support">@elcapo_support</a> / <a href="https://smp9.simplex.im/a#BpHSUyxfhdGsV6ia-bG-G6UlvEZuCEbO8Q05cie5oBQ">SimpleX</a> / <a href="mailto:support@elcapo.io">support@elcapo.io</a> / <a href="https://elcapo.io/pgp.txt">PGP</a> / <a href="https://elcapo.io/pages/contact.html">contact form</a>',
+            ],
+            'status' => [],
+            'notices' => [
+                [
+                    'type' => 'notice',
+                    'label' => [
+                        'en' => 'Notice',
+                        'ru' => 'Уведомление',
+                    ],
+                    'title' => [
+                        'en' => 'elcapo.io uses JavaScript',
+                        'ru' => 'elcapo.io использует JavaScript',
+                    ],
+                    'lead' => [
+                        'en' => 'A clearnet check on July 3, 2026 found executable JavaScript on the public page for elcapo.io.',
+                        'ru' => 'Проверка clearnet-страницы 3 июля 2026 года обнаружила исполняемый JavaScript на публичной странице elcapo.io.',
+                    ],
+                    'items' => [
+                        'en' => [
+                            'This is not a harmful-service warning; it is a browser-behavior note for users who disable JavaScript or prefer static pages.',
+                        ],
+                        'ru' => [
+                            'Это не предупреждение о вредоносности сервиса; это пометка о поведении страницы для пользователей, которые отключают JavaScript или предпочитают статические страницы.',
+                        ],
+                    ],
+                    'source' => [
+                        'label' => [
+                            'en' => 'elcapo.io clearnet response',
+                            'ru' => 'clearnet-ответ elcapo.io',
+                        ],
+                        'url' => 'https://elcapo.io/',
+                    ],
+                ],
+            ],
+            'content' => [
+                'en' => [
+                    'name' => 'El Capo',
+                    'summary' => 'Fee: 0.75% margin in rate',
+                    'description' => 'El Capo is a no-KYC, no-logs instant crypto exchange with clearnet and onion access.',
+                ],
+                'ru' => [
+                    'name' => 'El Capo',
+                    'summary' => 'Комиссия: маржа 0,75% в курсе',
+                    'description' => 'El Capo — no-KYC/no-logs мгновенный криптообменник с clearnet- и onion-доступом.',
+                ],
+            ],
+            'facts' => [
+                'en' => [
+                    directory_manual_fact('Founded', '2026'),
+                    directory_manual_fact('Fee', 'No separate fee; 0.75% margin is built into the displayed rate'),
+                ],
+                'ru' => [
+                    directory_manual_fact('Основан', '2026'),
+                    directory_manual_fact('Комиссия', 'Отдельной комиссии нет; маржа 0,75% включена в отображаемый курс'),
+                ],
+            ],
+            'table_display' => [
+                'en' => 'El Capo',
+                'ru' => 'El Capo',
+            ],
+            'notes' => [
+                'en' => '<p>The <a href="https://elcapo.io/pages/faq.html">El Capo FAQ</a> describes the service as a no-registration, no-KYC exchange with Tor support and says XMR is supported as both a source and destination currency. The FAQ lists BTC, ETH, XMR, LTC including MWEB, XRP, SOL, and USDT on ERC-20, TRC-20, and Solana.</p><p>The <a href="https://elcapo.io/pages/terms.html">terms page</a> says order details are automatically deleted 30 days after completion, or immediately upon request through support. El Capo offers fixed and floating rates; the submitted listing details state that there is no separate service fee and that a 0.75% margin is built into the displayed rate.</p>',
+                'ru' => '<p><a href="https://elcapo.io/pages/faq.html">FAQ El Capo</a> описывает сервис как обменник без регистрации и KYC с поддержкой Tor и указывает, что XMR поддерживается как для отправки, так и для получения. В FAQ перечислены BTC, ETH, XMR, LTC включая MWEB, XRP, SOL и USDT в сетях ERC-20, TRC-20 и Solana.</p><p><a href="https://elcapo.io/pages/terms.html">Страница условий</a> сообщает, что данные ордера автоматически удаляются через 30 дней после завершения или немедленно по запросу через поддержку. El Capo предлагает фиксированный и плавающий курс; в предоставленных данных для листинга указано, что отдельной сервисной комиссии нет, а маржа 0,75% включена в отображаемый курс.</p>',
+            ],
+            'config' => [
+                'en' => '',
+                'ru' => '',
+            ],
+            'volume_history' => [],
+            'index_paths' => [
+                'en' => $neverKycCategorySlug . '/' . $elCapoSlug . '.html',
+                'ru' => $neverKycCategorySlug . '/' . $elCapoSlug . '.html',
+            ],
+            'output_paths' => [
+                'en' => $neverKycCategorySlug . '/' . $elCapoSlug . '.html',
+                'ru' => 'ru/' . $neverKycCategorySlug . '/' . $elCapoSlug . '.html',
             ],
         ],
         [

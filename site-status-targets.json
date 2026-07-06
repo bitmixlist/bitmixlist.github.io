@@ -406,6 +406,19 @@
             ]
         },
         {
+            "id": "neverkyc-exchanges:el-capo",
+            "category": "neverkyc-exchanges",
+            "slug": "el-capo",
+            "name": "El Capo",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://elcapo.io/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
             "id": "neverkyc-exchanges:tomboi-io",
             "category": "neverkyc-exchanges",
             "slug": "tomboi-io",

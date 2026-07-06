@@ -835,6 +835,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://bitmixlist.org/neverkyc-exchanges/el-capo.html</loc>
+    <lastmod>2026-07-03T00:00:00Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/ru/neverkyc-exchanges/el-capo.html</loc>
+    <lastmod>2026-07-03T00:00:00Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://bitmixlist.org/neverkyc-exchanges/tomboi-io.html</loc>
     <lastmod>2026-06-22T00:00:00Z</lastmod>
     <changefreq>weekly</changefreq>
