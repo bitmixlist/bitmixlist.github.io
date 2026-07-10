@@ -419,6 +419,19 @@
             ]
         },
         {
+            "id": "neverkyc-exchanges:0trace",
+            "category": "neverkyc-exchanges",
+            "slug": "0trace",
+            "name": "0trace",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://0trace.io",
+                    "source": "override"
+                }
+            ]
+        },
+        {
             "id": "neverkyc-exchanges:tomboi-io",
             "category": "neverkyc-exchanges",
             "slug": "tomboi-io",
