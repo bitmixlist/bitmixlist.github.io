@@ -445,19 +445,6 @@
             ]
         },
         {
-            "id": "instant-exchanges:cce-cash",
-            "category": "instant-exchanges",
-            "slug": "cce-cash",
-            "name": "CCE.cash",
-            "targets": [
-                {
-                    "kind": "clearnet",
-                    "url": "https://cce.cash?ref=KJxgqaOV",
-                    "source": "listed"
-                }
-            ]
-        },
-        {
             "id": "instant-exchanges:wizardswap",
             "category": "instant-exchanges",
             "slug": "wizardswap",
