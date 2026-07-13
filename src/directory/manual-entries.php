@@ -216,13 +216,15 @@ function directory_manual_entries(array $categories): array
             'category' => $neverKycCategorySlug,
             'type' => $neverKycType,
             'assets' => [
-                'webp' => 'wp-content/uploads/2023/12/0trace.webp',
-                'image' => 'wp-content/uploads/2023/12/0trace.jpg',
+                'webp' => '',
+                'image' => 'wp-content/uploads/2023/12/0trace.png',
                 'alt' => '0trace logo',
             ],
             'links' => [
                 'clearnet' => 'https://orangefren.com/goto/zerotrace',
+                'actual_clearnet' => 'https://0trace.io/',
                 'tor' => 'http://rnwis2whetqcj4oknksnc5l24jbh33nflunifff3xtjjonnoxu3ld6id.onion/goto/zerotrace',
+                'actual_tor' => 'http://n55kxqrra37apxjlqirvgxcodeq7q5vp7kez6d2cngeo2ksfo6yzn5qd.onion/',
                 'mirrors' => [],
                 'support' => 'Encrypted chat / Jabber / SimpleX / X / Bitcointalk',
                 'support_html' => 'Encrypted chat on site / <a href="xmpp:0trace@exploit.im">Jabber</a> / <a href="https://smp11.simplex.im/a#OZNLsxcV3alnyXcWUnd6m-BBPGbyKWys6ajTbxwziyg" target="_blank" rel="noopener noreferrer">SimpleX</a> / <a href="https://x.com/0trace_io" target="_blank" rel="noopener noreferrer">@0trace_io</a> / <a href="https://bitcointalk.org/index.php?topic=5577836.0" target="_blank" rel="noopener noreferrer">Bitcointalk</a>',
@@ -263,23 +265,23 @@ function directory_manual_entries(array $categories): array
             'content' => [
                 'en' => [
                     'name' => '0trace',
-                    'summary' => 'Fee: ~1%',
+                    'summary' => 'Fee: 0.5%',
                     'description' => '0trace is a no-KYC instant private cryptocurrency exchange with Tor support and signed order proofs.',
                 ],
                 'ru' => [
                     'name' => '0trace',
-                    'summary' => 'Комиссия: ~1%',
+                    'summary' => 'Комиссия: 0,5%',
                     'description' => '0trace — мгновенный приватный обменник без KYC с поддержкой Tor и подписанными доказательствами ордеров.',
                 ],
             ],
             'facts' => [
                 'en' => [
                     directory_manual_fact('Founded', '2026'),
-                    directory_manual_fact('Fee', '~1% service fee (quote includes fees)'),
+                    directory_manual_fact('Fee', '0.5% service fee (quote includes fees)'),
                 ],
                 'ru' => [
                     directory_manual_fact('Основан', '2026'),
-                    directory_manual_fact('Комиссия', '~1% сервисный сбор (в котировке)'),
+                    directory_manual_fact('Комиссия', '0,5% сервисный сбор (в котировке)'),
                 ],
             ],
             'table_display' => [
@@ -287,8 +289,8 @@ function directory_manual_entries(array $categories): array
                 'ru' => '0trace',
             ],
             'notes' => [
-                'en' => '<p>0trace is an instant private no-KYC/AML cryptocurrency exchange. No account or registration required. Uses own liquidity with isolated wallets and one-time addresses (OTA) per order. No external chain analysis, AML scoring or third-party involvement.</p><p>Features: Tor mirror, API, signed Guarantees (pre-send) and Receipts (post-swap) verifiable locally at their /verify page (no upload), ephemeral data (orders deleted after 72h or on demand; chat after 24h inactivity), encrypted in-site support chat. Early access limits apply.</p><p>Prominently supports Monero (native daemon), BTC, USDT (multiple chains), ETH, SOL, LTC, DASH and more. ~1% service fee shown transparently. Announced March 2026 on Bitcointalk. PGP available.</p><p>Links via Orangefren are used for the official site (for tracking/guarantee purposes if applicable); the actual service URL is listed in the Links table above.</p>',
-                'ru' => '<p>0trace — мгновенный приватный обменник без KYC/AML. Без аккаунта и регистрации. Собственная ликвидность, изолированные кошельки, одноразовые адреса (OTA). Без внешнего анализа цепочек, скоринга AML или третьих сторон.</p><p>Возможности: Tor-зеркало, API, подписанные Гарантии (до отправки) и Квитанции (после), проверяемые локально на /verify, эфемерные данные (ордера удаляются через 72 ч или по запросу). Лимиты на раннем этапе.</p><p>Поддержка Monero (нативно), BTC, USDT (разные сети), ETH, SOL, LTC, DASH и др. Комиссия ~1% прозрачно в котировке. Анонс в марте 2026 на Bitcointalk. Есть PGP.</p><p>Ссылки через Orangefren используются для официального сайта; фактический URL сервиса указан в таблице Ссылок выше.</p>',
+                'en' => '<p>0trace is an instant private no-KYC/AML cryptocurrency exchange. No account or registration required. Uses own liquidity with isolated wallets and one-time addresses (OTA) per order. No external chain analysis, AML scoring or third-party involvement.</p><p>Features: Tor mirror, API, signed Guarantees (pre-send) and Receipts (post-swap) verifiable locally at their /verify page (no upload), ephemeral data (orders deleted after 72h or on demand; chat after 24h inactivity), encrypted in-site support chat. Early access limits apply.</p><p>Prominently supports Monero (native daemon), BTC, USDT (multiple chains), ETH, SOL, LTC, DASH and more. The 0.5% service fee is shown transparently. Announced March 2026 on Bitcointalk. PGP available.</p><p>Links via Orangefren are used for the official site (for tracking/guarantee purposes if applicable); the actual service URL is listed in the Links table above.</p>',
+                'ru' => '<p>0trace — мгновенный приватный обменник без KYC/AML. Без аккаунта и регистрации. Собственная ликвидность, изолированные кошельки, одноразовые адреса (OTA). Без внешнего анализа цепочек, скоринга AML или третьих сторон.</p><p>Возможности: Tor-зеркало, API, подписанные Гарантии (до отправки) и Квитанции (после), проверяемые локально на /verify, эфемерные данные (ордера удаляются через 72 ч или по запросу). Лимиты на раннем этапе.</p><p>Поддержка Monero (нативно), BTC, USDT (разные сети), ETH, SOL, LTC, DASH и др. Комиссия 0,5% прозрачно указана в котировке. Анонс в марте 2026 на Bitcointalk. Есть PGP.</p><p>Ссылки через Orangefren используются для официального сайта; фактический URL сервиса указан в таблице Ссылок выше.</p>',
             ],
             'config' => [
                 'en' => '',

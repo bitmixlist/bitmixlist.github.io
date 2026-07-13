@@ -22,7 +22,9 @@ function directory_render_page(array $entry, array $categories, string $locale):
     $indexAnchor = directory_relative_public_path($outputPath, directory_section_output_path($entry['category'], $locale));
     $logo = directory_logo_markup($entry, $base, $name);
     $external = $entry['links']['clearnet'] ?? '';
+    $actualExternal = $entry['links']['actual_clearnet'] ?? '';
     $tor = $entry['links']['tor'] ?? 'No';
+    $actualTor = $entry['links']['actual_tor'] ?? '';
     $mirrors = $entry['links']['mirrors'] ?? [];
     $support = $entry['links']['support'] ?? '';
     $supportHtml = $entry['links']['support_html'] ?? '';
@@ -31,6 +33,12 @@ function directory_render_page(array $entry, array $categories, string $locale):
     $volumeHistory = is_array($entry['volume_history'] ?? null) ? $entry['volume_history'] : [];
     $verifier = directory_verifier_note($entry, $locale);
     $labels = directory_page_labels($locale);
+    $actualExternalRow = $actualExternal !== ''
+        ? directory_entry_table_row($labels['actual_clearnet'], directory_external_value($actualExternal)) . "\n"
+        : '';
+    $actualTorRow = $actualTor !== ''
+        ? directory_entry_table_row($labels['actual_tor'], directory_tor_value($actualTor)) . "\n"
+        : '';
     $headerTitle = directory_header_title($entry, $category, $locale);
     $headerSizes = directory_header_font_sizes($headerTitle);
     $statusStyles = (directory_entry_has_status($entry) ? directory_status_styles() : '')
@@ -199,9 +207,9 @@ function directory_render_page(array $entry, array $categories, string $locale):
 	<thead><tr>' . directory_table_header($labels['table_field']) . directory_table_header($labels['table_value']) . '</tr></thead>
 <tbody>
 ' . directory_entry_table_row($labels['clearnet'], directory_external_value($external)) . '
-' . (directory_entry_has_live_status($entry) ? directory_entry_table_row($labels['live_status'], directory_render_live_status_badge($entry, $locale)) : '') . '
+' . $actualExternalRow . (directory_entry_has_live_status($entry) ? directory_entry_table_row($labels['live_status'], directory_render_live_status_badge($entry, $locale)) : '') . '
 ' . directory_entry_table_row($labels['tor'], directory_tor_value($tor)) . '
-' . ($mirrors !== [] ? directory_entry_table_row($labels['mirrors'], directory_render_mirror_links($mirrors)) : '') . '
+' . $actualTorRow . ($mirrors !== [] ? directory_entry_table_row($labels['mirrors'], directory_render_mirror_links($mirrors)) : '') . '
 ' . ($support !== '' ? directory_entry_table_row($labels['support'], directory_render_support_value($support, $supportHtml)) : '') . '
 </tbody>
 </table>
@@ -444,7 +452,9 @@ function directory_page_labels(string $locale): array
             'table_field' => 'Параметр',
             'table_value' => 'Значение',
             'clearnet' => 'Официальный сайт',
+            'actual_clearnet' => 'Фактический сайт',
             'tor' => 'Tor-сайт',
+            'actual_tor' => 'Фактический Tor-сайт',
             'mirrors' => 'Зеркала',
             'support' => 'Поддержка',
             'live_status' => 'Доступность',
@@ -491,7 +501,9 @@ function directory_page_labels(string $locale): array
         'table_field' => 'Parameter',
         'table_value' => 'Value',
         'clearnet' => 'Official site',
+        'actual_clearnet' => 'Actual site',
         'tor' => 'Tor site',
+        'actual_tor' => 'Actual Tor site',
         'mirrors' => 'Known mirrors',
         'support' => 'Support',
         'live_status' => 'Live status',
@@ -632,7 +644,9 @@ function directory_official_domains_for_entry(array $entry): array
 {
     $sources = [
         $entry['links']['clearnet'] ?? '',
+        $entry['links']['actual_clearnet'] ?? '',
         $entry['links']['tor'] ?? '',
+        $entry['links']['actual_tor'] ?? '',
     ];
 
     foreach ($entry['links']['mirrors'] ?? [] as $mirror) {
@@ -1936,6 +1950,9 @@ function directory_status_target_override(array $entry): string
             'exolix' => 'https://exolix.com',
             'bitcoinvn' => 'https://bitcoinvn.io',
         ],
+        'neverkyc-exchanges' => [
+            '0trace' => 'https://0trace.io',
+        ],
     ];
 
     return $overrides[$categorySlug][$slug] ?? '';
@@ -2620,7 +2637,9 @@ function directory_filter_text_for_entry(array $entry, string $locale, bool $inc
         $entry['content'][$locale]['name'] ?? '',
         $entry['content'][$locale]['summary'] ?? '',
         $entry['links']['clearnet'] ?? '',
+        $entry['links']['actual_clearnet'] ?? '',
         $entry['links']['tor'] ?? '',
+        $entry['links']['actual_tor'] ?? '',
     ];
 
     if ($includeSupport) {
