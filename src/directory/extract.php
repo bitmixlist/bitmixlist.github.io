@@ -2043,7 +2043,12 @@ function directory_entry_status_override(string $categorySlug, string $slug): ar
         ];
     }
 
-    if ($categorySlug === 'neverkyc-exchanges' && $slug === 'tomboi-io') {
+    if (
+        ($categorySlug === 'neverkyc-exchanges' && $slug === 'tomboi-io')
+        || ($categorySlug === 'mixers' && $slug === 'mixer-black')
+    ) {
+        $serviceName = $slug === 'mixer-black' ? 'Mixer.Black' : 'Tomboi.io';
+
         return [
             'type' => 'scam-accusation',
             'label' => [
@@ -2055,12 +2060,12 @@ function directory_entry_status_override(string $categorySlug, string $slug): ar
                 'ru' => 'Scam Accusation',
             ],
             'title' => [
-                'en' => 'Tomboi.io has an active scam accusation',
-                'ru' => 'Для Tomboi.io опубликована scam accusation',
+                'en' => $serviceName . ' has an active scam accusation',
+                'ru' => 'Для ' . $serviceName . ' опубликована scam accusation',
             ],
             'lead' => [
-                'en' => 'A scam accusation thread has been posted for Tomboi.io on Bitcointalk. Review the thread before using the service.',
-                'ru' => 'На Bitcointalk опубликована тема scam accusation по Tomboi.io. Изучите тему перед использованием сервиса.',
+                'en' => 'A scam accusation thread has been posted for ' . $serviceName . ' on Bitcointalk. Review the thread before using the service.',
+                'ru' => 'На Bitcointalk опубликована тема scam accusation по ' . $serviceName . '. Изучите тему перед использованием сервиса.',
             ],
             'items' => [
                 'en' => [

@@ -211,19 +211,6 @@
             ]
         },
         {
-            "id": "mixers:mixer-black",
-            "category": "mixers",
-            "slug": "mixer-black",
-            "name": "Mixer.Black",
-            "targets": [
-                {
-                    "kind": "clearnet",
-                    "url": "https://mixer.black/",
-                    "source": "listed"
-                }
-            ]
-        },
-        {
             "id": "mixers:mixtwix",
             "category": "mixers",
             "slug": "mixtwix",
@@ -258,6 +245,19 @@
                 {
                     "kind": "clearnet",
                     "url": "https://flashmixer.io",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
+            "id": "mixers:mixer-black",
+            "category": "mixers",
+            "slug": "mixer-black",
+            "name": "Mixer.Black",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://mixer.black/",
                     "source": "listed"
                 }
             ]
