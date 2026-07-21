@@ -250,6 +250,19 @@
             ]
         },
         {
+            "id": "mixers:wmix",
+            "category": "mixers",
+            "slug": "wmix",
+            "name": "Wmix",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://wmix.to/",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
             "id": "mixers:mixer-black",
             "category": "mixers",
             "slug": "mixer-black",

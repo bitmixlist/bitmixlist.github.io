@@ -799,6 +799,21 @@ function directory_apply_mixer_fact_overrides(array $facts, string $slug, string
 
 function directory_apply_mixer_parameter_overrides(array $facts, string $slug, string $locale): array
 {
+    if ($slug === 'flash-mixer') {
+        $facts = directory_replace_or_append_fact(
+            $facts,
+            'directory_is_coin_fact_label_for_extract',
+            $locale === 'ru' ? 'Монеты' : 'Coins',
+            'BTC'
+        );
+        return directory_replace_or_append_fact(
+            $facts,
+            'directory_is_mixing_fee_fact_label_for_extract',
+            $locale === 'ru' ? 'Плата за миксинг' : 'Mixing Fee',
+            $locale === 'ru' ? '1,5%-5% + небольшая фиксированная комиссия' : '1.5%-5% + small fixed fee'
+        );
+    }
+
     if ($slug === 'jokermix') {
         $facts = directory_replace_or_append_fact(
             $facts,
@@ -946,6 +961,21 @@ function directory_apply_mixer_telegram_bot_override(array $facts, string $slug,
 
 function directory_apply_mixer_amount_overrides(array $facts, string $slug, string $locale): array
 {
+    if ($slug === 'flash-mixer') {
+        $facts = directory_replace_or_append_fact(
+            $facts,
+            'directory_is_minimum_fact_label_for_extract',
+            $locale === 'ru' ? 'Минимум' : 'Minimum',
+            '0.005 BTC'
+        );
+        return directory_replace_or_append_fact(
+            $facts,
+            'directory_is_maximum_fact_label_for_extract',
+            $locale === 'ru' ? 'Максимум' : 'Maximum',
+            '450 BTC'
+        );
+    }
+
     if ($slug === 'coinomize') {
         return directory_upsert_maximum_fact(
             $facts,
@@ -1702,11 +1732,13 @@ function directory_mixer_notes_override(string $slug): array
     }
 
     return [
-        'en' => '<p>Flash Mixer is a Bitcoin-only service with Standard and Premium pools. The site states that orders can split payouts to 1-2 Bitcoin addresses, use custom percentage fees inside the supported range, and set optional payout delays.</p>
+        'en' => '<p>Flash Mixer is a Bitcoin-only service with a single streamlined tier. The previous Standard/Premium choice has been removed; every order now uses the same amount range, fee range, payout split, and delay controls.</p>
 <ul>
-<li>Standard Pool: 0.001-1.5 BTC, 1.5%-10.0% + $30 fixed fee, 0-72 hour delay.</li>
-<li>Premium Pool: 0.01-450 BTC, 3.0%-10.0% + $30 fixed fee, 2-72 hour delay.</li>
-<li>Minimum payout: 0.0001 BTC. Maximum payout addresses per order: 2.</li>
+<li>Amount range: 0.005-450 BTC.</li>
+<li>Fee: user-selected 1.5%-5% plus a small fixed fee.</li>
+<li>Payouts can be split to 1-2 Bitcoin addresses.</li>
+<li>Delay range: 2-72 hours.</li>
+<li>No registration is required.</li>
 <li>You have 12 hours to send payment after order creation. The exact amount shown must be sent; no more and no less.</li>
 <li>Orders are irreversible once created. Funds cannot be refunded after payment is sent.</li>
 <li>Processing begins after the incoming Bitcoin payment reaches 3 on-chain confirmations.</li>
@@ -1714,11 +1746,13 @@ function directory_mixer_notes_override(string $slug): array
 <li>Developer access is listed through the MCP endpoint at <a href="https://flashmixer.io/mcp">flashmixer.io/mcp</a>.</li>
 </ul>
 <p>Warranty letter verification is available at <a href="https://flashmixer.io/verify">flashmixer.io/verify</a>. The service PGP fingerprint shown there is D428 D9F8 5B4D 35FF BEDA 2087 0F66 7607 6768 E96B.</p>',
-        'ru' => '<p>Flash Mixer — сервис только для Bitcoin с пулами Standard и Premium. На сайте указано, что заказ может разделять выплаты на 1-2 Bitcoin-адреса, использовать пользовательскую процентную комиссию в доступном диапазоне и задавать задержки выплат.</p>
+        'ru' => '<p>Flash Mixer — сервис только для Bitcoin с одним упрощенным тарифом. Выбор Standard/Premium убран; теперь все заказы используют одинаковый диапазон сумм, комиссий, разделения выплат и задержек.</p>
 <ul>
-<li>Standard Pool: 0.001-1.5 BTC, 1.5%-10.0% + фиксированная комиссия $30, задержка 0-72 часа.</li>
-<li>Premium Pool: 0.01-450 BTC, 3.0%-10.0% + фиксированная комиссия $30, задержка 2-72 часа.</li>
-<li>Минимальная выплата: 0.0001 BTC. Максимум адресов выплаты в заказе: 2.</li>
+<li>Диапазон суммы: 0.005-450 BTC.</li>
+<li>Комиссия: пользователь выбирает 1,5%-5% плюс небольшую фиксированную комиссию.</li>
+<li>Выплаты можно разделить на 1-2 Bitcoin-адреса.</li>
+<li>Диапазон задержки: 2-72 часа.</li>
+<li>Регистрация не требуется.</li>
 <li>После создания заказа на отправку платежа дается 12 часов. Нужно отправить точную указанную сумму: не больше и не меньше.</li>
 <li>Заказы необратимы после создания. Средства нельзя вернуть после отправки платежа.</li>
 <li>Обработка начинается после 3 on-chain подтверждений входящего Bitcoin-платежа.</li>

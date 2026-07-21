@@ -12,16 +12,131 @@ function directory_manual_entry_removed_ids(): array
 
 function directory_manual_entries(array $categories): array
 {
+    $mixersCategorySlug = 'mixers';
     $neverKycCategorySlug = 'neverkyc-exchanges';
     $instantCategorySlug = 'instant-exchanges';
+    $wmixSlug = 'wmix';
     $altquickSlug = 'altquick';
     $elCapoSlug = 'el-capo';
     $zeroTraceSlug = '0trace';
     $yifiSlug = 'yifi';
+    $mixersType = $categories[$mixersCategorySlug]['type'] ?? 'service';
     $neverKycType = $categories[$neverKycCategorySlug]['type'] ?? 'service';
     $instantType = $categories[$instantCategorySlug]['type'] ?? 'service';
 
     return [
+        [
+            'id' => $mixersCategorySlug . ':' . $wmixSlug,
+            'slug' => $wmixSlug,
+            'category' => $mixersCategorySlug,
+            'type' => $mixersType,
+            'assets' => [
+                'webp' => '',
+                'image' => 'wp-content/uploads/2023/12/wmix.png',
+                'alt' => 'wMix logo',
+            ],
+            'links' => [
+                'clearnet' => 'https://wmix.to/',
+                'tor' => 'http://wmixerdmg2ugsrnae5roeedq2qxtly5cbcmr57iqbpcetyfb4fs2txad.onion/',
+                'mirrors' => [],
+                'support' => 'Telegram bot / support@wmix.to / PGP',
+                'support_html' => '<a href="https://t.me/wmixer_bot" target="_blank" rel="noopener noreferrer">Telegram bot</a> / <a href="mailto:support@wmix.to">support@wmix.to</a> / <a href="https://wmix.to/pgp-key.txt" target="_blank" rel="noopener noreferrer">PGP</a>',
+            ],
+            'status' => [],
+            'notices' => [
+                [
+                    'type' => 'notice',
+                    'label' => [
+                        'en' => 'Notice',
+                        'ru' => 'Уведомление',
+                    ],
+                    'title' => [
+                        'en' => 'wmix.to uses JavaScript',
+                        'ru' => 'wmix.to использует JavaScript',
+                    ],
+                    'lead' => [
+                        'en' => 'A clearnet check on July 20, 2026 found executable JavaScript on the public page for wmix.to.',
+                        'ru' => 'Проверка clearnet-страницы 20 июля 2026 года обнаружила исполняемый JavaScript на публичной странице wmix.to.',
+                    ],
+                    'items' => [
+                        'en' => [
+                            'This is not a harmful-service warning; it is a browser-behavior note for users who disable JavaScript or prefer static pages.',
+                        ],
+                        'ru' => [
+                            'Это не предупреждение о вредоносности сервиса; это пометка о поведении страницы для пользователей, которые отключают JavaScript или предпочитают статические страницы.',
+                        ],
+                    ],
+                    'source' => [
+                        'label' => [
+                            'en' => 'wmix.to clearnet response',
+                            'ru' => 'clearnet-ответ wmix.to',
+                        ],
+                        'url' => 'https://wmix.to/',
+                    ],
+                ],
+            ],
+            'content' => [
+                'en' => [
+                    'name' => 'Wmix',
+                    'summary' => 'Mixing fee: 5% + 0.0007 BTC',
+                    'description' => 'Wmix is a Bitcoin mixer with clearnet and onion access, Telegram bot support, PGP-signed guarantee letters, and a no-logs claim.',
+                ],
+                'ru' => [
+                    'name' => 'Wmix',
+                    'summary' => 'Комиссия за смешивание: 5% + 0.0007 BTC',
+                    'description' => 'Wmix — биткоин-миксер с clearnet- и onion-доступом, Telegram-ботом, PGP-подписанными письмами гарантии и заявленной политикой без логов.',
+                ],
+            ],
+            'facts' => [
+                'en' => [
+                    directory_manual_fact('Founded', '2026'),
+                    directory_manual_fact('Coins', 'BTC'),
+                    directory_manual_fact('Resells', 'Jambler'),
+                    directory_manual_fact('Mixing Fee', '5% + 0.0007 BTC'),
+                    directory_manual_fact('Minimum', '0.001 BTC'),
+                    directory_manual_fact('Maximum', '50 BTC'),
+                    [
+                        'label' => 'Telegram Bot',
+                        'value' => 'Yes',
+                        'html' => '<a href="https://t.me/wmixer_bot" rel="noopener noreferrer" title="Yes" target="_blank">Yes</a>',
+                    ],
+                ],
+                'ru' => [
+                    directory_manual_fact('Основан', '2026'),
+                    directory_manual_fact('Монеты', 'BTC'),
+                    directory_manual_fact('Реселл', 'Jambler'),
+                    directory_manual_fact('Плата за миксинг', '5% + 0.0007 BTC'),
+                    directory_manual_fact('Минимум', '0.001 BTC'),
+                    directory_manual_fact('Максимум', '50 BTC'),
+                    [
+                        'label' => 'Телеграм-бот',
+                        'value' => 'Да',
+                        'html' => '<a href="https://t.me/wmixer_bot" rel="noopener noreferrer" title="Да" target="_blank">Да</a>',
+                    ],
+                ],
+            ],
+            'table_display' => [
+                'en' => 'Wmix',
+                'ru' => 'Wmix',
+            ],
+            'notes' => [
+                'en' => '<p>Wmix is a Bitcoin mixer with clearnet and onion access. The official page describes a workflow that replaces deposits with verified exchange funds, splits payouts into multiple parts, and sends them after random delays of 1 to 8 hours.</p><p>The service states that every order receives a PGP-signed letter of guarantee, uses a strict no-logs policy, and deletes order processing data after completion or address expiration. Its published parameters list BTC only, a 0.001 BTC minimum, 50 BTC maximum per request, one confirmation required, addresses valid for 7 days, and a 5% + 0.0007 BTC commission. Wmix also advertises a free 0.001 BTC trial mix.</p><p>Support is available through the Telegram bot and support@wmix.to. PGP fingerprint: B8A5 CFCA F63F F2D8 384A 6B12 D3B2 8095 6F0E 7CAF.</p>',
+                'ru' => '<p>Wmix — биткоин-миксер с clearnet- и onion-доступом. Официальная страница описывает схему, где депозит заменяется проверенными монетами с бирж, выплаты дробятся на части и отправляются со случайными задержками от 1 до 8 часов.</p><p>Сервис заявляет, что каждый ордер получает PGP-подписанное письмо гарантии, использует политику без логов и удаляет данные обработки после завершения или истечения срока адреса. Опубликованные параметры: только BTC, минимум 0.001 BTC, максимум 50 BTC на заявку, 1 подтверждение, адреса действительны 7 дней, комиссия 5% + 0.0007 BTC. Wmix также рекламирует бесплатный тестовый микс на 0.001 BTC.</p><p>Поддержка доступна через Telegram-бота и support@wmix.to. PGP fingerprint: B8A5 CFCA F63F F2D8 384A 6B12 D3B2 8095 6F0E 7CAF.</p>',
+            ],
+            'config' => [
+                'en' => '',
+                'ru' => '',
+            ],
+            'volume_history' => [],
+            'index_paths' => [
+                'en' => $mixersCategorySlug . '/' . $wmixSlug . '.html',
+                'ru' => $mixersCategorySlug . '/' . $wmixSlug . '.html',
+            ],
+            'output_paths' => [
+                'en' => $mixersCategorySlug . '/' . $wmixSlug . '.html',
+                'ru' => 'ru/' . $mixersCategorySlug . '/' . $wmixSlug . '.html',
+            ],
+        ],
         [
             'id' => $neverKycCategorySlug . ':' . $altquickSlug,
             'slug' => $altquickSlug,
