@@ -1,39 +1,45 @@
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA512
 
-Monday, June 15, 2026
+Wednesday, July 22, 2026
 
 These are the only official domains of BitMixList. All others are scams.
 
 bitmixlist.org
 bitmixlist.com
-bitmixlist-lao7a.kinsta.page
 mixlistihakx3uexhl3wv7xxpnso75pl2fxxupulqz3gpoybum62puid.onion
-bitmixlistorg.bitbucket.io
 bitmixlist.github.io
-bitmixlist.netlify.app
 bitmixlist.onrender.com
-bitmixlist.vercel.app
 
 The only official domains of the BitMixList AML checker are the following:
 
 amlcheck.bitmixlist.org
 amlcheckigatauwud4ilv3tsk5kewrqdxoyfelcqkmbrgpcpk7tkqrad.onion
 
+BitMixList will only use these contact methods:
+
+email: admin@bitmixlist.org
+Telegram: @Zenul_Abidin
+Jabber: bitmixlist@xmpp.is
+SimpleX: https://smp10.simplex.im/a#fhTfNGw86FC0Prs5Qnb5gg1JagFMm-1tme-BqRf6GkQ
+Bitcointalk: NotATether
+Altcoinstalks: NotATether
+XSS: bitmixlist
+
 NotATether's PGP fingerprint is F9F1 A489 1730 91A8 53F4  6B1C 3C23 6DD6 217A B77F.
 
 Public key: https://bitcointalk.org/index.php?topic=1159946.msg63741748#msg63741748
 -----BEGIN PGP SIGNATURE-----
 
-iQGzBAEBCgAdFiEE+fGkiRcwkahT9GscPCNt1iF6t38FAmovwNUACgkQPCNt1iF6
-t3+UpgwAzNhd41XkW6+u3UlzvDTmTITUpuaoZOfl2YQYsRhg+4LsqpOa9qZ3JYyx
-u1w/gjHooDmSb9KKHN6cQAIV/Ur4av7fTPuVyjQwzJExgSdVq0Bfk/QT1wrYumH0
-YfD4/UWoVVRhQy/oO4Enw8QFLqldxX5YBdLjgTCQZmIucTLsFYSetGXQR5Rh4NrS
-egTEKz1qvX5BJnG3T2f7xUi0lmH5Tsis0zgRhfjD/UZXrbZdbK1tPsHuvezB4Ak8
-W2Eu0cz+V5vSeQiJ+6fpHbPjuMs/SS0KzmR5qb6zcXC3EZgsHjbydLtbUfxP4vSD
-OjajHuoVPD9cWu9CBwk/neG1DDZ6WK+wIx/9bOhmuA/+RpeOe09YCI5AmA6ICV/e
-lXtYqTTyQSYGy84k+frFdxY0C58BXPhq0pEjg9UMOKuJrpWRHi0lydH8+puqEYDi
-nsxjCsQmNzQz4KBTdbKNyvIHb7YRCesGdUo5/+YtZ+7hOsfwyyQHsjg3f0m2kKdx
-obLkycUQ
-=8vuB
+iQGzBAEBCgAdFiEE+fGkiRcwkahT9GscPCNt1iF6t38FAmpgszoACgkQPCNt1iF6
+t38MfwwA0OElM8DTxipAeFh64OcldzX8B5wHBU7dSHAsp0c2xL2mWMTfk+mZsD7l
+jeIGxHq0cgLgW+BEniVpYirkxER/HbEYk37I4EA1b4cGeinA6pgSjSByWZFcsNeF
+KAS1qwqhZrgIJssFFXght/mx5r2MSpGVuqAZXs59SNFw3+7tTxARNqlOhjs/MXUC
+sg++dPmU8W47VCCsROe+LtZlag8r4CEdmy4aGqNxUEFaiunA+5R8DUzhmBvI/3Nn
+/cqRdR/NBISB8jnhjXnFrY9sFHngbskjtI3k/L060/iuDZDxopUjI6MywKxUSu2b
+140SG+q0LuWMsFmRVEYdei1O3wm3vPMtdjshtwgJwO78rYJKif7b3RzQHlHOSsH9
+qPvIlEXedDeqR6DSaocogpsijKeyltMKBCOaoLLPqRhFsdSpG1qpteZll+/2eK9p
+7ao/z7lIW/lbbSD+7bRdrTdyA/jhPzjaqJHEp+2BxwQzbG7MwVpyG6to7mzlp1xw
+MSxtZ2Lt
+=os6D
 -----END PGP SIGNATURE-----
