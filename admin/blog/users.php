@@ -7,7 +7,7 @@ require_once __DIR__ . '/auth.php';
 blog_admin_require_admin();
 
 $actor = blog_admin_current_user();
-$actorName = (string) ($actor['username'] ?? 'admin');
+$actorName = (string) ($actor['username'] ?? 'notatether');
 $message = '';
 $error = '';
 
@@ -102,7 +102,7 @@ function blog_users_badge(string $status): string
 <input type="hidden" name="action" value="enable"/>
 <button class="btn secondary" type="submit">Enable</button>
 </form>
-<?php elseif ($status !== 'pending' && $u !== 'admin'): ?>
+<?php elseif ($status !== 'pending' && $u !== 'notatether'): ?>
 <form method="post" style="display:inline">
 <input type="hidden" name="csrf" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>"/>
 <input type="hidden" name="username" value="<?= htmlspecialchars($u, ENT_QUOTES, 'UTF-8') ?>"/>
@@ -110,7 +110,7 @@ function blog_users_badge(string $status): string
 <button class="btn danger" type="submit">Disable</button>
 </form>
 <?php endif; ?>
-<?php if (in_array($status, ['active', 'approved'], true) && $u !== 'admin'): ?>
+<?php if (in_array($status, ['active', 'approved'], true) && $u !== 'notatether'): ?>
 <form method="post" style="display:inline">
 <input type="hidden" name="csrf" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>"/>
 <input type="hidden" name="username" value="<?= htmlspecialchars($u, ENT_QUOTES, 'UTF-8') ?>"/>

@@ -107,7 +107,7 @@ function blog_accounts_bootstrap(): array
 
     $now = gmdate('c');
     $admin = [
-        'username' => 'admin',
+        'username' => 'notatether',
         'role' => 'admin',
         'status' => 'active',
         'password_hash' => $hash,
@@ -192,7 +192,7 @@ function blog_accounts_register(string $username): array
     if (!blog_accounts_username_valid($username)) {
         return ['ok' => false, 'error' => 'Username must be 3–32 chars, start with a letter, and use only a–z, 0–9, _, -, .'];
     }
-    if ($username === 'admin') {
+    if (in_array($username, ['admin', 'notatether'], true)) {
         return ['ok' => false, 'error' => 'That username is reserved.'];
     }
     if (blog_accounts_find($username) !== null) {
@@ -266,11 +266,7 @@ function blog_accounts_disable(string $username, string $actorUsername): array
     if ($target === $actor) {
         return ['ok' => false, 'error' => 'You cannot disable your own account.'];
     }
-    if (($user['role'] ?? '') === 'admin' && $target === 'admin') {
-        // Allow disabling non-primary admins only; protect bootstrap admin lightly
-        // Still allow disable of other admins if any are added later.
-    }
-    if ($target === 'admin') {
+    if ($target === 'notatether') {
         return ['ok' => false, 'error' => 'The primary admin account cannot be disabled.'];
     }
 
@@ -312,8 +308,8 @@ function blog_accounts_reset_password(string $username): array
     if ($user === null) {
         return ['ok' => false, 'error' => 'User not found.'];
     }
-    if (($user['role'] ?? '') === 'admin' && blog_accounts_normalize_username((string) $user['username']) === 'admin') {
-        return ['ok' => false, 'error' => 'Reset the primary admin password via server hash tools if needed.'];
+    if (blog_accounts_normalize_username((string) $user['username']) === 'notatether') {
+        return ['ok' => false, 'error' => 'Reset the primary admin password via server tools if needed.'];
     }
     if (($user['status'] ?? '') === 'pending') {
         return ['ok' => false, 'error' => 'Approve the registration first.'];

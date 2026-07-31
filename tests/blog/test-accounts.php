@@ -55,7 +55,7 @@ if (is_file($accountsFile)) {
 file_put_contents($accountsFile, json_encode([
     'updated_at' => gmdate('c'),
     'users' => [[
-        'username' => 'admin',
+        'username' => 'notatether',
         'role' => 'admin',
         'status' => 'active',
         'password_hash' => password_hash('AdminPass12345', PASSWORD_DEFAULT),
@@ -82,7 +82,7 @@ t($authPending['ok'] === false, 'pending cannot login');
 $setEarly = blog_accounts_set_password('neweditor', 'EditorPass12345', 'EditorPass12345');
 t($setEarly['ok'] === false, 'cannot set password before approval');
 
-$ap = blog_accounts_approve('neweditor', 'admin');
+$ap = blog_accounts_approve('neweditor', 'notatether');
 t($ap['ok'] === true, 'admin approves editor');
 $user = blog_accounts_find('neweditor');
 t(($user['status'] ?? '') === 'approved', 'status approved after approve');
@@ -95,7 +95,7 @@ t(($user['status'] ?? '') === 'active', 'active after password set');
 $login = blog_accounts_authenticate('neweditor', 'EditorPass12345');
 t($login['ok'] === true, 'editor can login');
 
-$dis = blog_accounts_disable('neweditor', 'admin');
+$dis = blog_accounts_disable('neweditor', 'notatether');
 t($dis['ok'] === true, 'admin disables editor');
 $loginDis = blog_accounts_authenticate('neweditor', 'EditorPass12345');
 t($loginDis['ok'] === false, 'disabled cannot login');
@@ -105,11 +105,11 @@ t($en['ok'] === true, 'enable editor');
 $loginEn = blog_accounts_authenticate('neweditor', 'EditorPass12345');
 t($loginEn['ok'] === true, 'enabled can login again');
 
-$adminLogin = blog_accounts_authenticate('admin', 'AdminPass12345');
+$adminLogin = blog_accounts_authenticate('notatether', 'AdminPass12345');
 t($adminLogin['ok'] === true, 'admin login works');
 
-$regAdmin = blog_accounts_register('admin');
-t($regAdmin['ok'] === false, 'cannot register reserved admin username');
+$regAdmin = blog_accounts_register('notatether');
+t($regAdmin['ok'] === false, 'cannot register reserved primary username');
 
 // restore backup
 if ($backup !== null) {
