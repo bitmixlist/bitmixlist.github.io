@@ -178,8 +178,8 @@ document.addEventListener('DOMContentLoaded', function () {
   .directory-verification-tool, .directory-pgp-key { flex-basis: 100%; }
   .directory-table-wrap { overflow-x: visible; }
   .directory-entry-table, .directory-comparison-table { min-width: 0; }
-  .directory-comparison-table--mixers th.directory-coins-cell, .directory-comparison-table--mixers td.directory-coins-cell { width: 100%; max-width: none; }
-  .directory-comparison-table--mixers td.directory-coins-cell .coin-list { max-width: 100%; }
+  .directory-comparison-table--mixers th.directory-coins-cell, .directory-comparison-table--mixers td.directory-coins-cell, .directory-comparison-table--neverkyc-exchanges th.directory-coins-cell, .directory-comparison-table--neverkyc-exchanges td.directory-coins-cell, .directory-comparison-table--instant-exchanges th.directory-coins-cell, .directory-comparison-table--instant-exchanges td.directory-coins-cell { width: 100%; max-width: none; }
+  .directory-comparison-table--mixers td.directory-coins-cell .coin-list, .directory-comparison-table--neverkyc-exchanges td.directory-coins-cell .coin-list, .directory-comparison-table--instant-exchanges td.directory-coins-cell .coin-list { max-width: 100%; }
   .directory-facts { border-collapse: separate; border-spacing: 0; table-layout: auto; }
   .directory-facts thead { display: none; }
   .directory-facts, .directory-facts tbody { display: block; width: 100%; }
@@ -303,6 +303,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <tbody>
 <tr><td class="directory-nowrap" data-label="Founded"><span class="directory-cell-value">Founded</span></td><td class="directory-nowrap" data-label="Founded"><span class="directory-cell-value">2025</span></td></tr>
 <tr><td class="directory-nowrap" data-label="Fee"><span class="directory-cell-value">Fee</span></td><td class="directory-nowrap" data-label="Fee"><span class="directory-cell-value">5%</span></td></tr>
+<tr><td class="directory-coins-cell" data-label="Coins"><span class="directory-cell-value">Coins</span></td><td class="directory-coins-cell" data-label="Coins"><span class="directory-cell-value"><span class="coin-list" aria-label="BTC, XMR"><span class="coin-badge" title="Bitcoin (BTC)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../wp-content/uploads/crypto-icons/btc.svg"/><span class="coin-label">BTC</span></span><span class="coin-badge" title="Monero (XMR)"><img alt="" aria-hidden="true" decoding="async" loading="lazy" src="../wp-content/uploads/crypto-icons/xmr.svg"/><span class="coin-label">XMR</span></span></span></span></td></tr>
 
 </tbody>
 </table>

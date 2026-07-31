@@ -144,8 +144,9 @@ function homepage_ensure_styles(string $html): string
         . '          .homepage-directory .directory-facts { width: 100%; border-collapse: collapse; table-layout: fixed; }' . "\n"
         . '          .homepage-directory .homepage-comparison-table { table-layout: auto; min-width: 1040px; }' . "\n"
         . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table { min-width: 1380px; }' . "\n"
-        . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell { width: 12rem; max-width: 12rem; }' . "\n"
-        . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell .coin-list { max-width: 12rem; }' . "\n"
+        . '          .homepage-directory-section[data-category="neverkyc-exchanges"] .homepage-comparison-table, .homepage-directory-section[data-category="instant-exchanges"] .homepage-comparison-table { min-width: 1380px; }' . "\n"
+        . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell, .homepage-directory-section[data-category="neverkyc-exchanges"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="neverkyc-exchanges"] .homepage-comparison-table td.directory-coins-cell, .homepage-directory-section[data-category="instant-exchanges"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="instant-exchanges"] .homepage-comparison-table td.directory-coins-cell { width: 12rem; max-width: 12rem; }' . "\n"
+        . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell .coin-list, .homepage-directory-section[data-category="neverkyc-exchanges"] .homepage-comparison-table td.directory-coins-cell .coin-list, .homepage-directory-section[data-category="instant-exchanges"] .homepage-comparison-table td.directory-coins-cell .coin-list { max-width: 12rem; }' . "\n"
         . '          .homepage-directory-section[data-category="coordinators"] .homepage-comparison-table { min-width: 960px; }' . "\n"
         . '          .homepage-directory .directory-facts th, .homepage-directory .directory-facts td { vertical-align: top; padding: 12px; overflow-wrap: normal; word-break: normal; hyphens: none; }' . "\n"
         . '          .homepage-directory .directory-facts th { color: #f6f2ff; text-align: left; background: #282238; }' . "\n"
@@ -583,8 +584,9 @@ function homepage_ensure_comparison_styles(string $html): string
     $insert = $needle
         . '          .homepage-directory .homepage-comparison-table { table-layout: auto; min-width: 1040px; }' . "\n"
         . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table { min-width: 1380px; }' . "\n"
-        . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell { width: 12rem; max-width: 12rem; }' . "\n"
-        . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell .coin-list { max-width: 12rem; }' . "\n"
+        . '          .homepage-directory-section[data-category="neverkyc-exchanges"] .homepage-comparison-table, .homepage-directory-section[data-category="instant-exchanges"] .homepage-comparison-table { min-width: 1380px; }' . "\n"
+        . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell, .homepage-directory-section[data-category="neverkyc-exchanges"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="neverkyc-exchanges"] .homepage-comparison-table td.directory-coins-cell, .homepage-directory-section[data-category="instant-exchanges"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="instant-exchanges"] .homepage-comparison-table td.directory-coins-cell { width: 12rem; max-width: 12rem; }' . "\n"
+        . '          .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell .coin-list, .homepage-directory-section[data-category="neverkyc-exchanges"] .homepage-comparison-table td.directory-coins-cell .coin-list, .homepage-directory-section[data-category="instant-exchanges"] .homepage-comparison-table td.directory-coins-cell .coin-list { max-width: 12rem; }' . "\n"
         . '          .homepage-directory-section[data-category="coordinators"] .homepage-comparison-table { min-width: 960px; }' . "\n";
     $html = str_replace($needle, $insert, $html);
 
@@ -1142,7 +1144,7 @@ function homepage_render_category(string $slug, array $category, array $entries,
         return homepage_render_tool_registry_category($slug, $category, $entries, $locale, $sectionNotes);
     }
 
-    $entries = directory_entries_with_status_last($entries);
+    $entries = array_map('directory_with_exchange_coin_facts', directory_entries_with_status_last($entries));
 
     return '<section class="directory-section homepage-directory-section' . ($isTool ? ' tool-registry' : '') . '" id="' . directory_escape($anchor) . '" data-category="' . directory_escape($slug) . '" data-directory-filter-scope data-directory-status-scope>
 	<div class="directory-section-heading">

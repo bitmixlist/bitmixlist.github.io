@@ -7,6 +7,7 @@ const DIRECTORY_STATUS_FEED_URL = 'https://bitmixlist-site-status-242473302317.u
 
 function directory_render_page(array $entry, array $categories, string $locale): string
 {
+    $entry = directory_with_exchange_coin_facts($entry);
     $category = $categories[$entry['category']];
     $content = $entry['content'][$locale];
     $facts = $entry['facts'][$locale];
@@ -371,9 +372,17 @@ function directory_render_section_page(string $categorySlug, array $data, string
 .directory-facts .directory-nowrap { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
 .directory-comparison-table { table-layout: auto; min-width: 1040px; }
 .directory-comparison-table--mixers { min-width: 1380px; }
+.directory-comparison-table--neverkyc-exchanges,
+.directory-comparison-table--instant-exchanges { min-width: 1380px; }
 .directory-comparison-table--mixers th.directory-coins-cell,
-.directory-comparison-table--mixers td.directory-coins-cell { width: 12rem; max-width: 12rem; }
-.directory-comparison-table--mixers td.directory-coins-cell .coin-list { max-width: 12rem; }
+.directory-comparison-table--mixers td.directory-coins-cell,
+.directory-comparison-table--neverkyc-exchanges th.directory-coins-cell,
+.directory-comparison-table--neverkyc-exchanges td.directory-coins-cell,
+.directory-comparison-table--instant-exchanges th.directory-coins-cell,
+.directory-comparison-table--instant-exchanges td.directory-coins-cell { width: 12rem; max-width: 12rem; }
+.directory-comparison-table--mixers td.directory-coins-cell .coin-list,
+.directory-comparison-table--neverkyc-exchanges td.directory-coins-cell .coin-list,
+.directory-comparison-table--instant-exchanges td.directory-coins-cell .coin-list { max-width: 12rem; }
 .directory-comparison-table--coordinators { min-width: 960px; }
 ' . directory_sort_styles() . '
 .directory-section-cautions { margin-top: 22px; }
@@ -1277,7 +1286,7 @@ function directory_render_section_cards(array $entries, string $locale, string $
 {
     $cards = '';
     foreach ($entries as $entry) {
-        $cards .= directory_render_section_card($entry, $locale, $base, $fromPath) . "\n";
+        $cards .= directory_render_section_card(directory_with_exchange_coin_facts($entry), $locale, $base, $fromPath) . "\n";
     }
 
     return $cards;
@@ -1319,7 +1328,7 @@ function directory_render_section_card(array $entry, string $locale, string $bas
 
 function directory_render_section_table(array $entries, string $locale, string $base, string $fromPath, string $categorySlug): string
 {
-    $entries = directory_entries_with_status_last($entries);
+    $entries = array_map('directory_with_exchange_coin_facts', directory_entries_with_status_last($entries));
     $labels = directory_section_table_labels($entries, $locale, $categorySlug);
     $rows = '';
 
@@ -1552,6 +1561,8 @@ function directory_exchange_pair_support_map(): array
             'trevoid' => ['pairs' => $btcXmr],
             'altquick' => ['coins' => ['BTC', 'XMR', 'ETH', 'LTC', 'SOL']],
             'el-capo' => ['coins' => ['BTC', 'ETH', 'XMR', 'LTC', 'LTC-MWEB', 'XRP', 'SOL', 'USDT-ERC20', 'USDT-TRC20', 'USDT-SPL']],
+            '0trace' => ['coins' => $privacyCore],
+            'betkarma' => ['coins' => ['BTC', 'XMR', 'ETH', 'LTC', 'SOL', 'ZEC', 'BNB', 'TRX', 'USDT', 'USDC']],
         ],
         'instant-exchanges' => [
             'quickex' => ['coins' => $core],
@@ -1565,6 +1576,92 @@ function directory_exchange_pair_support_map(): array
             'yifi' => ['coins' => ['BTC', 'XMR', 'ETH', 'LTC', 'SOL', 'USDT-ERC20', 'USDT-TRC20']],
         ],
     ];
+}
+
+function directory_with_exchange_coin_facts(array $entry): array
+{
+    $category = (string) ($entry['category'] ?? '');
+    if (!directory_pair_filter_enabled($category)) {
+        return $entry;
+    }
+
+    $coinsValue = directory_entry_coins_display_value($entry);
+    if ($coinsValue === '') {
+        return $entry;
+    }
+
+    foreach (['en', 'ru'] as $locale) {
+        $label = $locale === 'ru' ? 'Монеты' : 'Coins';
+        $facts = $entry['facts'][$locale] ?? [];
+        $found = false;
+        foreach ($facts as $index => $fact) {
+            if (!directory_is_coin_fact_label((string) ($fact['label'] ?? ''))) {
+                continue;
+            }
+            $found = true;
+            $existing = trim((string) ($fact['value'] ?? ''));
+            if ($existing === '') {
+                $facts[$index] = [
+                    'label' => $label,
+                    'value' => $coinsValue,
+                    'html' => htmlspecialchars($coinsValue, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+                ];
+            }
+            break;
+        }
+
+        if (!$found) {
+            $coinFact = [
+                'label' => $label,
+                'value' => $coinsValue,
+                'html' => htmlspecialchars($coinsValue, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+            ];
+            $inserted = false;
+            foreach ($facts as $index => $fact) {
+                $factLabel = mb_strtolower(trim((string) ($fact['label'] ?? '')), 'UTF-8');
+                if (str_contains($factLabel, 'fee') || str_contains($factLabel, 'комисс') || str_contains($factLabel, 'плата')) {
+                    array_splice($facts, $index + 1, 0, [$coinFact]);
+                    $inserted = true;
+                    break;
+                }
+            }
+            if (!$inserted) {
+                $facts[] = $coinFact;
+            }
+        }
+
+        $entry['facts'][$locale] = $facts;
+    }
+
+    return $entry;
+}
+
+function directory_entry_coins_display_value(array $entry): string
+{
+    foreach (['en', 'ru'] as $locale) {
+        foreach ($entry['facts'][$locale] ?? [] as $fact) {
+            if (!directory_is_coin_fact_label((string) ($fact['label'] ?? ''))) {
+                continue;
+            }
+            $value = trim((string) ($fact['value'] ?? ''));
+            if ($value !== '') {
+                return $value;
+            }
+        }
+    }
+
+    $symbols = directory_pair_support_symbols(directory_entry_pair_support($entry));
+    if ($symbols === []) {
+        return '';
+    }
+
+    usort(
+        $symbols,
+        static fn (string $left, string $right): int => directory_pair_coin_sort_weight($left) <=> directory_pair_coin_sort_weight($right)
+            ?: strcmp($left, $right)
+    );
+
+    return implode(', ', $symbols);
 }
 
 function directory_pair_filter_item_attributes(array $entry, bool $isResult): string
@@ -1693,6 +1790,9 @@ function directory_pair_coin_meta(string $coin): array
         'ltc-mweb' => ['label' => 'LTC MWEB', 'title' => 'Litecoin MWEB (LTC-MWEB)', 'icon' => 'ltc', 'weight' => 81],
         'xrp' => ['label' => 'XRP', 'title' => 'XRP Ledger (XRP)', 'icon' => 'many', 'weight' => 85],
         'trx' => ['label' => 'TRX', 'title' => 'TRON (TRX)', 'icon' => 'trx', 'weight' => 90],
+        'zec' => ['label' => 'ZEC', 'title' => 'Zcash (ZEC)', 'icon' => 'many', 'weight' => 95],
+        'usdt' => ['label' => 'USDT', 'title' => 'Tether (USDT)', 'icon' => 'usdt', 'weight' => 50],
+        'usdc' => ['label' => 'USDC', 'title' => 'USD Coin (USDC)', 'icon' => 'usdc', 'weight' => 60],
     ];
 
     if (isset($catalog[$token])) {
@@ -2511,6 +2611,9 @@ function directory_coin_items(string $value): array
     }
 
     $items = [];
+    $knownIcons = array_fill_keys(array_keys(directory_coin_titles()), true);
+    $knownIcons['many'] = true;
+
     foreach (preg_split('/\s*,\s*/u', $value) ?: [] as $part) {
         $symbol = strtoupper(trim($part));
         if ($symbol === '') {
@@ -2523,14 +2626,19 @@ function directory_coin_items(string $value): array
         $title = $titles[$icon] ?? '';
         $titleIncludesSymbol = false;
 
-        if (preg_match('/^(?:USDT|USDC)-(?:ERC20|TRC20|BEP20|SPL)$/', $symbol) === 1) {
+        if (
+            preg_match('/^(?:USDT|USDC)-(?:ERC20|TRC20|BEP20|SPL)$/', $symbol) === 1
+            || preg_match('/^(?:LTC-MWEB|XRP|ZEC)$/', $symbol) === 1
+            || !isset($titles[$icon])
+        ) {
             $meta = directory_pair_coin_meta($symbol);
             $icon = $meta['icon'];
             $label = $meta['label'];
             $title = $meta['title'];
             $titleIncludesSymbol = true;
-        } elseif (!isset($titles[$icon])) {
-            return [];
+            if (!isset($knownIcons[$icon])) {
+                $icon = 'many';
+            }
         }
 
         $items[] = [
@@ -3614,8 +3722,8 @@ function directory_mobile_table_card_styles(string $indent = ''): string
     $rules = [
         '.directory-table-wrap { overflow-x: visible; }',
         '.directory-entry-table, .directory-comparison-table { min-width: 0; }',
-        '.directory-comparison-table--mixers th.directory-coins-cell, .directory-comparison-table--mixers td.directory-coins-cell { width: 100%; max-width: none; }',
-        '.directory-comparison-table--mixers td.directory-coins-cell .coin-list { max-width: 100%; }',
+        '.directory-comparison-table--mixers th.directory-coins-cell, .directory-comparison-table--mixers td.directory-coins-cell, .directory-comparison-table--neverkyc-exchanges th.directory-coins-cell, .directory-comparison-table--neverkyc-exchanges td.directory-coins-cell, .directory-comparison-table--instant-exchanges th.directory-coins-cell, .directory-comparison-table--instant-exchanges td.directory-coins-cell { width: 100%; max-width: none; }',
+        '.directory-comparison-table--mixers td.directory-coins-cell .coin-list, .directory-comparison-table--neverkyc-exchanges td.directory-coins-cell .coin-list, .directory-comparison-table--instant-exchanges td.directory-coins-cell .coin-list { max-width: 100%; }',
         '.directory-facts { border-collapse: separate; border-spacing: 0; table-layout: auto; }',
         '.directory-facts thead { display: none; }',
         '.directory-facts, .directory-facts tbody { display: block; width: 100%; }',
@@ -3643,8 +3751,8 @@ function directory_homepage_mobile_table_card_styles(string $indent = ''): strin
 {
     $rules = [
         '.homepage-directory .homepage-comparison-table { min-width: 0; }',
-        '.homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell { width: 100%; max-width: none; }',
-        '.homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell .coin-list { max-width: 100%; }',
+        '.homepage-directory-section[data-category="mixers"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell, .homepage-directory-section[data-category="neverkyc-exchanges"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="neverkyc-exchanges"] .homepage-comparison-table td.directory-coins-cell, .homepage-directory-section[data-category="instant-exchanges"] .homepage-comparison-table th.directory-coins-cell, .homepage-directory-section[data-category="instant-exchanges"] .homepage-comparison-table td.directory-coins-cell { width: 100%; max-width: none; }',
+        '.homepage-directory-section[data-category="mixers"] .homepage-comparison-table td.directory-coins-cell .coin-list, .homepage-directory-section[data-category="neverkyc-exchanges"] .homepage-comparison-table td.directory-coins-cell .coin-list, .homepage-directory-section[data-category="instant-exchanges"] .homepage-comparison-table td.directory-coins-cell .coin-list { max-width: 100%; }',
         '.homepage-directory .directory-facts { border-collapse: separate; border-spacing: 0; table-layout: auto; }',
         '.homepage-directory .directory-facts thead { display: none; }',
         '.homepage-directory .directory-facts, .homepage-directory .directory-facts tbody { display: block; width: 100%; }',

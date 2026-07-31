@@ -4,3 +4,18 @@
 *.bak
 .codex-and-claude-skills-important-readme
 media-kit/
+
+# Python services and local intelligence-pipeline state
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.env
+privacy-intel/data/
+
+# Local agent skills / instructions (not published with the site)
+.agents/
+.grok/
+AGENTS.md
+.codex
+.codex_tmp/
