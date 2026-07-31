@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-const DIRECTORY_ASSET_VERSION = '20260714-1';
+const DIRECTORY_ASSET_VERSION = '20260730-1';
 const DIRECTORY_STATUS_FEED_URL = 'https://bitmixlist-site-status-242473302317.us-central1.run.app/status.json';
 
 function directory_render_page(array $entry, array $categories, string $locale): string
@@ -489,6 +489,8 @@ function directory_page_labels(string $locale): array
             'letter_check_button' => 'Проверить письмо',
             'pgp_key_title' => 'PGP-публичный ключ',
             'pgp_key_help' => 'Это PGP-публичный ключ сервиса. Его можно импортировать в другое приложение.',
+            'bitcoin_key_title' => 'Bitcoin-ключ гарантий',
+            'bitcoin_key_help' => 'Это адрес Bitcoin для подписи BIP-137, а не ключ OpenPGP. Проверяйте гарантийные письма по этому адресу.',
         ];
     }
 
@@ -538,6 +540,8 @@ function directory_page_labels(string $locale): array
         'letter_check_button' => 'Verify letter',
         'pgp_key_title' => 'PGP public key',
         'pgp_key_help' => 'This is the service\'s PGP public key if you want to import it into another application.',
+        'bitcoin_key_title' => 'Bitcoin guarantee signing key',
+        'bitcoin_key_help' => 'This is a BIP-137 Bitcoin signing address, not an OpenPGP key. Verify guarantee letters against this address.',
     ];
 }
 
@@ -631,6 +635,15 @@ function directory_render_entry_verification_tools(array $entry, string $locale)
 </section>';
     }
 
+    $bitcoinSigningAddress = directory_bitcoin_signing_address_for_entry($entry);
+    if ($bitcoinSigningAddress !== '') {
+        $tools .= '<section class="directory-inline-tool directory-pgp-key directory-bitcoin-key">
+	<h3>' . directory_icon_label('pgp-key', $labels['bitcoin_key_title']) . '</h3>
+	<p>' . directory_escape($labels['bitcoin_key_help']) . '</p>
+	<pre><code>' . directory_escape($bitcoinSigningAddress) . '</code></pre>
+</section>';
+    }
+
     if ($tools === '') {
         return '';
     }
@@ -700,6 +713,16 @@ function directory_pgp_public_key_for_entry(array $entry): string
     return $keys[$keyIndex] ?? '';
 }
 
+function directory_bitcoin_signing_address_for_entry(array $entry): string
+{
+    $details = directory_letter_verifier_details_for_entry($entry);
+    if (($details['type'] ?? '') !== 'bitcoin') {
+        return '';
+    }
+
+    return trim((string) ($details['signing_address'] ?? ''));
+}
+
 function directory_supported_letter_verifier_domains(): array
 {
     return array_combine(
@@ -751,6 +774,12 @@ function directory_supported_letter_verifier_details(): array
     ] as $domain) {
         $details[$domain] = ['type' => 'bitcoin', 'key_index' => null];
     }
+
+    $details['betkarma.art'] = [
+        'type' => 'bitcoin',
+        'key_index' => 13,
+        'signing_address' => 'bc1q6etkarmarvej0874ghw396eacejlsy5ygew5yk',
+    ];
 
     return $details;
 }
@@ -2752,14 +2781,18 @@ function directory_logo_markup(array $entry, string $base, string $name): string
     $webp = $entry['assets']['webp'] ?? '';
     $image = $entry['assets']['image'] ?? '';
     $alt = $entry['assets']['alt'] ?? $name . ' logo';
+    $backgroundColor = trim((string) ($entry['assets']['background_color'] ?? ''));
+    $backgroundStyle = preg_match('/^#(?:[0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i', $backgroundColor) === 1
+        ? ' style="background:' . directory_escape($backgroundColor) . '"'
+        : '';
 
     if ($image === '') {
-        return '<div aria-label="' . directory_escape($alt) . '" class="directory-logo directory-logo--text">' . directory_escape(directory_initials($name)) . '</div>';
+        return '<div aria-label="' . directory_escape($alt) . '" class="directory-logo directory-logo--text"' . $backgroundStyle . '>' . directory_escape(directory_initials($name)) . '</div>';
     }
 
     $webpMarkup = $webp !== '' ? '<source srcset="' . directory_escape($base . ltrim($webp, '/')) . '" type="image/webp"/>' : '';
 
-    return '<picture>' . $webpMarkup . '<img alt="' . directory_escape($alt) . '" class="directory-logo" src="' . directory_escape($base . ltrim($image, '/')) . '"/></picture>';
+    return '<picture>' . $webpMarkup . '<img alt="' . directory_escape($alt) . '" class="directory-logo" src="' . directory_escape($base . ltrim($image, '/')) . '"' . $backgroundStyle . '/></picture>';
 }
 
 function directory_initials(string $name): string

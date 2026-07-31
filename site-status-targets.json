@@ -445,6 +445,19 @@
             ]
         },
         {
+            "id": "neverkyc-exchanges:betkarma",
+            "category": "neverkyc-exchanges",
+            "slug": "betkarma",
+            "name": "betKarma",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://betkarma.art/en/exchange",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
             "id": "neverkyc-exchanges:tomboi-io",
             "category": "neverkyc-exchanges",
             "slug": "tomboi-io",

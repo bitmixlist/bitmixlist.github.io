@@ -382,7 +382,8 @@ const keys = [
         kzgeuIhCDyh/nb9M0e6gnt4Rmavjh0G/HHmEeqRmunWc/v+u4mzi5AQz8BQ18/Ro
         dmL/RppZ5axbzZtrXx/0qSwUTcWxs56WhlgP0/8=
         =M2mm
-        -----END PGP PUBLIC KEY BLOCK-----`)
+        -----END PGP PUBLIC KEY BLOCK-----`),
+    "bc1q6etkarmarvej0874ghw396eacejlsy5ygew5yk"
     // Add other keys or addresses as necessary
 ];
 
@@ -403,6 +404,90 @@ function extractBitcoinSignedMessage(data, defaultAddress = '') {
     const address = addressMatch ? addressMatch[1].trim() : defaultAddress;
 
     return { body, signature, address };
+}
+
+function extractBetKarmaSignedMessage(data) {
+    const anchor = keys[13];
+    const canonical = {
+        begin: '-----BEGIN BITCOIN SIGNED MESSAGE-----',
+        signature: '-----BEGIN BITCOIN SIGNATURE-----',
+        end: '-----END BITCOIN SIGNATURE-----'
+    };
+    const legacy = {
+        begin: '-----BEGIN BETKARMA LETTER OF GUARANTEE-----',
+        signature: '-----BEGIN BETKARMA SIGNATURE-----',
+        end: '-----END BETKARMA LETTER OF GUARANTEE-----'
+    };
+    const clean = String(data || '')
+        .replace(/^\uFEFF/, '')
+        .replace(/[\u200B-\u200D\u2060]/g, '')
+        .replace(/\r\n?/g, '\n');
+    const lines = clean.split('\n');
+    const findMarkerLine = function(marker) {
+        return lines.findIndex(function(line) {
+            return line.trim() === marker;
+        });
+    };
+
+    let format;
+    let mode;
+    if (findMarkerLine(canonical.begin) >= 0) {
+        format = canonical;
+        mode = 'canonical';
+    } else if (findMarkerLine(legacy.begin) >= 0) {
+        format = legacy;
+        mode = 'legacy';
+    } else {
+        throw new Error('Missing betKarma guarantee marker.');
+    }
+
+    const beginIndex = findMarkerLine(format.begin);
+    const signatureIndex = findMarkerLine(format.signature);
+    const endIndex = findMarkerLine(format.end);
+    if (beginIndex < 0 || signatureIndex <= beginIndex || endIndex <= signatureIndex) {
+        throw new Error('Invalid betKarma guarantee marker order.');
+    }
+
+    let body = '';
+    let address = '';
+    let signature = '';
+    if (mode === 'canonical') {
+        body = lines.slice(beginIndex + 1, signatureIndex).join('\n');
+        const signatureBlock = lines
+            .slice(signatureIndex + 1, endIndex)
+            .map(function(line) { return line.trim(); })
+            .filter(function(line) { return line !== ''; });
+        address = signatureBlock[0] || '';
+        signature = signatureBlock[1] || '';
+    } else {
+        let bodyStart = beginIndex + 1;
+        while (
+            bodyStart < signatureIndex &&
+            /^[A-Za-z][A-Za-z0-9 _-]*:\s/.test(lines[bodyStart])
+        ) {
+            bodyStart += 1;
+        }
+        if (bodyStart < signatureIndex && lines[bodyStart] === '') {
+            bodyStart += 1;
+        }
+        body = lines.slice(bodyStart, signatureIndex).join('\n');
+
+        const fields = {};
+        lines.slice(signatureIndex + 1, endIndex).forEach(function(line) {
+            const match = /^([A-Za-z0-9_]+):\s*(.+)$/.exec(line);
+            if (match) {
+                fields[match[1].toLowerCase()] = match[2].trim();
+            }
+        });
+        address = fields.address || '';
+        signature = fields.signature || '';
+    }
+
+    if (body === '' || signature === '' || address !== anchor) {
+        throw new Error('The betKarma guarantee does not match the published signing key.');
+    }
+
+    return { body, signature, address: anchor };
 }
 
 // Detailed object for each mixer including the type of verification and the index to keys array
@@ -470,6 +555,13 @@ const mixerDetails = {
             const body = message.match(/-----START LETTER OF GUARANTEE-----(.*?)-----END LETTER OF GUARANTEE-----/s)[1].trim();
             const address = message.match(/-----START SIGNING ADDRESS-----(.*?)-----END SIGNING ADDRESS-----/s)[1].trim();
             return { body, signature, address };
+        }
+    },
+    'betkarma.art': {
+        type: 'bitcoin',
+        keyIndex: 13,
+        customHandler: function(message) {
+            return extractBetKarmaSignedMessage(message);
         }
     },
     'reumix.io': { type: 'none' },

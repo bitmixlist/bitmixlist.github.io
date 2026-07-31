@@ -17,6 +17,7 @@ function directory_manual_entries(array $categories): array
     $instantCategorySlug = 'instant-exchanges';
     $wmixSlug = 'wmix';
     $altquickSlug = 'altquick';
+    $betKarmaSlug = 'betkarma';
     $elCapoSlug = 'el-capo';
     $zeroTraceSlug = '0trace';
     $yifiSlug = 'yifi';
@@ -229,6 +230,146 @@ function directory_manual_entries(array $categories): array
             'output_paths' => [
                 'en' => $neverKycCategorySlug . '/' . $altquickSlug . '.html',
                 'ru' => 'ru/' . $neverKycCategorySlug . '/' . $altquickSlug . '.html',
+            ],
+        ],
+        [
+            'id' => $neverKycCategorySlug . ':' . $betKarmaSlug,
+            'slug' => $betKarmaSlug,
+            'category' => $neverKycCategorySlug,
+            'type' => $neverKycType,
+            'assets' => [
+                'webp' => '',
+                'image' => 'wp-content/uploads/2023/12/betkarma.svg',
+                'alt' => 'betKarma logo',
+                'background_color' => '#111010',
+            ],
+            'links' => [
+                'clearnet' => 'https://betkarma.art/en/exchange',
+                'tor' => 'http://betkarmaf7h5ubytt73ealijl7fiquooiysklmcbuk66zdux6x6musid.onion/',
+                'mirrors' => [
+                    [
+                        'url' => 'https://betkarma.exchange/',
+                        'label' => 'betkarma.exchange',
+                    ],
+                ],
+                'support' => 'On-site chat / @bet_karma / SimpleX / betkarma@pm.me / Bitcoin signing key',
+                'support_html' => 'On-site chat / <a href="https://t.me/bet_karma" target="_blank" rel="noopener noreferrer">@bet_karma</a> / <a href="https://betkarma.art/en/exchange/simplex" target="_blank" rel="noopener noreferrer">SimpleX</a> / <a href="mailto:betkarma@pm.me">betkarma@pm.me</a> / <a href="https://betkarma.art/en/letter-of-guarantee" target="_blank" rel="noopener noreferrer">Bitcoin signing key</a>',
+            ],
+            'status' => [],
+            'notices' => [
+                [
+                    'type' => 'notice',
+                    'label' => [
+                        'en' => 'Unverified allegation',
+                        'ru' => 'Неподтвержденное утверждение',
+                    ],
+                    'title' => [
+                        'en' => 'Bitcointalk user alleged a possible Tomboi connection',
+                        'ru' => 'Пользователь Bitcointalk предположил возможную связь с Tomboi',
+                    ],
+                    'lead' => [
+                        'en' => 'A June 2, 2026 Bitcointalk post alleged a possible operational link between betKarma and Tomboi, the subject of the scam-accusation thread. The post is an allegation, not proof of common ownership.',
+                        'ru' => 'В сообщении на Bitcointalk от 2 июня 2026 года была предположена возможная операционная связь между betKarma и Tomboi, которому посвящена тема с обвинением в мошенничестве. Это утверждение, а не доказательство общего владельца.',
+                    ],
+                    'items' => [
+                        'en' => [
+                            'The author cited a betkarma referral identifier in a NEAR Intents transaction, use of the same domain reseller, and forum-account timing.',
+                            'No independent confirmation of common ownership was found during the July 30, 2026 review.',
+                            'Read the thread, preserve the signed guarantee before payment, and transact cautiously.',
+                        ],
+                        'ru' => [
+                            'Автор сослался на реферальный идентификатор betkarma в транзакции NEAR Intents, одного и того же реселлера доменов и время активности форумных аккаунтов.',
+                            'Во время проверки 30 июля 2026 года независимого подтверждения общего владельца найдено не было.',
+                            'Изучите тему, сохраните подписанное гарантийное письмо до оплаты и соблюдайте осторожность.',
+                        ],
+                    ],
+                    'source' => [
+                        'label' => [
+                            'en' => 'Bitcointalk allegation thread',
+                            'ru' => 'Тема с утверждением на Bitcointalk',
+                        ],
+                        'url' => 'https://bitcointalk.org/index.php?topic=5584545.msg66786615#msg66786615',
+                    ],
+                ],
+                [
+                    'type' => 'notice',
+                    'label' => [
+                        'en' => 'Notice',
+                        'ru' => 'Уведомление',
+                    ],
+                    'title' => [
+                        'en' => 'betkarma.art uses JavaScript',
+                        'ru' => 'betkarma.art использует JavaScript',
+                    ],
+                    'lead' => [
+                        'en' => 'A clearnet check on July 30, 2026 found executable JavaScript on the public exchange page for betkarma.art.',
+                        'ru' => 'Проверка clearnet-страницы 30 июля 2026 года обнаружила исполняемый JavaScript на публичной странице обменника betkarma.art.',
+                    ],
+                    'items' => [
+                        'en' => [
+                            'This is not a harmful-service warning; it is a browser-behavior note for users who disable JavaScript or prefer static pages.',
+                        ],
+                        'ru' => [
+                            'Это не предупреждение о вредоносности сервиса; это пометка о поведении страницы для пользователей, которые отключают JavaScript или предпочитают статические страницы.',
+                        ],
+                    ],
+                    'source' => [
+                        'label' => [
+                            'en' => 'betKarma exchange page',
+                            'ru' => 'Страница обменника betKarma',
+                        ],
+                        'url' => 'https://betkarma.art/en/exchange',
+                    ],
+                ],
+            ],
+            'content' => [
+                'en' => [
+                    'name' => 'betKarma',
+                    'summary' => 'Fee: Included in live quote',
+                    'description' => 'betKarma is a no-account cryptocurrency exchange and same-asset mixer with a published KYC-never policy, Tor access, and BIP-137-signed guarantee letters.',
+                ],
+                'ru' => [
+                    'name' => 'betKarma',
+                    'summary' => 'Комиссия: включена в котировку',
+                    'description' => 'betKarma — криптообменник и сервис смешивания одинаковых активов без аккаунта, с заявленной политикой KYC-never, доступом через Tor и гарантийными письмами с подписью BIP-137.',
+                ],
+            ],
+            'facts' => [
+                'en' => [
+                    directory_manual_fact('Founded', '2026'),
+                    directory_manual_fact('Coins', 'BTC, XMR, ETH, LTC, SOL, ZEC, BNB, TRX, USDT, USDC'),
+                    directory_manual_fact('KYC', 'Never (operator policy)'),
+                    directory_manual_fact('Fee', 'Included in live quote; varies by direction'),
+                    directory_manual_fact('Guarantee', 'Bitcoin BIP-137 signed message'),
+                ],
+                'ru' => [
+                    directory_manual_fact('Основан', '2026'),
+                    directory_manual_fact('Монеты', 'BTC, XMR, ETH, LTC, SOL, ZEC, BNB, TRX, USDT, USDC'),
+                    directory_manual_fact('KYC', 'Никогда (политика оператора)'),
+                    directory_manual_fact('Комиссия', 'Включена в котировку; зависит от направления'),
+                    directory_manual_fact('Гарантия', 'Сообщение с Bitcoin-подписью BIP-137'),
+                ],
+            ],
+            'table_display' => [
+                'en' => 'betKarma',
+                'ru' => 'betKarma',
+            ],
+            'notes' => [
+                'en' => '<p>The <a href="https://betkarma.art/en/exchange">current official exchange page</a> and <a href="https://betkarma.art/en/info">detailed service information</a> present betKarma as a no-account exchange and same-asset mixer with no KYC, no AML screening, and no logs. These are operator policy statements, not independent audit findings. A public exchange order does not require an account or email, and the service publishes clearnet, redirecting mirror, and onion access.</p><p>Published routes cover BTC, XMR, ETH, LTC, SOL, shielded ZEC, BNB, TRX, and USDT/USDC on supported networks. The operator groups them as same-asset BTC and USDT mixing; buying XMR; spending XMR; swapping stablecoins or shielded ZEC into BTC/ETH; and cashing BTC, ETH, or shielded ZEC out to supported stablecoins.</p><p>The fee, confirmation depth, minimum, and maximum are shown for the selected route before confirmation; the fee is included in the live quote. Payouts are released manually by the operator. Cross-asset deposit quotes normally have a 15-minute window, same-asset mixer orders have a one-hour window, and the exact deadline appears on the order. XMR-funded routes state 10 confirmations. The operator says a market move above 1% before the deposit appears can lead to a refund or a new current-rate offer.</p><p>The operator says payouts come from internal reserves rather than forwarding a client deposit directly to the recipient. Order pages are private; reopening one outside the original browser requires the exact recipient address, and order data can be deleted after completion or expiry. Every exchange order receives a human-readable Letter of Guarantee signed as a Bitcoin BIP-137 message, with the exact-text SHA-256 shown separately.</p><p><strong>Published guarantee trust anchor:</strong> <code>bc1q6etkarmarvej0874ghw396eacejlsy5ygew5yk</code>. This is a Bitcoin signing address, <strong>not an OpenPGP/PGP public key</strong>. Compare it with the <a href="https://betkarma.art/en/letter-of-guarantee">official key page</a> and verify the exact letter locally below or with the <a href="https://grggoo.github.io/betkarma-verify/letter.html?lang=en">open-source verifier</a> before paying.</p><p>The <a href="https://www.altcoinstalks.com/index.php?topic=344275.0">official AltcoinsTalks announcement</a> was posted on June 13, 2026 and states that 0.32 BTC was placed in forum escrow; the escrow post says a refund claim must include a guarantee signed by the published address. This listing has not independently confirmed that the escrow remains funded. Separately, a June 2 <a href="https://bitcointalk.org/index.php?topic=5584545.msg66786615#msg66786615">Bitcointalk post</a> alleged a possible link to Tomboi based on a NEAR Intents referral identifier and other circumstantial observations. No common ownership has been independently established.</p><p>betKarma also operates a crypto casino, which its <a href="https://betkarma.art/en/info">own FAQ</a> describes as unlicensed. Advertised 100% exchange-fee cashback is credited as a casino bonus with a 50× wagering requirement, not as a cash rebate.</p>',
+                'ru' => '<p><a href="https://betkarma.art/ru/exchange">Текущая официальная страница обменника</a> и <a href="https://betkarma.art/ru/info">подробная информация о сервисе</a> представляют betKarma как обменник и сервис смешивания одинаковых активов без аккаунта, KYC, AML-проверки и логов. Это заявления о политике оператора, а не результаты независимого аудита. Для публичной заявки на обмен не нужны аккаунт или email; сервис публикует clearnet-адрес, перенаправляющее зеркало и onion-адрес.</p><p>Опубликованные направления охватывают BTC, XMR, ETH, LTC, SOL, shielded ZEC, BNB, TRX, а также USDT/USDC в поддерживаемых сетях. Оператор группирует их как смешивание BTC и USDT в тот же актив; покупку XMR; расходование XMR; обмен стейблкоинов или shielded ZEC на BTC/ETH; и вывод BTC, ETH или shielded ZEC в поддерживаемые стейблкоины.</p><p>Комиссия, число подтверждений, минимум и максимум показываются для выбранного направления до подтверждения; комиссия включена в живую котировку. Выплаты оператор отправляет вручную. Для межактивных обменов окно депозита обычно составляет 15 минут, для смешивания одинакового актива — один час; точный срок указан в заявке. Для направлений с отправкой XMR указано 10 подтверждений. По заявлению оператора, движение рынка более чем на 1% до обнаружения депозита может привести к предложению возврата или нового текущего курса.</p><p>Оператор заявляет, что выплаты идут из внутренних резервов, а депозит клиента не пересылается напрямую получателю. Страницы заявок приватны: вне исходного браузера для повторного открытия нужен точный адрес получателя; данные заявки можно удалить после завершения или истечения срока. Каждая заявка получает читаемое гарантийное письмо с Bitcoin-подписью BIP-137, а SHA-256 точного текста показывается отдельно.</p><p><strong>Опубликованная точка доверия для гарантий:</strong> <code>bc1q6etkarmarvej0874ghw396eacejlsy5ygew5yk</code>. Это адрес Bitcoin для подписи, <strong>а не публичный ключ OpenPGP/PGP</strong>. Сверьте его с <a href="https://betkarma.art/ru/letter-of-guarantee">официальной страницей ключа</a> и проверьте точный текст письма локально ниже или в <a href="https://grggoo.github.io/betkarma-verify/letter.html?lang=ru">открытом верификаторе</a> до оплаты.</p><p><a href="https://www.altcoinstalks.com/index.php?topic=344275.0">Официальный анонс на AltcoinsTalks</a> опубликован 13 июня 2026 года и сообщает о помещении 0,32 BTC в форумное эскроу; в сообщении эскроу указано, что требование возврата должно включать гарантию с подписью опубликованного адреса. Этот каталог не подтверждал независимо, что эскроу продолжает быть пополненным. Отдельно в сообщении на <a href="https://bitcointalk.org/index.php?topic=5584545.msg66786615#msg66786615">Bitcointalk</a> от 2 июня была предположена возможная связь с Tomboi на основании реферального идентификатора NEAR Intents и других косвенных наблюдений. Общий владелец независимо не установлен.</p><p>betKarma также управляет криптоказино, которое <a href="https://betkarma.art/ru/info">собственный FAQ сервиса</a> называет нелицензированным. Рекламируемый 100% cashback комиссии обмена зачисляется как бонус казино с требованием отыгрыша 50×, а не как денежный возврат.</p>',
+            ],
+            'config' => [
+                'en' => '',
+                'ru' => '',
+            ],
+            'volume_history' => [],
+            'index_paths' => [
+                'en' => $neverKycCategorySlug . '/' . $betKarmaSlug . '.html',
+                'ru' => $neverKycCategorySlug . '/' . $betKarmaSlug . '.html',
+            ],
+            'output_paths' => [
+                'en' => $neverKycCategorySlug . '/' . $betKarmaSlug . '.html',
+                'ru' => 'ru/' . $neverKycCategorySlug . '/' . $betKarmaSlug . '.html',
             ],
         ],
         [
