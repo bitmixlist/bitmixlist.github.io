@@ -47,7 +47,7 @@ button { margin-top: 16px; width: 100%; padding: 10px; border: 0; border-radius:
 <label for="password">Password</label>
 <input id="password" name="password" type="password" required autofocus/>
 <button type="submit">Sign in</button>
-<p class="hint">Local default password: <code>bitmixlist-local</code>. Override with env <code>BITMIXLIST_BLOG_ADMIN_PASSWORD</code> or <code>admin-password.hash</code>.</p>
+<p class="hint">Use the server admin password (<code>admin-password.hash</code> or <code>BITMIXLIST_BLOG_ADMIN_PASSWORD</code>).</p>
 </form>
 </body>
 </html>

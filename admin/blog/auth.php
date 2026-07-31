@@ -47,16 +47,16 @@ function blog_admin_verify_password(string $password): bool
     $hashFile = __DIR__ . '/admin-password.hash';
     if (is_file($hashFile)) {
         $hash = trim((string) file_get_contents($hashFile));
-        if ($hash !== '' && password_verify($password, $hash)) {
-            return true;
-        }
+        // Production: hash file is authoritative; never fall back to the local default.
+        return $hash !== '' && password_verify($password, $hash);
     }
 
     $env = getenv('BITMIXLIST_BLOG_ADMIN_PASSWORD');
-    if (is_string($env) && $env !== '' && hash_equals($env, $password)) {
-        return true;
+    if (is_string($env) && $env !== '') {
+        return hash_equals($env, $password);
     }
 
+    // Local-only default when neither hash nor env is configured.
     return hash_equals('bitmixlist-local', $password);
 }
 
