@@ -378,6 +378,18 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://bitmixlist.org/privacy-news.html</loc>
+    <lastmod>2026-07-31T13:58:05Z</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://bitmixlist.org/ru/privacy-news.html</loc>
+    <lastmod>2026-07-31T13:58:05Z</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
   <!-- bitmixlist-blog-start -->
   <url>
     <loc>https://bitmixlist.org/blog/index.html</loc>

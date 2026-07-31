@@ -3823,6 +3823,7 @@ function directory_sidebar_nav_items(bool $isRu): array
     return $isRu
         ? [
             ['Блог', $p('blog/index.html')],
+            ['Новости о приватности', $p('privacy-news.html')],
             ['Проверка на скам', $p('scam-lookup.html')],
             ['Верифицировать гарантию', $p('letter-verify.html')],
             ['AML-чекер', $p('aml-check.html')],
@@ -3839,6 +3840,7 @@ function directory_sidebar_nav_items(bool $isRu): array
         ]
         : [
             ['Blog', $p('blog/index.html')],
+            ['Privacy News', $p('privacy-news.html')],
             ['Scam Lookup', $p('scam-lookup.html')],
             ['Verify Guarrantee', $p('letter-verify.html')],
             ['AML Checker', $p('aml-check.html')],

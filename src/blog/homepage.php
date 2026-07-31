@@ -108,28 +108,21 @@ function blog_homepage_ensure_styles(string $html): string
 }
 
 /**
- * Put a Blog link at the top of the homepage sidebar menu.
+ * Replace homepage sidebar menu with the shared site nav (Blog, Privacy News, …).
  */
 function blog_homepage_ensure_sidebar_link(string $html, string $locale): string
 {
     $isRu = $locale === 'ru';
-    $label = $isRu ? 'Блог' : 'Blog';
-    $href = $isRu ? 'blog/index.html' : 'blog/index.html';
-    // from ru/index.html the path is still blog/ relative? ru/index -> ru/blog is blog/index.html relative to ru/
-    $href = 'blog/index.html';
-
-    $link = '<li class="menu-item"><a class="nav-link" href="' . $href . '">' . $label . '</a></li>';
-
-    // Remove any existing Blog/Блог sidebar link first
-    $html = preg_replace(
-        '~<li class="menu-item"><a class="nav-link" href="(?:\.\./)?blog/(?:index\.html)?">(?:Blog|Блог)</a></li>\s*~u',
-        '',
-        $html
-    ) ?? $html;
+    $fromPath = $isRu ? 'ru/index.html' : 'index.html';
+    $items = '';
+    foreach (directory_sidebar_nav_items($isRu) as [$label, $target]) {
+        $href = directory_relative_path($fromPath, $target);
+        $items .= '<li class="menu-item"><a class="nav-link" href="' . directory_escape($href) . '">' . directory_escape($label) . '</a></li>' . "\n";
+    }
 
     $updated = preg_replace(
-        '~(<ul class="nav-menu">\s*)~',
-        '$1' . $link . "\n",
+        '~(<ul class="nav-menu">\s*).*?(</ul>)~su',
+        '$1' . $items . '$2',
         $html,
         1,
         $count
