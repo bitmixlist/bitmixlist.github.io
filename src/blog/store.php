@@ -96,6 +96,25 @@ function blog_parse_post_file(string $contents, string $sourcePath = ''): array
         // Prefer first heading as title fallback later in render; keep empty title allowed in store.
     }
 
+    $editors = [];
+    if (isset($front['editors']) && is_array($front['editors'])) {
+        foreach ($front['editors'] as $ed) {
+            $ed = strtolower(trim((string) $ed));
+            if ($ed !== '') {
+                $editors[] = $ed;
+            }
+        }
+    } elseif (isset($front['editors']) && is_string($front['editors'])) {
+        foreach (preg_split('/[\s,]+/', $front['editors']) ?: [] as $ed) {
+            $ed = strtolower(trim($ed));
+            if ($ed !== '') {
+                $editors[] = $ed;
+            }
+        }
+    }
+    $editors = array_values(array_unique($editors));
+    $createdBy = strtolower(trim((string) ($front['created_by'] ?? '')));
+
     $post = [
         'slug' => $slug,
         'status' => $status,
@@ -105,6 +124,8 @@ function blog_parse_post_file(string $contents, string $sourcePath = ''): array
         'author' => trim((string) ($front['author'] ?? blog_config()['default_author'])),
         'canonical_path' => $canonicalPath,
         'body_format' => $bodyFormat,
+        'created_by' => $createdBy,
+        'editors' => $editors,
         'locales' => $locales,
     ];
 
@@ -288,6 +309,17 @@ function blog_serialize_post(array $post): string
     $canonical = ltrim((string) ($post['canonical_path'] ?? ('blog/' . $slug . '.html')), '/');
     $tags = is_array($post['tags'] ?? null) ? $post['tags'] : [];
     $locales = is_array($post['locales'] ?? null) ? $post['locales'] : [];
+    $createdBy = strtolower(trim((string) ($post['created_by'] ?? '')));
+    $editors = [];
+    if (is_array($post['editors'] ?? null)) {
+        foreach ($post['editors'] as $ed) {
+            $ed = strtolower(trim((string) $ed));
+            if ($ed !== '') {
+                $editors[] = $ed;
+            }
+        }
+    }
+    $editors = array_values(array_unique($editors));
 
     $enBody = (string) ($locales['en']['body'] ?? '');
     $lines = [
@@ -300,6 +332,15 @@ function blog_serialize_post(array $post): string
         'canonical_path: ' . $canonical,
         'body_format: ' . $bodyFormat,
     ];
+    if ($createdBy !== '') {
+        $lines[] = 'created_by: ' . blog_yaml_quote($createdBy);
+    }
+    if ($editors !== []) {
+        $lines[] = 'editors:';
+        foreach ($editors as $ed) {
+            $lines[] = '  - ' . blog_yaml_quote($ed);
+        }
+    }
 
     if ($tags !== []) {
         $lines[] = 'tags:';

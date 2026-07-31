@@ -45,8 +45,15 @@ function blog_accounts_load(): array
         return $data;
     }
 
+    $users = [];
+    foreach (array_values($decoded['users']) as $user) {
+        if (is_array($user)) {
+            $users[] = blog_accounts_normalize_user($user);
+        }
+    }
+
     return [
-        'users' => array_values($decoded['users']),
+        'users' => $users,
         'updated_at' => (string) ($decoded['updated_at'] ?? gmdate('c')),
     ];
 }
@@ -110,6 +117,7 @@ function blog_accounts_bootstrap(): array
         'username' => 'notatether',
         'role' => 'admin',
         'status' => 'active',
+        'can_create' => true,
         'password_hash' => $hash,
         'created_at' => $now,
         'approved_at' => $now,
@@ -122,6 +130,26 @@ function blog_accounts_bootstrap(): array
         'users' => [$admin],
         'updated_at' => $now,
     ];
+}
+
+/**
+ * Ensure ACL fields exist on loaded users.
+ *
+ * @param array<string, mixed> $user
+ * @return array<string, mixed>
+ */
+function blog_accounts_normalize_user(array $user): array
+{
+    $user['username'] = blog_accounts_normalize_username((string) ($user['username'] ?? ''));
+    $role = (string) ($user['role'] ?? 'editor');
+    $user['role'] = in_array($role, ['admin', 'editor'], true) ? $role : 'editor';
+    if ($user['role'] === 'admin') {
+        $user['can_create'] = true;
+    } else {
+        $user['can_create'] = !empty($user['can_create']);
+    }
+
+    return $user;
 }
 
 function blog_accounts_normalize_username(string $username): string
@@ -166,6 +194,7 @@ function blog_accounts_upsert(array $user): void
         throw new InvalidArgumentException('Invalid username');
     }
     $user['username'] = $username;
+    $user = blog_accounts_normalize_user($user);
     $data = blog_accounts_load();
     $found = false;
     foreach ($data['users'] as $i => $existing) {
@@ -204,6 +233,7 @@ function blog_accounts_register(string $username): array
         'username' => $username,
         'role' => 'editor',
         'status' => 'pending',
+        'can_create' => false,
         'password_hash' => null,
         'created_at' => $now,
         'approved_at' => null,

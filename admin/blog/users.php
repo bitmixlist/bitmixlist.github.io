@@ -22,6 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'disable' => blog_accounts_disable($username, $actorName),
             'enable' => blog_accounts_enable($username),
             'reset_password' => blog_accounts_reset_password($username),
+            'can_create_on' => blog_accounts_set_can_create($username, true, $actorName),
+            'can_create_off' => blog_accounts_set_can_create($username, false, $actorName),
             default => ['ok' => false, 'error' => 'Unknown action.'],
         };
         if ($result['ok']) {
@@ -30,6 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'disable' => "Disabled {$username}.",
                 'enable' => "Enabled {$username}.",
                 'reset_password' => "Password reset for {$username}. They must set a new password.",
+                'can_create_on' => "Granted create-post to {$username}.",
+                'can_create_off' => "Revoked create-post from {$username}.",
                 default => 'Done.',
             };
         } else {
@@ -67,10 +71,10 @@ function blog_users_badge(string $status): string
 <main>
 <?php if ($message !== ''): ?><div class="msg"><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></div><?php endif; ?>
 <?php if ($error !== ''): ?><div class="msg err"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></div><?php endif; ?>
-<p class="muted">Register form creates <strong>editor</strong> accounts only. Approve by username so they can set a password. Disable blocks sign-in.</p>
+<p class="muted">Register creates <strong>editor</strong> accounts only. Approve before password setup. Grant <strong>can create</strong> so they may start new posts. Per-post editors are set on each post’s edit form.</p>
 <table>
 <thead>
-<tr><th>Username</th><th>Role</th><th>Status</th><th>Created</th><th>Actions</th></tr>
+<tr><th>Username</th><th>Role</th><th>Status</th><th>Create posts</th><th>Created</th><th>Actions</th></tr>
 </thead>
 <tbody>
 <?php foreach ($users as $user): ?>
@@ -78,12 +82,14 @@ function blog_users_badge(string $status): string
     $u = (string) ($user['username'] ?? '');
     $role = (string) ($user['role'] ?? 'editor');
     $status = (string) ($user['status'] ?? '');
+    $canCreate = $role === 'admin' || !empty($user['can_create']);
     $created = substr((string) ($user['created_at'] ?? ''), 0, 10);
 ?>
 <tr>
 <td><code><?= htmlspecialchars($u, ENT_QUOTES, 'UTF-8') ?></code></td>
 <td><span class="badge <?= $role === 'admin' ? 'badge-admin' : 'badge-editor' ?>"><?= htmlspecialchars($role, ENT_QUOTES, 'UTF-8') ?></span></td>
 <td><?= blog_users_badge($status) ?></td>
+<td><?= $canCreate ? 'yes' : 'no' ?></td>
 <td><?= htmlspecialchars($created, ENT_QUOTES, 'UTF-8') ?></td>
 <td>
 <div class="actions" style="margin:0">
@@ -116,6 +122,14 @@ function blog_users_badge(string $status): string
 <input type="hidden" name="username" value="<?= htmlspecialchars($u, ENT_QUOTES, 'UTF-8') ?>"/>
 <input type="hidden" name="action" value="reset_password"/>
 <button class="btn secondary" type="submit">Reset password</button>
+</form>
+<?php endif; ?>
+<?php if ($role === 'editor' && $status === 'active'): ?>
+<form method="post" style="display:inline">
+<input type="hidden" name="csrf" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>"/>
+<input type="hidden" name="username" value="<?= htmlspecialchars($u, ENT_QUOTES, 'UTF-8') ?>"/>
+<input type="hidden" name="action" value="<?= $canCreate ? 'can_create_off' : 'can_create_on' ?>"/>
+<button class="btn secondary" type="submit"><?= $canCreate ? 'Revoke create' : 'Allow create' ?></button>
 </form>
 <?php endif; ?>
 </div>

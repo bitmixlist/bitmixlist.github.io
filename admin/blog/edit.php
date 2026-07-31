@@ -10,46 +10,90 @@ blog_admin_require_login();
 
 $root = dirname(__DIR__, 2);
 $config = blog_config();
+$user = blog_admin_current_user();
+$username = blog_accounts_normalize_username((string) ($user['username'] ?? ''));
 $slug = isset($_GET['slug']) ? blog_normalize_slug((string) $_GET['slug']) : '';
 $post = $slug !== '' ? blog_load_post($root, $slug, $config) : null;
+$isNew = $post === null;
 $error = '';
 $notice = '';
+
+if ($isNew && !blog_acl_can_create($user)) {
+    http_response_code(403);
+    echo 'You are not allowed to create new posts.';
+    exit;
+}
+if (!$isNew && !blog_acl_can_edit($user, $post)) {
+    http_response_code(403);
+    echo 'You are not allowed to edit this post.';
+    exit;
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!blog_admin_verify_csrf($_POST['csrf'] ?? null)) {
         $error = 'CSRF check failed.';
     } else {
         $action = (string) ($_POST['action'] ?? 'save');
-        $fields = [
-            'slug' => (string) ($_POST['slug'] ?? ''),
-            'title_en' => (string) ($_POST['title_en'] ?? ''),
-            'title_ru' => (string) ($_POST['title_ru'] ?? ''),
-            'description_en' => (string) ($_POST['description_en'] ?? ''),
-            'description_ru' => (string) ($_POST['description_ru'] ?? ''),
-            'body_en' => (string) ($_POST['body_en'] ?? ''),
-            'body_ru' => (string) ($_POST['body_ru'] ?? ''),
-            'body_format' => (string) ($_POST['body_format'] ?? 'markdown'),
-            'tags' => (string) ($_POST['tags'] ?? ''),
-            'published_at' => (string) ($_POST['published_at'] ?? ''),
-            'canonical_path' => (string) ($_POST['canonical_path'] ?? ''),
-            'author' => (string) ($_POST['author'] ?? $config['default_author']),
-            'status' => $action === 'publish' ? 'published' : (string) ($_POST['status'] ?? 'draft'),
-        ];
-        if ($action === 'publish') {
-            $fields['status'] = 'published';
-        } elseif ($action === 'draft') {
-            $fields['status'] = 'draft';
-        }
+        $postSlug = blog_normalize_slug((string) ($_POST['slug'] ?? ''));
+        $existingForAcl = $postSlug !== '' ? blog_load_post($root, $postSlug, $config) : null;
+        $creating = $existingForAcl === null;
 
-        try {
-            $result = blog_save_from_fields($root, $fields, true, $config);
-            blog_update_sitemap($root, $config);
-            $slug = blog_normalize_slug($fields['slug'] !== '' ? $fields['slug'] : (string) ($fields['title_en'] ?? 'untitled'));
-            $post = blog_load_post($root, $slug, $config);
-            $written = isset($result['build']['written']) ? count($result['build']['written']) : 0;
-            $notice = ($fields['status'] === 'published' ? 'Published' : 'Saved draft') . " · rebuilt {$written} public file(s).";
-        } catch (Throwable $e) {
-            $error = $e->getMessage();
+        if ($creating && !blog_acl_can_create($user)) {
+            $error = 'You are not allowed to create new posts.';
+        } elseif (!$creating && !blog_acl_can_edit($user, $existingForAcl)) {
+            $error = 'You are not allowed to edit this post.';
+        } else {
+            $editors = [];
+            if (blog_acl_is_admin($user) && isset($_POST['editors']) && is_array($_POST['editors'])) {
+                $editors = blog_acl_normalize_editors($_POST['editors']);
+            } elseif ($existingForAcl !== null) {
+                $editors = blog_acl_post_editors($existingForAcl);
+            } else {
+                $editors = [$username];
+            }
+            if ($username !== '' && !in_array($username, $editors, true) && !blog_acl_is_admin($user)) {
+                $editors[] = $username;
+            }
+            if ($creating && $username !== '' && !in_array($username, $editors, true)) {
+                $editors[] = $username;
+            }
+
+            $fields = [
+                'slug' => (string) ($_POST['slug'] ?? ''),
+                'title_en' => (string) ($_POST['title_en'] ?? ''),
+                'title_ru' => (string) ($_POST['title_ru'] ?? ''),
+                'description_en' => (string) ($_POST['description_en'] ?? ''),
+                'description_ru' => (string) ($_POST['description_ru'] ?? ''),
+                'body_en' => (string) ($_POST['body_en'] ?? ''),
+                'body_ru' => (string) ($_POST['body_ru'] ?? ''),
+                'body_format' => (string) ($_POST['body_format'] ?? 'markdown'),
+                'tags' => (string) ($_POST['tags'] ?? ''),
+                'published_at' => (string) ($_POST['published_at'] ?? ''),
+                'canonical_path' => (string) ($_POST['canonical_path'] ?? ''),
+                'author' => (string) ($_POST['author'] ?? $config['default_author']),
+                'status' => $action === 'publish' ? 'published' : (string) ($_POST['status'] ?? 'draft'),
+                'editors' => $editors,
+                'created_by' => $creating
+                    ? $username
+                    : (string) ($existingForAcl['created_by'] ?? $username),
+            ];
+            if ($action === 'publish') {
+                $fields['status'] = 'published';
+            } elseif ($action === 'draft') {
+                $fields['status'] = 'draft';
+            }
+
+            try {
+                $result = blog_save_from_fields($root, $fields, true, $config);
+                blog_update_sitemap($root, $config);
+                $slug = blog_normalize_slug($fields['slug'] !== '' ? $fields['slug'] : (string) ($fields['title_en'] ?? 'untitled'));
+                $post = blog_load_post($root, $slug, $config);
+                $isNew = false;
+                $written = isset($result['build']['written']) ? count($result['build']['written']) : 0;
+                $notice = ($fields['status'] === 'published' ? 'Published' : 'Saved draft') . " · rebuilt {$written} public file(s).";
+            } catch (Throwable $e) {
+                $error = $e->getMessage();
+            }
         }
     }
 }
@@ -63,12 +107,17 @@ $p = $post ?? [
     'body_format' => 'markdown',
     'author' => $config['default_author'],
     'tags' => [],
+    'created_by' => $username,
+    'editors' => $username !== '' ? [$username] : [],
     'locales' => [
         'en' => ['title' => '', 'description' => '', 'body' => ''],
         'ru' => ['title' => '', 'description' => '', 'body' => ''],
     ],
 ];
 $tags = implode(', ', $p['tags'] ?? []);
+$selectedEditors = blog_acl_post_editors($p);
+$eligible = blog_acl_eligible_users();
+$isAdmin = blog_acl_is_admin($user);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,6 +128,9 @@ $tags = implode(', ', $p['tags'] ?? []);
 <style><?= blog_admin_layout_styles() ?>
 textarea { min-height: 220px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.9rem; line-height: 1.45; }
 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.acl-box { border: 1px solid #3a2e55; border-radius: 8px; padding: 12px; background: #0f0d16; }
+.acl-box label.row { display: flex; align-items: center; gap: 8px; margin: 6px 0; color: #e8e1f5; font-size: 0.92rem; }
+.acl-box input[type=checkbox] { width: auto; }
 @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
 </style>
 </head>
@@ -125,6 +177,30 @@ textarea { min-height: 220px; font-family: ui-monospace, SFMono-Regular, Menlo, 
 <label for="tags">Tags (comma-separated)</label>
 <input id="tags" name="tags" value="<?= htmlspecialchars($tags, ENT_QUOTES, 'UTF-8') ?>"/>
 </div>
+</div>
+
+<label>Who can edit this post</label>
+<div class="acl-box">
+<?php if ($isAdmin): ?>
+<p class="muted" style="margin:0 0 8px">Admins can always edit. Check accounts that may edit this post.</p>
+<?php foreach ($eligible as $eu): ?>
+<?php
+    $euName = (string) ($eu['username'] ?? '');
+    $checked = in_array($euName, $selectedEditors, true) || ($eu['role'] ?? '') === 'admin' && $euName === $username;
+    // Always show checked for selected; admin accounts can still be listed
+?>
+<label class="row">
+<input type="checkbox" name="editors[]" value="<?= htmlspecialchars($euName, ENT_QUOTES, 'UTF-8') ?>" <?= in_array($euName, $selectedEditors, true) ? 'checked' : '' ?>/>
+<code><?= htmlspecialchars($euName, ENT_QUOTES, 'UTF-8') ?></code>
+<span class="muted">(<?= htmlspecialchars((string) ($eu['role'] ?? 'editor'), ENT_QUOTES, 'UTF-8') ?>)</span>
+</label>
+<?php endforeach; ?>
+<?php if ($eligible === []): ?>
+<p class="muted">No active accounts yet.</p>
+<?php endif; ?>
+<?php else: ?>
+<p class="muted" style="margin:0">Editors: <?= $selectedEditors === [] ? 'admin only' : htmlspecialchars(implode(', ', $selectedEditors), ENT_QUOTES, 'UTF-8') ?>. Only an admin can change ACL.</p>
+<?php endif; ?>
 </div>
 
 <label for="title_en">Title (EN)</label>

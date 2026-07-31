@@ -117,6 +117,33 @@ function blog_save_from_fields(string $root, array $fields, bool $rebuild = true
         $tags = array_values(array_filter(array_map('trim', explode(',', $tags))));
     }
 
+    $editorsRaw = $fields['editors'] ?? ($existing['editors'] ?? []);
+    if (is_string($editorsRaw)) {
+        $editors = [];
+        foreach (preg_split('/[\s,]+/', $editorsRaw) ?: [] as $ed) {
+            $ed = strtolower(trim($ed));
+            if ($ed !== '') {
+                $editors[] = $ed;
+            }
+        }
+    } elseif (is_array($editorsRaw)) {
+        $editors = [];
+        foreach ($editorsRaw as $ed) {
+            $ed = strtolower(trim((string) $ed));
+            if ($ed !== '') {
+                $editors[] = $ed;
+            }
+        }
+    } else {
+        $editors = [];
+    }
+    $editors = array_values(array_unique($editors));
+
+    $createdBy = strtolower(trim((string) ($fields['created_by'] ?? ($existing['created_by'] ?? ''))));
+    if ($createdBy !== '' && !in_array($createdBy, $editors, true)) {
+        $editors[] = $createdBy;
+    }
+
     $post = [
         'slug' => $slug !== '' ? $slug : blog_normalize_slug((string) ($fields['title_en'] ?? 'untitled')),
         'status' => (string) ($fields['status'] ?? ($existing['status'] ?? 'draft')),
@@ -126,6 +153,8 @@ function blog_save_from_fields(string $root, array $fields, bool $rebuild = true
         'author' => (string) ($fields['author'] ?? ($existing['author'] ?? $config['default_author'])),
         'canonical_path' => (string) ($fields['canonical_path'] ?? ($existing['canonical_path'] ?? '')),
         'body_format' => (string) ($fields['body_format'] ?? ($existing['body_format'] ?? 'markdown')),
+        'created_by' => $createdBy,
+        'editors' => $editors,
         'locales' => [
             'en' => [
                 'title' => (string) ($fields['title_en'] ?? ($existing['locales']['en']['title'] ?? '')),

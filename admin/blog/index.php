@@ -10,14 +10,21 @@ blog_admin_require_login();
 
 $root = dirname(__DIR__, 2);
 $config = blog_config();
-$posts = blog_load_all_posts($root, $config);
+$user = blog_admin_current_user();
+$allPosts = blog_load_all_posts($root, $config);
+$posts = array_values(array_filter(
+    $allPosts,
+    static fn (array $p): bool => blog_acl_can_edit($user, $p)
+));
 $message = '';
 $error = '';
-$user = blog_admin_current_user();
+$canCreate = blog_acl_can_create($user);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'rebuild') {
     if (!blog_admin_verify_csrf($_POST['csrf'] ?? null)) {
         $error = 'CSRF check failed.';
+    } elseif (!blog_acl_is_admin($user)) {
+        $error = 'Only admins can rebuild all public pages.';
     } else {
         $result = blog_build($root, $config);
         blog_update_sitemap($root, $config);
@@ -44,32 +51,36 @@ $csrf = blog_admin_csrf_token();
 <?php if ($message !== ''): ?><div class="msg"><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></div><?php endif; ?>
 <?php if ($error !== ''): ?><div class="msg err"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></div><?php endif; ?>
 <div class="actions">
+<?php if ($canCreate): ?>
 <a class="btn" href="edit.php">New post</a>
+<?php endif; ?>
+<?php if (blog_acl_is_admin($user)): ?>
 <form method="post" style="display:inline">
 <input type="hidden" name="csrf" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>"/>
 <input type="hidden" name="action" value="rebuild"/>
 <button class="btn secondary" type="submit">Rebuild public pages</button>
 </form>
-<?php if (blog_admin_is_admin()): ?>
 <a class="btn secondary" href="users.php">Manage users</a>
 <?php endif; ?>
 </div>
 <p class="muted">Signed in as <strong><?= htmlspecialchars((string) ($user['username'] ?? ''), ENT_QUOTES, 'UTF-8') ?></strong>
-(<?= htmlspecialchars((string) ($user['role'] ?? ''), ENT_QUOTES, 'UTF-8') ?>).
-Public: <code><?= htmlspecialchars($config['site_base_url'], ENT_QUOTES, 'UTF-8') ?>/blog/</code></p>
+(<?= htmlspecialchars((string) ($user['role'] ?? ''), ENT_QUOTES, 'UTF-8') ?><?= $canCreate ? ', can create' : ', cannot create' ?>).
+Showing posts you can edit (<?= count($posts) ?> of <?= count($allPosts) ?>).</p>
 <table>
 <thead>
-<tr><th>Slug</th><th>Title (EN)</th><th>Status</th><th>Published</th><th></th></tr>
+<tr><th>Slug</th><th>Title (EN)</th><th>Status</th><th>Editors</th><th>Published</th><th></th></tr>
 </thead>
 <tbody>
 <?php if ($posts === []): ?>
-<tr><td colspan="5">No posts yet.</td></tr>
+<tr><td colspan="6">No posts you can edit.<?php if (!$canCreate): ?> You need create permission to start a new post.<?php endif; ?></td></tr>
 <?php endif; ?>
 <?php foreach ($posts as $post): ?>
+<?php $eds = blog_acl_post_editors($post); ?>
 <tr>
 <td><code><?= htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8') ?></code></td>
 <td><?= htmlspecialchars((string) ($post['locales']['en']['title'] ?: $post['slug']), ENT_QUOTES, 'UTF-8') ?></td>
 <td><span class="badge badge-<?= htmlspecialchars($post['status'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($post['status'], ENT_QUOTES, 'UTF-8') ?></span></td>
+<td class="muted"><?= $eds === [] ? 'admin only' : htmlspecialchars(implode(', ', $eds), ENT_QUOTES, 'UTF-8') ?></td>
 <td><?= htmlspecialchars(substr((string) $post['published_at'], 0, 10), ENT_QUOTES, 'UTF-8') ?></td>
 <td><a href="edit.php?slug=<?= urlencode($post['slug']) ?>">Edit</a></td>
 </tr>
