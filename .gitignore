@@ -19,3 +19,6 @@ privacy-intel/data/
 AGENTS.md
 .codex
 .codex_tmp/
+.cursor/
+.claude/
+CLAUDE.md
