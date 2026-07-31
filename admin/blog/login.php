@@ -37,7 +37,6 @@ label { display: block; margin: 12px 0 6px; font-size: 0.9rem; color: #c9c3d8; }
 input { width: 100%; box-sizing: border-box; padding: 10px 12px; border-radius: 8px; border: 1px solid #4a3a70; background: #0f0d16; color: #fff; }
 button { margin-top: 16px; width: 100%; padding: 10px; border: 0; border-radius: 8px; background: #7a61f6; color: #fff; font-weight: 650; cursor: pointer; }
 .error { color: #ffb4b4; margin: 0 0 8px; font-size: 0.9rem; }
-.hint { margin-top: 14px; color: #9b93ad; font-size: 0.8rem; line-height: 1.4; }
 </style>
 </head>
 <body>
@@ -47,7 +46,6 @@ button { margin-top: 16px; width: 100%; padding: 10px; border: 0; border-radius:
 <label for="password">Password</label>
 <input id="password" name="password" type="password" required autofocus/>
 <button type="submit">Sign in</button>
-<p class="hint">Use the server admin password (<code>admin-password.hash</code> or <code>BITMIXLIST_BLOG_ADMIN_PASSWORD</code>).</p>
 </form>
 </body>
 </html>
