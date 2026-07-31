@@ -490,7 +490,7 @@ function directory_page_labels(string $locale): array
             'pgp_key_title' => 'PGP-публичный ключ',
             'pgp_key_help' => 'Это PGP-публичный ключ сервиса. Его можно импортировать в другое приложение.',
             'bitcoin_key_title' => 'Bitcoin-ключ гарантий',
-            'bitcoin_key_help' => 'Это адрес Bitcoin для подписи BIP-137, а не ключ OpenPGP. Проверяйте гарантийные письма по этому адресу.',
+            'bitcoin_key_help' => 'Это Bitcoin-адрес для подписи, а не ключ OpenPGP. Проверяйте гарантийные письма по этому адресу.',
         ];
     }
 
@@ -541,7 +541,7 @@ function directory_page_labels(string $locale): array
         'pgp_key_title' => 'PGP public key',
         'pgp_key_help' => 'This is the service\'s PGP public key if you want to import it into another application.',
         'bitcoin_key_title' => 'Bitcoin guarantee signing key',
-        'bitcoin_key_help' => 'This is a BIP-137 Bitcoin signing address, not an OpenPGP key. Verify guarantee letters against this address.',
+        'bitcoin_key_help' => 'This is a Bitcoin signing address, not an OpenPGP key. Verify guarantee letters against this address.',
     ];
 }
 
