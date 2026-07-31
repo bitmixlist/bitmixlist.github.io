@@ -377,52 +377,9 @@ function blog_human_date(string $iso, string $locale): string
 }
 
 /**
- * Blog sidebar with a Blog link and common site links.
+ * Same sidebar as index.html / directory pages (full article nav).
  */
 function blog_render_sidebar(string $base, bool $isRu, string $fromPath): string
 {
-    $home = blog_relative_href($fromPath, $isRu ? 'ru/index.html' : 'index.html');
-    $blog = blog_relative_href($fromPath, $isRu ? 'ru/blog/index.html' : 'blog/index.html');
-    $prefix = $isRu ? '../' : '../';
-    // Use directory-relative paths like directory sidebar for shared pages
-    $depthBase = directory_relative_to_root($fromPath);
-
-    $labels = $isRu
-        ? [
-            ['Блог', $blog],
-            ['Проверка на скам', $depthBase . 'scam-lookup.html'],
-            ['Верифицировать гарантию', $depthBase . 'letter-verify.html'],
-            ['AML-чекер', $depthBase . 'aml-check.html'],
-            ['Часто задаваемые вопросы', $depthBase . 'faq.html'],
-            ['Допустимое использование', $depthBase . 'terms-and-conditions.html'],
-            ['Журнал изменений', $depthBase . 'changelog.html'],
-        ]
-        : [
-            ['Blog', $blog],
-            ['Scam Lookup', $depthBase . 'scam-lookup.html'],
-            ['Verify Guarrantee', $depthBase . 'letter-verify.html'],
-            ['AML Checker', $depthBase . 'aml-check.html'],
-            ['FAQ', $depthBase . 'faq.html'],
-            ['Acceptable Use', $depthBase . 'terms-and-conditions.html'],
-            ['Changelog', $depthBase . 'changelog.html'],
-        ];
-
-    $items = '';
-    foreach ($labels as [$label, $href]) {
-        $items .= '<li class="menu-item"><a class="nav-link" href="' . directory_escape($href) . '">' . directory_escape($label) . '</a></li>' . "\n";
-    }
-
-    return '<nav class="sidebar">
-<div class="logo-container">
-<button aria-label="Collapse navigation menu" class="sidebar-menu-toggle">☰</button>
-<a class="custom-logo-link" href="' . directory_escape($home) . '" rel="home">
-<picture>
-<source srcset="' . $base . 'wp-content/uploads/2023/12/logo-2-e1702276596201.webp" type="image/webp"/>
-<img alt="BitMixList - Bitcoin Mixer List" class="custom-logo has-transparency" decoding="async" src="' . $base . 'wp-content/uploads/2023/12/logo-2-e1702276596201.jpg" width="200"/>
-</picture>
-</a>
-</div>
-<ul class="nav-menu">
-' . $items . '</ul>
-</nav>';
+    return directory_render_sidebar($base, $isRu, $fromPath, []);
 }

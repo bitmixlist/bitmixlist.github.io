@@ -3810,46 +3810,59 @@ function directory_render_mirror_links(array $mirrors): string
     return implode(', ', $links);
 }
 
-function directory_render_sidebar(string $base, bool $isRu, string $fromPath, array $categories): string
+/**
+ * Sidebar nav items as [label, site-root-relative path], matching index.html.
+ *
+ * @return list<array{0: string, 1: string}>
+ */
+function directory_sidebar_nav_items(bool $isRu): array
 {
-    $home = '../index.html';
-    $rootHome = $home;
-    $labels = $isRu
+    // Paths are relative to the site root for the given locale tree.
+    $p = static fn (string $file) => $isRu ? ('ru/' . $file) : $file;
+
+    return $isRu
         ? [
-            ['Блог', '../blog/index.html'],
-            ['Проверка на скам', '../scam-lookup.html'],
-            ['Верифицировать гарантию', '../letter-verify.html'],
-            ['AML-чекер', '../aml-check.html'],
-            ['Ранняя история', '../early-history.html'],
-            ['Конфиденциальность миксеров', '../mixer-privacy.html'],
-            ['Эволюция регулирования', '../evolving-regulation.html'],
-            ['Преступность', '../crime.html'],
-            ['Регуляторное давление', '../crackdown.html'],
-            ['Последствия', '../aftermath.html'],
-            ['Зачем нам нужны миксеры', '../mixers-necessity.html'],
-            ['Часто задаваемые вопросы', '../faq.html'],
-            ['Допустимое использование', '../terms-and-conditions.html'],
-            ['Журнал изменений', '../changelog.html'],
+            ['Блог', $p('blog/index.html')],
+            ['Проверка на скам', $p('scam-lookup.html')],
+            ['Верифицировать гарантию', $p('letter-verify.html')],
+            ['AML-чекер', $p('aml-check.html')],
+            ['Ранняя история', $p('early-history.html')],
+            ['Конфиденциальность миксеров', $p('mixer-privacy.html')],
+            ['Эволюция регулирования', $p('evolving-regulation.html')],
+            ['Преступность', $p('crime.html')],
+            ['Регуляторное давление', $p('crackdown.html')],
+            ['Последствия', $p('aftermath.html')],
+            ['Зачем нам нужны миксеры', $p('mixers-necessity.html')],
+            ['Часто задаваемые вопросы', $p('faq.html')],
+            ['Допустимое использование', $p('terms-and-conditions.html')],
+            ['Журнал изменений', $p('changelog.html')],
         ]
         : [
-            ['Blog', '../blog/index.html'],
-            ['Scam Lookup', '../scam-lookup.html'],
-            ['Verify Guarrantee', '../letter-verify.html'],
-            ['AML Checker', '../aml-check.html'],
-            ['Early History', '../early-history.html'],
-            ['Mixer Privacy', '../mixer-privacy.html'],
-            ['Evolving Regulation', '../evolving-regulation.html'],
-            ['Crime', '../crime.html'],
-            ['Crackdown', '../crackdown.html'],
-            ['Aftermath', '../aftermath.html'],
-            ['Why We Need Mixers', '../mixers-necessity.html'],
-            ['FAQ', '../faq.html'],
-            ['Acceptable Use', '../terms-and-conditions.html'],
-            ['Changelog', '../changelog.html'],
+            ['Blog', $p('blog/index.html')],
+            ['Scam Lookup', $p('scam-lookup.html')],
+            ['Verify Guarrantee', $p('letter-verify.html')],
+            ['AML Checker', $p('aml-check.html')],
+            ['Early History', $p('early-history.html')],
+            ['Mixer Privacy', $p('mixer-privacy.html')],
+            ['Evolving Regulation', $p('evolving-regulation.html')],
+            ['Crime', $p('crime.html')],
+            ['Crackdown', $p('crackdown.html')],
+            ['Aftermath', $p('aftermath.html')],
+            ['Why We Need Mixers', $p('mixers-necessity.html')],
+            ['FAQ', $p('faq.html')],
+            ['Acceptable Use', $p('terms-and-conditions.html')],
+            ['Changelog', $p('changelog.html')],
         ];
+}
+
+function directory_render_sidebar(string $base, bool $isRu, string $fromPath, array $categories): string
+{
+    $homeTarget = $isRu ? 'ru/index.html' : 'index.html';
+    $rootHome = directory_relative_path($fromPath, $homeTarget);
 
     $items = '';
-    foreach ($labels as [$label, $href]) {
+    foreach (directory_sidebar_nav_items($isRu) as [$label, $target]) {
+        $href = directory_relative_path($fromPath, $target);
         $items .= '<li class="menu-item"><a class="nav-link" href="' . directory_escape($href) . '">' . directory_escape($label) . '</a></li>' . "\n";
     }
 
