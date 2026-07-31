@@ -2081,6 +2081,8 @@ function directory_status_target_override(array $entry): string
         ],
         'neverkyc-exchanges' => [
             '0trace' => 'https://0trace.io',
+            // Visit link is a listing ref; probe the exchange app itself.
+            'betkarma' => 'https://betkarma.art/en/exchange',
         ],
     ];
 

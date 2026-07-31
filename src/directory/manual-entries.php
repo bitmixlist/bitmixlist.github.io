@@ -238,13 +238,16 @@ function directory_manual_entries(array $categories): array
             'category' => $neverKycCategorySlug,
             'type' => $neverKycType,
             'assets' => [
-                'webp' => '',
-                'image' => 'wp-content/uploads/2023/12/betkarma.svg',
-                'alt' => 'betKarma logo',
-                'background_color' => '#111010',
+                'webp' => 'wp-content/uploads/2023/12/betkarma.webp',
+                'image' => 'wp-content/uploads/2023/12/betkarma.png',
+                'alt' => 'BetKarma logo',
+                // Sampled from 256x256_logo_betkarma.png dominant opaque fill (#1f1b20)
+                'background_color' => '#1f1b20',
             ],
             'links' => [
-                'clearnet' => 'https://betkarma.art/en/exchange',
+                // Listing ref link provided by operator; actual exchange app is separate.
+                'clearnet' => 'https://betkarma.art/r/A2KQKBGJ',
+                'actual_clearnet' => 'https://betkarma.art/en/exchange',
                 'tor' => 'http://betkarmaf7h5ubytt73ealijl7fiquooiysklmcbuk66zdux6x6musid.onion/',
                 'mirrors' => [
                     [
@@ -252,8 +255,8 @@ function directory_manual_entries(array $categories): array
                         'label' => 'betkarma.exchange',
                     ],
                 ],
-                'support' => 'On-site chat / @bet_karma / SimpleX / betkarma@pm.me / Bitcoin signing key',
-                'support_html' => 'On-site chat / <a href="https://t.me/bet_karma" target="_blank" rel="noopener noreferrer">@bet_karma</a> / <a href="https://betkarma.art/en/exchange/simplex" target="_blank" rel="noopener noreferrer">SimpleX</a> / <a href="mailto:betkarma@pm.me">betkarma@pm.me</a> / <a href="https://betkarma.art/en/letter-of-guarantee" target="_blank" rel="noopener noreferrer">Bitcoin signing key</a>',
+                'support' => 'Live chat / SimpleX (private link on site) / Bitcoin signing key',
+                'support_html' => 'Live chat or <a href="https://betkarma.art/en/exchange/simplex" target="_blank" rel="noopener noreferrer">SimpleX</a> (private connection link on the website) / <a href="https://betkarma.art/en/letter-of-guarantee" target="_blank" rel="noopener noreferrer">Bitcoin signing key</a>',
             ],
             'status' => [],
             'notices' => [
@@ -281,8 +284,8 @@ function directory_manual_entries(array $categories): array
                     ],
                     'source' => [
                         'label' => [
-                            'en' => 'betKarma exchange page',
-                            'ru' => 'Страница обменника betKarma',
+                            'en' => 'BetKarma exchange page',
+                            'ru' => 'Страница обменника BetKarma',
                         ],
                         'url' => 'https://betkarma.art/en/exchange',
                     ],
@@ -290,39 +293,41 @@ function directory_manual_entries(array $categories): array
             ],
             'content' => [
                 'en' => [
-                    'name' => 'betKarma',
-                    'summary' => 'Fee: Included in live quote',
-                    'description' => 'betKarma is a no-account cryptocurrency exchange and same-asset mixer with a published KYC-never policy, Tor access, and guarantee letters signed by a Bitcoin address.',
+                    'name' => 'BetKarma',
+                    'summary' => 'Fee: 0.3%–1.8% (route-dependent)',
+                    'description' => 'BetKarma is a custodial Never-KYC exchange (operating since March 2026) focused on privacy-oriented fixed routes, Monero exits, shielded Zcash, and same-asset reserve swaps, with clearnet, Tor, and Letters of Guarantee signed by a dedicated Bitcoin address.',
                 ],
                 'ru' => [
-                    'name' => 'betKarma',
-                    'summary' => 'Комиссия: включена в котировку',
-                    'description' => 'betKarma — криптообменник и сервис смешивания одинаковых активов без аккаунта, с заявленной политикой KYC-never, доступом через Tor и гарантийными письмами с подписью Bitcoin-адреса.',
+                    'name' => 'BetKarma',
+                    'summary' => 'Комиссия: 0,3%–1,8% (зависит от маршрута)',
+                    'description' => 'BetKarma — кастодиальный Never-KYC обменник (с марта 2026) с фиксированными privacy-маршрутами, выходами в Monero, shielded Zcash и same-asset свопами из резерва; clearnet, Tor и гарантийные письма с подписью выделенного Bitcoin-адреса.',
                 ],
             ],
             'facts' => [
                 'en' => [
-                    directory_manual_fact('Founded', '2026'),
-                    directory_manual_fact('Coins', 'BTC, XMR, ETH, LTC, SOL, ZEC, BNB, TRX, USDT, USDC'),
-                    directory_manual_fact('KYC', 'Never (operator policy)'),
-                    directory_manual_fact('Fee', 'Included in live quote; varies by direction'),
-                    directory_manual_fact('Guarantee', 'Signed Bitcoin address'),
+                    directory_manual_fact('Founded', 'March 2026'),
+                    directory_manual_fact('Coins', 'BTC, XMR, shielded ZEC, ETH, BNB, TRX, LTC, SOL, USDT (TRON/ETH/BSC/SOL), USDC (ETH/BSC)'),
+                    directory_manual_fact('Routes', '38 fixed routes (not an all-to-all matrix)'),
+                    directory_manual_fact('KYC', 'Never (operator policy; no registration or email)'),
+                    directory_manual_fact('Fee', '0.3%–1.8% by route; fixed in quote; no separate payout fee'),
+                    directory_manual_fact('Guarantee', 'Bitcoin P2WPKH message signature (no OpenPGP)'),
                 ],
                 'ru' => [
-                    directory_manual_fact('Основан', '2026'),
-                    directory_manual_fact('Монеты', 'BTC, XMR, ETH, LTC, SOL, ZEC, BNB, TRX, USDT, USDC'),
-                    directory_manual_fact('KYC', 'Никогда (политика оператора)'),
-                    directory_manual_fact('Комиссия', 'Включена в котировку; зависит от направления'),
-                    directory_manual_fact('Гарантия', 'Подпись Bitcoin-адреса'),
+                    directory_manual_fact('Основан', 'Март 2026'),
+                    directory_manual_fact('Монеты', 'BTC, XMR, shielded ZEC, ETH, BNB, TRX, LTC, SOL, USDT (TRON/ETH/BSC/SOL), USDC (ETH/BSC)'),
+                    directory_manual_fact('Маршруты', '38 фиксированных маршрутов (не полная матрица пар)'),
+                    directory_manual_fact('KYC', 'Никогда (политика оператора; без регистрации и email)'),
+                    directory_manual_fact('Комиссия', '0,3%–1,8% по маршруту; фиксируется в котировке; без отдельной платы за вывод'),
+                    directory_manual_fact('Гарантия', 'Подпись сообщения Bitcoin P2WPKH (без OpenPGP)'),
                 ],
             ],
             'table_display' => [
-                'en' => 'betKarma',
-                'ru' => 'betKarma',
+                'en' => 'BetKarma',
+                'ru' => 'BetKarma',
             ],
             'notes' => [
-                'en' => '<p>No-account exchange and same-asset mixer. Operator claims no KYC, AML, or logs — policy only, not audited. Clearnet, mirror, and onion. Routes: BTC, XMR, ETH, LTC, SOL, shielded ZEC, BNB, TRX, USDT/USDC.</p><p>Fee, limits, and confirmations show in the live quote; payouts are manual from reserves. Deposit windows: ~15 min cross-asset, 1 hour same-asset. XMR deposits need 10 confirmations. A &gt;1% market move before the deposit can mean a refund or re-quote.</p><p>Orders are private. Each gets a Letter of Guarantee signed by Bitcoin address <code>bc1q6etkarmarvej0874ghw396eacejlsy5ygew5yk</code> — check the <a href="https://betkarma.art/en/letter-of-guarantee">official key page</a> and verify with the tool below or the <a href="https://grggoo.github.io/betkarma-verify/letter.html?lang=en">open-source verifier</a> before paying.</p><p>The <a href="https://www.altcoinstalks.com/index.php?topic=344275.0">AltcoinsTalks announcement</a> (13 Jun 2026) claims 0.32 BTC in forum escrow; this listing has not confirmed it remains funded. Unlicensed casino; advertised 100% fee cashback is a 50× wagering casino bonus, not cash.</p>',
-                'ru' => '<p>Обменник и миксер одинаковых активов без аккаунта. Оператор заявляет отсутствие KYC, AML и логов — только политика, не аудит. Clearnet, зеркало и onion. Направления: BTC, XMR, ETH, LTC, SOL, shielded ZEC, BNB, TRX, USDT/USDC.</p><p>Комиссия, лимиты и подтверждения — в живой котировке; выплаты вручную из резервов. Окно депозита: ~15 мин межактив, 1 час для смешивания. Для XMR — 10 подтверждений. Движение рынка &gt;1% до депозита может дать возврат или новый курс.</p><p>Заявки приватны. Каждая получает гарантийное письмо с подписью Bitcoin-адреса <code>bc1q6etkarmarvej0874ghw396eacejlsy5ygew5yk</code> — сверьте с <a href="https://betkarma.art/ru/letter-of-guarantee">официальной страницей ключа</a> и проверьте инструментом ниже или в <a href="https://grggoo.github.io/betkarma-verify/letter.html?lang=ru">открытом верификаторе</a> до оплаты.</p><p><a href="https://www.altcoinstalks.com/index.php?topic=344275.0">Анонс на AltcoinsTalks</a> (13 июня 2026) заявляет 0,32 BTC в форумном эскроу; пополнение независимо не подтверждено. Нелицензированное казино; 100% cashback комиссии — бонус казино с отыгрышем 50×, не деньги.</p>',
+                'en' => '<p>Custodial Never-KYC exchange operating since March 2026. No registration or email. Operator policy: never KYC, no AML-score surcharge, and no funds held pending identity or source-of-funds documents (policy claims only — not an audit).</p><p>Assets and networks: Bitcoin; Monero; shielded Zcash; Ethereum; BNB; TRX; Litecoin; Solana; USDT on TRON, Ethereum, BSC, and Solana; USDC on Ethereum and BSC. Support is via <strong>fixed routes</strong> (38 routes in five groups), not a universal all-to-all pair matrix: BTC↔USDT TRON private reserve swaps; 12 routes for buying Monero privately; 10 routes for spending Monero privately; routes into BTC and ETH; routes into USDT and USDC stablecoins. Includes privacy-oriented paths, Monero exits, shielded Zcash, and same-asset reserve swaps.</p><p>Fee range <strong>0.3%–1.8%</strong> depending on route. Exact fee, rate, minimum, maximum, required confirmations, and final receive amount are displayed and fixed before the customer sends funds. No additional payout fee. Payouts are made from separate reserve liquidity.</p><p>Website: <a href="https://betkarma.exchange/" target="_blank" rel="noopener noreferrer">betkarma.exchange</a>. Exchange app: <a href="https://betkarma.art/en/exchange" target="_blank" rel="noopener noreferrer">betkarma.art/en/exchange</a>. Tor: <code>betkarmaf7h5ubytt73ealijl7fiquooiysklmcbuk66zdux6x6musid.onion</code>.</p><p>Support: live chat or SimpleX via the private connection link on the website.</p><p>Guarantee: BetKarma does not use OpenPGP for order guarantees. Each Letter of Guarantee is signed with dedicated Bitcoin P2WPKH message-signing key <code>bc1q6etkarmarvej0874ghw396eacejlsy5ygew5yk</code> before payment. Verify on the <a href="https://betkarma.art/en/letter-of-guarantee" target="_blank" rel="noopener noreferrer">official key page</a>, with the tool below, or the <a href="https://grggoo.github.io/betkarma-verify/letter.html?lang=en" target="_blank" rel="noopener noreferrer">open-source verifier</a> before sending funds.</p>',
+                'ru' => '<p>Кастодиальный Never-KYC обменник с марта 2026. Без регистрации и email. Политика оператора: без KYC, без надбавки по AML-score и без удержания средств до документов о личности/источнике средств (только заявления политики — не аудит).</p><p>Активы и сети: Bitcoin; Monero; shielded Zcash; Ethereum; BNB; TRX; Litecoin; Solana; USDT в сетях TRON, Ethereum, BSC и Solana; USDC в Ethereum и BSC. Поддержка через <strong>фиксированные маршруты</strong> (38 маршрутов в пяти группах), а не полная матрица пар: приватные резервные свопы BTC↔USDT TRON; 12 маршрутов для покупки Monero; 10 маршрутов для траты Monero; маршруты в BTC и ETH; маршруты в USDT и USDC. Включает privacy-направления, выходы в Monero, shielded Zcash и same-asset свопы из резерва.</p><p>Комиссия <strong>0,3%–1,8%</strong> в зависимости от маршрута. Точная комиссия, курс, минимум, максимум, число подтверждений и сумма к получению показываются и фиксируются до отправки средств. Отдельной платы за вывод нет. Выплаты из отдельной резервной ликвидности.</p><p>Сайт: <a href="https://betkarma.exchange/" target="_blank" rel="noopener noreferrer">betkarma.exchange</a>. Приложение обмена: <a href="https://betkarma.art/en/exchange" target="_blank" rel="noopener noreferrer">betkarma.art/en/exchange</a>. Tor: <code>betkarmaf7h5ubytt73ealijl7fiquooiysklmcbuk66zdux6x6musid.onion</code>.</p><p>Поддержка: live chat или SimpleX по приватной ссылке на сайте.</p><p>Гарантия: OpenPGP для гарантийных писем не используется. Каждое Letter of Guarantee подписывается выделенным Bitcoin P2WPKH-ключом <code>bc1q6etkarmarvej0874ghw396eacejlsy5ygew5yk</code> до оплаты. Проверяйте на <a href="https://betkarma.art/ru/letter-of-guarantee" target="_blank" rel="noopener noreferrer">официальной странице ключа</a>, инструментом ниже или в <a href="https://grggoo.github.io/betkarma-verify/letter.html?lang=ru" target="_blank" rel="noopener noreferrer">открытом верификаторе</a> до отправки средств.</p>',
             ],
             'config' => [
                 'en' => '',

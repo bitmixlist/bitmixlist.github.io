@@ -74,6 +74,10 @@ function bitmixlist_search_should_skip(string $relative): bool
     return str_starts_with($relative, 'wp-content/')
         || str_starts_with($relative, 'src/')
         || str_starts_with($relative, 'tools/')
+        || str_starts_with($relative, 'admin/')
+        || str_starts_with($relative, 'tests/')
+        || str_starts_with($relative, 'privacy-intel/')
+        || str_starts_with($relative, 'site-status-checker/')
         || str_starts_with($relative, '.');
 }
 
@@ -148,6 +152,7 @@ function bitmixlist_search_section(string $relative, string $heading, string $lo
         'p2p-markets' => ['en' => 'P2P Marketplaces', 'ru' => 'P2P-площадки'],
         'coordinators' => ['en' => 'Coordinators', 'ru' => 'Координаторы'],
         'privacy-tools' => ['en' => 'Privacy Tools', 'ru' => 'Инструменты приватности'],
+        'blog' => ['en' => 'Blog', 'ru' => 'Блог'],
     ];
 
     if (isset($labels[$segment][$locale])) {

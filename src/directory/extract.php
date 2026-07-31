@@ -320,6 +320,21 @@ function directory_fetch_wabisator_volume_history(string $url = DIRECTORY_WABISA
     return directory_fetch_wabisator_json($url, 'coordinator volume history');
 }
 
+function directory_load_wabisator_snapshot(string $path, string $label): array
+{
+    $json = @file_get_contents($path);
+    if (!is_string($json) || trim($json) === '') {
+        throw new RuntimeException("Unable to read pinned Wabisator {$label} from {$path}");
+    }
+
+    $data = json_decode($json, true);
+    if (!is_array($data)) {
+        throw new RuntimeException("Invalid JSON in {$path}: " . json_last_error_msg());
+    }
+
+    return $data;
+}
+
 function directory_fetch_wabisator_json(string $url, string $label): array
 {
     $context = stream_context_create([

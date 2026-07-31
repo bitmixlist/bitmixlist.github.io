@@ -1,0 +1,133 @@
+{
+    "kruw": {
+        "url": "https://btcpay.kruw.io/plugins/wabisabi-coordinator",
+        "fees": "0% + Free remixing",
+        "status": "Online",
+        "config": {
+            "Allowed Input Amounts": "0.00009999 BTC - 1343.75 BTC",
+            "Allowed Input Types": "P2WPKH, Taproot",
+            "Allowed Output Amounts": "0.00009999 BTC - 1343.75 BTC",
+            "Allowed Output Types": "P2PKH, P2SH, P2WPKH, P2WSH, Taproot",
+            "Minimum Inputs": 100,
+            "Maximum Inputs": 500,
+            "Maximum Round Registration Time": "0d 0h 35m 0s"
+        },
+        "roundStates": [
+            {
+                "RoundId": "b4a8a85c0759449870b1bc1133028f6da4d85b2437317a0ade68aedd4203a421",
+                "IsBlameRound": false,
+                "InputCount": 336,
+                "MaxSuggestedAmount": 1000,
+                "InputRegistrationRemaining": "0d 0h 0m -16s",
+                "Phase": "ConnectionConfirmation"
+            },
+            {
+                "RoundId": "54d6fdfc6e0b3f2bb3ad13aed79687f02e3be3e7b0b15a9662df6948ffb32bb9",
+                "IsBlameRound": false,
+                "InputCount": 1,
+                "MaxSuggestedAmount": 1343.75,
+                "InputRegistrationRemaining": "0d 0h 33m 44s",
+                "Phase": "InputRegistration"
+            }
+        ],
+        "cj_txid": null,
+        "cj_total_amount": null
+    },
+    "coinjoin_nl": {
+        "url": "https://coinjoin.nl",
+        "fees": "N/A",
+        "status": "Online",
+        "config": null,
+        "roundStates": [
+            {
+                "RoundId": "6767d7d177da2cbbe0c3e687d26716fe6e9281bae33fa81019c03e36dbc435bd",
+                "IsBlameRound": false,
+                "InputCount": 19,
+                "MaxSuggestedAmount": 21,
+                "InputRegistrationRemaining": "0d 0h 4m 9s",
+                "Phase": "InputRegistration"
+            }
+        ],
+        "cj_txid": null,
+        "cj_total_amount": null
+    },
+    "gingerwallet": {
+        "url": "https://api.gingerwallet.io",
+        "fees": "0.3% + Free remixing + Free under 0.03 BTC",
+        "status": "Online",
+        "config": {
+            "Allowed Input Amounts": "0.00009999 BTC - 43000 BTC",
+            "Allowed Input Types": "P2WPKH, Taproot",
+            "Allowed Output Amounts": "0.00009999 BTC - 43000 BTC",
+            "Allowed Output Types": "P2WPKH, Taproot",
+            "Minimum Inputs": 21,
+            "Maximum Inputs": 200,
+            "Maximum Round Registration Time": "0d 0h 30m 0s"
+        },
+        "roundStates": [
+            {
+                "RoundId": "6ffd7309db3cbc2a0b7b2942424597b2fc3c4d002cffcd282d36dd2b33222ac4",
+                "IsBlameRound": false,
+                "InputCount": 4,
+                "MaxSuggestedAmount": 43000,
+                "InputRegistrationRemaining": "0d 0h 23m 45s",
+                "Phase": "InputRegistration"
+            }
+        ],
+        "cj_txid": null,
+        "cj_total_amount": null
+    },
+    "opencoordinator": {
+        "url": "https://api.opencoordinator.org",
+        "fees": "0% + Free remixing",
+        "status": "Online",
+        "config": {
+            "Allowed Input Amounts": "0.00005 BTC - 43000 BTC",
+            "Allowed Input Types": "P2WPKH, Taproot",
+            "Allowed Output Amounts": "0.00005 BTC - 43000 BTC",
+            "Allowed Output Types": "P2WPKH, Taproot",
+            "Minimum Inputs": 21,
+            "Maximum Inputs": 400,
+            "Maximum Round Registration Time": "0d 0h 30m 0s"
+        },
+        "roundStates": [
+            {
+                "RoundId": "b0be83a967de0022ca6aac4cffde3087f7762b2df10f3e07b5b45cea8df8c739",
+                "IsBlameRound": false,
+                "InputCount": 9,
+                "MaxSuggestedAmount": 43000,
+                "InputRegistrationRemaining": "0d 0h 17m 0s",
+                "Phase": "InputRegistration"
+            }
+        ],
+        "cj_txid": null,
+        "cj_total_amount": null
+    },
+    "coinjoiner": {
+        "url": "https://api.coinjoiner.com",
+        "fees": "N/A",
+        "status": "Offline",
+        "config": null,
+        "roundStates": null,
+        "cj_txid": null,
+        "cj_total_amount": null
+    },
+    "swisscoordinator": {
+        "url": "https://wasabi.swisscoordinator.app",
+        "fees": "N/A",
+        "status": "Online",
+        "config": null,
+        "roundStates": null,
+        "cj_txid": null,
+        "cj_total_amount": null
+    },
+    "openwasabi": {
+        "url": "https://openwasabi.io/plugins/wabisabi-coordinator",
+        "fees": "N/A",
+        "status": "Offline",
+        "config": null,
+        "roundStates": null,
+        "cj_txid": null,
+        "cj_total_amount": null
+    }
+}

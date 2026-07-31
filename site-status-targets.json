@@ -448,12 +448,12 @@
             "id": "neverkyc-exchanges:betkarma",
             "category": "neverkyc-exchanges",
             "slug": "betkarma",
-            "name": "betKarma",
+            "name": "BetKarma",
             "targets": [
                 {
                     "kind": "clearnet",
                     "url": "https://betkarma.art/en/exchange",
-                    "source": "listed"
+                    "source": "override"
                 }
             ]
         },

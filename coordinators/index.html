@@ -151,9 +151,17 @@ document.addEventListener('DOMContentLoaded', function () {
 .directory-facts .directory-nowrap { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
 .directory-comparison-table { table-layout: auto; min-width: 1040px; }
 .directory-comparison-table--mixers { min-width: 1380px; }
+.directory-comparison-table--neverkyc-exchanges,
+.directory-comparison-table--instant-exchanges { min-width: 1380px; }
 .directory-comparison-table--mixers th.directory-coins-cell,
-.directory-comparison-table--mixers td.directory-coins-cell { width: 12rem; max-width: 12rem; }
-.directory-comparison-table--mixers td.directory-coins-cell .coin-list { max-width: 12rem; }
+.directory-comparison-table--mixers td.directory-coins-cell,
+.directory-comparison-table--neverkyc-exchanges th.directory-coins-cell,
+.directory-comparison-table--neverkyc-exchanges td.directory-coins-cell,
+.directory-comparison-table--instant-exchanges th.directory-coins-cell,
+.directory-comparison-table--instant-exchanges td.directory-coins-cell { width: 12rem; max-width: 12rem; }
+.directory-comparison-table--mixers td.directory-coins-cell .coin-list,
+.directory-comparison-table--neverkyc-exchanges td.directory-coins-cell .coin-list,
+.directory-comparison-table--instant-exchanges td.directory-coins-cell .coin-list { max-width: 12rem; }
 .directory-comparison-table--coordinators { min-width: 960px; }
 .directory-facts thead th[data-sortable-column] { cursor: pointer; user-select: none; }
 .directory-sort-button { all: unset; display: inline-flex; align-items: center; justify-content: flex-start; gap: 6px; max-width: 100%; color: inherit; font: inherit; font-weight: inherit; line-height: inherit; cursor: pointer; }
@@ -201,8 +209,8 @@ document.addEventListener('DOMContentLoaded', function () {
   .directory-list { grid-template-columns: 1fr; }
   .directory-table-wrap { overflow-x: visible; }
   .directory-entry-table, .directory-comparison-table { min-width: 0; }
-  .directory-comparison-table--mixers th.directory-coins-cell, .directory-comparison-table--mixers td.directory-coins-cell { width: 100%; max-width: none; }
-  .directory-comparison-table--mixers td.directory-coins-cell .coin-list { max-width: 100%; }
+  .directory-comparison-table--mixers th.directory-coins-cell, .directory-comparison-table--mixers td.directory-coins-cell, .directory-comparison-table--neverkyc-exchanges th.directory-coins-cell, .directory-comparison-table--neverkyc-exchanges td.directory-coins-cell, .directory-comparison-table--instant-exchanges th.directory-coins-cell, .directory-comparison-table--instant-exchanges td.directory-coins-cell { width: 100%; max-width: none; }
+  .directory-comparison-table--mixers td.directory-coins-cell .coin-list, .directory-comparison-table--neverkyc-exchanges td.directory-coins-cell .coin-list, .directory-comparison-table--instant-exchanges td.directory-coins-cell .coin-list { max-width: 100%; }
   .directory-facts { border-collapse: separate; border-spacing: 0; table-layout: auto; }
   .directory-facts thead { display: none; }
   .directory-facts, .directory-facts tbody { display: block; width: 100%; }

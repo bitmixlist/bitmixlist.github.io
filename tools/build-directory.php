@@ -11,11 +11,12 @@ require_once __DIR__ . '/rewrite-homepage-layout.php';
 const GENERATED_DIR_MARKER = '.bitmixlist-generated';
 
 $root = dirname(__DIR__);
+$snapshotRoot = $root . '/src/directory/snapshots';
 $checkOnly = in_array('--check', $argv, true);
 $skipIndex = in_array('--skip-index', $argv, true);
 $data = directory_extract_all($root, [
-    'wabisator_config' => directory_fetch_wabisator_config(),
-    'wabisator_volume_history' => directory_fetch_wabisator_volume_history(),
+    'wabisator_config' => directory_load_wabisator_snapshot($snapshotRoot . '/wabisator-config.json', 'coordinator config'),
+    'wabisator_volume_history' => directory_load_wabisator_snapshot($snapshotRoot . '/wabisator-volume-history.json', 'coordinator volume history'),
 ]);
 $errors = directory_validate_data($data, $root, $checkOnly);
 
