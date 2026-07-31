@@ -127,10 +127,17 @@ function blog_markdown_inline(string $text): string
     $text = htmlspecialchars($text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     // code
     $text = preg_replace('/`([^`]+)`/', '<code>$1</code>', $text) ?? $text;
-    // links
-    $text = preg_replace(
+    // links — external get target=_blank; site-relative paths stay same-tab
+    $text = preg_replace_callback(
         '/\[([^\]]+)\]\((https?:\/\/[^)\s]+|\/[^)\s]*)\)/',
-        '<a href="$2" target="_blank" rel="noopener">$1</a>',
+        static function (array $m): string {
+            $label = $m[1];
+            $href = $m[2];
+            $external = str_starts_with($href, 'http://') || str_starts_with($href, 'https://');
+            $attrs = $external ? ' target="_blank" rel="noopener"' : '';
+
+            return '<a href="' . $href . '"' . $attrs . '>' . $label . '</a>';
+        },
         $text
     ) ?? $text;
     // bold — require non-greedy pairs; underscore form must not be mid-identifier

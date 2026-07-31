@@ -2,7 +2,7 @@
 slug: welcome-to-the-blog
 status: published
 published_at: 2026-07-31T12:00:00Z
-updated_at: 2026-07-31T12:00:00Z
+updated_at: 2026-07-31T13:00:00Z
 author: NotATether
 canonical_path: blog/welcome-to-the-blog.html
 body_format: markdown
@@ -12,33 +12,31 @@ tags:
 locales:
   en:
     title: "Welcome to the BitMixList Blog"
-    description: "A PHP-built editorial blog for privacy notes, mixer history, and regulation timelines — without WordPress."
+    description: "Notes on Bitcoin privacy, mixers, CoinJoin, and the enforcement timeline — from the people who keep BitMixList up to date."
   ru:
     title: "Добро пожаловать в блог BitMixList"
-    description: "Редакционный блог на PHP о приватности, истории миксеров и регулировании — без WordPress."
+    description: "Заметки о приватности Bitcoin, миксерах, CoinJoin и сроках правоприменения — от тех, кто ведёт BitMixList."
 ---
-# Why a first-party blog
+BitMixList has always been a directory. This blog is where longer write-ups live: how mixers and CoinJoin actually work, what enforcement actions changed the market, and practical privacy notes for people who want self-custody without the marketing fluff.
 
-BitMixList is moving editorial writing into a **small PHP content store** with a static build step. Public pages stay fast HTML. There is no WordPress runtime on the edge.
+## What you’ll find here
 
-## What you get
+- Mixer and CoinJoin explainers
+- Case timelines and regulatory pressure
+- Privacy ops notes you can use without trusting a third party with your funds
 
-- File-backed posts under `src/blog/posts/`
-- Public posts at **bitmixlist.org/blog/** (main site)
-- Admin editor on **blog.bitmixlist.org** only (not public content)
-- Stable URLs for legacy articles after import
+Start from the [blog index](/blog/), or jump into the [directory home](/) if you came for service listings.
 
 Only mix funds you obtained lawfully.
 <!--blog:locale:ru-->
-# Зачем свой блог
+BitMixList всегда был каталогом. Этот блог — для более длинных текстов: как на самом деле работают миксеры и CoinJoin, что изменили дела и давление регуляторов, и практические заметки о приватности для тех, кто хочет self-custody без рекламной шелухи.
 
-BitMixList переносит редакционные тексты в **небольшое PHP-хранилище** со статической сборкой. Публичные страницы остаются быстрым HTML. WordPress на краю не используется.
+## Что здесь будет
 
-## Что есть
+- Разборы миксеров и CoinJoin
+- Таймлайны дел и регуляторного давления
+- Практические заметки по приватности без передачи средств третьим лицам
 
-- Посты в файлах `src/blog/posts/`
-- Публичные посты на **bitmixlist.org/blog/** (основной сайт)
-- Редактор только на **blog.bitmixlist.org** (не публичный контент)
-- Стабильные URL для старых статей после импорта
+Начните с [индекса блога](/ru/blog/) или с [главной каталога](/ru/), если нужны списки сервисов.
 
 Смешивайте только те средства, которые вы получили законным путем.

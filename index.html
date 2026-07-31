@@ -982,6 +982,12 @@
           .directory-meta-link.is-active { border-bottom-color: #bb86fc; background: transparent; color: #fff; }
           @media (max-width: 700px) { .home .site-header { min-height: 96px; padding-top: 0.65rem; padding-bottom: 0.55rem; } .home .site-content-wrapper { padding-top: 104px; } .home .header-inner { gap: 8px; min-height: 38px; padding-left: 0.5rem; padding-right: 4.25rem; } .home .lang-switcher { right: 0.5rem; gap: 4px; } .home .lang-link { gap: 0; padding: 3px 5px; } .home .lang-link span { display: none; } .directory-meta-nav { justify-content: flex-start; gap: 16px; margin-top: 0.35rem; padding-left: 0.75rem; padding-right: 0.75rem; } .directory-meta-link { font-size: 0.84rem; } }
           .homepage-directory { max-width: 1080px; margin: 0 auto; padding: 28px 20px 44px; }
+          .homepage-blog-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+          .homepage-blog-item { padding: 14px 16px; border: 1px solid #3a2e55; border-radius: 10px; background: #181222; }
+          .homepage-blog-link { color: #f6f2ff; text-decoration: none; }
+          .homepage-blog-link:hover strong, .homepage-blog-link:focus strong { color: #bb86fc; }
+          .homepage-blog-date { display: block; margin-top: 4px; color: #c9c3d8; font-size: 0.88rem; }
+          .homepage-blog-summary { margin: 8px 0 0; color: #e8e1f5; line-height: 1.5; }
           .homepage-intro { max-width: 920px; margin: 0 auto 28px; color: #e8e1f5; line-height: 1.6; }
           .homepage-intro p { margin: 0 0 0.85rem; }
           .homepage-intro p:last-child { margin-bottom: 0; }
@@ -1162,6 +1168,7 @@
 </a>
 </div>
 <ul class="nav-menu">
+<li class="menu-item"><a class="nav-link" href="blog/index.html">Blog</a></li>
 <li class="menu-item"><a class="nav-link" href="scam-lookup.html">Scam Lookup</a></li>
 <li class="menu-item"><a class="nav-link" href="letter-verify.html">Verify Guarrantee</a></li>
 <li class="menu-item"><a class="nav-link" href="aml-check.html">AML Checker</a></li>
@@ -1196,6 +1203,7 @@
 </div>
 </div>
 <nav class="directory-meta-nav" aria-label="Directory sections">
+<a class="directory-meta-link" href="blog/">Blog</a>
 <a class="directory-meta-link" href="mixers/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="m15 15 6 6"></path><path d="M4 4l5 5"></path></svg><span>Mixers</span></a>
 <a class="directory-meta-link" href="neverkyc-exchanges/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg><span>Exchange Never-KYC</span></a>
 <a class="directory-meta-link" href="instant-exchanges/"><svg aria-hidden="true" class="directory-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"></path></svg><span>Exchange Instant</span></a>
@@ -1226,6 +1234,14 @@
 <p>Bitcoin mixers play a crucial role in enhancing transaction privacy. They allow users to mix their coins with others, making it difficult to trace the origins of the funds. Below you can find a bitcoin mixer list that has links to the current safe and private mixer websites. If you care about your privacy, then you should be prioritizing the confidentiality of your transactions over mindless airdrops and giveaways, so this page will definitely be useful to you. In case you are going to use a mixer that is not on this list, then you should thoroughly research it for your own financial safety. You should bookmark this page so that you can always see the list of current, reputable bitcoin mixers.</p>
 <p>While I have done my best to vouch all websites listed here with the wider Bitcoin community, <strong><mark style="background-color:#b91c1c;color:#fff;">I will not be responsible for damages if you get scammed by any website from this list.</mark></strong></p>
 </section>
+<section class="directory-section homepage-blog" id="blog" data-blog-homepage-section="1"><div class="directory-section-heading"><h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 3h9l5 5v13H6z"></path><path d="M14 3v6h6"></path><path d="m9 15 2 2 4-4"></path></svg><span>Blog</span></h2><a class="directory-section-link" href="blog/index.html">All posts</a></div><ul class="homepage-blog-list">
+<li class="homepage-blog-item"><a class="homepage-blog-link" href="blog/welcome-to-the-blog.html"><strong>Welcome to the BitMixList Blog</strong></a><span class="homepage-blog-date">2026-07-31</span><p class="homepage-blog-summary">Notes on Bitcoin privacy, mixers, CoinJoin, and the enforcement timeline — from the people who keep BitMixList up to date.</p></li>
+<li class="homepage-blog-item"><a class="homepage-blog-link" href="coordinator-censorship.html"><strong>Coordinator Censorship &amp; Exchange Blocks</strong></a><span class="homepage-blog-date">2026-02-18</span><p class="homepage-blog-summary">Why CoinJoin coordinators get blocked, how exchanges auto-flag clusters, and the fallback strategies mixers provide.</p></li>
+<li class="homepage-blog-item"><a class="homepage-blog-link" href="are-bitcoin-mixers-legal.html"><strong>Are Bitcoin Mixers Legal?</strong></a><span class="homepage-blog-date">2026-02-12</span><p class="homepage-blog-summary">Are bitcoin mixers legal? A jurisdiction-by-jurisdiction overview of operator risk, user exposure, enforcement triggers, and practical compliance steps.</p></li>
+<li class="homepage-blog-item"><a class="homepage-blog-link" href="secret-service-mixer-advisory.html"><strong>The Secret Service’s Mixer Advisory</strong></a><span class="homepage-blog-date">2026-02-12</span><p class="homepage-blog-summary">U.S. Secret Service mixer advisory explained: key warnings for banks, enforcement signals for custodial mixers, and privacy lessons for users and developers.</p></li>
+<li class="homepage-blog-item"><a class="homepage-blog-link" href="tradeogre-seizure.html"><strong>TradeOgre Seizure &amp; Operator Death</strong></a><span class="homepage-blog-date">2025-09-01</span><p class="homepage-blog-summary">Timeline of TradeOgre’s abrupt 2025 shutdown, the RCMP seizure notice, and what the loss of a privacy-friendly exchange signals to mixers.</p></li>
+<li class="homepage-blog-item"><a class="homepage-blog-link" href="edward-snowden-warning.html"><strong>Edward Snowden’s Warning for Bitcoin Privacy</strong></a><span class="homepage-blog-date">2025-06-05</span><p class="homepage-blog-summary">Edward Snowden</p></li>
+</ul></section>
 <section class="directory-section homepage-directory-section" id="mixers" data-category="mixers" data-directory-filter-scope data-directory-status-scope>
 	<div class="directory-section-heading">
 	<h2><svg aria-hidden="true" class="directory-icon directory-heading-icon" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 3h5v5"></path><path d="M4 20 21 3"></path><path d="M21 16v5h-5"></path><path d="m15 15 6 6"></path><path d="M4 4l5 5"></path></svg><span>The List Of Bitcoin Mixers</span></h2>

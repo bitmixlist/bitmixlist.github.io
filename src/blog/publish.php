@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/store.php';
 require_once __DIR__ . '/../templates/blog-page.php';
+require_once __DIR__ . '/homepage.php';
 
 /**
  * Build all published blog pages into the site root.
@@ -47,6 +48,11 @@ function blog_build(string $root, ?array $config = null, bool $includeDrafts = f
         blog_write_file($indexPath, $html);
         $indexes[] = $indexPath;
         $written[] = $indexPath;
+    }
+
+    // Keep index.html / ru/index.html blog rails in sync with published posts.
+    foreach (blog_update_homepages($root, $config) as $homePath) {
+        $written[] = $homePath;
     }
 
     return [

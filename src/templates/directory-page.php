@@ -3816,6 +3816,7 @@ function directory_render_sidebar(string $base, bool $isRu, string $fromPath, ar
     $rootHome = $home;
     $labels = $isRu
         ? [
+            ['Блог', '../blog/index.html'],
             ['Проверка на скам', '../scam-lookup.html'],
             ['Верифицировать гарантию', '../letter-verify.html'],
             ['AML-чекер', '../aml-check.html'],
@@ -3831,6 +3832,7 @@ function directory_render_sidebar(string $base, bool $isRu, string $fromPath, ar
             ['Журнал изменений', '../changelog.html'],
         ]
         : [
+            ['Blog', '../blog/index.html'],
             ['Scam Lookup', '../scam-lookup.html'],
             ['Verify Guarrantee', '../letter-verify.html'],
             ['AML Checker', '../aml-check.html'],
