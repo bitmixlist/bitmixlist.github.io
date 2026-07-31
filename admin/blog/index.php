@@ -70,7 +70,9 @@ th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #2d2440; 
 <button class="btn secondary" type="submit">Rebuild public pages</button>
 </form>
 </div>
-<p>Content store: <code>src/blog/posts/</code> · Public blog base: <code><?= htmlspecialchars($config['blog_base_url'], ENT_QUOTES, 'UTF-8') ?></code></p>
+<p>Content store: <code>src/blog/posts/</code></p>
+<p>Public posts: <code><?= htmlspecialchars($config['site_base_url'], ENT_QUOTES, 'UTF-8') ?>/blog/</code> (main site only)</p>
+<p>This admin host: <code><?= htmlspecialchars($config['admin_base_url'], ENT_QUOTES, 'UTF-8') ?></code> (editor only — not public content)</p>
 <table>
 <thead>
 <tr><th>Slug</th><th>Title (EN)</th><th>Status</th><th>Published</th><th></th></tr>

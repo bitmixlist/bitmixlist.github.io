@@ -152,7 +152,7 @@ function blog_render_index_page(array $posts, string $locale, ?array $config = n
     $description = $isRu
         ? 'Статьи BitMixList о приватности Bitcoin, миксерах и регулировании.'
         : 'BitMixList articles on Bitcoin privacy, mixers, and regulation.';
-    $canonical = rtrim($config['blog_base_url'], '/') . ($isRu ? '/ru/' : '/') ;
+    $canonical = blog_index_canonical_url($locale, $config);
 
     $items = '';
     foreach ($posts as $post) {
@@ -302,17 +302,22 @@ function blog_index_path(string $locale, ?array $config = null): string
 
 /**
  * Canonical absolute URL for a post locale.
- * Blog-path posts use blog_base_url; legacy root paths use site_base_url so main-site URLs stay stable.
+ * All public content is under the main site (bitmixlist.org), including /blog/ and legacy root articles.
+ * blog.bitmixlist.org is admin-only and never used for public canonicals.
  */
 function blog_canonical_url(array $post, string $locale, ?array $config = null): string
 {
     $config ??= blog_config();
     $path = blog_output_path_for_locale($post, $locale);
-    $isBlogPath = str_starts_with($path, 'blog/') || str_starts_with($path, 'ru/blog/');
-    $base = $isBlogPath ? $config['blog_base_url'] : $config['site_base_url'];
 
-    // On blog subdomain, strip leading blog/ for public URL if desired later; for path-mode keep full path.
-    return rtrim($base, '/') . '/' . $path;
+    return rtrim($config['site_base_url'], '/') . '/' . ltrim($path, '/');
+}
+
+function blog_index_canonical_url(string $locale, ?array $config = null): string
+{
+    $config ??= blog_config();
+
+    return rtrim($config['site_base_url'], '/') . '/' . ltrim(blog_index_path($locale, $config), '/');
 }
 
 function blog_public_url_path(array $post, string $locale): string

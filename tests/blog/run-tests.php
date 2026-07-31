@@ -112,16 +112,18 @@ assert_true(in_array('coinjoin', $slugs, true), 'discover includes coinjoin');
 
 // --- render post page ---
 $config = blog_config([
-    'blog_base_url' => 'https://blog.bitmixlist.local',
     'site_base_url' => 'https://bitmixlist.org',
+    'admin_base_url' => 'https://blog.bitmixlist.org',
 ]);
 $renderPost = $parsed;
 $renderPost['body_format'] = 'markdown';
 $html = blog_render_post_page($renderPost, 'en', $config);
 assert_contains($html, 'Alpha Title', 'render includes title');
 assert_contains($html, '<strong>world</strong>', 'render includes body HTML');
-assert_contains($html, 'https://blog.bitmixlist.local/blog/test-post-alpha.html', 'render canonical uses blog base');
+assert_contains($html, 'https://bitmixlist.org/blog/test-post-alpha.html', 'render canonical uses main site /blog path');
+assert_true(!str_contains($html, 'blog.bitmixlist.org/blog/'), 'public HTML does not use admin host for content');
 assert_contains($html, 'BitMixList', 'render site chrome');
+assert_true($config['admin_base_url'] === 'https://blog.bitmixlist.org', 'admin host is blog.bitmixlist.org');
 
 // --- publish path in temp-like workspace subdirectory under root posts using unique slug ---
 $pubSlug = 'test-publish-' . substr(sha1((string) microtime(true)), 0, 8);

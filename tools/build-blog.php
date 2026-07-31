@@ -72,5 +72,5 @@ if (!$skipIndex && function_exists('bitmixlist_write_search_index')) {
     echo "Updated site-search-index.json.\n";
 }
 
-echo "Blog base URL: {$config['blog_base_url']}\n";
-echo "Site base URL: {$config['site_base_url']}\n";
+echo "Public site (blog content): {$config['site_base_url']}/blog/\n";
+echo "Admin editor host: {$config['admin_base_url']}\n";

@@ -1,6 +1,14 @@
 # BitMixList Blog (PHP, no WordPress)
 
-File-backed editorial posts with a static HTML build and a small local admin editor.
+File-backed editorial posts with a static HTML build and a small admin editor.
+
+## Hosts
+
+| Host | Role |
+| --- | --- |
+| **https://bitmixlist.org/blog/** | Public blog content (EN). RU: `/ru/blog/` |
+| **https://bitmixlist.org/{slug}.html** | Migrated legacy articles (stable paths) |
+| **https://blog.bitmixlist.org** | Admin editor only — does **not** serve public post pages |
 
 ## Layout
 
@@ -11,9 +19,8 @@ File-backed editorial posts with a static HTML build and a small local admin edi
 | `src/templates/blog-page.php` | Public HTML chrome |
 | `tools/build-blog.php` | Build public pages + sitemap block |
 | `tools/import-legacy-posts.php` | Import root article HTML into the store |
-| `admin/blog/` | Local authenticated editor |
-| `blog/` · `ru/blog/` | Generated index + new posts |
-| Legacy `*.html` | Generated in place when `canonical_path` is a root file |
+| `admin/blog/` | Authenticated editor (intended host: blog.bitmixlist.org) |
+| `blog/` · `ru/blog/` | Generated public index + new posts (deploy with main site) |
 
 ## Build (local)
 
@@ -26,11 +33,17 @@ php tools/build-blog.php --check
 Environment overrides:
 
 ```bash
-export BITMIXLIST_BLOG_BASE_URL=https://blog.bitmixlist.local
-export BITMIXLIST_SITE_BASE_URL=https://bitmixlist.org
-export BITMIXLIST_BLOG_ASSET_MODE=relative   # or absolute for subdomain asset hosts
+export BITMIXLIST_SITE_BASE_URL=https://bitmixlist.org          # public content + canonicals
+export BITMIXLIST_BLOG_ADMIN_BASE_URL=https://blog.bitmixlist.org  # editor host only
+export BITMIXLIST_BLOG_ASSET_MODE=relative   # or absolute
 php tools/build-blog.php
 ```
+
+Public canonicals always use the **main site** origin, e.g.:
+
+- `https://bitmixlist.org/blog/index.html`
+- `https://bitmixlist.org/blog/welcome-to-the-blog.html`
+- `https://bitmixlist.org/coinjoin.html` (legacy path)
 
 ## Import legacy articles
 
@@ -42,10 +55,12 @@ php tools/import-legacy-posts.php --rebuild   # full import + rebuild
 
 Utility pages are never imported: `faq`, `terms-and-conditions`, `scam-lookup`, `letter-verify`, `changelog`, `index`, `404`, `aml-check`.
 
-## Admin editor (local only)
+## Admin editor
+
+Deploy or run `admin/blog/` on **blog.bitmixlist.org** (or locally for dev). Publishing writes into `src/blog/posts/` and rebuilds static HTML under the main site tree (`blog/`, root legacy paths, `ru/…`). Those files ship with **bitmixlist.org**, not the admin subdomain.
 
 ```bash
-# From html/
+# Local admin (from html/)
 php -S 127.0.0.1:8765 -t .
 # Open http://127.0.0.1:8765/admin/blog/
 # Password: bitmixlist-local
@@ -53,32 +68,6 @@ php -S 127.0.0.1:8765 -t .
 ```
 
 Publish calls the same `blog_save_from_fields` / `blog_build` path as the CLI.
-
-## Subdomain readiness (no deploy)
-
-Canonicals for paths under `blog/` use `BITMIXLIST_BLOG_BASE_URL` (default `https://blog.bitmixlist.local`).
-Legacy root articles keep `BITMIXLIST_SITE_BASE_URL` so `https://bitmixlist.org/coinjoin.html` stays stable.
-
-### Local hosts fake
-
-```text
-127.0.0.1 blog.bitmixlist.local
-```
-
-```bash
-BITMIXLIST_BLOG_BASE_URL=https://blog.bitmixlist.local php tools/build-blog.php
-php -S blog.bitmixlist.local:8765 -t .
-# curl -H 'Host: blog.bitmixlist.local' http://127.0.0.1:8765/blog/index.html
-```
-
-### Optional Servers.Guru `/etc/hosts` only (no site deploy)
-
-SSH to Servers.Guru and add a hosts line for local Host-header tests if needed. Do **not** rsync or publish the blog tree as part of this workflow.
-
-```bash
-# Example only — hosts file mutation, not a deploy
-# 127.0.0.1 blog.bitmixlist.local
-```
 
 ## Tests
 

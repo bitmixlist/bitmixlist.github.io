@@ -169,11 +169,8 @@ function blog_sitemap_entries(string $root, ?array $config = null): array
     ));
 
     foreach (['en', 'ru'] as $locale) {
-        $indexPath = blog_index_path($locale, $config);
-        $isBlog = str_starts_with($indexPath, 'blog/') || str_starts_with($indexPath, 'ru/blog/');
-        $base = $isBlog ? $config['blog_base_url'] : $config['site_base_url'];
         $entries[] = [
-            'loc' => rtrim($base, '/') . '/' . $indexPath,
+            'loc' => blog_index_canonical_url($locale, $config),
             'lastmod' => gmdate('Y-m-d\T00:00:00\Z'),
         ];
     }

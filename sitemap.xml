@@ -1412,25 +1412,25 @@
   </url>
   <!-- bitmixlist-blog-start -->
   <url>
-    <loc>https://blog.bitmixlist.local/blog/index.html</loc>
+    <loc>https://bitmixlist.org/blog/index.html</loc>
     <lastmod>2026-07-31T00:00:00Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.65</priority>
   </url>
   <url>
-    <loc>https://blog.bitmixlist.local/ru/blog/index.html</loc>
+    <loc>https://bitmixlist.org/ru/blog/index.html</loc>
     <lastmod>2026-07-31T00:00:00Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.65</priority>
   </url>
   <url>
-    <loc>https://blog.bitmixlist.local/blog/welcome-to-the-blog.html</loc>
+    <loc>https://bitmixlist.org/blog/welcome-to-the-blog.html</loc>
     <lastmod>2026-07-31T00:00:00Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.65</priority>
   </url>
   <url>
-    <loc>https://blog.bitmixlist.local/ru/blog/welcome-to-the-blog.html</loc>
+    <loc>https://bitmixlist.org/ru/blog/welcome-to-the-blog.html</loc>
     <lastmod>2026-07-31T00:00:00Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.65</priority>

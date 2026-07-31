@@ -24,9 +24,9 @@ BitMixList is moving editorial writing into a **small PHP content store** with a
 ## What you get
 
 - File-backed posts under `src/blog/posts/`
-- A local admin editor for drafts and publish
+- Public posts at **bitmixlist.org/blog/** (main site)
+- Admin editor on **blog.bitmixlist.org** only (not public content)
 - Stable URLs for legacy articles after import
-- Subdomain-ready canonical base URLs
 
 Only mix funds you obtained lawfully.
 <!--blog:locale:ru-->
@@ -37,8 +37,8 @@ BitMixList переносит редакционные тексты в **неб�
 ## Что есть
 
 - Посты в файлах `src/blog/posts/`
-- Локальный редактор черновиков и публикации
+- Публичные посты на **bitmixlist.org/blog/** (основной сайт)
+- Редактор только на **blog.bitmixlist.org** (не публичный контент)
 - Стабильные URL для старых статей после импорта
-- Готовность к поддомену для канонических ссылок
 
 Смешивайте только те средства, которые вы получили законным путем.
