@@ -44,6 +44,30 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 <style>
+
+.timeline-wrap { margin-top: 32px; }
+      .timeline-intro { color: rgba(255,255,255,0.8); line-height: 1.6; }
+      .timeline-legend { display: inline-flex; flex-wrap: wrap; gap: 12px; margin: 18px 0; font-size: 0.85rem; color: rgba(255,255,255,0.7); }
+      .timeline-legend span { border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; padding: 4px 12px; }
+      .interactive-timeline { position: relative; margin: 28px 0; padding-left: 32px; }
+      .interactive-timeline::before { content: ""; position: absolute; left: 12px; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.25); }
+      .timeline-event { position: relative; margin: 20px 0; border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 16px 18px 18px 20px; background: rgba(255,255,255,0.04); transition: transform 0.12s ease, background 0.12s ease; }
+      .timeline-event:hover { transform: translateY(-1px); background: rgba(255,255,255,0.07); }
+      .timeline-event::before { content: ""; position: absolute; left: -28px; top: 18px; width: 14px; height: 14px; border-radius: 50%; background: #0c0c0f; border: 2px solid #6fe4ff; box-shadow: 0 0 0 4px rgba(111,228,255,0.25); }
+      .timeline-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+      .timeline-date { color: rgba(255,255,255,0.6); font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase; }
+      .timeline-title { font-weight: 650; font-size: 1rem; }
+      .timeline-tag { font-size: 0.78rem; padding: 2px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); }
+      .timeline-body { margin-top: 12px; color: rgba(255,255,255,0.78); line-height: 1.55; }
+      .timeline-actions { margin-top: 12px; }
+      .timeline-link { display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 6px 12px; font-size: 0.85rem; text-decoration: none; color: #fff; transition: background 0.15s ease; }
+      .timeline-link:hover { background: rgba(255,255,255,0.08); }
+      .timeline-note { font-size: 0.8rem; color: rgba(255,255,255,0.6); display: inline-block; margin-top: 6px; }
+      @media (max-width: 640px) {
+        .interactive-timeline { padding-left: 24px; }
+        .timeline-event::before { left: -24px; }
+        .timeline-row { flex-direction: column; align-items: flex-start; }
+      }
 .blog-page .site-header { display: block; min-height: 108px; padding-top: 1rem; padding-bottom: 0.95rem; }
 .blog-page .site-content-wrapper { padding-top: 124px; }
 .blog-page .header-inner { gap: 12px; min-height: 42px; align-items: center; position: relative; padding-right: 8rem; }
@@ -142,6 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <span>European Union (Europol/Eurojust)</span>
           </div>
           <div id="crimeTimeline" class="interactive-timeline" aria-label="Timeline of cyber takedowns"></div>
+</div>
 <section class="author-card">
 <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
 <picture style="flex:0 0 88px;">
@@ -252,6 +277,228 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("resize", syncOverlay);
   syncOverlay();
 });
+</script>
+<script>
+(function(){
+    const timeline = document.getElementById('crimeTimeline');
+    if(!timeline){ return; }
+
+    const events = JSON.parse(String.raw`[
+  {
+    "date": "2016-12-01",
+    "title": "Avalanche Network Takedown",
+    "tag": "United States",
+    "body": "International partners dismantled the Avalanche fast-flux hosting ring that delivered Dridex and Zeus payloads, seizing 800k domains, 37 servers, and the mule/e-currency infrastructure washing victims' proceeds across both U.S. and EU jurisdictions.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/‘avalanche’-network-dismantled-in-international-cyber-operation"
+  },
+  {
+    "date": "2016-10-01",
+    "title": "GozNym Malware Network",
+    "tag": "United States",
+    "body": "DOJ indictments targeted the GozNym banking-trojan crew that drained accounts before wiring the proceeds through Eastern European money mules and BTC-friendly exchangers.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/goznym-malware-cybercriminal-network-dismantled-in-international-operation"
+  },
+  {
+    "date": "2017-07-20",
+    "title": "AlphaBay Darknet Market",
+    "tag": "United States",
+    "body": "Agents seized AlphaBay’s Tor infrastructure, freezing the market’s Bitcoin/Litecoin escrow wallets that mixed vendor earnings, and arrested administrator Alexandre Cazes in Thailand.",
+    "link": "https://www.justice.gov/archives/opa/pr/alphabay-largest-online-dark-market-shut-down"
+  },
+  {
+    "date": "2018-02-07",
+    "title": "Infraud Organization",
+    "tag": "United States",
+    "body": "Thirteen arrests hit Infraud, a carding forum whose sellers monetized stolen cards via BTC escrow, Liberty Reserve-style exchangers, and mule cashouts, preventing over $530M in losses.",
+    "link": "https://www.justice.gov/usao-nv/pr/thirty-six-defendants-indicted-alleged-roles-transnational-criminal-organization"
+  },
+  {
+    "date": "2020-09-22",
+    "title": "Operation DisrupTor",
+    "tag": "United States",
+    "body": "Operation DisrupTor pulled Monopoly Market opioid vendors off Tor, confiscating their escrow wallets along with weapons, drugs, and $6.5M in cash and crypto.",
+    "link": "https://www.justice.gov/archives/opa/pr/international-law-enforcement-operation-targeting-opioid-traffickers-darknet-results-over-170"
+  },
+  {
+    "date": "2023-01-26",
+    "title": "Hive Ransomware",
+    "tag": "United States",
+    "body": "FBI teams infiltrated Hive’s Tor panel, captured victims’ decrypt keys, and seized the gang’s Bitcoin wallets which had been tumbling hospital ransom through mixers.",
+    "link": "https://www.justice.gov/archives/opa/pr/us-department-justice-disrupts-hive-ransomware-variant"
+  },
+  {
+    "date": "2023-02-01",
+    "title": "NetWalker Ransomware",
+    "tag": "United States",
+    "body": "Investigators tied NetWalker attacks on schools and hospitals to operators laundering BTC via Canadian OTC brokers, then seized the wallets and backend infrastructure.",
+    "link": "https://www.justice.gov/archives/opa/pr/department-justice-launches-global-action-against-netwalker-ransomware"
+  },
+  {
+    "date": "2023-05-02",
+    "title": "Operation SpecTor (U.S. actions)",
+    "tag": "United States",
+    "body": "Operation SpecTor combined U.S. takedowns with Europol support: agents arrested 153 Monopoly Market vendors domestically while the parallel EU push added 288 arrests, two tonnes of drugs, 180 firearms, and $53.4M seized across ten countries, alongside frozen escrow wallets.",
+    "link": "https://www.justice.gov/archives/opa/pr/international-law-enforcement-operation-targets-traffickers-darknet"
+  },
+  {
+    "date": "2025-05-14",
+    "title": "Operation RapTOR",
+    "tag": "United States",
+    "body": "Operation RapTOR combined U.S. and Europol actions: American teams rounded up 130 Monopoly and Incognito Market traffickers, while the EU push added 270 more vendors across 10 countries from markets like Versus and Dark0de, seizing $184M, two tonnes of drugs, and 180 firearms.",
+    "link": "https://www.justice.gov/opa/pr/law-enforcement-seize-record-amounts-illegal-drugs-firearms-and-drug-trafficking-proceeds"
+  },
+  {
+    "date": "2025-06-01",
+    "title": "E-Note Laundering Platform",
+    "tag": "United States",
+    "body": "Prosecutors indicted a Russian national for operating eNote, an OTC desk that laundered ransomware BTC through Hong Kong exchanges; $70M in flows were traced and the service dismantled.",
+    "link": "https://www.justice.gov/usao-edmi/pr/fbi-disrupts-virtual-money-laundering-service-used-facilitate-criminal-activity"
+  },
+  {
+    "date": "2025-06-15",
+    "title": "Volt Typhoon",
+    "tag": "United States",
+    "body": "Charges unsealed against Volt Typhoon actors describe PRC-linked hackers funding crypto scams targeting U.S. infrastructure and cashing out via Asian OTC desks before arrests.",
+    "link": "https://www.justice.gov/archives/opa/pr/us-government-disrupts-botnet-peoples-republic-china-used-conceal-hacking-critical"
+  },
+  {
+    "date": "2025-07-01",
+    "title": "Operation Endgame",
+    "tag": "United States",
+    "body": "Operation Endgame spanned U.S. and EU actions: FBI teams seized IcedID and SystemBC servers whose renters laundered BTC through bulletproof hosts, while Europol’s phases dismantled droppers, Rhadamanthys, VenomRAT, and Elysium infrastructures, taking more than 1,100 servers and 2,000 domains offline and issuing fresh warrants across Europe.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/largest-ever-operation-against-botnets-hits-dropper-malware-ecosystem"
+  },
+  {
+    "date": "2025-08-01",
+    "title": "Stolen-Password Database",
+    "tag": "United States",
+    "body": "Authorities seized a massive credential marketplace that sold online-banking logins for BTC, halting further fraud.",
+    "link": "https://www.justice.gov/opa/pr/justice-department-announces-seizure-stolen-password-database-used-bank-account-takeover"
+  },
+  {
+    "date": "2025-08-20",
+    "title": "Tai Chang Scam Domain",
+    "tag": "United States",
+    "body": "The Tai Chang takedown targeted a fake crypto-investment portal that promised double-digit staking returns while siphoning deposits to operator wallets.",
+    "link": "https://www.justice.gov/opa/pr/justice-department-announces-seizure-tai-chang-scam-compound-domain-used-cryptocurrency"
+  },
+  {
+    "date": "2025-09-01",
+    "title": "Virginia Database Destruction Plot",
+    "tag": "United States",
+    "body": "Two conspirators were arrested for plotting to wipe Virginia government databases in exchange for cryptocurrency wired through anonymized wallets.",
+    "link": "https://www.justice.gov/opa/pr/two-virginia-men-arrested-conspiring-destroy-government-databases"
+  },
+  {
+    "date": "2023-04-20",
+    "title": "Operation PowerOFF",
+    "tag": "United Kingdom",
+    "body": "Operation PowerOFF, led by the NCA alongside Europol partners, shuttered 27 booter/stresser portals, arrested three administrators, and seized subscription ledgers that exposed more than 300 paying users while cutting off PayPal and crypto payment rails across the EU and UK.",
+    "link": "https://operation-poweroff.com/"
+  },
+  {
+    "date": "2024-02-20",
+    "title": "LockBit Ransomware",
+    "tag": "United Kingdom",
+    "body": "NCA officers infiltrated the LockBit cartel, arrested two affiliates, and obtained more than 1,000 decrypt keys tied to the gang’s BTC ransom wallets.",
+    "link": "https://www.justice.gov/usao-nj/pr/us-and-uk-disrupt-lockbit-ransomware-variant"
+  },
+  {
+    "date": "2025-07-10",
+    "title": "Retail / Scattered Spider Cyberattacks",
+    "tag": "United Kingdom",
+    "body": "The NCA’s crackdown on Scattered Spider-style retail intrusions saw four young suspects arrested for siphoning loyalty balances and initial-access creds across M&S, Co-op, Harrods, and TfL partners, monetizing the data via gift-card resellers and Telegram brokers.",
+    "link": "https://www.nationalcrimeagency.gov.uk/news/retail-cyber-attacks-nca-arrest-four-for-attacks-on-m-s-co-op-and-harrods"
+  },
+  {
+    "date": "2016-12-08",
+    "title": "DDoS-for-Hire Users",
+    "tag": "European Union",
+    "body": "Europol warned and arrested 34 mostly teenage clients of booter/stresser services that sold PayPal and crypto subscriptions for DDoS attacks.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/joint-international-operation-targets-young-users-of-ddos-cyber-attack-tools"
+  },
+  {
+    "date": "2024-06-01",
+    "title": "Operation Secure",
+    "tag": "European Union",
+    "body": "Operation Secure targeted infostealer-as-a-service crews trading logs on Telegram and getting paid exclusively in crypto, leading to 41 arrests.",
+    "link": "https://www.interpol.int/News-and-Events/News/2025/20-000-malicious-IPs-and-domains-taken-down-in-INTERPOL-infostealer-crackdown"
+  },
+  {
+    "date": "2024-07-01",
+    "title": "Operation Serengeti 2.0",
+    "tag": "European Union",
+    "body": "Europol’s Serengeti 2.0 swept through African ransomware and scam crews that laundered profits via mobile money and OTC crypto hubs, yielding 1,209 arrests and $97.4M recovered.",
+    "link": "https://www.interpol.int/en/News-and-Events/News/2025/African-authorities-dismantle-massive-cybercrime-and-fraud-networks-recover-millions"
+  },
+  {
+    "date": "2024-09-01",
+    "title": "Encrypted Criminal Platform",
+    "tag": "European Union",
+    "body": "Eurojust and Europol took down an encrypted comms platform similar to Sky ECC that drug traffickers used to coordinate cash pickups and crypto payments, resulting in 51 arrests.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/encrypted-app-intelligence-exposes-sprawling-criminal-networks-across-europe"
+  },
+  {
+    "date": "2025-07-16",
+    "title": "Operation Eastwood / NoName057(16)",
+    "tag": "European Union",
+    "body": "Operation Eastwood and the parallel U.S. indictments hit the pro-Russian NoName057(16)/CyberArmyofRussia_Reborn DDoS network, crowdfunded via Telegram BTC wallets: European teams executed two arrests and six warrants while DOJ unsealed charges and an extradition.",
+    "link": "https://www.justice.gov/opa/pr/justice-department-announces-actions-combat-two-russian-state-sponsored-cyber-criminal"
+  },
+  {
+    "date": "2025-10-10",
+    "title": "Operation SIMCARTEL",
+    "tag": "European Union",
+    "body": "SIMCARTEL raids dismantled SIM farms powering OTP-bypass and account-takeover kits that sold subscriptions for crypto; seven suspects were arrested and five servers seized.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/cybercrime-service-takedown-7-arrested"
+  },
+  {
+    "date": "2025-11-01",
+    "title": "8Base Ransomware",
+    "tag": "European Union",
+    "body": "Joint Cybercrime Action Taskforce partners arrested core 8Base ransomware operators and dismantled their leak-site infrastructure plus ransom wallets.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/key-figures-behind-phobos-and-8base-ransomware-arrested-in-international-cybercrime-crackdown"
+  },
+  {
+    "date": "2025-11-15",
+    "title": "Lumma Infostealer",
+    "tag": "European Union",
+    "body": "Europol-coordinated raids disrupted the Lumma malware supply chain that monetized 394,000 infected devices and 1,300 staging domains through crypto sales.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/europol-and-microsoft-disrupt-world%E2%80%99s-largest-infostealer-lumma"
+  },
+  {
+    "date": "2025-12-01",
+    "title": "DDoS-for-Hire Services (Poland)",
+    "tag": "European Union",
+    "body": "Another 2025 sweep removed Polish booter portals offering crypto subscription tiers, arresting four administrators and shuttering associated domains.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/ddos-for-hire-empire-brought-down-poland-arrests-4-administrators-us-seizes-9-domains"
+  }
+]`);
+
+    const fmtDate = (iso) => {
+      const date = new Date(iso);
+      if (Number.isNaN(date)) {
+        return iso;
+      }
+      return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: '2-digit' });
+    };
+
+    events.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    timeline.innerHTML = events.map((event) => `
+      <div class="timeline-event">
+        <div class="timeline-row">
+          <div class="timeline-date">${fmtDate(event.date)}</div>
+          <div class="timeline-title">${event.title}</div>
+          ${event.tag ? `<div class="timeline-tag">${event.tag}</div>` : ''}
+        </div>
+        <div class="timeline-body">${event.body}</div>
+        <div class="timeline-actions">
+          ${event.link ? `<a class="timeline-link" href="${event.link}" target="_blank" rel="noopener">View official source</a>` : `<span class="timeline-note">Full case study coming soon.</span>`}
+        </div>
+      </div>
+    `).join('');
+  })();
 </script>
 </body>
 </html>

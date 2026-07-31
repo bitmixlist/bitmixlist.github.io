@@ -31,13 +31,14 @@ function rewrite_homepage_layout(string $path, string $locale, array $data): voi
     $html = homepage_ensure_header_meta_nav($html, $locale, $data['categories']);
     [$before, $oldContent, $after] = homepage_split_content($html);
     $notes = homepage_extract_notes($oldContent, $locale, $data['categories']);
-    $blogSection = blog_homepage_render_section($root, $locale);
-    $newContent = "\n" . homepage_render_intro($notes['intro'], $locale) . "\n" . $blogSection . "\n" . homepage_render_directory($data, $locale, $notes['sections']) . "\n" . $notes['global'] . "\n";
+    // No latest-posts block on the homepage; the blog keeps its own index,
+    // sidebar entry and meta-nav link.
+    $newContent = "\n" . homepage_render_intro($notes['intro'], $locale) . "\n" . homepage_render_directory($data, $locale, $notes['sections']) . "\n" . $notes['global'] . "\n";
 
     $html = homepage_normalize_directory_table_cells(directory_version_cacheable_head_urls($before . '<article class="page-content directory-detail homepage-directory">' . $newContent . '</article>' . $after));
-    $html = blog_homepage_ensure_styles($html);
     $html = blog_homepage_ensure_sidebar_link($html, $locale);
     $html = blog_homepage_ensure_meta_nav_link($html, $locale);
+    $html = blog_homepage_remove_section($html);
 
     file_put_contents($path, $html);
 }

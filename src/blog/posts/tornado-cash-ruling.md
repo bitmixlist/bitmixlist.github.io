@@ -1,6 +1,7 @@
 ---
+# HARDWIRED: legacy root HTML is source of truth; not a blog post
 slug: tornado-cash-ruling
-status: published
+status: draft
 published_at: 2025-02-12T00:00:00Z
 updated_at: 2025-02-12T00:00:00Z
 author: NotATether

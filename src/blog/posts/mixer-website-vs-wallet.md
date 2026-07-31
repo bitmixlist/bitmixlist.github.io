@@ -1,6 +1,7 @@
 ---
+# HARDWIRED: legacy root HTML is source of truth; not a blog post
 slug: mixer-website-vs-wallet
-status: published
+status: draft
 published_at: 2023-12-05T04:40:14Z
 updated_at: 2026-02-19T00:00:00Z
 author: NotATether

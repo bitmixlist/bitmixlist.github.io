@@ -44,6 +44,71 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 <style>
+#privacy-tech-matrix .scroll-wrap {
+              overflow-x: auto;
+            }
+            #privacy-tech-matrix table {
+              border-collapse: separate;
+              border-spacing: 0;
+              width: 100%;
+              min-width: 1240px;
+              font-size: 14px;
+              border: 1px solid rgba(255,255,255,0.08);
+            }
+            #privacy-tech-matrix th,
+            #privacy-tech-matrix td {
+              padding: 12px 14px;
+              border-bottom: 1px solid rgba(255,255,255,0.08);
+              border-right: 1px solid rgba(255,255,255,0.06);
+              white-space: nowrap;
+            }
+            #privacy-tech-matrix th {
+              font-weight: 600;
+              background: rgba(12,12,12,0.9);
+              position: sticky;
+              top: 0;
+            }
+            #privacy-tech-matrix .rowhead {
+              font-weight: 600;
+              position: sticky;
+              left: 0;
+              background: rgba(5,5,5,0.85);
+              width: 220px;
+              min-width: 180px;
+              max-width: 230px;
+              white-space: normal;
+              overflow-wrap: anywhere;
+              line-height: 1.25;
+              z-index: 3;
+            }
+            #privacy-tech-matrix tbody tr:nth-child(even) .rowhead {
+              background: rgba(5,5,5,0.95);
+            }
+            #privacy-tech-matrix tbody tr:nth-child(even) td {
+              background: rgba(255,255,255,0.02);
+            }
+            #privacy-tech-matrix .badge {
+              display: inline-flex;
+              align-items: center;
+              gap: 6px;
+              padding: 4px 10px;
+              border-radius: 999px;
+              border: 1px solid rgba(255,255,255,0.12);
+              font-weight: 600;
+            }
+            #privacy-tech-matrix .dot {
+              width: 9px;
+              height: 9px;
+              border-radius: 50%;
+            }
+            #privacy-tech-matrix .yes .dot { background: #2ee9a6; }
+            #privacy-tech-matrix .no .dot { background: #ff5c7a; }
+            #privacy-tech-matrix .maybe .dot { background: #ffd15c; }
+            #privacy-tech-matrix .notes {
+              white-space: normal;
+              line-height: 1.35;
+            }
+
 .blog-page .site-header { display: block; min-height: 108px; padding-top: 1rem; padding-bottom: 0.95rem; }
 .blog-page .site-content-wrapper { padding-top: 124px; }
 .blog-page .header-inner { gap: 12px; min-height: 42px; align-items: center; position: relative; padding-right: 8rem; }

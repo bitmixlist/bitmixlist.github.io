@@ -12,46 +12,12 @@ require_once __DIR__ . '/markdown.php';
  */
 function blog_discover_legacy_articles(string $root): array
 {
-    $utility = array_flip(blog_utility_slugs());
-    $reserved = array_flip(blog_reserved_root_prefixes());
-    $bySlug = [];
+    // Legacy root HTML pages are hardwired site content, not blog posts.
+    // Do not auto-discover them for import — that strips custom CSS/JS/timelines.
+    // New editorial content belongs under blog/ via the blog admin UI.
+    unset($root);
 
-    foreach (glob($root . '/*.html') ?: [] as $path) {
-        $base = basename($path, '.html');
-        if (isset($utility[$base]) || isset($reserved[$base])) {
-            continue;
-        }
-        if (!preg_match('/^[a-z0-9][a-z0-9\-]*$/', $base)) {
-            continue;
-        }
-        $bySlug[$base] = [
-            'slug' => $base,
-            'en_path' => $path,
-            'ru_path' => is_file($root . '/ru/' . $base . '.html') ? $root . '/ru/' . $base . '.html' : null,
-        ];
-    }
-
-    // RU-only pages (rare)
-    foreach (glob($root . '/ru/*.html') ?: [] as $path) {
-        $base = basename($path, '.html');
-        if (isset($utility[$base]) || isset($reserved[$base])) {
-            continue;
-        }
-        if (!preg_match('/^[a-z0-9][a-z0-9\-]*$/', $base)) {
-            continue;
-        }
-        if (!isset($bySlug[$base])) {
-            $bySlug[$base] = [
-                'slug' => $base,
-                'en_path' => null,
-                'ru_path' => $path,
-            ];
-        }
-    }
-
-    ksort($bySlug);
-
-    return array_values($bySlug);
+    return [];
 }
 
 /**
@@ -213,6 +179,10 @@ function blog_import_legacy(string $root, bool $dryRun = false, ?array $onlySlug
         }
         if (in_array($slug, blog_utility_slugs(), true)) {
             $skipped[] = $slug . ' (utility)';
+            continue;
+        }
+        if (blog_is_hardwired_root_slug($slug)) {
+            $skipped[] = $slug . ' (hardwired root page)';
             continue;
         }
 

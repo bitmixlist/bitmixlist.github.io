@@ -30,7 +30,12 @@ function blog_build(string $root, ?array $config = null, bool $includeDrafts = f
             if (!$includeDrafts && ($post['status'] ?? '') !== 'published') {
                 continue;
             }
-            $path = $root . '/' . blog_output_path_for_locale($post, $locale);
+            $relative = blog_output_path_for_locale($post, $locale);
+            // Only write under blog/ — never overwrite hardwired root HTML pages.
+            if (blog_is_hardwired_output_path($relative)) {
+                continue;
+            }
+            $path = $root . '/' . $relative;
             $html = blog_render_post_page($post, $locale, $config);
             blog_write_file($path, $html);
             $written[] = $path;

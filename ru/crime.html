@@ -44,6 +44,30 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 <style>
+
+.timeline-wrap { margin-top: 32px; }
+      .timeline-intro { color: rgba(255,255,255,0.8); line-height: 1.6; }
+      .timeline-legend { display: inline-flex; flex-wrap: wrap; gap: 12px; margin: 18px 0; font-size: 0.85rem; color: rgba(255,255,255,0.7); }
+      .timeline-legend span { border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; padding: 4px 12px; }
+      .interactive-timeline { position: relative; margin: 28px 0; padding-left: 32px; }
+      .interactive-timeline::before { content: ""; position: absolute; left: 12px; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.25); }
+      .timeline-event { position: relative; margin: 20px 0; border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 16px 18px 18px 20px; background: rgba(255,255,255,0.04); transition: transform 0.12s ease, background 0.12s ease; }
+      .timeline-event:hover { transform: translateY(-1px); background: rgba(255,255,255,0.07); }
+      .timeline-event::before { content: ""; position: absolute; left: -28px; top: 18px; width: 14px; height: 14px; border-radius: 50%; background: #0c0c0f; border: 2px solid #6fe4ff; box-shadow: 0 0 0 4px rgba(111,228,255,0.25); }
+      .timeline-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+      .timeline-date { color: rgba(255,255,255,0.6); font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase; }
+      .timeline-title { font-weight: 650; font-size: 1rem; }
+      .timeline-tag { font-size: 0.78rem; padding: 2px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); }
+      .timeline-body { margin-top: 12px; color: rgba(255,255,255,0.78); line-height: 1.55; }
+      .timeline-actions { margin-top: 12px; }
+      .timeline-link { display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 6px 12px; font-size: 0.85rem; text-decoration: none; color: #fff; transition: background 0.15s ease; }
+      .timeline-link:hover { background: rgba(255,255,255,0.08); }
+      .timeline-note { font-size: 0.8rem; color: rgba(255,255,255,0.6); display: inline-block; margin-top: 6px; }
+      @media (max-width: 640px) {
+        .interactive-timeline { padding-left: 24px; }
+        .timeline-event::before { left: -24px; }
+        .timeline-row { flex-direction: column; align-items: flex-start; }
+      }
 .blog-page .site-header { display: block; min-height: 108px; padding-top: 1rem; padding-bottom: 0.95rem; }
 .blog-page .site-content-wrapper { padding-top: 124px; }
 .blog-page .header-inner { gap: 12px; min-height: 42px; align-items: center; position: relative; padding-right: 8rem; }
@@ -142,6 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <span>Европейский союз (Europol/Eurojust)</span>
 </div>
 <div aria-label="Хронология киберопераций" class="interactive-timeline" id="crimeTimeline"></div>
+</div>
 <section class="author-card">
 <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
 <picture style="flex:0 0 88px;">
@@ -252,6 +277,228 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("resize", syncOverlay);
   syncOverlay();
 });
+</script>
+<script>
+(function(){
+    const timeline = document.getElementById('crimeTimeline');
+    if(!timeline){ return; }
+
+    const events = JSON.parse(String.raw`[
+  {
+    "date": "2016-12-01",
+    "title": "Ликвидация сети Avalanche",
+    "tag": "США",
+    "body": "Международная операция ликвидировала fast-flux-сеть Avalanche, через которую распространялись Dridex и Zeus. Изъяли 800 тыс. доменов, 37 серверов и инфраструктуру мулов/электронных валют, через которую отмывались средства жертв в юрисдикциях США и ЕС.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/‘avalanche’-network-dismantled-in-international-cyber-operation"
+  },
+  {
+    "date": "2016-10-01",
+    "title": "Сеть вредоноса GozNym",
+    "tag": "США",
+    "body": "Обвинения Минюста США были направлены против группы, стоявшей за банковским трояном GozNym, которая выводила деньги со счетов и переводила средства через восточноевропейских денежных мулов и BTC-дружественные обменники.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/goznym-malware-cybercriminal-network-dismantled-in-international-operation"
+  },
+  {
+    "date": "2017-07-20",
+    "title": "Даркнет-маркет AlphaBay",
+    "tag": "США",
+    "body": "Агенты изымают инфраструктуру Tor AlphaBay, замораживают эскроу-кошельки Bitcoin/Litecoin и арестовывают администратора Alexandre Cazes в Таиланде.",
+    "link": "https://www.justice.gov/archives/opa/pr/alphabay-largest-online-dark-market-shut-down"
+  },
+  {
+    "date": "2018-02-07",
+    "title": "Группа Infraud",
+    "tag": "США",
+    "body": "По делу Infraud проходят 13 арестов: участники кардингового форума монетизировали украденные карты через BTC-эскроу, обменники в стиле Liberty Reserve и сеть денежных мулов. По оценке следствия, предотвращённый ущерб превысил $530 млн.",
+    "link": "https://www.justice.gov/usao-nv/pr/thirty-six-defendants-indicted-alleged-roles-transnational-criminal-organization"
+  },
+  {
+    "date": "2020-09-22",
+    "title": "Операция DisrupTor",
+    "tag": "США",
+    "body": "В рамках Operation DisrupTor из экосистемы Tor выбивают продавцов опиоидов с Monopoly Market, конфискуют эскроу-кошельки, оружие, наркотики и активы на $6,5 млн наличными и в криптовалюте.",
+    "link": "https://www.justice.gov/archives/opa/pr/international-law-enforcement-operation-targeting-opioid-traffickers-darknet-results-over-170"
+  },
+  {
+    "date": "2023-01-26",
+    "title": "Hive (шифровальщик)",
+    "tag": "США",
+    "body": "Команды ФБР внедряются в панель управления Hive в сети Tor, получают ключи расшифровки для жертв и изымают BTC-кошельки группы, через которые прокачивались выкупные платежи.",
+    "link": "https://www.justice.gov/archives/opa/pr/us-department-justice-disrupts-hive-ransomware-variant"
+  },
+  {
+    "date": "2023-02-01",
+    "title": "NetWalker (шифровальщик)",
+    "tag": "США",
+    "body": "Следствие связывает атаки NetWalker на школы и больницы с операторами, отмывавшими BTC через канадских OTC-брокеров, после чего изымаются кошельки и серверная инфраструктура.",
+    "link": "https://www.justice.gov/archives/opa/pr/department-justice-launches-global-action-against-netwalker-ransomware"
+  },
+  {
+    "date": "2023-05-02",
+    "title": "Операция SpecTor (действия США)",
+    "tag": "США",
+    "body": "Операция SpecTor объединяет действия США и поддержку Europol: внутри США арестованы 153 продавца Monopoly Market, а параллельная фаза в ЕС добавляет ещё 288 арестов, 2 тонны наркотиков, 180 единиц оружия и изъятия на $53,4 млн.",
+    "link": "https://www.justice.gov/archives/opa/pr/international-law-enforcement-operation-targets-traffickers-darknet"
+  },
+  {
+    "date": "2025-05-14",
+    "title": "Операция RapTOR",
+    "tag": "США",
+    "body": "Operation RapTOR проходит синхронно в США и ЕС: в США задержаны 130 участников рынков Monopoly и Incognito, в ЕС — ещё 270. Совокупно изъяты $184 млн, 2 тонны наркотиков и 180 единиц оружия.",
+    "link": "https://www.justice.gov/opa/pr/law-enforcement-seize-record-amounts-illegal-drugs-firearms-and-drug-trafficking-proceeds"
+  },
+  {
+    "date": "2025-06-01",
+    "title": "Платформа eNote для отмывания",
+    "tag": "США",
+    "body": "Прокуратура предъявляет обвинение гражданину РФ за управление eNote — OTC-сервисом, через который отмывались BTC-средства программ-вымогателей через биржи Гонконга; отслежены потоки на $70 млн, сервис демонтирован.",
+    "link": "https://www.justice.gov/usao-edmi/pr/fbi-disrupts-virtual-money-laundering-service-used-facilitate-criminal-activity"
+  },
+  {
+    "date": "2025-06-15",
+    "title": "Volt Typhoon",
+    "tag": "США",
+    "body": "Рассекреченные обвинения по делу Volt Typhoon описывают связанное с КНР хакерское направление, которое финансировало криптомошенничество против инфраструктуры США и обналичивалось через азиатские OTC-площадки.",
+    "link": "https://www.justice.gov/archives/opa/pr/us-government-disrupts-botnet-peoples-republic-china-used-conceal-hacking-critical"
+  },
+  {
+    "date": "2025-07-01",
+    "title": "Операция Endgame",
+    "tag": "США",
+    "body": "Operation Endgame охватывает США и ЕС: ФБР изымает серверы IcedID и SystemBC, а фазы Europol демонтируют инфраструктуры droppers, Rhadamanthys, VenomRAT и Elysium. В сумме отключено более 1 100 серверов и 2 000 доменов.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/largest-ever-operation-against-botnets-hits-dropper-malware-ecosystem"
+  },
+  {
+    "date": "2025-08-01",
+    "title": "База украденных паролей",
+    "tag": "США",
+    "body": "Власти изымают крупный рынок учётных данных, где банковские логины продавались за BTC, останавливая дальнейшее мошенничество.",
+    "link": "https://www.justice.gov/opa/pr/justice-department-announces-seizure-stolen-password-database-used-bank-account-takeover"
+  },
+  {
+    "date": "2025-08-20",
+    "title": "Мошеннический домен Tai Chang",
+    "tag": "США",
+    "body": "Операция против Tai Chang нацелена на фальшивый криптоинвест-портал, обещавший двузначную доходность от стейкинга и выводивший депозиты на кошельки операторов.",
+    "link": "https://www.justice.gov/opa/pr/justice-department-announces-seizure-tai-chang-scam-compound-domain-used-cryptocurrency"
+  },
+  {
+    "date": "2025-09-01",
+    "title": "Заговор по уничтожению баз данных Вирджинии",
+    "tag": "США",
+    "body": "Двоих фигурантов арестовывают за подготовку уничтожения правительственных баз данных штата Вирджиния в обмен на выплаты в криптовалюте через анонимизированные кошельки.",
+    "link": "https://www.justice.gov/opa/pr/two-virginia-men-arrested-conspiring-destroy-government-databases"
+  },
+  {
+    "date": "2023-04-20",
+    "title": "Операция PowerOFF",
+    "tag": "Великобритания",
+    "body": "Операция PowerOFF под руководством NCA и при участии Europol закрывает 27 порталов для атак DDoS, приводит к трём арестам и изъятию журналов подписок, раскрывших более 300 платящих пользователей.",
+    "link": "https://operation-poweroff.com/"
+  },
+  {
+    "date": "2024-02-20",
+    "title": "LockBit (шифровальщик)",
+    "tag": "Великобритания",
+    "body": "Офицеры NCA внедряются в картель LockBit, арестовывают двух аффилиатов и получают более 1 000 ключей расшифровки, связанных с BTC-кошельками выкупа.",
+    "link": "https://www.justice.gov/usao-nj/pr/us-and-uk-disrupt-lockbit-ransomware-variant"
+  },
+  {
+    "date": "2025-07-10",
+    "title": "Атаки на ритейл / Scattered Spider",
+    "tag": "Великобритания",
+    "body": "В ходе британской кампании против атак в стиле Scattered Spider арестованы четыре молодых подозреваемых, которых связывают с кражей балансов программ лояльности и данных первичного доступа у M&S, Co-op, Harrods и партнёров TfL.",
+    "link": "https://www.nationalcrimeagency.gov.uk/news/retail-cyber-attacks-nca-arrest-four-for-attacks-on-m-s-co-op-and-harrods"
+  },
+  {
+    "date": "2016-12-08",
+    "title": "Пользователи сервисов DDoS на заказ",
+    "tag": "Евросоюз",
+    "body": "Europol предупреждает и арестовывает 34 пользователей (в основном подростков) сервисов для атак DDoS, продававших подписки за PayPal и криптовалюту.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/joint-international-operation-targets-young-users-of-ddos-cyber-attack-tools"
+  },
+  {
+    "date": "2024-06-01",
+    "title": "Операция Secure",
+    "tag": "Евросоюз",
+    "body": "Operation Secure нацелена на группы кражи данных (infostealer-as-a-service), торговавшие логами в Telegram и принимавшие оплату в криптовалюте; итог — 41 арест.",
+    "link": "https://www.interpol.int/News-and-Events/News/2025/20-000-malicious-IPs-and-domains-taken-down-in-INTERPOL-infostealer-crackdown"
+  },
+  {
+    "date": "2024-07-01",
+    "title": "Операция Serengeti 2.0",
+    "tag": "Евросоюз",
+    "body": "В рамках Serengeti 2.0 команда Europol проходит по африканским группам программ-вымогателей и мошенническим группам, отмывавшим прибыль через мобильные платежи и OTC-криптохабы; заявлены 1 209 арестов и возврат $97,4 млн.",
+    "link": "https://www.interpol.int/en/News-and-Events/News/2025/African-authorities-dismantle-massive-cybercrime-and-fraud-networks-recover-millions"
+  },
+  {
+    "date": "2024-09-01",
+    "title": "Зашифрованная криминальная платформа",
+    "tag": "Евросоюз",
+    "body": "Eurojust и Europol отключают зашифрованную коммуникационную платформу, сопоставимую со Sky ECC, которую наркосети использовали для координации наличных расчётов и криптоплатежей; по делу проходят 51 арест.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/encrypted-app-intelligence-exposes-sprawling-criminal-networks-across-europe"
+  },
+  {
+    "date": "2025-07-16",
+    "title": "Операция Eastwood / NoName057(16)",
+    "tag": "Евросоюз",
+    "body": "Операция Eastwood и параллельные обвинения США бьют по пророссийской сети DDoS NoName057(16)/CyberArmyofRussia_Reborn, которая финансировалась через кошельки BTC в Telegram: в Европе проходят два ареста и шесть обысков, а DOJ раскрывает обвинения и экстрадицию.",
+    "link": "https://www.justice.gov/opa/pr/justice-department-announces-actions-combat-two-russian-state-sponsored-cyber-criminal"
+  },
+  {
+    "date": "2025-10-10",
+    "title": "Операция SIMCARTEL",
+    "tag": "Евросоюз",
+    "body": "Рейды SIMCARTEL демонтируют SIM-фермы, обеспечивавшие обход OTP и захват аккаунтов; такие наборы продавались по подписке за криптовалюту. По итогам — семь арестов и изъятие пяти серверов.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/cybercrime-service-takedown-7-arrested"
+  },
+  {
+    "date": "2025-11-01",
+    "title": "8Base (шифровальщик)",
+    "tag": "Евросоюз",
+    "body": "Партнёры Joint Cybercrime Action Taskforce арестовывают ключевых операторов 8Base и демонтируют инфраструктуру их сайта утечек вместе с кошельками для выкупа.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/key-figures-behind-phobos-and-8base-ransomware-arrested-in-international-cybercrime-crackdown"
+  },
+  {
+    "date": "2025-11-15",
+    "title": "Lumma Infostealer",
+    "tag": "Евросоюз",
+    "body": "Координированные Europol рейды нарушают цепочку поставок Lumma: инфраструктура монетизировала 394 000 заражённых устройств и 1 300 промежуточных доменов через криптопродажи.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/europol-and-microsoft-disrupt-world%E2%80%99s-largest-infostealer-lumma"
+  },
+  {
+    "date": "2025-12-01",
+    "title": "Сервисы DDoS на заказ (Польша)",
+    "tag": "Евросоюз",
+    "body": "Очередная операция 2025 года отключает польские порталы для атак DDoS с подписками, оплачиваемыми криптовалютой, приводит к четырём арестам администраторов и закрытию связанных доменов.",
+    "link": "https://www.europol.europa.eu/media-press/newsroom/news/ddos-for-hire-empire-brought-down-poland-arrests-4-administrators-us-seizes-9-domains"
+  }
+]`);
+
+    const fmtDate = (iso) => {
+      const date = new Date(iso);
+      if (Number.isNaN(date)) {
+        return iso;
+      }
+      return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: '2-digit' });
+    };
+
+    events.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    timeline.innerHTML = events.map((event) => `
+      <div class="timeline-event">
+        <div class="timeline-row">
+          <div class="timeline-date">${fmtDate(event.date)}</div>
+          <div class="timeline-title">${event.title}</div>
+          ${event.tag ? `<div class="timeline-tag">${event.tag}</div>` : ''}
+        </div>
+        <div class="timeline-body">${event.body}</div>
+        <div class="timeline-actions">
+          ${event.link ? `<a class="timeline-link" href="${event.link}" target="_blank" rel="noopener">Открыть официальный источник</a>` : `<span class="timeline-note">Полный разбор кейса скоро появится.</span>`}
+        </div>
+      </div>
+    `).join('');
+  })();
 </script>
 </body>
 </html>

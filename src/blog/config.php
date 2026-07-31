@@ -73,7 +73,51 @@ function blog_utility_slugs(): array
         'changelog',
         // Interactive / non-editorial tool pages (not blog posts)
         'aml-check',
+        'privacy-news',
     ];
+}
+
+/**
+ * Legacy hand-written site articles live at the site root (e.g. crime.html).
+ * They predate the blog pipeline and often include custom HTML/CSS/JS
+ * (timelines, matrices, tables). Root HTML is the source of truth.
+ *
+ * Only paths under blog/ (and ru/blog/) may be written by the blog builder.
+ */
+function blog_is_blog_managed_output_path(string $relativePath): bool
+{
+    $path = ltrim($relativePath, '/');
+    if ($path === '') {
+        return false;
+    }
+
+    return str_starts_with($path, 'blog/') || str_starts_with($path, 'ru/blog/');
+}
+
+/**
+ * True when a post's output path is a legacy hardwired site page
+ * (anything outside blog/ / ru/blog/).
+ */
+function blog_is_hardwired_output_path(string $relativePath): bool
+{
+    return !blog_is_blog_managed_output_path($relativePath);
+}
+
+/**
+ * True for legacy root article slugs during import. Root HTML files are never
+ * blog-managed; new posts must live under blog/.
+ */
+function blog_is_hardwired_root_slug(string $slug): bool
+{
+    $normalized = strtolower(trim($slug));
+    $normalized = preg_replace('/[^a-z0-9\-]+/', '-', $normalized) ?? $normalized;
+    $normalized = trim($normalized, '-');
+    if ($normalized === '' || in_array($normalized, blog_utility_slugs(), true)) {
+        return false;
+    }
+
+    // Refuse re-importing any root-level legacy article slug into the blog store.
+    return true;
 }
 
 /**

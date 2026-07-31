@@ -1,6 +1,7 @@
 ---
+# HARDWIRED: legacy root HTML is source of truth; not a blog post
 slug: secret-service-mixer-advisory
-status: published
+status: draft
 published_at: 2026-02-12T00:00:00Z
 updated_at: 2026-02-19T00:00:00Z
 author: NotATether

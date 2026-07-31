@@ -1,6 +1,7 @@
 ---
+# HARDWIRED: legacy root HTML is source of truth; not a blog post
 slug: stealth-addresses
-status: published
+status: draft
 published_at: 2023-12-05T04:40:14Z
 updated_at: 2023-12-11T14:45:15Z
 author: NotATether

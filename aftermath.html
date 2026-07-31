@@ -44,6 +44,34 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 <style>
+.muted { color: rgba(255,255,255,0.7); }
+          .aftermath-card { width: 100%; background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; box-shadow: 0 12px 30px rgba(0,0,0,0.25); overflow: hidden; backdrop-filter: blur(6px); margin-bottom: 32px; }
+          .aftermath-card__header { padding: 18px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: flex-start; }
+          .aftermath-card__title { margin: 0; font-size: 18px; }
+          .aftermath-card__subtitle { margin: 4px 0 0; font-size: 13px; color: rgba(255,255,255,0.65); max-width: 620px; }
+          .aftermath-pill { font-size: 12px; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.12); padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.04); align-self: flex-start; }
+          .scenario-list { list-style: none; margin: 0; padding: 0; }
+          .scenario-item { display: grid; grid-template-columns: 44px 1fr auto auto; gap: 14px; padding: 16px 18px; border-top: 1px solid rgba(255,255,255,0.08); align-items: center; position: relative; }
+          .scenario-item:first-child { border-top: none; }
+          .scenario-item::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(147,124,255,0.12), rgba(43,203,255,0.08)); opacity: 0; transition: opacity .15s ease; }
+          .scenario-item:hover::before { opacity: 1; }
+          .scenario-icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); display: grid; place-items: center; font-weight: 600; color: rgba(255,255,255,0.9); }
+          .scenario-main { min-width: 0; z-index: 1; }
+          .scenario-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+          .scenario-name { font-size: 15px; font-weight: 600; }
+          .scenario-meta { font-size: 12px; color: rgba(255,255,255,0.6); }
+          .scenario-desc { margin-top: 3px; font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.35; }
+          .scenario-badge { font-size: 12px; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.75); white-space: nowrap; z-index: 1; }
+          .badge--threat { color: rgba(255,140,140,0.95); border-color: rgba(255,140,140,0.3); background: rgba(255,140,140,0.08); }
+          .badge--opportunity { color: rgba(140,255,196,0.95); border-color: rgba(140,255,196,0.3); background: rgba(140,255,196,0.08); }
+          .badge--wildcard { color: rgba(186,201,255,0.95); border-color: rgba(186,201,255,0.25); background: rgba(186,201,255,0.08); }
+          .scenario-link { width: 34px; height: 34px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); display: grid; place-items: center; color: rgba(255,255,255,0.75); background: rgba(255,255,255,0.05); text-decoration: none; z-index: 1; }
+          .scenario-link:hover { background: rgba(255,255,255,0.1); }
+          @media (max-width: 900px) {
+            .scenario-item { grid-template-columns: 40px 1fr; }
+            .scenario-badge, .scenario-link { margin-top: 8px; }
+          }
+
 .blog-page .site-header { display: block; min-height: 108px; padding-top: 1rem; padding-bottom: 0.95rem; }
 .blog-page .site-content-wrapper { padding-top: 124px; }
 .blog-page .header-inner { gap: 12px; min-height: 42px; align-items: center; position: relative; padding-right: 8rem; }

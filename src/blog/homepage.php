@@ -213,7 +213,38 @@ function blog_homepage_inject_section(string $html, string $sectionHtml): string
 }
 
 /**
- * Wire blog into index.html / ru/index.html: styles, sidebar, meta nav, latest posts.
+ * Strip the homepage blog section and the styles that only served it.
+ *
+ * The homepage no longer carries a latest-posts block. The blog itself is
+ * unaffected -- it keeps its own index, its sidebar entry, and its meta-nav
+ * link; only the homepage section is dropped.
+ */
+function blog_homepage_remove_section(string $html): string
+{
+    $updated = preg_replace(
+        '~<section\b[^>]*data-blog-homepage-section="1"[^>]*>.*?</section>\s*~su',
+        '',
+        $html
+    );
+    if (!is_string($updated)) {
+        return $html;
+    }
+
+    // The .homepage-blog-* rules have no other consumer once the section goes.
+    // Strip them rule by rule: they may have been merged into the shared
+    // homepage <style> block, so deleting the enclosing block would take the
+    // rest of the homepage styling with it.
+    $stripped = preg_replace(
+        '~^[ \t]*\.homepage-blog-[a-z-]+(?:[^{\n]*)\{[^}\n]*\}[ \t]*\r?\n~mu',
+        '',
+        $updated
+    );
+
+    return is_string($stripped) ? $stripped : $updated;
+}
+
+/**
+ * Wire blog into index.html / ru/index.html: sidebar and meta nav only.
  *
  * @return list<string> paths written
  */
@@ -232,11 +263,11 @@ function blog_update_homepages(string $root, ?array $config = null, int $limit =
             throw new RuntimeException("Unable to read {$path}");
         }
 
-        $html = blog_homepage_ensure_styles($html);
         $html = blog_homepage_ensure_sidebar_link($html, $locale);
         $html = blog_homepage_ensure_meta_nav_link($html, $locale);
-        $section = blog_homepage_render_section($root, $locale, $config, $limit);
-        $html = blog_homepage_inject_section($html, $section);
+        // Removal rather than injection: rerunning the build must not bring
+        // the section back.
+        $html = blog_homepage_remove_section($html);
 
         if (file_put_contents($path, $html) === false) {
             throw new RuntimeException("Unable to write {$path}");

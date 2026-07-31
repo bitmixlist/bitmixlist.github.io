@@ -44,6 +44,29 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 <style>
+
+.timeline-wrap { max-width: 960px; margin: 0 auto; padding: 0 8px; }
+      .timeline-intro { color: rgba(255,255,255,0.78); margin-bottom: 18px; }
+      .interactive-timeline { position: relative; margin: 28px 0; padding-left: 32px; }
+      .interactive-timeline::before { content:""; position:absolute; left: 12px; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,.25); }
+      .timeline-event { position: relative; margin: 20px 0; border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 16px 18px 18px 20px; background: rgba(255,255,255,.04); transition: transform .12s ease, background .12s ease; }
+      .timeline-event:hover { transform: translateY(-1px); background: rgba(255,255,255,.07); }
+      .timeline-event-target { background: rgba(242,200,107,.10); border-color: rgba(242,200,107,.36); }
+      .timeline-anchor-target { display:block; position:relative; top:-90px; height:0; overflow:hidden; }
+      .timeline-event::before { content:""; position:absolute; left:-28px; top: 18px; width:14px; height:14px; border-radius:50%; background:#0c0c0f; border:2px solid #f2c86b; box-shadow:0 0 0 4px rgba(242,200,107,.25); }
+      .timeline-row { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+      .timeline-date { color: rgba(255,255,255,.6); font-size:.9rem; letter-spacing:.08em; text-transform:uppercase; }
+      .timeline-title { font-weight:650; font-size:1rem; }
+      .timeline-tag { font-size:.78rem; padding:2px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.2); color:rgba(255,255,255,.65); }
+      .timeline-body { margin-top:12px; color:rgba(255,255,255,.78); line-height:1.55; }
+      .timeline-actions { margin-top:12px; }
+      .timeline-link { display:inline-flex; align-items:center; gap:6px; border:1px solid rgba(255,255,255,.2); border-radius:10px; padding:6px 12px; font-size:.85rem; text-decoration:none; color:#fff; transition:background .15s ease; }
+      .timeline-link:hover { background:rgba(255,255,255,.08); }
+      @media(max-width:640px){
+        .interactive-timeline { padding-left:24px; }
+        .timeline-event::before { left:-24px; }
+        .timeline-row { flex-direction:column; align-items:flex-start; }
+      }
 .blog-page .site-header { display: block; min-height: 108px; padding-top: 1rem; padding-bottom: 0.95rem; }
 .blog-page .site-content-wrapper { padding-top: 124px; }
 .blog-page .header-inner { gap: 12px; min-height: 42px; align-items: center; position: relative; padding-right: 8rem; }
@@ -139,6 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
           <span id="eu-outlaw-attempt" class="timeline-anchor-target" aria-hidden="true"></span>
           <span id="us-government-advisory" class="timeline-anchor-target" aria-hidden="true"></span>
           <div id="crackdownTimeline" class="interactive-timeline" aria-label="Timeline of crackdowns"></div>
+</div>
 <section class="author-card">
 <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
 <picture style="flex:0 0 88px;">
@@ -249,6 +273,64 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("resize", syncOverlay);
   syncOverlay();
 });
+</script>
+<script>
+(function(){
+    const timeline = document.getElementById('crackdownTimeline');
+    if(!timeline){ return; }
+
+    const events = [
+      { date: '2019-05-22', title: 'Bestmixer Seizure', tag: 'European Union', body: 'Dutch FIOD and Europol seize Bestmixer infrastructure, shut down six servers, and publish transaction records.', link: 'bestmixer-seizure.html' },
+      { date: '2019-12-03', title: 'Helix / Larry Harmon Indictment', tag: 'United States', body: 'US DOJ indicts Helix operator Larry Harmon for laundering over $300M via darknet markets; guilty plea 2021, sentenced 2024.', link: 'helix-larry-harmon.html' },
+      { date: '2021-04-27', title: 'Bitcoin Fog Arrest (Sterlingov)', tag: 'United States', body: 'Roman Sterlingov arrested in Los Angeles; prosecutors link early Bitcoin Fog deposits to Mt. Gox accounts and win a 2024 conviction.', link: 'bitcoin-fog-sterlingov.html' },
+      { date: '2022-05-06', title: 'Blender.io Sanctioned', tag: 'Sanctions', body: 'OFAC sanctions Blender.io — the first-ever mixer designation — after tying it to DPRK laundering. Investigators later allege the operators rebranded as Sinbad.', link: 'blender-sanctions.html' },
+      { date: '2023-03-15', title: 'ChipMixer Seizure', tag: 'European Union', body: 'Europol and the German BKA seize ChipMixer infrastructure, confiscating 1,909 BTC and indicting operator Minh Quoc Nguyen.', link: 'chipmixer-seizure.html' },
+      { date: '2023-11-29', title: 'OFAC Sanctions & Seizure of Sinbad.io', tag: 'Sanctions', body: 'US Treasury sanctions Sinbad.io (widely believed to be Blender rebrand) for laundering DPRK funds; same day Dutch FIOD and partners seize servers in Netherlands and Finland.', link: 'sinbad-sanctions.html' },
+      { id: 'eu-outlaw-attempt', date: '2024-03-14', title: 'EU Ban Attempt (MiCA / AML Package)', tag: 'European Union', body: 'Parliament debates €1,000 cap on anonymous self-custody transfers; clause ultimately withdrawn after community backlash.', link: 'eu-p2p-ban-attempt.html' },
+      { date: '2024-04-24', title: 'FBI Seizes Samourai Wallet', tag: 'United States', body: 'Agents seize Samourai infrastructure and arrest Keonne Rodriguez and William Hill, alleging Whirlpool mixed $2B in illicit funds.', link: 'samourai-wallet-case.html' },
+      { id: 'us-government-advisory', date: '2024-04-25', title: 'FBI PSA on Non-KYC Wallets', tag: 'United States', body: 'IC3 urges banks to file SARs on customers interacting with non-custodial wallets or mixers, prompting exchanges to freeze CoinJoin withdrawals.', link: 'fbi-non-custodial-warning.html' },
+      { date: '2024-04-27', title: 'Wallets Block US Users', tag: 'Compliance', body: 'Phoenix, Wasabi, and other projects geoblock US IPs or shut down coordinators in response to the arrests and FBI guidance.', link: 'wallets-block-us.html' },
+      { date: '2024-05-03', title: 'Edward Snowden Final Warning', tag: 'Advocacy', body: 'Snowden urges developers to prioritise base-layer privacy after LocalMonero and Agoradesk announce wind-down.', link: 'edward-snowden-warning.html' },
+      { date: '2024-05-07', title: 'LocalMonero / Agoradesk Exit', tag: 'Peer-to-Peer', body: 'Long-running P2P desks wind down, citing regulatory headwinds and the cost of complying with Travel Rule demands.', link: 'localmonero-agoradesk-exit.html' },
+      { date: '2024-08-01', title: 'Roman Storm / Tornado Cash Trial', tag: 'United States', body: 'US prosecutors test whether open-source Tornado Cash developers can be held liable for non-custodial protocols.', link: 'roman-storm-case.html' },
+      { date: '2025-04-30', title: 'eXch Seizure & Bybit Fallout', tag: 'European Union', body: 'German BKA shuts down eXch after it processed hundreds of millions from the Bybit hack; €34M in assets seized.', link: 'exch-seizure.html' },
+      { date: '2025-05-20', title: 'Secret Service Mixer Advisory', tag: 'United States', body: 'US Secret Service publishes a nationwide advisory urging banks to treat mixer flows as suspicious, highlighting investigative techniques and AML expectations.', link: 'secret-service-mixer-advisory.html' },
+      { date: '2025-09-18', title: 'TradeOgre Seizure', tag: 'Canada', body: 'RCMP seizes TradeOgre servers and over CAD $56 million in crypto — Canada’s largest-ever digital-asset seizure.', link: 'tradeogre-seizure.html' },
+      { date: '2025-12-01', title: 'Operation Olympia (CryptoMixer)', tag: 'European Union', body: 'Europol, BKA and fedpol seize cryptomixer.io servers and €25M in BTC/XMR, sharing captured logs with ransomware victims.', link: 'cryptomixer-eu-seizure.html' }
+    ];
+
+    const fmtDate = (iso) => {
+      const parsed = new Date(iso);
+      if (Number.isNaN(parsed)) {
+        return iso;
+      }
+      return parsed.toLocaleDateString(undefined, { year:'numeric', month:'short', day:'2-digit' });
+    };
+
+    events.sort((a,b)=> new Date(a.date) - new Date(b.date));
+    timeline.innerHTML = events.map((event)=>`
+      <div class="timeline-event"${event.id ? ` data-event-id="${event.id}"` : ''}>
+        <div class="timeline-row">
+          <div class="timeline-date">${fmtDate(event.date)}</div>
+          <div class="timeline-title">${event.title}</div>
+          ${event.tag ? `<div class="timeline-tag">${event.tag}</div>` : ''}
+        </div>
+        <div class="timeline-body">${event.body}</div>
+        <div class="timeline-actions">
+          <a class="timeline-link" href="${event.link}" target="_blank" rel="noopener">Open case study</a>
+        </div>
+      </div>
+    `).join('');
+
+    const targetId = decodeURIComponent(window.location.hash.slice(1));
+    if (targetId) {
+      const target = Array.from(timeline.querySelectorAll('[data-event-id]')).find((event)=>event.dataset.eventId === targetId);
+      if (target) {
+        target.classList.add('timeline-event-target');
+        target.scrollIntoView({ block: 'start' });
+      }
+    }
+  })();
 </script>
 </body>
 </html>
