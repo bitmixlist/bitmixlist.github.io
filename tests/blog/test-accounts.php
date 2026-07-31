@@ -4,27 +4,17 @@
 declare(strict_types=1);
 
 /**
- * Account flow tests against a temp data dir (no HTTP).
+ * Account flow tests against an isolated users.json path.
  */
 
 $root = dirname(__DIR__, 2);
 $adminBlog = $root . '/admin/blog';
-
-// Isolate accounts data
 $tmp = sys_get_temp_dir() . '/bitmixlist-blog-accounts-' . bin2hex(random_bytes(4));
 mkdir($tmp, 0700, true);
-putenv('BITMIXLIST_BLOG_ACCOUNTS_PATH=' . $tmp . '/users.json');
+$accountsFile = $tmp . '/users.json';
+putenv('BITMIXLIST_BLOG_ACCOUNTS_PATH=' . $accountsFile);
 
-// Monkey-patch path via redefining if we use getenv in accounts - update accounts.php to check env
 require_once $adminBlog . '/accounts.php';
-
-// If accounts path is fixed, write into real path - better patch accounts_path via env
-// Check if blog_accounts_path uses env
-$src = file_get_contents($adminBlog . '/accounts.php');
-if (!str_contains((string) $src, 'BITMIXLIST_BLOG_ACCOUNTS_PATH')) {
-    fwrite(STDERR, "accounts.php should honor BITMIXLIST_BLOG_ACCOUNTS_PATH for tests\n");
-    // still run against temp by overriding through function_exists - skip
-}
 
 $failed = 0;
 $passed = 0;
@@ -40,18 +30,6 @@ function t(bool $ok, string $msg): void
     }
 }
 
-// Force isolated path if supported
-if (function_exists('blog_accounts_path')) {
-    // re-include won't help; patch by writing to default after backing up
-}
-
-$accountsFile = $adminBlog . '/data/users.json';
-$backup = null;
-if (is_file($accountsFile)) {
-    $backup = file_get_contents($accountsFile);
-}
-@mkdir(dirname($accountsFile), 0770, true);
-// Fresh bootstrap with known password
 file_put_contents($accountsFile, json_encode([
     'updated_at' => gmdate('c'),
     'users' => [[
@@ -66,8 +44,6 @@ file_put_contents($accountsFile, json_encode([
         'password_set_at' => gmdate('c'),
     ]],
 ], JSON_PRETTY_PRINT) . "\n");
-
-// Reload by clearing any static state - none
 
 $reg = blog_accounts_register('neweditor');
 t($reg['ok'] === true, 'register editor');
@@ -111,12 +87,8 @@ t($adminLogin['ok'] === true, 'admin login works');
 $regAdmin = blog_accounts_register('notatether');
 t($regAdmin['ok'] === false, 'cannot register reserved primary username');
 
-// restore backup
-if ($backup !== null) {
-    file_put_contents($accountsFile, $backup);
-} else {
-    @unlink($accountsFile);
-}
+@unlink($accountsFile);
+@rmdir($tmp);
 
 echo "\n{$passed} passed, {$failed} failed\n";
 exit($failed > 0 ? 1 : 0);
