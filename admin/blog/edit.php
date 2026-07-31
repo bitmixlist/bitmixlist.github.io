@@ -75,30 +75,15 @@ $tags = implode(', ', $p['tags'] ?? []);
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title><?= $post ? 'Edit' : 'New' ?> post – Blog Admin</title>
-<style>
-body { font-family: system-ui, sans-serif; background: #121018; color: #f2ecff; margin: 0; }
-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #3a2e55; }
-main { padding: 20px; max-width: 920px; margin: 0 auto; }
-label { display: block; margin: 14px 0 6px; color: #c9c3d8; font-size: 0.9rem; }
-input, textarea, select { width: 100%; box-sizing: border-box; padding: 10px 12px; border-radius: 8px; border: 1px solid #4a3a70; background: #0f0d16; color: #fff; font: inherit; }
+<title><?= $post ? 'Edit' : 'New' ?> post – BitMixList Blog</title>
+<style><?= blog_admin_layout_styles() ?>
 textarea { min-height: 220px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.9rem; line-height: 1.45; }
 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
-.btn { padding: 10px 14px; border-radius: 8px; border: 0; cursor: pointer; font: inherit; background: #7a61f6; color: #fff; }
-.btn.secondary { background: #2d2440; }
-.btn.danger { background: #5a2a35; }
-.msg { padding: 10px 12px; border-radius: 8px; background: #1a1230; border: 1px solid #3a2e55; margin-bottom: 16px; }
-.err { border-color: #8b2f36; background: #2a1417; color: #ffc4c8; }
-a { color: #c7b8ff; }
 @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
-<header>
-<strong><a href="index.php">← Posts</a></strong>
-<span><?= $post ? 'Edit post' : 'New post' ?></span>
-</header>
+<?= blog_admin_header_html($post ? 'Edit post' : 'New post') ?>
 <main>
 <?php if ($notice !== ''): ?><div class="msg"><?= htmlspecialchars($notice, ENT_QUOTES, 'UTF-8') ?></div><?php endif; ?>
 <?php if ($error !== ''): ?><div class="msg err"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></div><?php endif; ?>
