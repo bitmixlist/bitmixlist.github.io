@@ -20,6 +20,7 @@ function directory_manual_entries(array $categories): array
     $betKarmaSlug = 'betkarma';
     $elCapoSlug = 'el-capo';
     $zeroTraceSlug = '0trace';
+    $mobitSlug = 'mobit';
     $yifiSlug = 'yifi';
     $mixersType = $categories[$mixersCategorySlug]['type'] ?? 'service';
     $neverKycType = $categories[$neverKycCategorySlug]['type'] ?? 'service';
@@ -230,6 +231,83 @@ function directory_manual_entries(array $categories): array
             'output_paths' => [
                 'en' => $neverKycCategorySlug . '/' . $altquickSlug . '.html',
                 'ru' => 'ru/' . $neverKycCategorySlug . '/' . $altquickSlug . '.html',
+            ],
+        ],
+        [
+            'id' => $neverKycCategorySlug . ':' . $mobitSlug,
+            'slug' => $mobitSlug,
+            'category' => $neverKycCategorySlug,
+            'type' => $neverKycType,
+            'assets' => [
+                'webp' => 'wp-content/uploads/2023/12/mobit.webp',
+                'image' => 'wp-content/uploads/2023/12/mobit.png',
+                'alt' => 'MoBit logo',
+                // Sampled from official brand.png opaque fill (#121212)
+                'background_color' => '#121212',
+            ],
+            'links' => [
+                'clearnet' => 'https://mobit.exchange',
+                'tor' => 'http://mobit3phhr7yclrpflbfvkertxdi6guityj2jeyfk5iqgacrt2uo7ead.onion',
+                'mirrors' => [],
+                'support' => 'Support page / API / Telegram bot / PGP',
+                'support_html' => 'Support: <a href="https://mobit.exchange/support" target="_blank" rel="noopener noreferrer">support</a> / API: <a href="https://mobit.exchange/api" target="_blank" rel="noopener noreferrer">docs</a>',
+            ],
+            'status' => [],
+            'notices' => [],
+            'content' => [
+                'en' => [
+                    'name' => 'MoBit',
+                    'summary' => 'Fee: Flat 1.5% / Dynamic 1.0%',
+                    'description' => 'MoBit is a no-KYC instant crypto exchange offering flat and dynamic rates with API access, Tor support, and non-custodial order processing.',
+                ],
+                'ru' => [
+                    'name' => 'MoBit',
+                    'summary' => 'Комиссия: фиксированная 1,5% / динамическая 1,0%',
+                    'description' => 'MoBit — мгновенный обменник без KYC с фиксированными и динамическими курсами, API и доступом через Tor; ордеры обрабатываются без промежуточного хранения средств.',
+                ],
+            ],
+            'facts' => [
+                'en' => [
+                    directory_manual_fact('No KYC', 'Yes'),
+                    directory_manual_fact('Coins', 'BTC, XMR, ETH, USDT (ERC-20), USDC (ERC-20), DAI (ERC-20)'),
+                    directory_manual_fact('Fee', 'Flat 1.5%, Dynamic 1.0%'),
+                    directory_manual_fact('Minimum', '0.00077118 BTC'),
+                    directory_manual_fact('Rate behavior', 'Flat: fixed at order creation; Dynamic: market-based when confirmed'),
+                    directory_manual_fact('Refund', 'Available while queued; otherwise via queue/refund flow and support'),
+                    directory_manual_fact('API', 'Requires API key header X-Mobit-Api-Key'),
+                    directory_manual_fact('Transaction logs', 'Kept up to 15 days'),
+                ],
+                'ru' => [
+                    directory_manual_fact('KYC', 'Нет'),
+                    directory_manual_fact('Монеты', 'BTC, XMR, ETH, USDT (ERC-20), USDC (ERC-20), DAI (ERC-20)'),
+                    directory_manual_fact('Комиссия', 'Фиксированная 1,5%, динамическая 1,0%'),
+                    directory_manual_fact('Минимум', '0.00077118 BTC'),
+                    directory_manual_fact('Условия курса', 'Фиксированный курс удерживается, динамический определяется по рынку после подтверждений'),
+                    directory_manual_fact('Возврат', 'Доступен в очереди и по возврату ордера; обращение в поддержку в течение 15 дней'),
+                    directory_manual_fact('API', 'Требуется заголовок X-Mobit-Api-Key'),
+                    directory_manual_fact('Хранение транзакций', 'До 15 дней'),
+                ],
+            ],
+            'table_display' => [
+                'en' => 'MoBit',
+                'ru' => 'MoBit',
+            ],
+            'notes' => [
+                'en' => '<p>MoBit Exchange claims no KYC, no JS, and no logs on the front page. It supports BTC, XMR, ETH, USDT (ERC-20), USDC (ERC-20), and DAI (ERC-20). The service requires 2 BTC confirmations; XMR and ERC-20 assets require 10 confirmations. Queue/refund and status flow are documented in the FAQ, and the service publishes policy on refunds, terms, and 15-day data retention.</p>',
+                'ru' => '<p>На официальной странице MoBit указано отсутствие KYC, использование JS и заявленная политика без логов. Поддерживаются BTC, XMR, ETH, USDT (ERC-20), USDC (ERC-20) и DAI (ERC-20). Для BTC требуется 2 подтверждения, для XMR и ERC-20 — 10 подтверждений. FAQ описывает процесс очереди и возвратов, а в правилах и политике приватности указаны возвраты и хранение данных до 15 дней.</p>',
+            ],
+            'config' => [
+                'en' => '',
+                'ru' => '',
+            ],
+            'volume_history' => [],
+            'index_paths' => [
+                'en' => $neverKycCategorySlug . '/' . $mobitSlug . '.html',
+                'ru' => $neverKycCategorySlug . '/' . $mobitSlug . '.html',
+            ],
+            'output_paths' => [
+                'en' => $neverKycCategorySlug . '/' . $mobitSlug . '.html',
+                'ru' => 'ru/' . $neverKycCategorySlug . '/' . $mobitSlug . '.html',
             ],
         ],
         [

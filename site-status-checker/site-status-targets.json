@@ -458,6 +458,19 @@
             ]
         },
         {
+            "id": "neverkyc-exchanges:mobit",
+            "category": "neverkyc-exchanges",
+            "slug": "mobit",
+            "name": "MoBit",
+            "targets": [
+                {
+                    "kind": "clearnet",
+                    "url": "https://mobit.exchange",
+                    "source": "listed"
+                }
+            ]
+        },
+        {
             "id": "neverkyc-exchanges:tomboi-io",
             "category": "neverkyc-exchanges",
             "slug": "tomboi-io",
